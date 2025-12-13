@@ -16,7 +16,7 @@ Instead, please report security vulnerabilities by:
    - Fill in the details
 
 2. **Or email us directly:**
-   - Email: [your-email@example.com]
+   - Email: anujck45@gmail.com
    - Include "SECURITY" in the subject line
 
 ### 📋 What to Include
