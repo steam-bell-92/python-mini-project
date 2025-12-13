@@ -6,7 +6,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Projects](https://img.shields.io/badge/projects-11-orange.svg)]()
+[![Projects](https://img.shields.io/badge/projects-16-orange.svg)]()
 [![No Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]()
 
 **🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful emoji UI | ⚡ Zero setup required**
@@ -107,6 +107,33 @@ python Number_Guessing_Game.py
 
 </td>
 </tr>
+
+<tr>
+<td width="50%">
+
+#### 🎮 Hangman Game
+Classic word-guessing game!
+- 📝 Random word selection
+- ❤️ 6 attempts to guess
+- 🔤 Track guessed letters
+```bash
+python Hangman-Game.py
+```
+
+</td>
+<td width="50%">
+
+#### 💖 FLAMES Game
+Discover your relationship status!
+- 👫 Enter two names
+- 🔮 Magical calculation
+- 💕 Friends, Love, Affection, Marriage, Enemies, or Siblings
+```bash
+python FLAMES_Game.py
+```
+
+</td>
+</tr>
 </table>
 
 ### 🔢 **Mathematical Wizards** - Explore Number Magic!
@@ -165,6 +192,34 @@ python Simple-Calculator.py
 
 </td>
 </tr>
+
+<tr>
+<td width="50%">
+
+#### 🔢 Collatz Conjecture
+Explore the famous 3n+1 problem!
+- 🌀 Generate complete sequence
+- 📊 Track steps and statistics
+- 🎯 Watch numbers reach 1
+```bash
+python Collatz-Conjecture.py
+```
+
+</td>
+<td width="50%">
+
+#### 🔱 Prime Number Analyzer
+All-in-one prime number toolkit!
+- ✅ Check if number is prime
+- 📈 Generate primes up to N
+- 🎯 Find primes in range
+- 🧩 Prime factorization
+```bash
+python Prime-Number-Analyzer.py
+```
+
+</td>
+</tr>
 </table>
 
 ### 🔐 **Crypto & Utilities** - Encode Your Secrets!
@@ -185,12 +240,14 @@ python Text-to-Morse.py
 </td>
 <td width="50%">
 
-*More tools coming soon!*
-- 🔒 Caesar Cipher
-- 🎨 Pattern Generator  
-- 🎱 Magic 8 Ball
-
-**Have an idea? [Contribute!](#-contributing)**
+#### 🗼 Tower of Hanoi
+Solve the classic puzzle step by step!
+- 🎯 1-8 disks to solve
+- 📋 Visual tower representation
+- 🧠 Iterative solution display
+```bash
+python Tower-of-Hanoi.py
+```
 
 </td>
 </tr>
