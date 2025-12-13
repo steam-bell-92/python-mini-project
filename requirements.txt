@@ -1,0 +1,2 @@
+# Python 3.10+ required
+# No external packages required - all projects use Python standard library only
