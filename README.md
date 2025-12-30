@@ -6,10 +6,10 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Projects](https://img.shields.io/badge/projects-16-orange.svg)]()
-[![No Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen.svg)]()
+[![Projects](https://img.shields.io/badge/projects-20-orange.svg)]()
+[![Code Scanning](https://img.shields.io/badge/CodeQL-enabled-brightgreen.svg)]()
 
-**🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful emoji UI | ⚡ Zero setup required**
+**🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful UI | 🐢 Turtle graphics | ⚡ Zero setup required**
 
 [Quick Start](#-quick-start) • [Projects](#-projects) • [Features](#-features) • [Contributing](#-contributing)
 
@@ -253,6 +253,64 @@ python Tower-of-Hanoi.py
 </tr>
 </table>
 
+### 🐢 **Turtle Graphics** - Create Beautiful Art!
+
+<table>
+<tr>
+<td width="50%">
+
+#### 🌟 Turtle Mandala Design
+Complex geometric mandala with layered stars!
+- 🎨 Three nested star patterns
+- 💎 Circular accents
+- 🌈 Aqua, white, and blue colors
+```bash
+python Turtle-Mandala-Design.py
+```
+
+</td>
+<td width="50%">
+
+#### ⭐ Turtle Star Design
+18-pointed yellow star pattern!
+- 💫 Flower-like geometric design
+- ✨ Overlapping lines create beauty
+- 🌟 Classic star on black canvas
+```bash
+python Turtle-Star-Design.py
+```
+
+</td>
+</tr>
+
+<tr>
+<td width="50%">
+
+#### 🌈 Turtle Rainbow Spiral
+Mesmerizing spiral with rainbow colors!
+- 🎨 VIBGYOR color cycling
+- 🌀 72 overlapping circles
+- 💫 Hypnotic rotating pattern
+```bash
+python Turtle-Rainbow-Spiral.py
+```
+
+</td>
+<td width="50%">
+
+#### 🌺 Turtle Rainbow Mandala
+Stunning 10-petal rainbow mandala!
+- 🌸 Concentric circle petals
+- 🎨 Rainbow color gradients
+- 💠 Perfect geometric symmetry
+```bash
+python Turtle-Rainbow-Mandala.py
+```
+
+</td>
+</tr>
+</table>
+
 ---
 
 ## ✨ Features
@@ -278,6 +336,8 @@ Working through these projects, you'll master:
 - ✅ **Randomization** - Using the random module
 - ✅ **String Manipulation** - Text processing and formatting
 - ✅ **Mathematical Operations** - Calculations and algorithms
+- ✅ **Turtle Graphics** - Creating visual art and animations
+- ✅ **Geometric Patterns** - Understanding shapes and symmetry
 - ✅ **Logic & Problem Solving** - Building real-world applications
 
 ---
@@ -287,6 +347,7 @@ Working through these projects, you'll master:
 ### Prerequisites
 - Python 3.10 or higher ([Download here](https://www.python.org/downloads/))
 - Any text editor or IDE (VS Code, PyCharm, or even Notepad!)
+- **For Turtle Graphics:** Python's turtle module (included in standard library)
 
 ### Running Your First Project
 
@@ -303,6 +364,7 @@ Working through these projects, you'll master:
 - 💡 Start with simple games like Coin Flip or Dice Rolling
 - 📖 Read through the code to understand how it works
 - 🎨 Try modifying emojis or messages to personalize the projects
+- 🐢 Explore turtle graphics for visual programming
 - 🔧 Experiment with changing game rules or adding features
 - 🤝 Share your improvements with the community!
 

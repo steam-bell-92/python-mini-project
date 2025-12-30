@@ -111,12 +111,16 @@ print("\n👋 Thanks for playing!\n")
 - **No External Dependencies** - Only use standard library
 - **Zero Setup** - Project should run immediately
 - **Cross-Platform** - Works on Windows, Mac, and Linux
+- **Turtle Graphics** - For visual projects, use Python's turtle module (standard library)
+  - Add `turtle.exitonclick()` to keep window open
+  - Include docstrings explaining the visual output
 
 ### ✅ Naming Convention
 
 - Use hyphenated names: `My-Project-Name.py`
-- Be descriptive: `Dice-Rolling.py` not `game.py`
-- Use title case for multi-word names
+- Be descriptive: `Rock-Paper-Scissor.py` not `game.py`
+- Use title case for multi-word names: `Turtle-Rainbow-Spiral.py`
+- Match existing naming pattern in repository
 
 ---
 
@@ -126,12 +130,13 @@ Use emojis to make your projects engaging! Here are some recommendations:
 
 | Purpose | Emojis |
 |---------|--------|
-| **Welcome/Title** | 🎮 🎯 🎲 🎰 🔢 🔺 📻 🪙 |
+| **Welcome/Title** | 🎮 🎯 🎲 🎰 🔢 🔺 📻 🪙 🐢 🌟 🌈 |
 | **Success** | ✅ 🎉 🎊 ✨ 🏆 💯 |
 | **Error** | ❌ ⚠️ 🚫 |
 | **Input Prompt** | ➡️ 🎯 🤔 📝 |
 | **Output/Result** | 📊 💡 🔍 📍 |
 | **Information** | 💬 📚 ℹ️ 💡 |
+| **Graphics/Art** | 🐢 🎨 🌟 🌈 💎 🌸 💫 ⭐ 🌺 |
 | **Goodbye** | 👋 🙏 💖 |
 
 ---
