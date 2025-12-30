@@ -9,9 +9,10 @@ Thank you for your interest in contributing! We're excited to have you here. Thi
 There are many ways you can contribute to this project:
 
 - 🎮 **Add new mini-projects** - Create fun, educational Python projects
-- 🐛 **Fix bugs** - Help improve existing projects
+- 🌐 **Enhance the web app** - Add new features or improve existing ones
+- 🐛 **Fix bugs** - Help improve existing projects (Python or web)
 - 📚 **Improve documentation** - Make instructions clearer
-- 🎨 **Enhance UI/UX** - Add better emojis or visual elements
+- 🎨 **Enhance UI/UX** - Add better emojis, animations, or visual elements
 - 💡 **Suggest features** - Share your ideas for improvements
 - ✅ **Review pull requests** - Help maintain code quality
 
@@ -75,7 +76,7 @@ git push origin feature/your-project-name
 
 When creating or modifying projects, please follow these guidelines:
 
-### ✅ Code Style
+### ✅ Python Projects - Code Style
 
 - **No Functions/Classes** - Keep code simple and procedural for beginners
 - **Use Emojis** - Make the UI visually appealing with relevant emojis
@@ -83,7 +84,7 @@ When creating or modifying projects, please follow these guidelines:
 - **Proper Spacing** - Follow PEP 8: blank lines between sections
 - **Consistent Formatting** - Match the style of existing projects
 
-### ✅ Project Structure
+### ✅ Python Projects - Structure
 
 Your project should include:
 
@@ -105,6 +106,48 @@ print("❌ Error message")
 print("\n👋 Thanks for playing!\n")
 ```
 
+### ✅ Web App Projects - Structure
+
+For web implementation, add to `web-app/js/projects.js`:
+
+```javascript
+// 1. HTML Template Function
+function getYourProjectHTML() {
+    return `
+        <div class="project-content">
+            <h2>🎮 Your Project Name</h2>
+            <!-- Your HTML structure -->
+        </div>
+        
+        <style>
+            /* Your project-specific styles */
+        </style>
+    `;
+}
+
+// 2. Initialization Function
+function initYourProject() {
+    // Get DOM elements
+    const btn = document.getElementById('yourBtn');
+    
+    // Add event listeners
+    btn.addEventListener('click', () => {
+        // Your logic here
+    });
+}
+
+// 3. Register in getProjectHTML() and initializeProject()
+```
+
+### ✅ Web App Projects - Guidelines
+
+- **Vanilla JavaScript** - No frameworks (React, Vue, etc.)
+- **Responsive Design** - Works on mobile, tablet, and desktop
+- **CSS Variables** - Use existing theme variables
+- **Animations** - Add smooth transitions and effects
+- **Canvas for Graphics** - Use HTML5 Canvas API for turtle projects
+- **Accessibility** - Use semantic HTML and proper labels
+
 ### ✅ Requirements
 
 - **Python 3.10+** - Use modern Python features
@@ -114,6 +157,7 @@ print("\n👋 Thanks for playing!\n")
 - **Turtle Graphics** - For visual projects, use Python's turtle module (standard library)
   - Add `turtle.exitonclick()` to keep window open
   - Include docstrings explaining the visual output
+  - Implement web version using Canvas API
 
 ### ✅ Naming Convention
 
@@ -147,6 +191,7 @@ Use emojis to make your projects engaging! Here are some recommendations:
 
 Before submitting your project, ensure:
 
+#### Python CLI Version
 - [ ] Project runs without errors
 - [ ] Uses emojis for visual appeal
 - [ ] Has clear welcome message
@@ -159,7 +204,23 @@ Before submitting your project, ensure:
 - [ ] Works on different operating systems
 - [ ] Is beginner-friendly and educational
 
-### Example Project Template
+#### Web App Version
+- [ ] Added to `web-app/js/projects.js`
+- [ ] Registered in `getProjectHTML()` mapping
+- [ ] Registered in `initializeProject()` mapping
+- [ ] Uses responsive design
+- [ ] Has smooth animations
+- [ ] Follows existing design patterns
+- [ ] Works on mobile devices
+- [ ] Updated project card in `index.html` (if new)
+
+#### Documentation
+- [ ] Updated README.md with project description
+- [ ] Added to appropriate category (Games, Math, etc.)
+- [ ] Included usage instructions
+- [ ] Added to project count badge
+
+### Example Python Project Template
 
 ```python
 print("🎮 Project Name 🎮")
@@ -224,24 +285,28 @@ Have an idea? We'd love to hear it!
 
 ### Before Submitting
 
-- ✅ Test your code thoroughly
+- ✅ Test your code thoroughly (both Python and web versions)
 - ✅ Follow the project guidelines
 - ✅ Update README.md if adding a new project
-- ✅ Ensure no external dependencies
+- ✅ Add project card to index.html if new
+- ✅ Ensure no external dependencies (Python)
 - ✅ Check for spelling/grammar errors
+- ✅ Test web version in multiple browsers
+- ✅ Verify responsive design on mobile
 
 ### PR Description Should Include
 
 - **What**: Brief description of changes
 - **Why**: Reason for the changes
 - **How**: How you implemented it
-- **Testing**: How you tested it
-- **Screenshots**: If UI changes (optional)
+- **Testing**: How you tested it (Python + Web if applicable)
+- **Screenshots**: If UI changes (especially for web app)
 
 ### Example PR Title
 
-- ✅ Good: `Add: Hangman game with emoji UI`
-- ✅ Good: `Fix: Dice roller emoji display bug`
+- ✅ Good: `Add: Hangman game with emoji UI and web version`
+- ✅ Good: `Fix: Dice roller emoji display bug in web app`
+- ✅ Good: `Enhance: Add dark mode toggle to web interface`
 - ❌ Bad: `Update`
 - ❌ Bad: `Fixed stuff`
 
