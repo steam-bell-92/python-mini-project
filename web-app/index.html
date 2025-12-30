@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Python Mini Projects - Interactive Web Edition</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h1>🎮 Python Mini Projects</h1>
+            </div>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1 class="hero-title">Learn Python by Playing! 🎯</h1>
+            <p class="hero-subtitle">20+ Interactive Projects - Zero Installation Required</p>
+            <div class="hero-badges">
+                <span class="badge">🎮 Games</span>
+                <span class="badge">🔢 Math Tools</span>
+                <span class="badge">🐢 Graphics</span>
+                <span class="badge">🔐 Utilities</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <section class="tabs-section">
+        <div class="container">
+            <div class="tabs">
+                <button class="tab active" data-category="all">🌟 All Projects</button>
+                <button class="tab" data-category="games">🎮 Games</button>
+                <button class="tab" data-category="math">🔢 Math</button>
+                <button class="tab" data-category="graphics">🐢 Graphics</button>
+                <button class="tab" data-category="utilities">🔐 Utilities</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <section class="projects-section">
+        <div class="container">
+            <div class="projects-grid" id="projectsGrid">
+                
+                <!-- Games -->
+                <div class="project-card" data-category="games" data-project="rock-paper-scissor">
+                    <div class="card-icon">🪨</div>
+                    <h3>Rock Paper Scissors</h3>
+                    <p>Battle against the computer!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <div class="project-card" data-category="games" data-project="dice-rolling">
+                    <div class="card-icon">🎲</div>
+                    <h3>Dice Rolling</h3>
+                    <p>Roll the dice with 3D animation!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <div class="project-card" data-category="games" data-project="coin-flip">
+                    <div class="card-icon">🪙</div>
+                    <h3>Coin Flip</h3>
+                    <p>Heads or tails with spinning animation!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <div class="project-card" data-category="games" data-project="number-guessing">
+                    <div class="card-icon">🎯</div>
+                    <h3>Number Guessing</h3>
+                    <p>Guess the secret number!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <div class="project-card" data-category="games" data-project="hangman">
+                    <div class="card-icon">🎮</div>
+                    <h3>Hangman</h3>
+                    <p>Classic word-guessing game!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <div class="project-card" data-category="games" data-project="flames">
+                    <div class="card-icon">💖</div>
+                    <h3>FLAMES Game</h3>
+                    <p>Discover your relationship status!</p>
+                    <button class="btn-play">Play Now</button>
+                </div>
+
+                <!-- Math Tools -->
+                <div class="project-card" data-category="math" data-project="fibonacci">
+                    <div class="card-icon">✨</div>
+                    <h3>Fibonacci Series</h3>
+                    <p>Generate Fibonacci sequences!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="math" data-project="pascal-triangle">
+                    <div class="card-icon">🔺</div>
+                    <h3>Pascal's Triangle</h3>
+                    <p>Beautiful hexagon visualization!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="math" data-project="armstrong">
+                    <div class="card-icon">💎</div>
+                    <h3>Armstrong Numbers</h3>
+                    <p>Check special number properties!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="math" data-project="calculator">
+                    <div class="card-icon">🧮</div>
+                    <h3>Calculator</h3>
+                    <p>Your mathematical companion!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="math" data-project="collatz">
+                    <div class="card-icon">🔢</div>
+                    <h3>Collatz Conjecture</h3>
+                    <p>Explore the 3n+1 problem!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="math" data-project="prime-analyzer">
+                    <div class="card-icon">🔱</div>
+                    <h3>Prime Analyzer</h3>
+                    <p>All-in-one prime number toolkit!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <!-- Graphics -->
+                <div class="project-card" data-category="graphics" data-project="turtle-mandala">
+                    <div class="card-icon">🌟</div>
+                    <h3>Mandala Design</h3>
+                    <p>Watch beautiful mandala creation!</p>
+                    <button class="btn-play">Create</button>
+                </div>
+
+                <div class="project-card" data-category="graphics" data-project="turtle-star">
+                    <div class="card-icon">⭐</div>
+                    <h3>Star Design</h3>
+                    <p>18-pointed star pattern!</p>
+                    <button class="btn-play">Create</button>
+                </div>
+
+                <div class="project-card" data-category="graphics" data-project="turtle-spiral">
+                    <div class="card-icon">🌈</div>
+                    <h3>Rainbow Spiral</h3>
+                    <p>Mesmerizing rainbow circles!</p>
+                    <button class="btn-play">Create</button>
+                </div>
+
+                <div class="project-card" data-category="graphics" data-project="turtle-rainbow-mandala">
+                    <div class="card-icon">🌺</div>
+                    <h3>Rainbow Mandala</h3>
+                    <p>10-petal rainbow mandala!</p>
+                    <button class="btn-play">Create</button>
+                </div>
+
+                <!-- Utilities -->
+                <div class="project-card" data-category="utilities" data-project="morse-code">
+                    <div class="card-icon">📻</div>
+                    <h3>Morse Code</h3>
+                    <p>Translate with lights & sound!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+
+                <div class="project-card" data-category="utilities" data-project="tower-of-hanoi">
+                    <div class="card-icon">🗼</div>
+                    <h3>Tower of Hanoi</h3>
+                    <p>Solve the classic puzzle!</p>
+                    <button class="btn-play">Try It</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ for Python learners everywhere</p>
+            <p>
+                <a href="https://github.com/yourusername/python-mini-project" target="_blank">
+                    <i class="fab fa-github"></i> View on GitHub
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/projects-extended.js"></script>
+</body>
+</html>
