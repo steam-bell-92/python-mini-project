@@ -4,11 +4,11 @@ print("=" * 50)
 
 while True:
     try:
-        n = int(input("\nEnter the number of disks (1-8): "))
-        if 1 <= n <= 8:
+        n = int(input("\nEnter the number of disks (1-7): "))
+        if 1 <= n <= 7:
             break
         else:
-            print("Please enter a number between 1 and 8!")
+            print("Visualization supports only 1 to 7 disks for stable execution.")
     except ValueError:
         print("Please enter a valid number!")
 
