@@ -1,492 +1,390 @@
 <div align="center">
 
 <!-- Animated Banner -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Python%20Mini%20Projects&fontSize=50&fontColor=fff&animation=twinkling&fontAlignY=35&desc=Learn%20Python%20by%20Building%20Fun%2C%20Interactive%20Games%20%26%20Tools!&descAlignY=60&descSize=18" width="100%"/>
+<img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=200&section=header&text=Python%20Mini%20Projects&fontSize=50&fontColor=fff&animation=twinkling&fontAlignY=35&desc=Learn%20by%20Building%20%7C%20Play%20by%20Coding&descAlignY=55&descSize=18" width="100%"/>
 
-<!-- Animated Typing SVG -->
+<!-- Typing SVG -->
 <a href="https://git.io/typing-svg">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=22&duration=3000&pause=1000&color=7C3AED&center=true&vCenter=true&multiline=true&width=700&height=80&lines=🎮+24+Interactive+Python+Projects;🎨+Beautiful+Web+UI+%2B+CLI+Versions;⚡+Zero+Setup+Required+-+Just+Run+%26+Play!" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=6AD3F7&center=true&vCenter=true&multiline=true&repeat=true&width=600&height=100&lines=🎮+20+Interactive+Python+Projects;🚀+Zero+Dependencies+%7C+Instant+Fun;🎓+Built+for+Learners%2C+Loved+by+All" alt="Typing SVG" />
 </a>
 
 <br/>
 
 <!-- Badges Row 1 -->
-[![Python Version](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/downloads/)
-[![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
-[![Projects](https://img.shields.io/badge/Projects-24-f97316?style=for-the-badge&logo=rocket&logoColor=white)]()
-[![CodeQL](https://img.shields.io/badge/CodeQL-Enabled-8b5cf6?style=for-the-badge&logo=github&logoColor=white)]()
+[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge&logo=opensourceinitiative&logoColor=white)](LICENSE)
+[![Projects](https://img.shields.io/badge/Projects-20-F97316?style=for-the-badge&logo=rocket&logoColor=white)]()
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-8B5CF6?style=for-the-badge&logo=git&logoColor=white)](CONTRIBUTING.md)
 
 <!-- Badges Row 2 -->
-[![Stars](https://img.shields.io/github/stars/steam-bell-92/python-mini-project?style=for-the-badge&logo=starship&color=fbbf24&logoColor=white)](https://github.com/steam-bell-92/python-mini-project/stargazers)
-[![Forks](https://img.shields.io/github/forks/steam-bell-92/python-mini-project?style=for-the-badge&logo=git&color=ec4899&logoColor=white)](https://github.com/steam-bell-92/python-mini-project/network/members)
-[![Issues](https://img.shields.io/github/issues/steam-bell-92/python-mini-project?style=for-the-badge&logo=github&color=ef4444&logoColor=white)](https://github.com/steam-bell-92/python-mini-project/issues)
-[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-06b6d4?style=for-the-badge&logo=github&logoColor=white)](https://github.com/steam-bell-92/python-mini-project/pulls)
+[![Stars](https://img.shields.io/github/stars/yourusername/python-mini-project?style=for-the-badge&logo=github&color=FFD700&labelColor=1a1a2e)](https://github.com/yourusername/python-mini-project/stargazers)
+[![Forks](https://img.shields.io/github/forks/yourusername/python-mini-project?style=for-the-badge&logo=github&color=6AD3F7&labelColor=1a1a2e)](https://github.com/yourusername/python-mini-project/network)
+[![Issues](https://img.shields.io/github/issues/yourusername/python-mini-project?style=for-the-badge&logo=github&color=EF4444&labelColor=1a1a2e)](https://github.com/yourusername/python-mini-project/issues)
+[![CodeQL](https://img.shields.io/badge/CodeQL-Enabled-brightgreen?style=for-the-badge&logo=github-actions&logoColor=white)]()
+
+<!-- Profile Views -->
+![Visitor Badge](https://visitor-badge.laobi.icu/badge?page_id=yourusername.python-mini-project&style=for-the-badge&color=6AD3F7)
 
 <br/>
 
-**🚀 Perfect for beginners &nbsp;|&nbsp; 💡 Learn by doing &nbsp;|&nbsp; 🎨 Beautiful UI &nbsp;|&nbsp; ⚡ Zero setup required**
-
-[Quick Start](#-quick-start) &nbsp;•&nbsp; [Screenshots](#-screenshots) &nbsp;•&nbsp; [Projects](#-projects) &nbsp;•&nbsp; [Features](#-features) &nbsp;•&nbsp; [Contributing](#-contributing)
-
-</div>
-
----
-
-## 📸 Screenshots
-
-> ✨ **Experience the beautiful web app UI — all 24 projects playable right in your browser!**
-
-<div align="center">
-
-### 🏠 Main Dashboard — All Projects View
-<img src="web-app/assets/screenshots/webapp-main.png" alt="Python Mini Projects — Main Dashboard" width="90%" style="border-radius:12px; box-shadow: 0 8px 32px rgba(124,58,237,0.4);"/>
-
-<br/><br/>
-
-### 🎮 Games Category — Filtered View
-<img src="web-app/assets/screenshots/webapp-games.png" alt="Python Mini Projects — Games Section" width="90%" style="border-radius:12px; box-shadow: 0 8px 32px rgba(124,58,237,0.4);"/>
+<!-- Navigation Links -->
+[🚀 Quick Start](#-quick-start) · [🎮 Projects](#-projects) · [📊 Analytics](#-analytics) · [🤝 Contributing](#-contributing) · [🌐 Web App](#-web-app)
 
 </div>
 
 ---
 
-## 🎯 Why This Repository?
+<!-- About Section -->
+<img src="https://capsule-render.vercel.app/api?type=rect&color=gradient&customColorList=6,11,20&height=3&section=header" width="100%"/>
 
-> **Tired of boring "Hello World" tutorials?** 
+## 🌟 Why This Collection?
 
-We built this collection to make learning Python **fun, interactive, and instantly rewarding**! Each project is:
-- ✅ **Complete & Ready to Run** - No setup, no dependencies, just pure Python fun
-- 🎨 **Visually Stunning** - Beautiful emoji-based UI that makes coding exciting
-- 📚 **Educational** - Learn core concepts while building real projects
-- 🎮 **Engaging** - From games to tools, there's something for everyone
-- 💪 **Beginner-Friendly** - Clean code with no complex functions
+<table>
+<tr>
+<td width="60%">
 
-**Perfect for:** Students learning Python, teachers looking for class projects, or anyone wanting to code something fun in minutes!
+> **"The best way to learn Python is to build something you actually want to use."**
+
+This collection transforms boring tutorials into **20 hand-crafted, interactive Python experiences** — games, math tools, and utilities that are:
+
+- 🎯 **Instantly Runnable** — Clone and play in under 60 seconds
+- 🧠 **Concept-Rich** — Each project teaches real Python skills
+- 🎨 **Visually Delightful** — Beautiful emoji-based CLI interfaces
+- 💯 **Zero Dependencies** — Pure Python, no pip installs ever
+- 🌐 **Browser Playable** — Full web app included, no Python needed
+
+**Whether you're a student, teacher, or seasoned dev** looking for a fun weekend project — there's something here for you.
+
+</td>
+<td width="40%" align="center">
+
+```
+ Projects Breakdown
+ ──────────────────
+  🎲 Games        →  8 projects
+  🔢 Math Tools   →  8 projects
+  🔐 Utilities    →  2 projects
+  🌐 Web App      →  1 full app
+ ──────────────────
+  Total           →  20 projects
+```
+
+</td>
+</tr>
+</table>
 
 ---
 
 ## ⚡ Quick Start
 
-### 🌐 **Try the Web App** (Recommended!)
-Experience all 24 projects in your browser with beautiful animations and visualizations!
+<details>
+<summary><b>🌐 Option 1: Web App (Recommended — No Python Needed!)</b></summary>
 
 ```bash
 # Clone the repository
-git clone https://github.com/steam-bell-92/python-mini-project.git
+git clone https://github.com/yourusername/python-mini-project.git
 
 # Navigate to the web app
 cd python-mini-project/web-app
 
-# Start the web server
+# Start the server
 python -m http.server 8000
 
-# Open http://localhost:8000 in your browser
+# Open in browser
+open http://localhost:8000
 ```
 
-### 🐍 **Or Run Python Projects Directly**
+✨ **All 20 projects, live in your browser with beautiful animations!**
+
+</details>
+
+<details>
+<summary><b>🐍 Option 2: Run Python Directly (CLI)</b></summary>
 
 ```bash
-# Navigate to the project
+# Clone
+git clone https://github.com/yourusername/python-mini-project.git
 cd python-mini-project
 
-# Run any project (no installation needed!)
+# Run any project — no setup needed!
 python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 ```
 
-**That's it!** No pip installs, no virtual environments, just instant fun! 🎉
+**Prerequisites:** Python 3.10+ ([Download](https://www.python.org/downloads/))
+
+</details>
 
 ---
 
 ## 🎮 Projects
 
-<div align="center">
-
-<!-- Animated section divider -->
-<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
-
-</div>
-
-### 🚀 **Physics & Simulation**
-
-#### 🎯 Projectile Motion Game
-Launch projectiles and visualize trajectory stats!
-- 🚀 Simple launch simulation
-- 📊 Shows TOF, Hmax, and Range
-- 📈 Matplotlib plot for each launch
-```bash
-python math/Projectile-Motion-Game/Projectile-Motion-Game.py
-```
-
-<div align="center">
-<img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif" width="100%"/>
-</div>
-
-### 🎲 **Games** - Test Your Luck & Skills!
+### 🎲 Games — Test Your Luck & Wit
 
 <table>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 🪨 Rock, Paper, Scissors
-Battle against the computer in this classic game!
-- 🎯 Interactive gameplay
-- 🤖 Smart computer opponent
-- 🎨 Visual feedback for wins/losses
+**🪨 Rock, Paper, Scissors**
+> Battle the computer in the ultimate classic!
+- Interactive gameplay with live feedback
+- Smart AI opponent
+- Win/loss/draw tracking
 ```bash
 python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 ```
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 🎲 Dice Rolling
-Roll two dice and see your fortune!
-- ⚀⚁⚂ Realistic dice emojis
-- 📊 Total calculation
-- 🎰 Perfect for board game nights
-```bash
-python games/Roling-Dice/Roling-Dice.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🧭 Coordinate to Polar Transformation
-Convert Cartesian coordinates into polar representation!
-- 📍 Input (x, y) coordinates
-- 📏 Computes radius r = sqrt(x^2 + y^2)
-- 📐 Shows angle in both degrees and radians
-```bash
-python math/Coordinate-to-Polar-Transformation/Coordinate-to-Polar-Transformation.py
-```
-
-</td>
-<td width="50%">
-
-#### ∂ Derivative Calculator
-Perform full polynomial derivative operations!
-- 🧮 First derivative and nth derivative support
-- 📍 Evaluate derivative value at any x
-- ✍️ Input polynomial using coefficient list
-```bash
-python math/Derivative-Calculator/Derivative-Calculator.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🪙 Coin Flip
-Can you predict heads or tails?
-- 👑 Heads vs 🦅 Tails
-- 🎭 Simple yet addictive
-- ⚡ Quick decision maker
-```bash
-python games/Flipping-toss/Flipping-toss.py
-```
-
-</td>
-<td width="50%">
-
-#### 🎯 Number Guessing Game
-Think you can read the computer's mind?
-- 🤔 Interactive guessing
-- 📈📉 Smart hints
-- 🎊 Celebratory win screen
+**🎯 Number Guessing Game**
+> Can you read the machine's mind?
+- Smart `📈 Too High` / `📉 Too Low` hints
+- Attempt counter
+- Celebratory win animation
 ```bash
 python games/Number-Guessing-Game/Number-Guessing-Game.py
 ```
 
 </td>
 </tr>
-
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 🎮 Hangman Game
-Classic word-guessing game!
-- 📝 Random word selection
-- ❤️ 6 attempts to guess
-- 🔤 Track guessed letters
+**🎮 Hangman**
+> Classic word-guessing with ASCII stakes!
+- Random word dictionary
+- 6-life system with visual display
+- Letter history tracking
 ```bash
 python games/Hangman-Game/Hangman-Game.py
 ```
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 💖 FLAMES Game
-Discover your relationship status!
-- 👫 Enter two names
-- 🔮 Magical calculation
-- 💕 Friends, Love, Affection, Marriage, Enemies, or Siblings
+**💖 FLAMES Game**
+> Discover your relationship destiny!
+- Enter any two names
+- Magical FLAMES algorithm
+- Friends · Love · Affection · Marriage · Enemies · Siblings
 ```bash
 python games/FLAMES-Game/FLAMES-Game.py
 ```
 
 </td>
 </tr>
-
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-
-#### 🔐 Password Forge
-Survive evolving firewall rules by continuously upgrading your password!
-- 🔓 Progressive rule unlocking
-- ❤️ Lives system
-- 🏆 Score tracking
-- 🎯 Multiple difficulty levels
+**🎲 Dice Rolling**
+> Roll two dice and test your fortune!
+- Realistic ⚀⚁⚂⚃⚄⚅ dice emojis
+- Sum calculator
+- Replay in one keystroke
 ```bash
-python games/Password-Forge/Password-Forge.py
+python games/Roling-Dice/Roling-Dice.py
 ```
 
 </td>
+<td width="50%" valign="top">
 
-
-#### 📐 AP/GP/AGP/HP Recognizer
-Identify progression types from a number sequence!
-- 🔍 Detects Arithmetic, Geometric, Arithmetic-Geometric, and Harmonic patterns
-- 🧠 Supports integer and decimal values
-- 📘 Great for quick sequence practice
-#### 🧩 Tic-Tac-Toe
-Classic X and O strategy game!
-- 👤 Play against another player
-- 🤖 Smart computer opponent
-- 🏆 Result tracking
+**🪙 Coin Flip**
+> Heads or tails — you decide!
+- 👑 Heads vs 🦅 Tails
+- Instant flip animation
+- Perfect for quick decisions
 ```bash
-python games/Tic-Tac-Toe/Tic-Tac-Toe.py
-```
-
-</td>
-<td width="50%">
-
-#### 🧠 Emoji Memory Game
-Test your memory with matching emojis!
-- 🎴 Dynamic emoji grid
-- ⏱️ Score tracking
-- 🧠 Brain training fun
-```bash
-python games/Emoji-Memory-Game/emoji_memory_game.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🗣️ Simon Says - Memory Game
-Test your memory with an ever-growing sequence!
-- 🔴🔵🟢🟡 Colorful emoji buttons
-- 🧠 Watch and repeat the sequence
-- 📈 Sequence grows each round
-- 🏆 Win by completing 10 rounds
-```bash
-python games/Simon-Says/Simon-Says.py
+python games/Flipping-toss/Flipping-toss.py
 ```
 
 </td>
 </tr>
 </table>
 
-### 🔢 **Mathematical Wizards** - Explore Number Magic!
+---
+
+### 🔢 Math Wizards — Explore Number Magic
 
 <table>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 📐 AP/GP/AGP/HP Recognizer
-Identify progression types from a number sequence!
-- 🔍 Detects Arithmetic, Geometric, Arithmetic-Geometric, and Harmonic patterns
-- 🧠 Supports integer and decimal values
-- 📘 Great for quick sequence practice
-```bash
-python math/AP-GP-AGP-HP-Recognizer/AP-GP-AGP-HP-Recognizer.py
-```
-
-</td>
-<td width="50%">
-
-#### ✨ Fibonacci Series
-Generate beautiful mathematical sequences
-- 🌀 Classic Fibonacci pattern
-- 📊 Visual array display
-- ➡️ Arrow-based formatting
+**✨ Fibonacci Series**
+> Generate the golden sequence!
+- Classic & extended Fibonacci
+- Visual arrow-based formatting
+- Configurable length
 ```bash
 python math/Fibonacci-Series/Fibonacci-Series.py
 ```
 
 </td>
-</tr>
+<td width="50%" valign="top">
 
-<tr>
-<td width="50%">
-
-#### 🔺 Pascal's Triangle
-Discover mathematical beauty in triangles!
-- 🎨 Centered triangle display
-- 🔍 View specific rows
-- 📐 Interactive exploration
+**🔺 Pascal's Triangle**
+> Mathematical beauty in triangular form!
+- Centered display output
+- View specific rows
+- Interactive exploration
 ```bash
 python math/Pascal-Triangle/Pascal-Triangle.py
 ```
 
 </td>
-<td width="50%">
+</tr>
+<tr>
+<td width="50%" valign="top">
 
-#### 💎 Armstrong Number Checker
-Uncover special numbers with unique properties!
-- 🔢 Detailed calculation breakdown
-- ✅ Instant verification
-- 💡 Educational examples
+**💎 Armstrong Number Checker**
+> Uncover numbers with narcissistic properties!
+- Step-by-step calculation breakdown
+- Instant verification
+- Educational examples included
 ```bash
 python math/Armstrong-Number/Armstrong-Number.py
 ```
 
 </td>
-</tr>
+<td width="50%" valign="top">
 
-<tr>
-<td width="50%">
-
-#### 🧮 Simple Calculator
-Your mathematical companion!
-- ➕➖✖️➗ All basic operations
-- 💪 Power & modulus support
-- 🎨 Clean menu interface
-```bash
-python math/Simple-Calculator/Simple-Calculator.py
-```
-
-</td>
-<td width="50%">
-
-#### 🔢 Collatz Conjecture
-Explore the famous 3n+1 problem!
-- 🌀 Generate complete sequence
-- 📊 Track steps and statistics
-- 🎯 Watch numbers reach 1
-```bash
-python math/Collatz-Conjecture/Collatz-Conjecture.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🔱 Prime Number Analyzer
-All-in-one prime number toolkit!
-- ✅ Check if number is prime
+**🔱 Prime Number Analyzer**
+> All-in-one prime number toolkit!
+- ✅ Primality check
 - 📈 Generate primes up to N
-- 🎯 Find primes in range
-- 🧩 Prime factorization
+- 🎯 Range finder + factorization
 ```bash
 python math/Prime-Number-Analyzer/Prime-Number-Analyzer.py
 ```
 
 </td>
-<td width="50%"></td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**🔢 Collatz Conjecture**
+> Explore the legendary 3n+1 mystery!
+- Full sequence generation
+- Step counter & statistics
+- Watch any number collapse to 1
+```bash
+python math/Collatz-Conjecture/Collatz-Conjecture.py
+```
+
+</td>
+<td width="50%" valign="top">
+
+**🧮 Simple Calculator**
+> A polished mathematical companion!
+- ➕ ➖ ✖️ ➗ All operations
+- Power, modulus support
+- Clean menu-driven interface
+```bash
+python math/Simple-Calculator/Simple-Calculator.py
+```
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**∂ Derivative Calculator**
+> Full polynomial derivative engine!
+- 1st & nth derivative support
+- Evaluate at any x-value
+- Coefficient-list input
+```bash
+python math/Derivative-Calculator/Derivative-Calculator.py
+```
+
+</td>
+<td width="50%" valign="top">
+
+**🧭 Coordinate → Polar**
+> Transform Cartesian to polar coordinates!
+- Input (x, y) → radius & angle
+- Degrees and radians output
+- Clear step-by-step results
+```bash
+python math/Coordinate-to-Polar-Transformation/Coordinate-to-Polar-Transformation.py
+```
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+**📐 AP/GP/AGP/HP Recognizer**
+> Identify progression types instantly!
+- Detects Arithmetic, Geometric, AGP & Harmonic
+- Integer and decimal support
+- Great for exam prep
+```bash
+python math/AP-GP-AGP-HP-Recognizer/AP-GP-AGP-HP-Recognizer.py
+```
+
+</td>
+<td width="50%" valign="top">
+
+**🎯 Projectile Motion Game**
+> Physics simulation meets interactive fun!
+- Launch angle & velocity input
+- Shows TOF, H-max, Range
+- Matplotlib trajectory plot
+```bash
+python math/Projectile-Motion-Game/Projectile-Motion-Game.py
+```
+
+</td>
 </tr>
 </table>
 
-### 🔐 **Crypto & Utilities** - Encode Your Secrets!
+---
+
+### 🔐 Crypto & Utilities — Encode Your Secrets
 
 <table>
 <tr>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 📻 Morse Code Translator
-Transform text into dots and dashes!
-- 🔄 Bidirectional translation
-- 📊 Complete Morse chart
-- 💬 Supports letters, numbers & symbols
+**📻 Morse Code Translator**
+> Text ↔ Morse, bidirectionally!
+- Full letter, number & symbol support
+- Complete Morse reference chart
+- Encode & decode modes
 ```bash
 python utilities/Text-to-Morse/Text-to-Morse.py
 ```
 
 </td>
-<td width="50%">
+<td width="50%" valign="top">
 
-#### 🗼 Tower of Hanoi
-Solve the classic puzzle step by step!
-- 🎯 1-8 disks to solve
-- 📋 Visual tower representation
-- 🧠 Iterative solution display
+**🗼 Tower of Hanoi**
+> The legendary puzzle, solved step-by-step!
+- 1–8 disk configurations
+- Visual tower representation
+- Iterative solution walkthrough
 ```bash
 python utilities/Tower-of-Hanoi/Tower-of-Hanoi.py
 ```
 
 </td>
 </tr>
-
-<tr>
-<td width="50%">
-
-#### 🔢 Number System Converter
-Convert between Decimal, Binary, Hex, and Octal!
-- 🔄 Seamless base conversions
-- 📚 Educational step-by-step logic
-- 🖥️ Zero-dependency built-in functions
-```bash
-python utilities/Number-System-Converter/Number-System-Converter.py
-```
-
-</td>
-<td width="50%">
-
-#### ⌨️ Typing Speed Tester
-Test your typing speed and accuracy!
-- ⏱️ Real-time timing
-- 🚀 Words Per Minute (WPM) calculation
-- 🎯 Accuracy percentage feedback
-```bash
-python utilities/Typing-Speed-Tester/Typing-Speed-Tester.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🐾 Productivity Pet
-Keep your virtual pet happy by staying productive!
-- 🐶 Interactive pet companion
-- 📊 Task-based mood tracking
-- 📈 Productivity stats
-```bash
-python utilities/Productivity-Pet/Productivity-Pet.py
-```
-
-</td>
-<td width="50%"></td>
-</tr>
 </table>
 
 ---
 
-## ✨ Features
+## 🌐 Web App
 
 <div align="center">
 
-| 🌟 Feature | 📝 Description |
-|:---:|:---|
-| 🌐 **Web App** | All 24 projects playable in your browser — no Python needed! |
-| 🎨 **Beautiful UI** | Smooth animations, dark/light theme toggle, responsive layout |
-| 🏷️ **Category Filter** | Browse by Games, Math, or Utilities instantly |
-| 💯 **Zero Dependencies** | Pure Python — no external packages for CLI projects |
-| 📚 **Well-Documented** | Clear code with helpful comments throughout |
-| 🎯 **Beginner-Friendly** | Perfect for Python learners at any level |
-| ⚡ **Instant Run** | No setup required — just download and play! |
-| 🔄 **Interactive** | All projects feature rich user interaction and feedback |
+| Feature | Detail |
+|---|---|
+| 🎮 All Projects | All 20 projects playable in-browser |
+| 🌗 Theme Toggle | Dark & light mode |
+| 🔍 Category Filter | Games · Math · Utilities |
+| 📱 Responsive | Works on mobile, tablet & desktop |
+| ✨ Animations | Smooth transitions & visual effects |
+| ⚡ Zero Setup | Open and play instantly |
 
 </div>
 
@@ -494,146 +392,125 @@ python utilities/Productivity-Pet/Productivity-Pet.py
 
 ## 🎓 What You'll Learn
 
-Working through these projects, you'll master:
+Working through this collection, you'll master:
+
+| Skill | Projects That Teach It |
+|---|---|
+| **User Input & Output** | Calculator, Number Guessing, Coin Flip |
+| **Control Flow (if/while/for)** | Hangman, Rock Paper Scissors, Collatz |
+| **Lists & Dictionaries** | Fibonacci, Morse Translator, FLAMES |
+| **Randomization** | Dice Rolling, Coin Flip, Hangman |
+| **String Manipulation** | Morse Code, FLAMES, Hangman |
+| **Mathematical Algorithms** | Prime Analyzer, Armstrong, Pascal's Triangle |
+| **Recursion & Iteration** | Tower of Hanoi, Collatz Conjecture |
+| **Data Visualization** | Projectile Motion (Matplotlib) |
+
+---
+
+## 📊 Analytics
 
 <div align="center">
 
-```
-✅ User Input & Output    →  Interactive console applications
-✅ Control Flow           →  if/elif/else, while loops
-✅ Data Structures        →  Lists, dictionaries, arrays
-✅ Randomization          →  Using the random module
-✅ String Manipulation    →  Text processing and formatting
-✅ Mathematical Ops       →  Calculations and algorithms
-✅ Geometric Patterns     →  Understanding shapes & symmetry
-✅ Logic & Problem Solving →  Building real-world applications
-```
+<img src="https://github-readme-stats.vercel.app/api?username=yourusername&show_icons=true&theme=tokyonight&hide_border=true&include_all_commits=true&count_private=true&bg_color=0d1117&title_color=6AD3F7&icon_color=F97316&text_color=ffffff" height="180"/>
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=yourusername&layout=compact&theme=tokyonight&hide_border=true&bg_color=0d1117&title_color=6AD3F7&text_color=ffffff" height="180"/>
+
+<br/>
+
+<img src="https://streak-stats.demolab.com?user=yourusername&theme=tokyonight&hide_border=true&background=0d1117&ring=6AD3F7&fire=F97316&currStreakLabel=6AD3F7" height="180"/>
+
+<br/>
+
+<img src="https://github-readme-activity-graph.vercel.app/graph?username=yourusername&bg_color=0d1117&color=6AD3F7&line=F97316&point=ffffff&area=true&hide_border=true" width="95%"/>
 
 </div>
 
 ---
 
-## 🚀 Getting Started Guide
-
-### 🌐 Web Application (Easiest Way!)
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/steam-bell-92/python-mini-project.git
-   cd python-mini-project/web-app
-   ```
-
-2. **Start a local server**
-   ```bash
-   # Using Python 3
-   python -m http.server 8000
-   
-   # Or using Node.js
-   npx http-server
-   ```
-
-3. **Open your browser** and visit `http://localhost:8000`
-
-4. **Enjoy all 24 projects** with beautiful animations! 🎉
-
-### 🐍 Python CLI Projects
-
-#### Prerequisites
-- Python 3.10 or higher ([Download here](https://www.python.org/downloads/))
-- Any text editor or IDE (VS Code, PyCharm, or even Notepad!)
-
-#### Running Your First Project
-
-1. **Choose a project** from the list above
-2. **Open your terminal/command prompt**
-3. **Navigate to the project folder**
-4. **Run the Python file**:
-   ```bash
-   python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
-   ```
-5. **Have fun!** 🎉
-
-### Tips for Beginners
-- 💡 **Try the web app first** for an instant, visual experience
-- 🎮 Start with simple games like Coin Flip or Dice Rolling
-- 📖 Read through the code to understand how it works
-- 🎨 Try modifying emojis or messages to personalize the projects
-- 🔧 Experiment with changing game rules or adding features
-- 🤝 Share your improvements with the community!
-
----
-
 ## 🤝 Contributing
 
-We love contributions! Here's how you can help:
+We love contributions from the community!
 
-### Adding New Projects
+**How to add a new project:**
 
-1. 🍴 **Fork** the repository
-2. 🌟 **Create** a new branch (`git checkout -b feature/AmazingProject`)
-3. 💻 **Add** your mini project
-   - Python CLI version in a category folder (`games/`, `math/`, or `utilities/`) and then its own project folder (for example `games/Project-Name/Project-Name.py`)
-   - Web implementation in `web-app/js/projects.js`
-4. ✅ **Ensure** it follows our style (emojis, clean code)
-5. 📤 **Commit** your changes (`git commit -m 'Add Amazing Project'`)
-6. 🚀 **Push** to the branch (`git push origin feature/AmazingProject`)
-7. 🎉 **Open** a Pull Request
+```bash
+# 1. Fork and clone
+git clone https://github.com/yourusername/python-mini-project.git
 
-### Project Guidelines
+# 2. Create your branch
+git checkout -b feature/YourAmazingProject
 
-#### Python Projects
-- Use emojis for visual appeal 🎨
-- Keep code simple and beginner-friendly 📚
-- No external dependencies 💯
-- Include clear instructions ✅
-- Add docstrings and comments 📝
+# 3. Add your project
+# CLI  →  games/Your-Project/Your-Project.py
+# Web  →  web-app/js/projects.js
 
-#### Web App Projects
-- Match the existing design patterns
-- Use vanilla JavaScript (no frameworks)
-- Implement in `getProjectHTML()` and `initProject()` functions
-- Include animations and visual feedback
-- Ensure responsive design
+# 4. Commit and push
+git commit -m "✨ Add: Your Amazing Project"
+git push origin feature/YourAmazingProject
+
+# 5. Open a Pull Request!
+```
+
+**Project Guidelines:**
+
+| Rule | Why |
+|---|---|
+| 🎨 Use emojis in output | Visual engagement |
+| 💯 Zero external dependencies | Instant runnability |
+| 📝 Add docstrings & comments | Beginner-friendly |
+| ✅ Test before submitting | Quality assurance |
+| 🌐 Add web version in `projects.js` | Full experience |
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 
-## 📝 License
+## 🏆 Open Source Involvement
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+<div align="center">
+
+[![GSSoC](https://img.shields.io/badge/GSSoC-Participant-orange?style=for-the-badge&logo=git&logoColor=white)](https://gssoc.girlscript.tech/)
+[![Hacktoberfest](https://img.shields.io/badge/Hacktoberfest-Contributor-blueviolet?style=for-the-badge&logo=digitalocean&logoColor=white)](https://hacktoberfest.com/)
+[![Open Source](https://img.shields.io/badge/Open%20Source-❤️-red?style=for-the-badge)](https://opensource.org/)
+
+</div>
+
+This project actively welcomes contributions during open-source events. All contributors are recognized in our contributors list!
 
 ---
 
 ## 💬 Connect & Share
 
-Found this helpful? Show some love!
+<div align="center">
 
-- ⭐ **Star this repo** if you found it useful
-- 🐛 **Report bugs** or suggest features via [Issues](../../issues)
-- 💬 **Share** with friends learning Python
-- 🎓 **Use** in your classroom or coding club
+[![GitHub](https://img.shields.io/badge/GitHub-yourusername-181717?style=for-the-badge&logo=github)](https://github.com/yourusername)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/yourusername)
+[![Twitter](https://img.shields.io/badge/Twitter-Follow-1DA1F2?style=for-the-badge&logo=twitter)](https://twitter.com/yourusername)
+[![Email](https://img.shields.io/badge/Email-Say%20Hi!-EA4335?style=for-the-badge&logo=gmail)](mailto:you@example.com)
+
+</div>
+
+---
+
+## 📝 License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+Free to use, modify, and distribute. Attribution appreciated! 🙏
 
 ---
 
 <div align="center">
 
-<!-- Animated footer wave -->
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=6,11,20&height=120&section=footer&animation=twinkling" width="100%"/>
 
-### 🎉 Happy Coding! 🎉
+### 🎉 Happy Coding!
 
 **Made with ❤️ for Python learners everywhere**
 
-*If you learned something new, don't forget to star the repo! ⭐*
+*If this helped you learn something new — drop a ⭐ and share with a friend!*
 
-<!-- Animated contribution snake (if enabled in GitHub Actions) -->
-<img src="https://raw.githubusercontent.com/steam-bell-92/python-mini-project/output/github-contribution-grid-snake-dark.svg" alt="Snake animation" width="80%" onerror="this.style.display='none'"/>
+[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/python-mini-project&type=Date)](https://star-history.com/#yourusername/python-mini-project&Date)
 
-[⬆ Back to Top](#-python-mini-projects-collection-)
-
-<br/>
-
-![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=steam-bell-92.python-mini-project&left_color=7c3aed&right_color=06b6d4&left_text=👁️%20Visitors)
+[⬆ Back to Top](#-python-mini-projects-collection)
 
 </div>
