@@ -9,8 +9,7 @@
 <div align="center">
 
 <!-- ╔══════════ HEADER BANNER (Tokyo Night Capsule) ══════════╗ -->
-
-[![Header banner](https://capsule-render.vercel.app/api?type=waving&color=0:1a1b26,30:7aa2f7,60:bb9af7,100:f7768e&height=240&section=header&text=Python%20Mini%20Projects&fontSize=58&fontColor=c0caf5&fontAlignY=38&desc=Learn%20Python%20by%20Building%20Fun%2C%20Interactive%20Games%20%26%20Tools&descSize=18&descAlignY=60&descAlign=50&animation=fadeIn)](https://github.com/steam-bell-92/python-mini-project)
+[![Header Banner](https://capsule-render.vercel.app/api?type=waving&height=240&color=0:1a1b26,30:7aa2f7,60:bb9af7,100:f7768e&text=Python%20Mini%20Projects&fontSize=58&fontColor=c0caf5&animation=fadeIn&desc=Learn%20Python%20by%20Building%20Fun%20Interactive%20Games%20and%20Tools&descAlignY=60&descSize=18&fontAlignY=38)](https://github.com/steam-bell-92/python-mini-project)
 
 <!-- ╔══════════ ANIMATED TYPING HEADLINE ══════════╗ -->
 
@@ -465,38 +464,25 @@ A big thank you to everyone who's contributed to this project — your improveme
 
 <div align="center">
 
-[![Aayuiiitmg](https://github.com/Aayuiiitmg.png?size=12)](https://github.com/Aayuiiitmg)
-[![Arpitawork24](https://github.com/Arpitawork24.png?size=72)](https://github.com/Arpitawork24)
-[![Bhairavi-28](https://github.com/Bhairavi-28.png?size=72)](https://github.com/Bhairavi-28)
-[![C4aZy](https://github.com/C4aZy.png?size=72)](https://github.com/C4aZy)
-[![Diksha57-git](https://github.com/Diksha57-git.png?size=72)](https://github.com/Diksha57-git)
-[![Facelessism](https://github.com/Facelessism.png?size=72)](https://github.com/Facelessism)
-[![Indrayani11-15](https://github.com/Indrayani11-15.png?size=72)](https://github.com/Indrayani11-15)
-[![Juhi4433](https://github.com/Juhi4433.png?size=72)](https://github.com/Juhi4433)
-[![Kartikeyji17](https://github.com/Kartikeyji17.png?size=72)](https://github.com/Kartikeyji17)
-[![KhushiVadadoriya](https://github.com/KhushiVadadoriya.png?size=72)](https://github.com/KhushiVadadoriya)
-[![Kunal241207](https://github.com/Kunal241207.png?size=72)](https://github.com/Kunal241207)
-[![Mounika-39](https://github.com/Mounika-39.png?size=72)](https://github.com/Mounika-39)
-[![Naveen-Boddepalli](https://github.com/Naveen-Boddepalli.png?size=72)](https://github.com/Naveen-Boddepalli)
-[![PRODHOSH](https://github.com/PRODHOSH.png?size=72)](https://github.com/PRODHOSH)
-[![SANDHIYAPRIYADHARSHINI](https://github.com/SANDHIYAPRIYADHARSHINI.png?size=72)](https://github.com/SANDHIYAPRIYADHARSHINI)
-[![Sanjhivvarshan-b-s](https://github.com/Sanjhivvarshan-b-s.png?size=72)](https://github.com/Sanjhivvarshan-b-s)
-[![Sreekuttan-007](https://github.com/Sreekuttan-007.png?size=72)](https://github.com/Sreekuttan-007)
-[![TheBinaryAVA](https://github.com/TheBinaryAVA.png?size=72)](https://github.com/TheBinaryAVA)
-[![Tiago-Vier-Preto](https://github.com/Tiago-Vier-Preto.png?size=72)](https://github.com/Tiago-Vier-Preto)
-[![ayushyadav0707](https://github.com/ayushyadav0707.png?size=72)](https://github.com/ayushyadav0707)
-[![codewithakshyaaa](https://github.com/codewithakshyaaa.png?size=72)](https://github.com/codewithakshyaaa)
-[![gatiksolanki13-netizen](https://github.com/gatiksolanki13-netizen.png?size=72)](https://github.com/gatiksolanki13-netizen)
-[![iamprasoon2006-cell](https://github.com/iamprasoon2006-cell.png?size=72)](https://github.com/iamprasoon2006-cell)
-[![jyotish6699](https://github.com/jyotish6699.png?size=72)](https://github.com/jyotish6699)
-[![kumudasrip](https://github.com/kumudasrip.png?size=72)](https://github.com/kumudasrip)
-[![madhavcodes25](https://github.com/madhavcodes25.png?size=72)](https://github.com/madhavcodes25)
-[![mahi-8758](https://github.com/mahi-8758.png?size=72)](https://github.com/mahi-8758)
-[![nene-hana](https://github.com/nene-hana.png?size=72)](https://github.com/nene-hana)
-[![nishtha-agarwal-211](https://github.com/nishtha-agarwal-211.png?size=72)](https://github.com/nishtha-agarwal-211)
-[![parasmani-dev](https://github.com/parasmani-dev.png?size=72)](https://github.com/parasmani-dev)
-[![sanzzzz-g](https://github.com/sanzzzz-g.png?size=72)](https://github.com/sanzzzz-g)
-[![ssuyashhhh](https://github.com/ssuyashhhh.png?size=72)](https://github.com/ssuyashhhh)
+<a href="https://github.com/Aayuiiitmg">
+  <img src="https://github.com/Aayuiiitmg.png" width="50px" style="border-radius:50%" />
+</a>
+
+<a href="https://github.com/Arpitawork24">
+  <img src="https://github.com/Arpitawork24.png" width="50px" style="border-radius:50%" />
+</a>
+
+<a href="https://github.com/Bhairavi-28">
+  <img src="https://github.com/Bhairavi-28.png" width="50px" style="border-radius:50%" />
+</a>
+
+<a href="https://github.com/C4aZy">
+  <img src="https://github.com/C4aZy.png" width="50px" style="border-radius:50%" />
+</a>
+
+<a href="https://github.com/Diksha57-git">
+  <img src="https://github.com/Diksha57-git.png" width="50px" style="border-radius:50%" />
+</a>
 
 </div>
 
