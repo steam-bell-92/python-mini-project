@@ -6,7 +6,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Projects](https://img.shields.io/badge/projects-21-orange.svg)]()
+[![Projects](https://img.shields.io/badge/projects-22-orange.svg)]()
 [![Code Scanning](https://img.shields.io/badge/CodeQL-enabled-brightgreen.svg)]()
 
 **🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful UI | ⚡ Zero setup required**
@@ -266,6 +266,22 @@ Find all the hidden differences between two interactive canvases!
 - 🌐 *Web App Exclusive Project*
 
 </td>
+</tr>
+
+<tr>
+<td width="50%">
+
+#### 💣 Minesweeper
+Clear the field without hitting a mine!
+- 🚩 Strategy and logic
+- 💣 Classic puzzle gameplay
+- ⏱️ Built-in timer and flag system
+```bash
+python games/Minesweeper/Minesweeper.py
+```
+
+</td>
+<td width="50%"></td>
 </tr>
 </table>
 

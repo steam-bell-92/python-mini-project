@@ -3,6 +3,7 @@
 
 function getProjectHTML(projectName) {
     const projects = {
+        'minesweeper': getMinesweeperHTML(),
         'tic-tac-toe': getTicTacToeHTML(),
         'rock-paper-scissor': getRockPaperScissorHTML(),
         'dice-rolling': getDiceRollingHTML(),
@@ -42,6 +43,7 @@ function getProjectHTML(projectName) {
 
 function initializeProject(projectName) {
     const initializers = {
+        'minesweeper': initMinesweeper,
         'tic-tac-toe': initTicTacToe,
         'rock-paper-scissor': initRockPaperScissor,
         'dice-rolling': initDiceRolling,
