@@ -121,10 +121,7 @@ while not game_over:
                     if board[row][col] == "💣":
                         visible_board[row][col] = "💥"
         else:
-            # Simple Reveal (Flood fill would require functions, so we do a simple reveal here)
-            # To keep it procedural and simple, we reveal the selected cell.
-            # If it's a 0, we can reveal immediate neighbors.
-            
+            # Simple Reveal using a stack (Flood fill)
             stack = [(r, c)]
             while stack:
                 curr_r, curr_c = stack.pop()
@@ -136,7 +133,6 @@ while not game_over:
                 visible_board[curr_r][curr_c] = emoji_map.get(val, str(val))
                 revealed_count += 1
                 
-                # If cell is 0, auto-reveal neighbors
                 if val == 0:
                     for dr in [-1, 0, 1]:
                         for dc in [-1, 0, 1]:
@@ -144,10 +140,10 @@ while not game_over:
                             if 0 <= nr < ROWS and 0 <= nc < COLS and visible_board[nr][nc] == "⬛":
                                 stack.append((nr, nc))
 
-        # Check for Win
-        if revealed_count == (ROWS * COLS - MINES):
-            game_over = True
-            won = True
+            # Check for Win only if we didn't hit a mine
+            if revealed_count == (ROWS * COLS - MINES):
+                game_over = True
+                won = True
 
 # 6. Final Result
 print("\n   " + " ".join([str(i) for i in range(COLS)]))
