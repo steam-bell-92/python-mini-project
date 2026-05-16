@@ -85,22 +85,39 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 
 <div align="center">
 
-[![GitHub Stats](https://github-readme-stats.vercel.app/api?username=steam-bell-92&show_icons=true&hide_border=true&include_all_commits=true&count_private=true&title_color=7aa2f7&icon_color=bb9af7&text_color=c0caf5&bg_color=1a1b26)](https://github.com/steam-bell-92)
-[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=steam-bell-92&layout=compact&hide_border=true&langs_count=8&title_color=7aa2f7&text_color=c0caf5&bg_color=1a1b26)](https://github.com/steam-bell-92)
+  <!-- GitHub Stats -->
 
-[![GitHub Streak](https://streak-stats.demolab.com?user=steam-bell-92&theme=tokyonight&hide_border=true&background=1a1b26&stroke=7aa2f7&ring=bb9af7&fire=f7768e&currStreakLabel=7aa2f7)](https://github.com/steam-bell-92)
 
-[![Trophies](https://github-profile-trophy.vercel.app/?username=steam-bell-92&theme=tokyonight&no-frame=true&no-bg=true&column=7&margin-w=8)](https://github.com/steam-bell-92)
+<br>
+
+<div align="center">
+
+  <!-- GitHub Streak -->
+  <img 
+    src="https://streak-stats.demolab.com?user=steam-bell-92&theme=tokyonight&hide_border=true"
+    alt="GitHub Streak"
+  />
+
+</div>
+
+<br>
+
+<div align="center">
+
+  <!-- GitHub Trophy -->
+  <img 
+    src="https://github-profile-trophy.vercel.app/?username=steam-bell-92&theme=tokyonight&no-frame=true&no-bg=true&column=7&margin-w=8"
+    alt="GitHub Trophies"
+  />
 
 </div>
 
 <!-- ╔══════════ SNAKE ANIMATION ══════════╗ -->
 ## 🐍 Contribution Snake
 
-<div align="center">
-  ![snake eating my contributions](https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg)
-</div>
-
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg" alt="Snake animation" />
+</p>
 
 
 <!-- ╔══════════ CURRENTLY LEARNING ══════════╗ -->
