@@ -36,7 +36,7 @@ time_taken = end_time - start_time
 
 # Calculate words per minute
 words = len(sentence.split())
-wpm = (words / time_taken) * 60
+wpm = (words / time_taken) * 60 if time_taken > 0 else 0
 
 # Calculate accuracy
 correct_chars = 0
