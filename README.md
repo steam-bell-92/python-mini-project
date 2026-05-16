@@ -32,8 +32,7 @@
 
 </div>
 
-<!-- ──────────────────────────────────────────────────────────────────────── -->
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
+
 
 <!-- ╔══════════ ABOUT ME ══════════╗ -->
 ## 🧠 About Me
@@ -61,7 +60,6 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 [![Portfolio](https://img.shields.io/badge/Portfolio-Live%20Site-bb9af7?style=for-the-badge&logo=vercel&logoColor=c0caf5&labelColor=1a1b26)](https://anuj-kulkarni-portfolio.vercel.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-steam--bell--92-f7768e?style=for-the-badge&logo=github&logoColor=c0caf5&labelColor=1a1b26)](https://github.com/steam-bell-92)
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ TECH STACK ══════════╗ -->
 ## 🛠️ Tech Stack
@@ -81,7 +79,6 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ GITHUB STATS ══════════╗ -->
 ## 📊 GitHub Stats
@@ -97,8 +94,6 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
-
 <!-- ╔══════════ SNAKE ANIMATION ══════════╗ -->
 ## 🐍 Contribution Snake
 
@@ -106,7 +101,7 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
   ![snake eating my contributions](https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake-dark.svg)
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
+
 
 <!-- ╔══════════ CURRENTLY LEARNING ══════════╗ -->
 ## 🌱 Currently Learning
@@ -122,7 +117,6 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ OPEN SOURCE ══════════╗ -->
 ## 🌍 Open Source Contributions
@@ -138,7 +132,6 @@ fun_fact:   "I believe every great dev started with `print('Hello')`"
 
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ WHY THIS REPO ══════════╗ -->
 ## 🎯 Why This Repository?
@@ -154,8 +147,6 @@ We built this collection to make learning Python **fun, interactive, and instant
 - 💪 **Beginner-Friendly** — Clean code with no complex functions
 
 **Perfect for:** Students learning Python, teachers looking for class projects, or anyone wanting to code something fun in minutes!
-
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ QUICK START ══════════╗ -->
 ## ⚡ Quick Start
@@ -187,8 +178,6 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 ```
 
 **That's it!** No pip installs, no virtual environments, just instant fun! 🎉
-
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ PROJECTS SHOWCASE (with screenshot) ══════════╗ -->
 ## 🎮 Projects Showcase
@@ -328,7 +317,6 @@ Find all the hidden differences between two interactive canvases!
 | #### 🔢 Number System Converter<br>Convert between Decimal, Binary, Hex, and Octal!<br>- 🔄 Seamless base conversions<br>- 📚 Educational step-by-step logic<br>- 🖥️ Zero-dependency built-in functions<br>```bash<br>python utilities/Number-System-Converter/Number-System-Converter.py<br>``` | #### ⌨️ Typing Speed Tester<br>Test your typing speed and accuracy!<br>- ⏱️ Real-time timing<br>- 🚀 Words Per Minute (WPM) calculation<br>- 🎯 Accuracy percentage feedback<br>```bash<br>python utilities/Typing-Speed-Tester/Typing-Speed-Tester.py<br>``` |
 | #### 🐾 Productivity Pet<br>Keep your virtual pet happy by staying productive!<br>- 🐶 Interactive pet companion<br>- 📊 Task-based mood tracking<br>- 📈 Productivity stats<br>```bash<br>python utilities/Productivity-Pet/Productivity-Pet.py<br>``` |  |
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ COMPETITIVE PROGRAMMING ══════════╗ -->
 ## 🏁 Competitive Programming
@@ -344,7 +332,6 @@ Find all the hidden differences between two interactive canvases!
 
 </div>
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ FEATURES ══════════╗ -->
 ## ✨ Features
@@ -367,7 +354,6 @@ Find all the hidden differences between two interactive canvases!
 | ⚡ **Instant Run** | No setup required — just download and play! |
 | 🔄 **Interactive** | All projects feature user interaction and feedback |
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ GETTING STARTED ══════════╗ -->
 ## 🚀 Getting Started Guide
@@ -418,7 +404,6 @@ Find all the hidden differences between two interactive canvases!
 - 🔧 Experiment with changing game rules or adding features
 - 🤝 Share your improvements with the community!
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ CONTRIBUTING ══════════╗ -->
 ## 🤝 Contributing
@@ -455,7 +440,6 @@ We love contributions! Here's how you can help:
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ CONTRIBUTORS ══════════╗ -->
 ## 🙌 Contributors
@@ -485,8 +469,6 @@ A big thank you to everyone who's contributed to this project — your improveme
 </a>
 
 </div>
-
-![divider](https://raw.githubusercontent.com/BrunnerLivio/brunnerlivio/master/images/marquee.svg)
 
 <!-- ╔══════════ LICENSE & CONNECT ══════════╗ -->
 ## 📝 License
