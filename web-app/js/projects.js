@@ -12,11 +12,8 @@ function getProjectHTML(projectName) {
         'hangman': getHangmanHTML(),
         'word-scramble': getWordScrambleHTML(),
         'flames': getFlamesHTML(),
-<<<<<<< HEAD
         'dots-boxes': getDotsBoxesHTML(),
-=======
         'emoji-memory': getEmojiMemoryGameHTML(),
->>>>>>> upstream/main
         'fibonacci': getFibonacciHTML(),
         'progression-recognizer': getProgressionRecognizerHTML(),
         'pascal-triangle': getPascalTriangleHTML(),
@@ -52,11 +49,8 @@ function initializeProject(projectName) {
         'hangman': initHangman,
         'word-scramble': initWordScramble,
         'flames': initFlames,
-<<<<<<< HEAD
         'dots-boxes': initDotsBoxes,
-=======
         'emoji-memory': initEmojiMemoryGame,
->>>>>>> upstream/main
         'fibonacci': initFibonacci,
         'progression-recognizer': initProgressionRecognizer,
         'pascal-triangle': initPascalTriangle,
