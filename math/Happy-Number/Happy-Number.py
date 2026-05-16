@@ -1,7 +1,12 @@
 print("🔢 Happy Number Checker 🔢")
 print("🎯 A happy number is a number which eventually reaches 1 when replaced repeatedly by the sum of the square of its digits.\n")
 
-N = int(input("➡️  Enter a number: "))
+while True:
+    try:
+        N = int(input("➡️  Enter a number: "))
+        break
+    except ValueError:
+        print("❌ Invalid input! Please enter a whole number.")
 
 seen = set()
 num = N
