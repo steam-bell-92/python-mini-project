@@ -465,7 +465,7 @@ A big thank you to everyone who's contributed to this project — your improveme
 
 <div align="center">
 
-[![Aayuiiitmg](https://github.com/Aayuiiitmg.png?size=72)](https://github.com/Aayuiiitmg)
+[![Aayuiiitmg](https://github.com/Aayuiiitmg.png?size=12)](https://github.com/Aayuiiitmg)
 [![Arpitawork24](https://github.com/Arpitawork24.png?size=72)](https://github.com/Arpitawork24)
 [![Bhairavi-28](https://github.com/Bhairavi-28.png?size=72)](https://github.com/Bhairavi-28)
 [![C4aZy](https://github.com/C4aZy.png?size=72)](https://github.com/C4aZy)
