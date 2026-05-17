@@ -1,4 +1,4 @@
-﻿// Project Registry
+// Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
 function getProjectHTML(projectName) {
@@ -33,8 +33,6 @@ function getProjectHTML(projectName) {
         'whack-a-mole': getWhackaMoleHTML(),  
         'simon-says': getSimonSaysHTML(),
         'spot-the-difference': getSpotTheDifferenceHTML(),
-        'whack-a-mole': getWhackaMoleHTML(),
-        'flappy-game': getFlappyGameHTML(),
         '2048-game': get2048GameHTML(),
     };
 
@@ -71,7 +69,6 @@ function initializeProject(projectName) {
         'password-forge': initPasswordForge, // Register Password Forge initializer
         'spot-the-difference': initSpotTheDifference,
         'whack-a-mole': initWhackaMole,
-        'flappy-game': initFlappyGame,
         'simon-says': initSimonSays,
         '2048-game': init2048Game,
         'math-quiz': initMathQuiz,

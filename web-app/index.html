@@ -18,8 +18,14 @@
     <meta name="twitter:description" content="Interactive games, math visualizations, and utilities in the browser.">
     <title>🎮 Python Mini Projects - Interactive Web Edition</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!--
         ╔══════════════════════════════════════════════════════════════╗
@@ -355,31 +361,7 @@
             transition: all 0.3s ease;
         }
 
-        .card-icon {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 20px;
-            background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.15),
-            rgba(40, 115, 236, 0.15)
-            );
-            transition: all 0.3s ease;
-        }
-
-        .card-icon svg {
-            width: 34px;
-            height: 34px;
-            stroke-width: 2.2;
-        }
-
-        .project-card:hover .card-icon {
-            transform: translateY(-4px) scale(1.08);
-        }
+        /* card-icon styles are in styles.css */
 
         .game-icon-rps {
             color: #999fee;
@@ -481,7 +463,7 @@
 
         .math-icon-derivative {
             color: #ec4899;
-        }  
+        }
 
         /* Utility Icons */
 
@@ -517,6 +499,42 @@
                     Python Mini Projects
                 </h1>
             </div>
+            <div class="search-section" id="navbarSearch">
+                <div class="search-wrapper" id="searchWrapper">
+                    <div class="search-icon-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                    <input type="text" class="search-input" id="projectSearch" placeholder="Search projects..."
+                        autocomplete="off" aria-label="Search projects">
+                    <div class="search-shortcut" id="searchShortcut">
+                        <kbd>Ctrl+K</kbd>
+                    </div>
+                    <button class="search-clear-btn" id="searchClear" style="display:none" aria-label="Clear search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <!-- Search Dropdown -->
+                <div class="search-dropdown" id="searchDropdown">
+                    <div class="dropdown-content">
+                        <div class="dropdown-section" id="resultsSection" style="display:none">
+                            <div class="dropdown-section-title"><i class="fas fa-search"></i> Results</div>
+                            <div class="dropdown-list" id="resultsList"></div>
+                        </div>
+                        <div class="dropdown-section" id="recentSearchesSection" style="display:none">
+                            <div class="dropdown-section-title"><i class="fas fa-history"></i> Recent</div>
+                            <div class="dropdown-list" id="recentSearchesList"></div>
+                        </div>
+                        <div class="dropdown-tips" id="tipsSection">
+                            <p>Search Tips</p>
+                            <ul>
+                                <li>Try <code>game</code>, <code>math</code>, or <code>quiz</code></li>
+                                <li>Search by project name or tag</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="nav-controls">
                 <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
                     <i class="fas fa-volume-up" aria-hidden="true"></i>
@@ -535,26 +553,49 @@
             <div class="container">
                 <div class="hero-content">
                     <h2 class="hero-title">Learn Python the Fun Way!</h2>
-                    <p class="hero-subtitle">25+ Mini Projects • Beautiful UI • Beginner Friendly • Zero Dependencies</p>
+                    <p class="hero-subtitle">25+ Mini Projects • Beautiful UI • Beginner Friendly • Zero Dependencies
+                    </p>
+
+                    <!-- Stats Row -->
+                    <div class="hero-stats"
+                        style="display:flex;gap:2rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;animation:fadeInUp 0.7s ease 0.3s both;">
+                        <div class="stat-item" style="text-align:center;">
+                            <span
+                                style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;">25+</span>
+                            <span style="font-size:0.8rem;color:var(--text-secondary);font-weight:500;">Projects</span>
+                        </div>
+                        <div class="stat-item" style="text-align:center;">
+                            <span
+                                style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;">5</span>
+                            <span
+                                style="font-size:0.8rem;color:var(--text-secondary);font-weight:500;">Categories</span>
+                        </div>
+                        <div class="stat-item" style="text-align:center;">
+                            <span
+                                style="font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#c084fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;">100%</span>
+                            <span style="font-size:0.8rem;color:var(--text-secondary);font-weight:500;">Free & Open
+                                Source</span>
+                        </div>
+                    </div>
 
                     <div class="hero-features" role="tablist" aria-label="Project categories">
-                        <button class="feature-badge tab active" data-category="all"
-                                role="tab" aria-selected="true" tabindex="0">
+                        <button class="feature-badge tab active" data-category="all" role="tab" aria-selected="true"
+                            tabindex="0">
                             <span class="feature-icon"><i data-lucide="star"></i></span>
                             <span class="feature-label">All Projects</span>
                         </button>
-                        <button class="feature-badge tab" data-category="games"
-                                role="tab" aria-selected="false" tabindex="-1">
+                        <button class="feature-badge tab" data-category="games" role="tab" aria-selected="false"
+                            tabindex="-1">
                             <span class="feature-icon"><i data-lucide="gamepad-2"></i></span>
                             <span class="feature-label">Games</span>
                         </button>
-                        <button class="feature-badge tab" data-category="math"
-                                role="tab" aria-selected="false" tabindex="-1">
+                        <button class="feature-badge tab" data-category="math" role="tab" aria-selected="false"
+                            tabindex="-1">
                             <span class="feature-icon"><i data-lucide="hash"></i></span>
                             <span class="feature-label">Math</span>
                         </button>
-                        <button class="feature-badge tab" data-category="utilities"
-                                role="tab" aria-selected="false" tabindex="-1">
+                        <button class="feature-badge tab" data-category="utilities" role="tab" aria-selected="false"
+                            tabindex="-1">
                             <span class="feature-icon"><i data-lucide="lock"></i></span>
                             <span class="feature-label">Utilities</span>
                         </button>
@@ -564,15 +605,14 @@
                             and delegates to window.playgroundAPI instead of
                             running applyCategoryFilter().
                         -->
-                        <button class="feature-badge tab" data-category="playground" id="playgroundTab"
-                                role="tab" aria-selected="false" tabindex="-1">
+                        <button class="feature-badge tab" data-category="playground" id="playgroundTab" role="tab"
+                            aria-selected="false" tabindex="-1">
                             <span class="feature-icon"><i data-lucide="terminal"></i></span>
                             <span class="feature-label">Playground</span>
                         </button>
                     </div>
 
-                    <button class="btn-random-project" id="randomProjectBtn"
-                            title="Discover a random project!">
+                    <button class="btn-random-project" id="randomProjectBtn" title="Discover a random project!">
                         <i data-lucide="dice-5"></i> Random Project
                     </button>
                 </div>
@@ -582,11 +622,118 @@
         <!-- ── Projects Grid ──────────────────────────────────────── -->
         <section class="projects-section" aria-label="Projects">
             <div class="container">
-                <div class="projects-grid" id="projectsGrid">
+                <!-- Search Bar moved to navbar -->
+
+                <!-- Featured Projects Carousel -->
+                <div class="featured-section reveal" id="featuredSection">
+                    <div class="featured-header">
+                        <h3><i class="fas fa-fire"></i> Featured Projects</h3>
+                        <div class="featured-nav">
+                            <button id="featuredPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
+                            <button id="featuredNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                    <div class="featured-track-wrapper">
+                        <div class="featured-track" id="featuredTrack">
+                            <div class="featured-card" data-project="snake-game">
+                                <span class="featured-badge">Popular</span>
+                                <div class="featured-card-icon"><i data-lucide="joystick"></i></div>
+                                <h4>Snake Game</h4>
+                                <p>Classic snake game with smooth controls and score tracking!</p>
+                            </div>
+                            <div class="featured-card" data-project="tic-tac-toe">
+                                <span class="featured-badge">Classic</span>
+                                <div class="featured-card-icon"><i data-lucide="grid-3x3"></i></div>
+                                <h4>Tic Tac Toe</h4>
+                                <p>Play the timeless strategy game against a smart AI opponent.</p>
+                            </div>
+                            <div class="featured-card" data-project="calculator">
+                                <span class="featured-badge">Essential</span>
+                                <div class="featured-card-icon"><i data-lucide="calculator"></i></div>
+                                <h4>Calculator</h4>
+                                <p>A beautiful, fully functional calculator with keyboard support.</p>
+                            </div>
+                            <div class="featured-card" data-project="typing-speed-tester">
+                                <span class="featured-badge">Fun</span>
+                                <div class="featured-card-icon"><i data-lucide="keyboard"></i></div>
+                                <h4>Typing Speed Tester</h4>
+                                <p>Test and improve your WPM with real-time stats and metrics.</p>
+                            </div>
+                            <div class="featured-card" data-project="2048-game">
+                                <span class="featured-badge">Addictive</span>
+                                <div class="featured-card-icon"><i data-lucide="layers"></i></div>
+                                <h4>2048 Game</h4>
+                                <p>Merge tiles to reach 2048 in this addictive puzzle game.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sort Controls -->
+                <div class="sort-controls" id="sortControls">
+                    <span><i class="fas fa-sort-amount-down"></i> Sort:</span>
+                    <button class="sort-btn active" data-sort="default" id="sortDefault">Default</button>
+                    <button class="sort-btn" data-sort="name" id="sortName">A–Z</button>
+                    <button class="sort-btn" data-sort="category" id="sortCategory">Category</button>
+                </div>
+
+                <!-- Skeleton Loader (shown briefly on load) -->
+                <div class="skeleton-grid" id="skeletonLoader">
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                    <div class="skeleton-card">
+                        <div class="skeleton-icon"></div>
+                        <div class="skeleton-title"></div>
+                        <div class="skeleton-text"></div>
+                        <div class="skeleton-btn"></div>
+                    </div>
+                </div>
+
+                <div class="projects-grid" id="projectsGrid" style="display:none;">
 
                     <!-- GAMES -->
                     <div class="project-card" data-category="games" data-project="rock-paper-scissor"
-                        data-tags="game,random,choice,strategy,decision">
+                        data-tags="game,random,choice,strategy,decision" data-difficulty="beginner">
                         <div class="card-icon game-icon-rps">
                             <i data-lucide="scissors"></i>
                         </div>
@@ -596,7 +743,7 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="dice-rolling"
-                         data-tags="game,random,animation,probability">
+                        data-tags="game,random,animation,probability" data-difficulty="beginner">
                         <div class="card-icon game-icon-dice">
                             <i data-lucide="dice-5"></i>
                         </div>
@@ -606,7 +753,7 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="coin-flip"
-                         data-tags="game,random,animation,probability,heads,tails">
+                        data-tags="game,random,animation,probability,heads,tails" data-difficulty="beginner">
                         <div class="card-icon game-icon-coin">
                             <i data-lucide="coins"></i>
                         </div>
@@ -616,8 +763,8 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="number-guessing"
-                         data-tags="game,logic,loops,conditional">
-                        <div     class="card-icon game-icon-target">
+                        data-tags="game,logic,loops,conditional" data-difficulty="beginner">
+                        <div class="card-icon game-icon-target">
                             <i data-lucide="target"></i>
                         </div>
                         <h3>Number Guessing</h3>
@@ -626,7 +773,7 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="hangman"
-                         data-tags="game,word,letters,logic,string">
+                        data-tags="game,word,letters,logic,string" data-difficulty="intermediate">
                         <div class="card-icon game-icon-hangman">
                             <i data-lucide="person-standing"></i>
                         </div>
@@ -635,7 +782,8 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="word-scramble">
+                    <div class="project-card" data-category="games" data-project="word-scramble"
+                        data-difficulty="intermediate">
                         <div class="card-icon game-icon-word">
                             <i data-lucide="shuffle"></i>
                         </div>
@@ -644,7 +792,7 @@
                         <button class="btn-play">Play Now</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="flames">
+                    <div class="project-card" data-category="games" data-project="flames" data-difficulty="beginner">
                         <div class="card-icon game-icon-love">
                             <i data-lucide="heart"></i>
                         </div>
@@ -653,16 +801,18 @@
                         <button class="btn-play">Play Now</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="dots-boxes">
+                    <div class="project-card" data-category="games" data-project="dots-boxes"
+                        data-difficulty="advanced">
                         <div class="card-icon game-icon-grid">
                             <i data-lucide="grid-3x3"></i>
                         </div>
-                       <h3>Dots & Boxes AI</h3> 
+                        <h3>Dots & Boxes AI</h3>
                         <p>Challenge friends or AI in this strategy game!</p>
                         <button class="btn-play">Play Now</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="password-forge">
+                    <div class="project-card" data-category="games" data-project="password-forge"
+                        data-difficulty="intermediate">
                         <div class="card-icon game-icon-lock">
                             <i data-lucide="shield-check"></i>
                         </div>
@@ -672,7 +822,7 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="math-quiz"
-                        data-tags="game,math,quiz,mcq,lives,streak">
+                        data-tags="game,math,quiz,mcq,lives,streak" data-difficulty="intermediate">
                         <div class="card-icon game-icon-brain">
                             <i data-lucide="brain"></i>
                         </div>
@@ -681,7 +831,8 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="snake-game">
+                    <div class="project-card" data-category="games" data-project="snake-game"
+                        data-difficulty="intermediate">
                         <div class="card-icon game-icon-snake">
                             <i data-lucide="bug"></i>
                         </div>
@@ -690,7 +841,8 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="emoji-memory">
+                    <div class="project-card" data-category="games" data-project="emoji-memory"
+                        data-difficulty="beginner">
                         <div class="card-icon game-icon-memory">
                             <i data-lucide="smile"></i>
                         </div>
@@ -699,16 +851,18 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="whack-a-mole">
+                    <div class="project-card" data-category="games" data-project="whack-a-mole"
+                        data-difficulty="beginner">
                         <div class="card-icon game-icon-hammer">
                             <i data-lucide="hammer"></i>
-                        </div>                        
+                        </div>
                         <h3>Whack-a-Mole</h3>
                         <p>Hit the moles before they disappear!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="flappy-game">
+                    <div class="project-card" data-category="games" data-project="flappy-game"
+                        data-difficulty="advanced">
                         <div class="card-icon game-icon-bird">
                             <i data-lucide="bird"></i>
                         </div>
@@ -718,7 +872,7 @@
                     </div>
 
                     <div class="project-card" data-category="games" data-project="2048-game"
-                         data-tags="game,puzzle,2048,logic,tiles">
+                        data-tags="game,puzzle,2048,logic,tiles" data-difficulty="advanced">
                         <div class="card-icon game-icon-puzzle">
                             <i data-lucide="blocks"></i>
                         </div>
@@ -729,7 +883,7 @@
 
                     <!-- MATH -->
                     <div class="project-card" data-category="math" data-project="fibonacci"
-                        data-tags="math,sequence,series,loops,recursion">
+                        data-tags="math,sequence,series,loops,recursion" data-difficulty="beginner">
                         <div class="card-icon math-icon-fibonacci">
                             <i data-lucide="sparkles"></i>
                         </div>
@@ -739,7 +893,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="progression-recognizer"
-                         data-tags="math,sequence,progression,arithmetic,geometric">
+                        data-tags="math,sequence,progression,arithmetic,geometric" data-difficulty="intermediate">
                         <div class="card-icon math-icon-progress">
                             <i data-lucide="sigma"></i>
                         </div>
@@ -749,17 +903,17 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="pascal-triangle"
-                         data-tags="math,triangle,visualization,recursion">
+                        data-tags="math,triangle,visualization,recursion" data-difficulty="intermediate">
                         <div class="card-icon math-icon-triangle">
                             <i data-lucide="triangle"></i>
-                        </div>  
+                        </div>
                         <h3>Pascal's Triangle</h3>
                         <p>Beautiful hexagon visualization!</p>
                         <button class="btn-play">Try It</button>
                     </div>
 
                     <div class="project-card" data-category="math" data-project="armstrong"
-                         data-tags="math,number,digits,power">
+                        data-tags="math,number,digits,power" data-difficulty="beginner">
                         <div class="card-icon math-icon-gem">
                             <i data-lucide="gem"></i>
                         </div>
@@ -769,8 +923,8 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="calculator"
-                         data-tags="math,calculator,arithmetic,operations">
-                       <div class="card-icon math-icon-calc">
+                        data-tags="math,calculator,arithmetic,operations" data-difficulty="beginner">
+                        <div class="card-icon math-icon-calc">
                             <i data-lucide="calculator"></i>
                         </div>
                         <h3>Calculator</h3>
@@ -779,7 +933,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="collatz"
-                         data-tags="math,conjecture,algorithm,sequence">
+                        data-tags="math,conjecture,algorithm,sequence" data-difficulty="beginner">
                         <div class="card-icon math-icon-number">
                             <i data-lucide="hash"></i>
                         </div>
@@ -789,7 +943,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="prime-analyzer"
-                         data-tags="math,prime,factors,algorithm">
+                        data-tags="math,prime,factors,algorithm" data-difficulty="intermediate">
                         <div class="card-icon math-icon-prime">
                             <i data-lucide="sparkles"></i>
                         </div>
@@ -799,7 +953,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="projectile-motion"
-                         data-tags="math,physics,motion,calculation">
+                        data-tags="math,physics,motion,calculation" data-difficulty="advanced">
                         <div class="card-icon math-icon-rocket">
                             <i data-lucide="rocket"></i>
                         </div>
@@ -809,7 +963,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="coordinate-polar-transform"
-                         data-tags="math,coordinate,transformation,geometry">
+                        data-tags="math,coordinate,transformation,geometry" data-difficulty="intermediate">
                         <div class="card-icon math-icon-compass">
                             <i data-lucide="compass"></i>
                         </div>
@@ -819,7 +973,7 @@
                     </div>
 
                     <div class="project-card" data-category="math" data-project="derivative-calculator"
-                         data-tags="math,calculus,derivative,polynomial">
+                        data-tags="math,calculus,derivative,polynomial" data-difficulty="advanced">
                         <div class="card-icon math-icon-derivative">
                             <i data-lucide="function-square"></i>
                         </div>
@@ -829,7 +983,7 @@
                     </div>
 
                     <div class="project-card" data-category="utilities" data-project="morse-code"
-                         data-tags="utility,morse,translation,communication">
+                        data-tags="utility,morse,translation,communication" data-difficulty="intermediate">
                         <div class="card-icon utility-icon-radio">
                             <i data-lucide="radio"></i>
                         </div>
@@ -839,7 +993,7 @@
                     </div>
 
                     <div class="project-card" data-category="utilities" data-project="tower-of-hanoi"
-                         data-tags="utility,puzzle,recursion,algorithm">
+                        data-tags="utility,puzzle,recursion,algorithm" data-difficulty="advanced">
                         <div class="card-icon utility-icon-tower">
                             <i data-lucide="tower-control"></i>
                         </div>
@@ -848,7 +1002,8 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="utilities" data-project="number-converter">
+                    <div class="project-card" data-category="utilities" data-project="number-converter"
+                        data-difficulty="beginner">
                         <div class="card-icon utility-icon-convert">
                             <i data-lucide="refresh-cw"></i>
                         </div>
@@ -857,7 +1012,8 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="utilities" data-project="typing-speed-tester">
+                    <div class="project-card" data-category="utilities" data-project="typing-speed-tester"
+                        data-difficulty="intermediate">
                         <div class="card-icon utility-icon-typing">
                             <i data-lucide="keyboard"></i>
                         </div>
@@ -974,6 +1130,131 @@
         <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
+    <!-- Tech Stack Bento Section -->
+    <section class="tech-stack-section reveal" id="techStackSection">
+        <div class="container">
+            <h2 class="section-title">Built With Modern Tech</h2>
+            <p class="section-subtitle">A fully static architecture powered by browser-native Python</p>
+            <div class="bento-grid">
+                <div class="bento-card tech-card-1">
+                    <div class="tech-icon"><i class="fab fa-python"></i></div>
+                    <h3>Pyodide</h3>
+                    <p>Compiles Python to WebAssembly, allowing CPython to run natively in the browser without server
+                        dependencies.</p>
+                </div>
+                <div class="bento-card tech-card-2">
+                    <div class="tech-icon"><i class="fab fa-js-square"></i></div>
+                    <h3>Vanilla JS</h3>
+                    <p>Lightweight DOM manipulation, dynamic module loading, and completely custom UI logic without
+                        bulky frameworks.</p>
+                </div>
+                <div class="bento-card tech-card-3">
+                    <div class="tech-icon"><i class="fab fa-css3-alt"></i></div>
+                    <h3>Modern CSS</h3>
+                    <p>CSS Variables, Flexbox, Grid, and beautiful Glassmorphism effects for a highly responsive layout.
+                    </p>
+                </div>
+                <div class="bento-card tech-card-4">
+                    <div class="tech-icon"><i class="fas fa-terminal"></i></div>
+                    <h3>Monaco Editor</h3>
+                    <p>The code editor that powers VS Code, integrated for a rich Python playground experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contributors Section -->
+    <section class="contributors-section reveal" id="contributorsSection">
+        <div class="container">
+            <div class="contributors-header">
+                <h2>Our Open Source Heroes</h2>
+                <p>Join the community and help build the most interactive Python learning platform!</p>
+                <div class="github-stats-widget" id="githubStats">
+                    <div class="stat"><i class="fas fa-star"></i> <span id="repoStars">--</span></div>
+                    <div class="stat"><i class="fas fa-code-branch"></i> <span id="repoForks">--</span></div>
+                    <div class="stat"><i class="fas fa-exclamation-circle"></i> <span id="repoIssues">--</span></div>
+                </div>
+            </div>
+            <div class="contributors-grid" id="contributorsGrid">
+                <!-- Dynamically loaded or hardcoded via JS -->
+                <div class="contributor-card">
+                    <img src="https://avatars.githubusercontent.com/u/101886103?v=4" alt="Creator">
+                    <h4>Palkesh</h4>
+                    <p>Creator & Maintainer</p>
+                    <a href="https://github.com/steam-bell-92" target="_blank">View Profile</a>
+                </div>
+                <div class="contributor-card">
+                    <div class="contributor-icon"><i class="fas fa-user-plus"></i></div>
+                    <h4>You?</h4>
+                    <p>We welcome PRs!</p>
+                    <a href="https://github.com/steam-bell-92/python-mini-project/blob/main/CONTRIBUTING.md"
+                        target="_blank">Contribute</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Changelog & FAQ Section -->
+    <section class="info-section reveal" id="infoSection">
+        <div class="container">
+            <div class="info-grid">
+                <!-- Changelog -->
+                <div class="changelog-container">
+                    <h3><i class="fas fa-history"></i> Recent Updates</h3>
+                    <div class="changelog-timeline">
+                        <div class="changelog-item">
+                            <span class="changelog-date">May 2026</span>
+                            <h4>v2.0 UI/UX Overhaul</h4>
+                            <p>Complete redesign with Glassmorphism, animations, dark mode, and improved mobile support.
+                            </p>
+                        </div>
+                        <div class="changelog-item">
+                            <span class="changelog-date">April 2026</span>
+                            <h4>Pyodide Integration</h4>
+                            <p>Replaced server-side execution with client-side WebAssembly for instant code evaluation.
+                            </p>
+                        </div>
+                        <div class="changelog-item">
+                            <span class="changelog-date">March 2026</span>
+                            <h4>New Projects Added</h4>
+                            <p>Added 2048, Password Forge, and Math Quiz with interactive UI bindings.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Accordion -->
+                <div class="faq-container">
+                    <h3><i class="fas fa-question-circle"></i> Frequently Asked Questions</h3>
+                    <div class="faq-accordion">
+                        <div class="faq-item">
+                            <button class="faq-question">Do I need Python installed? <i
+                                    class="fas fa-chevron-down"></i></button>
+                            <div class="faq-answer">
+                                <p>No! Everything runs directly in your browser using Pyodide (Python compiled to
+                                    WebAssembly).</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question">How can I contribute? <i
+                                    class="fas fa-chevron-down"></i></button>
+                            <div class="faq-answer">
+                                <p>Check out our CONTRIBUTING.md file on GitHub! You can add new games, fix bugs, or
+                                    improve styles.</p>
+                            </div>
+                        </div>
+                        <div class="faq-item">
+                            <button class="faq-question">Is the source code open? <i
+                                    class="fas fa-chevron-down"></i></button>
+                            <div class="faq-answer">
+                                <p>Yes, the entire project is open-source under the MIT license.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -1083,7 +1364,7 @@
     <script src="js/projects/password-forge.js"></script>
     <script src="js/projects/emoji-memory-game.js"></script>
     <script src="js/projects/2048-game.js"></script>
-    <script src="js/projects/rock-paper-scissor.js"></script>
+    <!-- duplicate removed -->
     <script src="js/projects/word-scramble.js"></script>
     <script src="js/projects/dots-boxes.js"></script>
     <script src="js/projects/math-quiz.js"></script>
@@ -1104,6 +1385,15 @@
     <script>
         lucide.createIcons();
     </script>
+
+    <!-- Theme Transition Overlay -->
+    <div class="theme-overlay" id="themeOverlay"></div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot" id="cursorDot"></div>
 </body>
 
 </html>

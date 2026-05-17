@@ -665,6 +665,288 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (e) { /* ignore */ }
     }
 
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 1: Skeleton Loader — show skeleton, then reveal grid
+    // ══════════════════════════════════════════════════════════════════
+    var skeletonLoader = document.getElementById('skeletonLoader');
+    var projectsGrid = document.getElementById('projectsGrid');
+    if (skeletonLoader && projectsGrid) {
+        setTimeout(function () {
+            skeletonLoader.style.display = 'none';
+            projectsGrid.style.display = '';
+            // Re-init lucide icons for any icons inside the grid
+            if (typeof lucide !== 'undefined' && lucide.createIcons) lucide.createIcons();
+        }, 800);
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 2: Scroll-Reveal for .reveal sections
+    // ══════════════════════════════════════════════════════════════════
+    if (!prefersReducedMotion()) {
+        var revealElements = document.querySelectorAll('.reveal');
+        if (revealElements.length) {
+            var revealObserver = new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.15 });
+            revealElements.forEach(function (el) { revealObserver.observe(el); });
+        }
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 3: Difficulty Badges on project cards
+    // ══════════════════════════════════════════════════════════════════
+    projectCards.forEach(function (card) {
+        var difficulty = card.getAttribute('data-difficulty');
+        if (difficulty) {
+            var badge = document.createElement('span');
+            badge.className = 'difficulty-badge difficulty-' + difficulty;
+            badge.textContent = difficulty.charAt(0).toUpperCase() + difficulty.slice(1);
+            card.style.position = 'relative';
+            card.appendChild(badge);
+        }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 4: Project Count Badges on category tabs
+    // ══════════════════════════════════════════════════════════════════
+    tabs.forEach(function (tab) {
+        var cat = tab.getAttribute('data-category');
+        if (cat === 'playground') return;
+        var count = cat === 'all'
+            ? projectCards.length
+            : projectCards.filter(function (c) { return c.getAttribute('data-category') === cat; }).length;
+        var existing = tab.querySelector('.count-badge');
+        if (!existing) {
+            var countBadge = document.createElement('span');
+            countBadge.className = 'count-badge';
+            countBadge.textContent = count;
+            tab.appendChild(countBadge);
+        }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 5: Sort Controls
+    // ══════════════════════════════════════════════════════════════════
+    var sortBtns = document.querySelectorAll('.sort-btn');
+    var originalOrder = Array.from(projectCards);
+    sortBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            sortBtns.forEach(function (b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            var sortType = btn.getAttribute('data-sort');
+            var grid = document.getElementById('projectsGrid');
+            if (!grid) return;
+
+            var cards = Array.from(grid.querySelectorAll('.project-card'));
+            if (sortType === 'name') {
+                cards.sort(function (a, b) {
+                    return a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent);
+                });
+            } else if (sortType === 'category') {
+                cards.sort(function (a, b) {
+                    return (a.getAttribute('data-category') || '').localeCompare(b.getAttribute('data-category') || '');
+                });
+            } else {
+                cards = originalOrder.slice();
+            }
+            cards.forEach(function (c) { grid.appendChild(c); });
+        });
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 6: Featured Projects Carousel
+    // ══════════════════════════════════════════════════════════════════
+    var featuredTrack = document.getElementById('featuredTrack');
+    var featuredPrev = document.getElementById('featuredPrev');
+    var featuredNext = document.getElementById('featuredNext');
+    if (featuredTrack && featuredPrev && featuredNext) {
+        var scrollAmount = 320;
+        featuredPrev.addEventListener('click', function () {
+            featuredTrack.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+        });
+        featuredNext.addEventListener('click', function () {
+            featuredTrack.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        });
+        // Click featured card to open the project
+        var featuredCards = featuredTrack.querySelectorAll('.featured-card');
+        featuredCards.forEach(function (fc) {
+            fc.addEventListener('click', function () {
+                var proj = fc.getAttribute('data-project');
+                if (proj) openProjectSafe(proj, fc);
+            });
+            fc.style.cursor = 'pointer';
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 7: Keyboard Navigation (J/K to move between cards)
+    // ══════════════════════════════════════════════════════════════════
+    var focusedCardIndex = -1;
+    document.addEventListener('keydown', function (e) {
+        // Don't capture when typing in input or modal is open
+        if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) return;
+        if (modal && modal.classList.contains('active')) return;
+
+        var visibleCards = projectCards.filter(function (c) { return c.style.display !== 'none'; });
+        if (!visibleCards.length) return;
+
+        if (e.key === 'j' || e.key === 'J') {
+            e.preventDefault();
+            focusedCardIndex = Math.min(focusedCardIndex + 1, visibleCards.length - 1);
+            visibleCards[focusedCardIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            visibleCards[focusedCardIndex].classList.add('keyboard-focused');
+            if (focusedCardIndex > 0) visibleCards[focusedCardIndex - 1].classList.remove('keyboard-focused');
+        } else if (e.key === 'k' || e.key === 'K') {
+            e.preventDefault();
+            focusedCardIndex = Math.max(focusedCardIndex - 1, 0);
+            visibleCards[focusedCardIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            visibleCards[focusedCardIndex].classList.add('keyboard-focused');
+            if (focusedCardIndex < visibleCards.length - 1) visibleCards[focusedCardIndex + 1].classList.remove('keyboard-focused');
+        } else if (e.key === 'Enter' && focusedCardIndex >= 0 && focusedCardIndex < visibleCards.length) {
+            var proj = visibleCards[focusedCardIndex].getAttribute('data-project');
+            openProjectSafe(proj, visibleCards[focusedCardIndex]);
+        }
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 8: Toast Notification System
+    // ══════════════════════════════════════════════════════════════════
+    window.showToast = function (message, type) {
+        type = type || 'info';
+        var container = document.getElementById('toastContainer');
+        if (!container) return;
+        var toast = document.createElement('div');
+        toast.className = 'toast toast-' + type;
+        var icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle', warning: 'fa-exclamation-triangle' };
+        toast.innerHTML = '<i class="fas ' + (icons[type] || icons.info) + '"></i><span>' + message + '</span>';
+        container.appendChild(toast);
+        requestAnimationFrame(function () { toast.classList.add('show'); });
+        setTimeout(function () {
+            toast.classList.remove('show');
+            setTimeout(function () { toast.remove(); }, 400);
+        }, 3500);
+    };
+
+    // Show welcome toast
+    setTimeout(function () {
+        if (typeof window.showToast === 'function') {
+            window.showToast('Welcome! Press J/K to navigate cards, Ctrl+K to search.', 'info');
+        }
+    }, 1500);
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 9: FAQ Accordion
+    // ══════════════════════════════════════════════════════════════════
+    var faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var item = btn.parentElement;
+            var isOpen = item.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(function (fi) { fi.classList.remove('open'); });
+            // Toggle current
+            if (!isOpen) item.classList.add('open');
+        });
+    });
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 10: Theme Transition Overlay (flash effect)
+    // ══════════════════════════════════════════════════════════════════
+    if (themeToggle) {
+        var overlay = document.getElementById('themeOverlay');
+        // Wrap existing theme toggle click to add flash
+        themeToggle.addEventListener('click', function () {
+            if (overlay && !prefersReducedMotion()) {
+                overlay.classList.add('active');
+                setTimeout(function () { overlay.classList.remove('active'); }, 400);
+            }
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 11: Custom Cursor Dot (desktop only)
+    // ══════════════════════════════════════════════════════════════════
+    var cursorDot = document.getElementById('cursorDot');
+    if (cursorDot && !('ontouchstart' in window) && !prefersReducedMotion()) {
+        document.addEventListener('mousemove', function (e) {
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            cursorDot.style.opacity = '1';
+        });
+        document.addEventListener('mouseleave', function () {
+            cursorDot.style.opacity = '0';
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 12: GitHub Stats Widget (fetch real data)
+    // ══════════════════════════════════════════════════════════════════
+    (function fetchGitHubStats() {
+        var starsEl = document.getElementById('repoStars');
+        var forksEl = document.getElementById('repoForks');
+        var issuesEl = document.getElementById('repoIssues');
+        if (!starsEl || !forksEl || !issuesEl) return;
+
+        fetch('https://api.github.com/repos/steam-bell-92/python-mini-project')
+            .then(function (r) { return r.json(); })
+            .then(function (data) {
+                if (data.stargazers_count !== undefined) starsEl.textContent = data.stargazers_count;
+                if (data.forks_count !== undefined) forksEl.textContent = data.forks_count;
+                if (data.open_issues_count !== undefined) issuesEl.textContent = data.open_issues_count;
+            })
+            .catch(function () { /* silently fail */ });
+    })();
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 13: Newsletter form toast integration
+    // ══════════════════════════════════════════════════════════════════
+    var newsletterForm = document.querySelector('.newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var emailInput = newsletterForm.querySelector('input[type="email"]');
+            if (emailInput && emailInput.value) {
+                if (typeof window.showToast === 'function') {
+                    window.showToast('Thanks for subscribing! 🎉', 'success');
+                }
+                emailInput.value = '';
+            }
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 14: Smooth card entrance stagger
+    // ══════════════════════════════════════════════════════════════════
+    if (!prefersReducedMotion()) {
+        projectCards.forEach(function (card, i) {
+            card.style.animationDelay = (i * 0.05) + 's';
+        });
+    }
+
+    // ══════════════════════════════════════════════════════════════════
+    // FEATURE 15: Active nav highlight on scroll
+    // ══════════════════════════════════════════════════════════════════
+    var sections = document.querySelectorAll('section[id]');
+    if (sections.length) {
+        window.addEventListener('scroll', function () {
+            var scrollY = window.scrollY + 200;
+            sections.forEach(function (section) {
+                var top = section.offsetTop;
+                var height = section.offsetHeight;
+                if (scrollY >= top && scrollY < top + height) {
+                    section.classList.add('section-active');
+                } else {
+                    section.classList.remove('section-active');
+                }
+            });
+        }, { passive: true });
+    }
+
 });
 
 // Smooth scroll to projects section
