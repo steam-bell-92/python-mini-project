@@ -19,8 +19,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: |
-                ⚠️ **Important Contribution Guideline**
+              body: `⚠️ **Important Contribution Guideline**
 
                 Please do not open a Pull Request without being assigned to this issue first.
 
@@ -32,5 +31,5 @@ jobs:
 
                 **Note:** PRs raised without prior assignment may be closed or marked invalid.
 
-                Thank you for helping us maintain a smooth workflow! 🙏
+                Thank you for helping us maintain a smooth workflow! 🙏`
             })
