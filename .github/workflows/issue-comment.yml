@@ -7,12 +7,14 @@ on:
 jobs:
   add-comment:
     runs-on: ubuntu-latest
+
     permissions:
       issues: write
 
     steps:
       - name: Add assignment warning comment
         uses: actions/github-script@v7
+
         with:
           script: |
             github.rest.issues.createComment({
@@ -21,15 +23,15 @@ jobs:
               repo: context.repo.repo,
               body: `⚠️ **Important Contribution Guideline**
 
-                Please do not open a Pull Request without being assigned to this issue first.
+            Please do not open a Pull Request without being assigned to this issue first.
 
-                **How to proceed:**
-                1. Comment on this issue to express interest
-                2. Wait for maintainers to assign you to the issue
-                3. Once assigned, you can start working on the PR
-                4. Include the assignment in your PR checklist
+            **How to proceed:**
+              1. Comment on this issue to express interest
+              2. Wait for maintainers to assign you to the issue
+              3. Once assigned, you can start working on the PR
+              4. Include the assignment in your PR checklist
 
-                **Note:** PRs raised without prior assignment may be closed or marked invalid.
+            **Note:** PRs raised without prior assignment may be closed or marked invalid.
 
-                Thank you for helping us maintain a smooth workflow! 🙏`
+            Thank you for helping us maintain a smooth workflow! 🙏`
             })
