@@ -71,7 +71,9 @@
             font-weight: 600;
         }
 
-        .playground-subtitle a:hover { color: var(--secondary-color); }
+        .playground-subtitle a:hover {
+            color: var(--secondary-color);
+        }
 
         .playground-hint {
             font-size: 0.875rem;
@@ -115,15 +117,35 @@
             transition: background 0.3s ease;
         }
 
-        .status-dot.idle    { background: var(--text-secondary); }
-        .status-dot.loading { background: var(--warning-color);
-                              animation: pgPulse 1s ease-in-out infinite; }
-        .status-dot.ready   { background: var(--success-color); }
-        .status-dot.error   { background: var(--danger-color); }
+        .status-dot.idle {
+            background: var(--text-secondary);
+        }
+
+        .status-dot.loading {
+            background: var(--warning-color);
+            animation: pgPulse 1s ease-in-out infinite;
+        }
+
+        .status-dot.ready {
+            background: var(--success-color);
+        }
+
+        .status-dot.error {
+            background: var(--danger-color);
+        }
 
         @keyframes pgPulse {
-            0%, 100% { opacity: 1;    transform: scale(1);    }
-            50%       { opacity: 0.4; transform: scale(0.82); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.82);
+            }
         }
 
         /* ── Two-column editor / console layout ─────────────────────── */
@@ -135,7 +157,9 @@
         }
 
         @media (max-width: 768px) {
-            .playground-body { grid-template-columns: 1fr; }
+            .playground-body {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* ── Panel shared styles ────────────────────────────────────── */
@@ -150,7 +174,9 @@
             transition: border-color 0.25s ease;
         }
 
-        .editor-panel:focus-within { border-color: var(--primary-color); }
+        .editor-panel:focus-within {
+            border-color: var(--primary-color);
+        }
 
         /* ── Panel header ───────────────────────────────────────────── */
         .panel-header {
@@ -167,10 +193,17 @@
             flex-wrap: wrap;
         }
 
-        .panel-header span { display: flex; align-items: center; gap: 0.5rem; }
+        .panel-header span {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
 
         /* ── Panel action buttons ───────────────────────────────────── */
-        .editor-actions { display: flex; gap: 0.5rem; }
+        .editor-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
 
         .btn-panel-action {
             background: transparent;
@@ -209,7 +242,10 @@
             tab-size: 4;
         }
 
-        #pythonEditor::placeholder { color: var(--text-secondary); opacity: 0.55; }
+        #pythonEditor::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.55;
+        }
 
         /* ── Console output ─────────────────────────────────────────── */
         .console-output {
@@ -262,7 +298,9 @@
             box-shadow: 0 8px 25px rgba(16, 185, 129, 0.5);
         }
 
-        .btn-run:active:not(:disabled) { transform: translateY(0); }
+        .btn-run:active:not(:disabled) {
+            transform: translateY(0);
+        }
 
         .btn-run:disabled {
             opacity: 0.5;
@@ -290,9 +328,17 @@
 
         /* ── Reduced-motion overrides for playground ────────────────── */
         @media (prefers-reduced-motion: reduce) {
-            .playground-section { animation: none; }
-            .status-dot.loading { animation: none; }
-            .btn-run:hover:not(:disabled) { transform: none; }
+            .playground-section {
+                animation: none;
+            }
+
+            .status-dot.loading {
+                animation: none;
+            }
+
+            .btn-run:hover:not(:disabled) {
+                transform: none;
+            }
         }
 
         .logo h1 {
@@ -391,6 +437,10 @@
             color: #3b82f6;
         }
 
+        .game-icon-bird {
+            color: #38bdf8;
+        }
+
         /* Math Icons */
 
         .math-icon-fibonacci {
@@ -455,8 +505,8 @@
 
 <body>
     <a href="#main-content" class="skip-link">
-    🚀 Skip to main content
-</a>
+        🚀 Skip to main content
+    </a>
 
     <!-- Navigation -->
     <nav class="navbar" aria-label="Primary">
@@ -479,72 +529,52 @@
     </nav>
 
     <main id="main-content" tabindex="-1">
-
-        <!-- Search & Category Tabs -->
-        <section class="tabs-section" aria-label="Search and Project categories">
+        <!-- Hero Section -->
+        <section class="hero-section" aria-label="Welcome">
+            <div class="hero-background"></div>
             <div class="container">
-                <div class="tabs-wrapper">
-                    <div class="tabs" role="tablist" aria-label="Project categories">
-                        <button class="tab active" data-category="all"
-                                role="tab" aria-selected="true"  tabindex="0">🌟 All Projects</button>
-                        <button class="tab" data-category="games"
-                                role="tab" aria-selected="false" tabindex="-1">🎮 Games</button>
-                        <button class="tab" data-category="math"
-                                role="tab" aria-selected="false" tabindex="-1">🔢 Math</button>
-                        <button class="tab" data-category="utilities"
-                                role="tab" aria-selected="false" tabindex="-1">🔐 Utilities</button>
+                <div class="hero-content">
+                    <h2 class="hero-title">Learn Python the Fun Way!</h2>
+                    <p class="hero-subtitle">25+ Mini Projects • Beautiful UI • Beginner Friendly • Zero Dependencies</p>
+
+                    <div class="hero-features" role="tablist" aria-label="Project categories">
+                        <button class="feature-badge tab active" data-category="all"
+                                role="tab" aria-selected="true" tabindex="0">
+                            <span class="feature-icon"><i data-lucide="star"></i></span>
+                            <span class="feature-label">All Projects</span>
+                        </button>
+                        <button class="feature-badge tab" data-category="games"
+                                role="tab" aria-selected="false" tabindex="-1">
+                            <span class="feature-icon"><i data-lucide="gamepad-2"></i></span>
+                            <span class="feature-label">Games</span>
+                        </button>
+                        <button class="feature-badge tab" data-category="math"
+                                role="tab" aria-selected="false" tabindex="-1">
+                            <span class="feature-icon"><i data-lucide="hash"></i></span>
+                            <span class="feature-label">Math</span>
+                        </button>
+                        <button class="feature-badge tab" data-category="utilities"
+                                role="tab" aria-selected="false" tabindex="-1">
+                            <span class="feature-icon"><i data-lucide="lock"></i></span>
+                            <span class="feature-label">Utilities</span>
+                        </button>
                         <!--
                             PLAYGROUND TAB
                             data-category="playground" is detected by main.js
                             and delegates to window.playgroundAPI instead of
                             running applyCategoryFilter().
                         -->
-                        <button class="tab" data-category="playground" id="playgroundTab"
-                                role="tab" aria-selected="false" tabindex="-1">🐍 Playground</button>
+                        <button class="feature-badge tab" data-category="playground" id="playgroundTab"
+                                role="tab" aria-selected="false" tabindex="-1">
+                            <span class="feature-icon"><i data-lucide="terminal"></i></span>
+                            <span class="feature-label">Playground</span>
+                        </button>
                     </div>
+
                     <button class="btn-random-project" id="randomProjectBtn"
                             title="Discover a random project!">
-                        <i class="fas fa-dice"></i> Random Project 🎲
+                        <i data-lucide="dice-5"></i> Random Project
                     </button>
-    <!-- Hero Section -->
-    <section class="hero-section" aria-label="Welcome">
-        <div class="hero-background"></div>
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title">Learn Python the Fun Way!</h2>
-                <p class="hero-subtitle">25+ Mini Projects • Beautiful UI • Beginner Friendly • Zero Dependencies</p>
-                
-                <div class="hero-features">
-                    <div class="feature-badge">
-                        <span class="feature-icon">🎮</span>
-                        <span class="feature-label">Games</span>
-                    </div>
-                    <div class="feature-badge">
-                        <span class="feature-icon">🔢</span>
-                        <span class="feature-label">Math</span>
-                    </div>
-                    <div class="feature-badge">
-                        <span class="feature-icon">🔐</span>
-                        <span class="feature-label">Utilities</span>
-                    </div>
-                </div>
-
-                <button class="btn-explore" id="exploreBtn" aria-label="Explore all projects">
-                    Explore Projects →
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Search & Category Tabs -->
-    <section class="tabs-section" aria-label="Search and Project categories">
-        <div class="container">
-            <div class="tabs-wrapper">
-                <div class="tabs">
-                    <button class="tab active" data-category="all">🌟 All Projects</button>
-                    <button class="tab" data-category="games">🎮 Games</button>
-                    <button class="tab" data-category="math">🔢 Math</button>
-                    <button class="tab" data-category="utilities">🔐 Utilities</button>
                 </div>
             </div>
         </section>
@@ -556,7 +586,7 @@
 
                     <!-- GAMES -->
                     <div class="project-card" data-category="games" data-project="rock-paper-scissor"
-                         data-tags="game,random,choice,strategy,decision">
+                        data-tags="game,random,choice,strategy,decision">
                         <div class="card-icon game-icon-rps">
                             <i data-lucide="scissors"></i>
                         </div>
@@ -641,10 +671,11 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="math-quiz" data-tags="game,math,quiz,mcq,lives,streak">
+                    <div class="project-card" data-category="games" data-project="math-quiz"
+                        data-tags="game,math,quiz,mcq,lives,streak">
                         <div class="card-icon game-icon-brain">
                             <i data-lucide="brain"></i>
-                        </div>                        
+                        </div>
                         <h3>Math Quiz</h3>
                         <p>MCQ quiz with lives, streaks & difficulty levels!</p>
                         <button class="btn-play">Try It</button>
@@ -677,7 +708,16 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <div class="project-card" data-category="games" data-project="game2048"
+                    <div class="project-card" data-category="games" data-project="flappy-game">
+                        <div class="card-icon game-icon-bird">
+                            <i data-lucide="bird"></i>
+                        </div>
+                        <h3>Flappy Game</h3>
+                        <p>Dodge the incoming balls and survive!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="2048-game"
                          data-tags="game,puzzle,2048,logic,tiles">
                         <div class="card-icon game-icon-puzzle">
                             <i data-lucide="blocks"></i>
@@ -689,9 +729,9 @@
 
                     <!-- MATH -->
                     <div class="project-card" data-category="math" data-project="fibonacci"
-                         data-tags="math,sequence,series,loops,recursion">
+                        data-tags="math,sequence,series,loops,recursion">
                         <div class="card-icon math-icon-fibonacci">
-                            <i data-lucide="binary"></i>
+                            <i data-lucide="sparkles"></i>
                         </div>
                         <h3>Fibonacci Series</h3>
                         <p>Generate Fibonacci sequences!</p>
@@ -788,7 +828,6 @@
                         <button class="btn-play">Try It</button>
                     </div>
 
-                    <!-- UTILITIES -->
                     <div class="project-card" data-category="utilities" data-project="morse-code"
                          data-tags="utility,morse,translation,communication">
                         <div class="card-icon utility-icon-radio">
@@ -837,16 +876,15 @@
             Shown only when the 🐍 Playground tab is clicked.
             Completely separate from the modal system – no conflicts.
         -->
-        <section class="playground-section" id="playgroundSection"
-                 aria-label="Python Playground">
+        <section class="playground-section" id="playgroundSection" aria-label="Python Playground">
             <div class="container">
 
                 <!-- Header -->
                 <div class="playground-header">
                     <div class="playground-title-row">
                         <h2 class="playground-title">🐍 Python Playground</h2>
-                        <div class="playground-status" id="playgroundStatus"
-                             aria-live="polite" aria-label="Pyodide status">
+                        <div class="playground-status" id="playgroundStatus" aria-live="polite"
+                            aria-label="Pyodide status">
                             <span class="status-dot" id="statusDot"></span>
                             <span id="statusText">Open tab to load Python</span>
                         </div>
@@ -874,20 +912,16 @@
                             </span>
                             <div class="editor-actions">
                                 <button type="button" class="btn-panel-action" id="loadExample"
-                                        title="Load a sample snippet">
+                                    title="Load a sample snippet">
                                     <i class="fas fa-lightbulb" aria-hidden="true"></i> Example
                                 </button>
                                 <button type="button" class="btn-panel-action" id="clearEditor"
-                                        title="Clear the editor">
+                                    title="Clear the editor">
                                     <i class="fas fa-trash-alt" aria-hidden="true"></i> Clear
                                 </button>
                             </div>
                         </div>
-                        <textarea
-                            id="pythonEditor"
-                            spellcheck="false"
-                            autocorrect="off"
-                            autocapitalize="off"
+                        <textarea id="pythonEditor" spellcheck="false" autocorrect="off" autocapitalize="off"
                             aria-label="Python code editor"
                             placeholder="# Write your Python code here…&#10;print('Hello, World!')"></textarea>
                     </div>
@@ -899,23 +933,19 @@
                                 <i class="fas fa-terminal" aria-hidden="true"></i>
                                 Output Console
                             </span>
-                            <button type="button" class="btn-panel-action" id="clearConsole"
-                                    title="Clear the console">
+                            <button type="button" class="btn-panel-action" id="clearConsole" title="Clear the console">
                                 <i class="fas fa-times-circle" aria-hidden="true"></i> Clear
                             </button>
                         </div>
-                        <pre id="consoleOutput"
-                             class="console-output"
-                             aria-live="polite"
-                             aria-label="Console output"></pre>
+                        <pre id="consoleOutput" class="console-output" aria-live="polite"
+                            aria-label="Console output"></pre>
                     </div>
 
                 </div><!-- /playground-body -->
 
                 <!-- Run button row -->
                 <div class="playground-controls">
-                    <button type="button" class="btn-run" id="runCode"
-                            disabled aria-label="Run Python code">
+                    <button type="button" class="btn-run" id="runCode" disabled aria-label="Run Python code">
                         <i class="fas fa-play" aria-hidden="true"></i>
                         Run Code
                     </button>
@@ -930,33 +960,85 @@
     </main><!-- /main -->
 
     <!-- Project Modal (unchanged) -->
-    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
-         aria-labelledby="modalDialogTitle" aria-hidden="true">
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true" aria-labelledby="modalDialogTitle"
+        aria-hidden="true">
         <div class="modal-content">
-            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden"
-                tabindex="-1">Interactive project</h2>
-            <button type="button" class="modal-close" id="modalClose"
-                    aria-label="Close project dialog">&times;</button>
+            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
+            <button type="button" class="modal-close" id="modalClose" aria-label="Close project dialog">&times;</button>
             <div id="modalBody"></div>
         </div>
     </div>
 
     <!-- Back to Top Button (unchanged) -->
-    <button type="button" class="back-to-top" id="backToTop"
-            aria-label="Back to top" title="Back to top">
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
         <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
-    <!-- Footer (unchanged) -->
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>Made with ❤️ for Python learners everywhere</p>
-            <p>
-                <a href="https://github.com/steam-bell-92/python-mini-project"
-                   target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
-                </a>
-            </p>
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h2>🎮 Python Mini Projects</h2>
+                    <p>Learn Python the Fun Way! Interactive games, math visualizations, and utilities built directly in
+                        your browser.</p>
+                    <div class="footer-social-icons">
+                        <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank"
+                            rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#main-content"
+                                onclick="document.querySelector('[data-category=\'games\']').click()">🎮 Games</a></li>
+                        <li><a href="#main-content"
+                                onclick="document.querySelector('[data-category=\'math\']').click()">🔢 Math</a></li>
+                        <li><a href="#main-content"
+                                onclick="document.querySelector('[data-category=\'utilities\']').click()">🔐
+                                Utilities</a></li>
+                        <li><a href="#main-content"
+                                onclick="document.querySelector('[data-category=\'playground\']').click()">🐍
+                                Playground</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
+                                    class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
+                        <li><a
+                                href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
+                                    class="fas fa-code-branch" aria-hidden="true"></i>
+                                Contribute</a></li>
+                        <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i
+                                    class="fas fa-bug" aria-hidden="true"></i> Report a Bug</a></li>
+                        <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
+                                    class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h3>Stay Updated</h3>
+                    <p>Get notified about new projects and features!</p>
+                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+                        <input type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
+                        <button type="submit" aria-label="Subscribe">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <span class="separator">•</span>
+                    <a href="#">Terms of Service</a>
+                </div>
+                <p>Made with ❤️ for Python learners everywhere &copy; 2026</p>
+            </div>
         </div>
     </footer>
 
@@ -992,6 +1074,18 @@
     <script src="js/projects/derivative-calculator.js"></script>
     <script src="js/projects/morse-code.js"></script>
     <script src="js/projects/tower-of-hanoi.js"></script>
+    <script src="js/projects/number-converter.js"></script>
+    <script src="js/projects/typing-speed-tester.js"></script>
+    <script src="js/projects/snake.js"></script>
+    <script src="js/projects/spot-the-difference.js"></script>
+    <script src="js/projects/whack-a-mole.js"></script>
+    <script src="js/projects/tic-tac-toe.js"></script>
+    <script src="js/projects/password-forge.js"></script>
+    <script src="js/projects/emoji-memory-game.js"></script>
+    <script src="js/projects/2048-game.js"></script>
+    <script src="js/projects/rock-paper-scissor.js"></script>
+    <script src="js/projects/word-scramble.js"></script>
+    <script src="js/projects/dots-boxes.js"></script>
     <script src="js/projects/math-quiz.js"></script>
     <script src="js/projects/simon-says.js"></script>
 
@@ -1011,13 +1105,5 @@
         lucide.createIcons();
     </script>
 </body>
+
 </html>
-
-
-
-
-
-
-
-
-

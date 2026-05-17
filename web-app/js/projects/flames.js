@@ -2,7 +2,7 @@ function getFlamesHTML() {
     return `
         <div class="project-content">
             <h2>💖 FLAMES Game</h2>
-            <p class="project-desc">Discover your relationship status!</p>
+            <p class="project-desc">Discover your <strong>relationship status</strong> and calculate your <strong>Compatibility, Rivalry, </strong> or <strong>Nuisance</strong> factor!</p>
             <div class="flames-container">
                 <div class="flames-legend">
                     <div class="legend-item">F - Friends</div>
@@ -150,18 +150,20 @@ function getFlamesHTML() {
 }
 
 function initFlames() {
+    const calculateBtn = document.getElementById('calculateFlames');
     const name1Input = document.getElementById('name1');
     const name2Input = document.getElementById('name2');
-    const calculateBtn = document.getElementById('calculateFlames');
     const resultDiv = document.getElementById('flamesResult');
-    
+
+    if (!calculateBtn || !name1Input || !name2Input || !resultDiv) return;
+
     const relationshipData = {
-        'F': { name: 'Friends', emoji: '👫', message: 'You two are best friends forever!' },
-        'L': { name: 'Love', emoji: '❤️', message: 'True love is in the air!' },
-        'A': { name: 'Affection', emoji: '🥰', message: 'Sweet affection between you!' },
-        'M': { name: 'Marriage', emoji: '💍', message: 'Wedding bells are ringing!' },
-        'E': { name: 'Enemies', emoji: '😠', message: 'Maybe not the best match...' },
-        'S': { name: 'Siblings', emoji: '👨‍👩‍👧', message: 'Like brother and sister!' }
+        F: { rel: 'Friends', emoji: '🤝', metric: 'Bond Strength', vibe: 'A bond that never breaks!' },
+        L: { rel: 'Love', emoji: '❤️', metric: 'Compatibility Score', vibe: 'Pure romantic chemistry!' },
+        A: { rel: 'Affection', emoji: '😊', metric: 'Crush Intensity', vibe: 'Someone\'s blushing!' },
+        M: { rel: 'Marriage', emoji: '💍', metric: 'Marital Bliss', vibe: 'Start picking out the rings!' },
+        E: { rel: 'Enemies', emoji: '😈', metric: 'Rivalry Quotient', vibe: 'Keep your distance!' },
+        S: { rel: 'Siblings', emoji: '🏠', metric: 'Nuisance Factor', vibe: 'Stop touching my stuff!' }
     };
 
     function renderMessage(message) {
@@ -247,12 +249,9 @@ function initFlames() {
         resultCard.append(resultEmoji, nameLine, resultName, infoBlock);
         resultDiv.appendChild(resultCard);
     }
-    
+
     calculateBtn.addEventListener('click', calculateFlames);
-    name1Input.addEventListener('keypress', (e) => {
+    [name1Input, name2Input].forEach(input => input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') calculateFlames();
-    });
-    name2Input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') calculateFlames();
-    });
+    }));
 }

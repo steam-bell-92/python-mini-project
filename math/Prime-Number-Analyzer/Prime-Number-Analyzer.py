@@ -8,10 +8,11 @@ while True:
     print("2. Generate prime numbers up to N")
     print("3. Find primes in a range")
     print("4. Prime factorization")
-    print("5. Exit")
-    
-    choice = input("\nEnter your choice (1-5): ")
-    
+    print("5. Find the Nth prime number")
+    print("6. Exit")
+
+    choice = input("\nEnter your choice (1-6): ")
+
     if choice == '1':
         print("\n" + "-" * 50)
         print("CHECK IF A NUMBER IS PRIME")
@@ -157,12 +158,45 @@ while True:
             print("Please enter a valid number!")
     
     elif choice == '5':
+        print("\n" + "-" * 50)
+        print("FIND THE NTH PRIME NUMBER")
+        print("-" * 50)
+        
+        try:
+            n = int(input("Enter the value of n: "))
+            
+            if n <= 0:
+                print("\nPlease enter a positive number!")
+            else:
+                count = 0
+                num = 1
+                
+                while count < n:
+                    num += 1
+                    is_prime = True
+                    divisor = 2
+                    
+                    while divisor * divisor <= num:
+                        if num % divisor == 0:
+                            is_prime = False
+                            break
+                        divisor += 1
+                    
+                    if is_prime:
+                        count += 1
+                
+                print(f"\nThe {n}th prime number is: {num}")
+        
+        except ValueError:
+            print("Please enter a valid number!")
+    
+    elif choice == '6':
         print("\n" + "=" * 50)
         print("Thank you for using Prime Number Analyzer!")
         print("=" * 50)
         break
     
     else:
-        print("\nInvalid choice! Please enter a number between 1 and 5.")
+        print("\nInvalid choice! Please enter a number between 1 and 6.")
     
     print("\n" + "=" * 50)

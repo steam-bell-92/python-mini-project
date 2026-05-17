@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Play beginner-friendly Python game projects in your browser—arcade games, puzzles, and more.">
+    <meta name="color-scheme" content="dark light">
+    <meta id="themeColorMeta" name="theme-color" content="#0f172a">
+    <meta property="og:title" content="Games — Python Mini Projects">
+    <meta property="og:description" content="Interactive games—no install required.">
+    <meta property="og:type" content="website">
+    <title>🎮 Games - Python Mini Projects</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ── Page background ── */
+        body[data-page="games"] {
+            background-image: url('assets/games-bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Overlay so cards stay readable */
+        body[data-page="games"]::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 4, 30, 0.72);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body[data-page="games"] .navbar,
+        body[data-page="games"] main,
+        body[data-page="games"] .footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Light mode overlay */
+        [data-theme="light"] body[data-page="games"]::before {
+            background: rgba(237, 233, 254, 0.80);
+        }
+
+        /* Active tab highlight for this page */
+        .tab[data-category="games"] {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body data-page="games">
+    <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" aria-label="Primary">
+        <div class="container">
+            <div class="logo">
+                <h1>🎮 Python Mini Projects</h1>
+            </div>
+            <div class="nav-controls">
+                <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
+                    <i class="fas fa-volume-up" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" tabindex="-1">
+
+        <!-- Category Tabs -->
+        <section class="tabs-section" aria-label="Project categories">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <div class="tabs" role="tablist" aria-label="Project categories">
+                        <a href="index.html" class="tab" role="tab">🌟 All Projects</a>
+                        <a href="games.html" class="tab active" role="tab" aria-selected="true">🎮 Games</a>
+                        <a href="math.html" class="tab" role="tab">🔢 Math</a>
+                        <a href="utilities.html" class="tab" role="tab">🔐 Utilities</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid — Games only -->
+        <section class="projects-section" aria-label="Game Projects">
+            <div class="container">
+                <div class="projects-grid" id="projectsGrid">
+
+                    <div class="project-card" data-category="games" data-project="rock-paper-scissor">
+                        <div class="card-icon">🪨</div>
+                        <h3>Rock Paper Scissors</h3>
+                        <p>Battle against the computer!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="dice-rolling">
+                        <div class="card-icon">🎲</div>
+                        <h3>Dice Rolling</h3>
+                        <p>Roll the dice with 3D animation!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="coin-flip">
+                        <div class="card-icon">🪙</div>
+                        <h3>Coin Flip</h3>
+                        <p>Heads or tails with spinning animation!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="number-guessing">
+                        <div class="card-icon">🎯</div>
+                        <h3>Number Guessing</h3>
+                        <p>Guess the secret number!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="hangman">
+                        <div class="card-icon">🎮</div>
+                        <h3>Hangman</h3>
+                        <p>Classic word-guessing game!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="word-scramble">
+                        <div class="card-icon">🔤</div>
+                        <h3>Word Scramble</h3>
+                        <p>Unscramble words before attempts run out!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="flames">
+                        <div class="card-icon">💖</div>
+                        <h3>FLAMES Game</h3>
+                        <p>Discover your relationship status!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="dots-boxes">
+                        <div class="card-icon">🔲</div>
+                        <h3>Dots &amp; Boxes AI</h3>
+                        <p>Challenge friends or AI in this strategy game!</p>
+                        <button class="btn-play">Play Now</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="password-forge">
+                        <div class="card-icon">🔐</div>
+                        <h3>Password Forge</h3>
+                        <p>Survive evolving firewall password rules!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="math-quiz">
+                        <div class="card-icon">🧠</div>
+                        <h3>Math Quiz</h3>
+                        <p>MCQ quiz with lives, streaks & difficulty levels!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="snake-game">
+                        <div class="card-icon">🐍</div>
+                        <h3>Snake Game</h3>
+                        <p>Classic snake game!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="emoji-memory">
+                        <div class="card-icon">🧠</div>
+                        <h3>Emoji Memory Game</h3>
+                        <p>Test your memory with matching emojis!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="whack-a-mole">
+                        <div class="card-icon">🔨</div>
+                        <h3>Whack-a-Mole</h3>
+                        <p>Hit the moles before they disappear!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="flappy-game">
+                        <div class="card-icon">🐦</div>
+                        <h3>Flappy Game</h3>
+                        <p>Dodge the incoming balls and survive!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="games" data-project="game2048">
+                        <div class="card-icon">🟦</div>
+                        <h3>2048 Game</h3>
+                        <p>Combine tiles and reach 2048!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                </div><!-- /projects-grid -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
+         aria-labelledby="modalDialogTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
+            <button type="button" class="modal-close" id="modalClose"
+                    aria-label="Close project dialog">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ for Python learners everywhere</p>
+            <p>
+                <a href="https://github.com/steam-bell-92/python-mini-project"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/audio.js"></script>
+    <script src="js/projects/rock-paper-scissor.js"></script>
+    <script src="js/projects/dice-rolling.js"></script>
+    <script src="js/projects/coin-flip.js"></script>
+    <script src="js/projects/number-guessing.js"></script>
+    <script src="js/projects/hangman.js"></script>
+    <script src="js/projects/flames.js"></script>
+    <script src="js/projects/fibonacci.js"></script>
+    <script src="js/projects/pascal-triangle.js"></script>
+    <script src="js/projects/calculator.js"></script>
+    <script src="js/projects/collatz.js"></script>
+    <script src="js/projects/armstrong.js"></script>
+    <script src="js/projects/prime-analyzer.js"></script>
+    <script src="js/projects/projectile-motion.js"></script>
+    <script src="js/projects/progression-recognizer.js"></script>
+    <script src="js/projects/coordinate-polar-transform.js"></script>
+    <script src="js/projects/derivative-calculator.js"></script>
+    <script src="js/projects/morse-code.js"></script>
+    <script src="js/projects/tower-of-hanoi.js"></script>
+    <script src="js/projects/math-quiz.js"></script>
+    <script src="js/projects/simon-says.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

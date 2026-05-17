@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore beginner-friendly Python utility projects in your browser—converters, translators, and more.">
+    <meta name="color-scheme" content="dark light">
+    <meta id="themeColorMeta" name="theme-color" content="#0f172a">
+    <meta property="og:title" content="Utilities — Python Mini Projects">
+    <meta property="og:description" content="Interactive utility tools—no install required.">
+    <meta property="og:type" content="website">
+    <title>🔐 Utilities - Python Mini Projects</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ── Page background ── */
+        body[data-page="utilities"] {
+            background-image: url('assets/utilities-bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Overlay so cards stay readable */
+        body[data-page="utilities"]::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 20, 10, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body[data-page="utilities"] .navbar,
+        body[data-page="utilities"] main,
+        body[data-page="utilities"] .footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Light mode overlay */
+        [data-theme="light"] body[data-page="utilities"]::before {
+            background: rgba(220, 252, 231, 0.80);
+        }
+
+        /* Active tab highlight for this page */
+        a.tab.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body data-page="utilities">
+    <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" aria-label="Primary">
+        <div class="container">
+            <div class="logo">
+                <h1>🎮 Python Mini Projects</h1>
+            </div>
+            <div class="nav-controls">
+                <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
+                    <i class="fas fa-volume-up" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" tabindex="-1">
+
+        <!-- Category Tabs -->
+        <section class="tabs-section" aria-label="Project categories">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <div class="tabs" role="tablist" aria-label="Project categories">
+                        <a href="index.html" class="tab" role="tab">🌟 All Projects</a>
+                        <a href="games.html" class="tab" role="tab">🎮 Games</a>
+                        <a href="math.html" class="tab" role="tab">🔢 Math</a>
+                        <a href="utilities.html" class="tab active" role="tab" aria-selected="true">🔐 Utilities</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid — Utilities only -->
+        <section class="projects-section" aria-label="Utility Projects">
+            <div class="container">
+                <div class="projects-grid" id="projectsGrid">
+
+                    <div class="project-card" data-category="utilities" data-project="morse-code">
+                        <div class="card-icon">📻</div>
+                        <h3>Morse Code</h3>
+                        <p>Translate with lights &amp; sound!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="utilities" data-project="tower-of-hanoi">
+                        <div class="card-icon">🗼</div>
+                        <h3>Tower of Hanoi</h3>
+                        <p>Solve the classic puzzle!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="utilities" data-project="number-converter">
+                        <div class="card-icon">🔢</div>
+                        <h3>Number Converter</h3>
+                        <p>Convert Dec, Bin, Oct, and Hex!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="utilities" data-project="typing-speed-tester">
+                        <div class="card-icon">⌨️</div>
+                        <h3>Typing Speed Tester</h3>
+                        <p>Test your typing skills!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                </div><!-- /projects-grid -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
+         aria-labelledby="modalDialogTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
+            <button type="button" class="modal-close" id="modalClose"
+                    aria-label="Close project dialog">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ for Python learners everywhere</p>
+            <p>
+                <a href="https://github.com/steam-bell-92/python-mini-project"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/audio.js"></script>
+    <script src="js/projects/rock-paper-scissor.js"></script>
+    <script src="js/projects/dice-rolling.js"></script>
+    <script src="js/projects/coin-flip.js"></script>
+    <script src="js/projects/number-guessing.js"></script>
+    <script src="js/projects/hangman.js"></script>
+    <script src="js/projects/flames.js"></script>
+    <script src="js/projects/fibonacci.js"></script>
+    <script src="js/projects/pascal-triangle.js"></script>
+    <script src="js/projects/calculator.js"></script>
+    <script src="js/projects/collatz.js"></script>
+    <script src="js/projects/armstrong.js"></script>
+    <script src="js/projects/prime-analyzer.js"></script>
+    <script src="js/projects/projectile-motion.js"></script>
+    <script src="js/projects/progression-recognizer.js"></script>
+    <script src="js/projects/coordinate-polar-transform.js"></script>
+    <script src="js/projects/derivative-calculator.js"></script>
+    <script src="js/projects/morse-code.js"></script>
+    <script src="js/projects/tower-of-hanoi.js"></script>
+    <script src="js/projects/math-quiz.js"></script>
+    <script src="js/projects/simon-says.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

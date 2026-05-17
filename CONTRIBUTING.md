@@ -109,7 +109,7 @@ print("\n👋 Thanks for playing!\n")
 
 ### ✅ Web App Projects - Structure
 
-For web implementation, add to `web-app/js/projects.js`:
+For web implementation, add to `web-app/js/projects/your-project-name.js`:
 
 ```javascript
 // 1. HTML Template Function
@@ -137,7 +137,7 @@ function initYourProject() {
     });
 }
 
-// 3. Register in getProjectHTML() and initializeProject()
+// 3. Register in getProjectHTML() and initializeProject() in `web-app/js/projects.js`
 ```
 
 ### ✅ Web App Projects - Guidelines

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore beginner-friendly Python math projects in your browser—visualizations, calculators, and more.">
+    <meta name="color-scheme" content="dark light">
+    <meta id="themeColorMeta" name="theme-color" content="#0f172a">
+    <meta property="og:title" content="Math — Python Mini Projects">
+    <meta property="og:description" content="Interactive math visualizations—no install required.">
+    <meta property="og:type" content="website">
+    <title>🔢 Math - Python Mini Projects</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ── Page background ── */
+        body[data-page="math"] {
+            background-image: url('assets/math-bg.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Overlay so cards stay readable */
+        body[data-page="math"]::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: rgba(2, 20, 40, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body[data-page="math"] .navbar,
+        body[data-page="math"] main,
+        body[data-page="math"] .footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Light mode overlay */
+        [data-theme="light"] body[data-page="math"]::before {
+            background: rgba(224, 242, 254, 0.80);
+        }
+
+        /* Active tab highlight for this page */
+        .tab[data-category="math"],
+        a.tab.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+
+<body data-page="math">
+    <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
+
+    <!-- Navigation -->
+    <nav class="navbar" aria-label="Primary">
+        <div class="container">
+            <div class="logo">
+                <h1>🎮 Python Mini Projects</h1>
+            </div>
+            <div class="nav-controls">
+                <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
+                    <i class="fas fa-volume-up" aria-hidden="true"></i>
+                </button>
+                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
+                    <i class="fas fa-moon" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" tabindex="-1">
+
+        <!-- Category Tabs -->
+        <section class="tabs-section" aria-label="Project categories">
+            <div class="container">
+                <div class="tabs-wrapper">
+                    <div class="tabs" role="tablist" aria-label="Project categories">
+                        <a href="index.html" class="tab" role="tab">🌟 All Projects</a>
+                        <a href="games.html" class="tab" role="tab">🎮 Games</a>
+                        <a href="math.html" class="tab active" role="tab" aria-selected="true">🔢 Math</a>
+                        <a href="utilities.html" class="tab" role="tab">🔐 Utilities</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Grid — Math only -->
+        <section class="projects-section" aria-label="Math Projects">
+            <div class="container">
+                <div class="projects-grid" id="projectsGrid">
+
+                    <div class="project-card" data-category="math" data-project="fibonacci">
+                        <div class="card-icon">✨</div>
+                        <h3>Fibonacci Series</h3>
+                        <p>Generate Fibonacci sequences!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="progression-recognizer">
+                        <div class="card-icon">📐</div>
+                        <h3>AP/GP/AGP/HP Recognizer</h3>
+                        <p>Identify progression types from any sequence.</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="pascal-triangle">
+                        <div class="card-icon">🔺</div>
+                        <h3>Pascal's Triangle</h3>
+                        <p>Beautiful hexagon visualization!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="armstrong">
+                        <div class="card-icon">💎</div>
+                        <h3>Armstrong Numbers</h3>
+                        <p>Check special number properties!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="calculator">
+                        <div class="card-icon">🧮</div>
+                        <h3>Calculator</h3>
+                        <p>Your mathematical companion!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="collatz">
+                        <div class="card-icon">🔢</div>
+                        <h3>Collatz Conjecture</h3>
+                        <p>Explore the 3n+1 problem!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="prime-analyzer">
+                        <div class="card-icon">🔱</div>
+                        <h3>Prime Analyzer</h3>
+                        <p>All-in-one prime number toolkit!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="projectile-motion">
+                        <div class="card-icon">🚀</div>
+                        <h3>Projectile Motion</h3>
+                        <p>Calculate TOF, Hmax, and Range with physics!</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="coordinate-polar-transform">
+                        <div class="card-icon">🧭</div>
+                        <h3>Coordinate to Polar</h3>
+                        <p>Transform Cartesian (x, y) into polar (r, theta).</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                    <div class="project-card" data-category="math" data-project="derivative-calculator">
+                        <div class="card-icon">∂</div>
+                        <h3>Derivative Calculator</h3>
+                        <p>Compute 1st/nth polynomial derivatives and evaluate them.</p>
+                        <button class="btn-play">Try It</button>
+                    </div>
+
+                </div><!-- /projects-grid -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Project Modal -->
+    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
+         aria-labelledby="modalDialogTitle" aria-hidden="true">
+        <div class="modal-content">
+            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
+            <button type="button" class="modal-close" id="modalClose"
+                    aria-label="Close project dialog">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Made with ❤️ for Python learners everywhere</p>
+            <p>
+                <a href="https://github.com/steam-bell-92/python-mini-project"
+                   target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/audio.js"></script>
+    <script src="js/projects/rock-paper-scissor.js"></script>
+    <script src="js/projects/dice-rolling.js"></script>
+    <script src="js/projects/coin-flip.js"></script>
+    <script src="js/projects/number-guessing.js"></script>
+    <script src="js/projects/hangman.js"></script>
+    <script src="js/projects/flames.js"></script>
+    <script src="js/projects/fibonacci.js"></script>
+    <script src="js/projects/pascal-triangle.js"></script>
+    <script src="js/projects/calculator.js"></script>
+    <script src="js/projects/collatz.js"></script>
+    <script src="js/projects/armstrong.js"></script>
+    <script src="js/projects/prime-analyzer.js"></script>
+    <script src="js/projects/projectile-motion.js"></script>
+    <script src="js/projects/progression-recognizer.js"></script>
+    <script src="js/projects/coordinate-polar-transform.js"></script>
+    <script src="js/projects/derivative-calculator.js"></script>
+    <script src="js/projects/morse-code.js"></script>
+    <script src="js/projects/tower-of-hanoi.js"></script>
+    <script src="js/projects/math-quiz.js"></script>
+    <script src="js/projects/simon-says.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>

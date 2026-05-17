@@ -7,7 +7,11 @@ print("🎮 Welcome to the Number Guessing Game! 🎮")
 print("I'm thinking of a number between 1 and 100...\n")
 
 while True:
-    num = int(input("🤔 Guess the Number (1 - 100): "))
+    try:
+        num = int(input("🤔 Guess the Number (1 - 100): "))
+    except ValueError:
+        print("⚠️ Oops! That doesn't look like a valid number. Please try again.\n")
+        continue
 
     if (num >= 1) and (num <= 100):
         if num > num1:

@@ -26,19 +26,18 @@ while Flag:
     computer = random.randint(1, 3)
 
     if value not in valid:
-        Flag = False
-        print('❌ Invalid choice! Rerun the game...\n')
+        print('❌ Invalid choice! Please enter r, p, or s. Try again.\n')
+        continue
 
-    elif Flag:
-        print(f'\n👤 You chose: {key[valid[value]]}')
-        print(f'🤖 Computer chose: {key[computer]}\n')
+    print(f'\n👤 You chose: {key[valid[value]]}')
+    print(f'🤖 Computer chose: {key[computer]}\n')
 
-        if (valid[value] == 1 and computer == 2) or (valid[value] == 2 and computer == 3) or (valid[value] == 3 and computer == 1):
-            print('😢 You lost!! Better luck next time!\n')
-        elif valid[value] == computer:
-            print("🤝 It's a Tie!! Great minds think alike!\n")
-        else:
-            print('🎉 You won!! Congratulations!\n')
+    if (valid[value] == 1 and computer == 2) or (valid[value] == 2 and computer == 3) or (valid[value] == 3 and computer == 1):
+        print('😢 You lost!! Better luck next time!\n')
+    elif valid[value] == computer:
+        print("🤝 It's a Tie!! Great minds think alike!\n")
+    else:
+        print('🎉 You won!! Congratulations!\n')
 
     response = str(input('Continue playing? Yes(y) or No(n): ')).lower()
 

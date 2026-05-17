@@ -1,3 +1,5 @@
+<strong>GSSoC Approved Repository</strong></p>
+
 <div align="center">
 
 # 🎮 Python Mini Projects Collection 🎯
@@ -6,12 +8,10 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Projects](https://img.shields.io/badge/projects-21-orange.svg)]()
-[![Code Scanning](https://img.shields.io/badge/CodeQL-enabled-brightgreen.svg)]()
 
 **🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful UI | ⚡ Zero setup required**
 
-[Quick Start](#-quick-start) • [Projects](#-projects) • [Features](#-features)
+[Quick Start](#-quick-start) • [Contributing](CONTRIBUTING.md) • [Contributors](#-contributors) • [Features](#-features)
 
 ---
 
@@ -64,427 +64,10 @@ python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
 
 ---
 
----
-
-## 🙌 Contributors
-
-- advikdivekar
-
-
-- Aqifcodes
-
-
-- Devexhhh
-
-
-- Sparshjoshi-iit
-
-
-- shreyasgawande19
-
-
-- vedikabajaj05
-
-
-- abdullahxyz85
-
-
-- Tech4Aditya
-
-
-- Grihika
-
-
-- 01mayankk
-
-
-- Vinanthi07
-
-
-- Ranjanmaiti6
-
-
-- Mayank251125
-
-
-- dhanushrajvr
-
-
-- shreyasarote7717-cyber
-
-
-- AnushkaJagtap22
-
-
-- NileshRaut2601
-
-
-<div align="center">
-
-A big thank you to everyone who's contributed to this project — your improvements keep it growing! If you'd like to contribute, please read the [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-</div>
-
----
-
-#### 🧭 Coordinate to Polar Transformation
-Convert Cartesian coordinates into polar representation!
-- 📍 Input (x, y) coordinates
-- 📏 Computes radius r = sqrt(x^2 + y^2)
-- 📐 Shows angle in both degrees and radians
-```bash
-python math/Coordinate-to-Polar-Transformation/Coordinate-to-Polar-Transformation.py
-```
-
-</td>
-<td width="50%">
-
-#### ∂ Derivative Calculator
-Perform full polynomial derivative operations!
-- 🧮 First derivative and nth derivative support
-- 📍 Evaluate derivative value at any x
-- ✍️ Input polynomial using coefficient list
-```bash
-python math/Derivative-Calculator/Derivative-Calculator.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🪙 Coin Flip
-Can you predict heads or tails?
-- 👑 Heads vs 🦅 Tails
-- 🎭 Simple yet addictive
-- ⚡ Quick decision maker
-```bash
-python games/Flipping-toss/Flipping-toss.py
-```
-
-</td>
-<td width="50%">
-
-#### 🎯 Number Guessing Game
-Think you can read the computer's mind?
-- 🤔 Interactive guessing
-- 📈📉 Smart hints
-- 🎊 Celebratory win screen
-```bash
-python games/Number-Guessing-Game/Number-Guessing-Game.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🧠 Emoji Memory Game
-Memorize a growing emoji sequence and repeat it correctly!
-- 🧩 Increasing difficulty with each level
-- 🧠 Memory training with fun emoji patterns
-- 🔁 Restart anytime and improve your high score
-```bash
-python games/Emoji-Memory-Game/emoji_memory_game.py
-```
-
-</td>
-<td width="50%">
-
-#### 🎮 Hangman Game
-Classic word-guessing game!
-- 📝 Random word selection
-- ❤️ 6 attempts to guess
-- 🔤 Track guessed letters
-```bash
-python games/Hangman-Game/Hangman-Game.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 💖 FLAMES Game
-Discover your relationship status!
-- 👫 Enter two names
-- 🔮 Magical calculation
-- 💕 Friends, Love, Affection, Marriage, Enemies, or Siblings
-```bash
-python games/FLAMES-Game/FLAMES-Game.py
-```
-
-</td>
-<td width="50%">
-
-#### 🔤 Word Scramble Game
-Unscramble shuffled words before attempts run out!
-- 🧩 Random programming-themed words
-- 💡 Helpful hint for every round
-- 🔥 Score and streak tracking
-```bash
-python games/Word-Scramble-Game/Word-Scramble-Game.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-
-#### 🔐 Password Forge
-Survive evolving firewall rules by continuously upgrading your password!
-- 🔓 Progressive rule unlocking
-- ❤️ Lives system
-- 🏆 Score tracking
-- 🎯 Multiple difficulty levels
-```bash
-python games/Password-Forge/Password-Forge.py
-```
-
-</td>
-
-
-#### 📐 AP/GP/AGP/HP Recognizer
-Identify progression types from a number sequence!
-- 🔍 Detects Arithmetic, Geometric, Arithmetic-Geometric, and Harmonic patterns
-- 🧠 Supports integer and decimal values
-- 📘 Great for quick sequence practice
-#### 🧩 Tic-Tac-Toe
-Classic X and O strategy game!
-- 👤 Play against another player
-- 🤖 Smart computer opponent
-- 🏆 Result tracking
-```bash
-python games/Tic-Tac-Toe/Tic-Tac-Toe.py
-```
-
-</td>
-<td width="50%">
-
-#### 🧠 Emoji Memory Game
-Test your memory with matching emojis!
-- 🎴 Dynamic emoji grid
-- ⏱️ Score tracking
-- 🧠 Brain training fun
-```bash
-python games/Emoji-Memory-Game/emoji_memory_game.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🗣️ Simon Says - Memory Game
-Test your memory with an ever-growing sequence!
-- 🔴🔵🟢🟡 Colorful emoji buttons
-- 🧠 Watch and repeat the sequence
-- 📈 Sequence grows each round
-- 🏆 Win by completing 10 rounds
-```bash
-python games/Simon-Says/Simon-Says.py
-```
-
-</td>
-<td width="50%">
-
-#### 🔍 Spot the Difference
-Find all the hidden differences between two interactive canvases!
-- 🎨 Programmatically drawn dynamic scenes
-- 🌟 Three distinct difficulty levels
-- ⏱️ Built-in timer and hint system
-- 🌐 *Web App Exclusive Project*
-
-</td>
-</tr>
-</table>
-
-### 🔢 **Mathematical Wizards** - Explore Number Magic!
-
-<table>
-<tr>
-<td width="50%">
-
-#### 📐 AP/GP/AGP/HP Recognizer
-Identify progression types from a number sequence!
-- 🔍 Detects Arithmetic, Geometric, Arithmetic-Geometric, and Harmonic patterns
-- 🧠 Supports integer and decimal values
-- 📘 Great for quick sequence practice
-```bash
-python math/AP-GP-AGP-HP-Recognizer/AP-GP-AGP-HP-Recognizer.py
-```
-
-</td>
-<td width="50%">
-
-#### ✨ Fibonacci Series
-Generate beautiful mathematical sequences
-- 🌀 Classic Fibonacci pattern
-- 📊 Visual array display
-- ➡️ Arrow-based formatting
-```bash
-python math/Fibonacci-Series/Fibonacci-Series.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🔺 Pascal's Triangle
-Discover mathematical beauty in triangles!
-- 🎨 Centered triangle display
-- 🔍 View specific rows
-- 📐 Interactive exploration
-```bash
-python math/Pascal-Triangle/Pascal-Triangle.py
-```
-
-</td>
-<td width="50%">
-
-#### 💎 Armstrong Number Checker
-Uncover special numbers with unique properties!
-- 🔢 Detailed calculation breakdown
-- ✅ Instant verification
-- 💡 Educational examples
-```bash
-python math/Armstrong-Number/Armstrong-Number.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🧮 Simple Calculator
-Your mathematical companion!
-- ➕➖✖️➗ All basic operations
-- 💪 Power & modulus support
-- 🎨 Clean menu interface
-```bash
-python math/Simple-Calculator/Simple-Calculator.py
-```
-
-</td>
-<td width="50%">
-
-#### 🔢 Collatz Conjecture
-Explore the famous 3n+1 problem!
-- 🌀 Generate complete sequence
-- 📊 Track steps and statistics
-- 🎯 Watch numbers reach 1
-```bash
-python math/Collatz-Conjecture/Collatz-Conjecture.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🔱 Prime Number Analyzer
-All-in-one prime number toolkit!
-- ✅ Check if number is prime
-- 📈 Generate primes up to N
-- 🎯 Find primes in range
-- 🧩 Prime factorization
-```bash
-python math/Prime-Number-Analyzer/Prime-Number-Analyzer.py
-```
-
-</td>
-<td width="50%"></td>
-</tr>
-</table>
-
-### 🔐 **Crypto & Utilities** - Encode Your Secrets!
-
-<table>
-<tr>
-<td width="50%">
-
-#### 📻 Morse Code Translator
-Transform text into dots and dashes!
-- 🔄 Bidirectional translation
-- 📊 Complete Morse chart
-- 💬 Supports letters, numbers & symbols
-```bash
-python utilities/Text-to-Morse/Text-to-Morse.py
-```
-
-</td>
-<td width="50%">
-
-#### 🗼 Tower of Hanoi
-Solve the classic puzzle step by step!
-- 🎯 1-8 disks to solve
-- 📋 Visual tower representation
-- 🧠 Iterative solution display
-```bash
-python utilities/Tower-of-Hanoi/Tower-of-Hanoi.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🔢 Number System Converter
-Convert between Decimal, Binary, Hex, and Octal!
-- 🔄 Seamless base conversions
-- 📚 Educational step-by-step logic
-- 🖥️ Zero-dependency built-in functions
-```bash
-python utilities/Number-System-Converter/Number-System-Converter.py
-```
-
-</td>
-<td width="50%">
-
-#### ⌨️ Typing Speed Tester
-Test your typing speed and accuracy!
-- ⏱️ Real-time timing
-- 🚀 Words Per Minute (WPM) calculation
-- 🎯 Accuracy percentage feedback
-```bash
-python utilities/Typing-Speed-Tester/Typing-Speed-Tester.py
-```
-
-</td>
-</tr>
-
-<tr>
-<td width="50%">
-
-#### 🐾 Productivity Pet
-Keep your virtual pet happy by staying productive!
-- 🐶 Interactive pet companion
-- 📊 Task-based mood tracking
-- 📈 Productivity stats
-```bash
-python utilities/Productivity-Pet/Productivity-Pet.py
-```
-
-</td>
-<td width="50%"></td>
-</tr>
-</table>
-
 ## ✨ Features
 
 ### 🌐 Interactive Web Application
-- **All 24 Projects in Your Browser** - No Python installation required!
+- **All Projects in Your Browser** - No Python installation required!
 - **Beautiful Animations** - Smooth transitions and visual effects
 - **Dark/Light Theme** - Toggle between themes for comfort
 - **Category Filtering** - Browse by Games, Math, or Utilities
@@ -494,20 +77,12 @@ python utilities/Productivity-Pet/Productivity-Pet.py
 ### 🐍 Python CLI Projects
 | Feature | Description |
 |---------|-------------|
-| 🎨 **Beautiful UI** | Every project uses emojis for an engaging visual experience |
-| 💯 **Zero Dependencies** | Pure Python - no external packages required! |
-| 📚 **Well-Documented** | Clear code with helpful comments throughout |
-| 🎯 **Beginner-Friendly** | Perfect for Python learners at any level |
-| ⚡ **Instant Run** | No setup required - just download and play! |
-| 🔄 **Interactive** | All projects feature user interaction and feedback |
-
----
-
-## 🎓 What You'll Learn
-
-Working through these projects, you'll master:
-
-
+| **Beautiful UI** | Every project uses emojis for an engaging visual experience |
+| **Zero Dependencies** | Pure Python - no external packages required! |
+| **Well-Documented** | Clear code with helpful comments throughout |
+| **Beginner-Friendly** | Perfect for Python learners at any level |
+| **Instant Run** | No setup required - just download and play! |
+| **Interactive** | All projects feature user interaction and feedback |
 
 ---
 
@@ -532,7 +107,7 @@ Working through these projects, you'll master:
 
 3. **Open your browser** and visit `http://localhost:8000`
 
-4. **Enjoy all 24 projects** with beautiful animations! 🎉
+4. **Enjoy all projects** with beautiful animations! 🎉
 
 ### 🐍 Python CLI Projects
 
@@ -579,27 +154,13 @@ We love contributions! Here's how you can help:
 
 ### Project Guidelines
 
-#### Python Projects
-- Use emojis for visual appeal 🎨
-- Keep code simple and beginner-friendly 📚
-- No external dependencies 💯
-- Include clear instructions ✅
-- Add docstrings and comments 📝
-
-#### Web App Projects
-- Match the existing design patterns
-- Use vanilla JavaScript (no frameworks)
-- Implement in `getProjectHTML()` and `initProject()` functions
-- Include animations and visual feedback
-- Ensure responsive design
-
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
 ## Contributors
 
 <!-- CONTRIBUTORS_START -->
-<a href="https://github.com/Aayuiiitmg"><img src="https://github.com/Aayuiiitmg.png" width="50px" loading="lazy" title="Aayuiiitmg" style="border-radius:50%;margin:5px;" alt="Aayuiiitmg" /></a><a href="https://github.com/AnushkaJagtap22"><img src="https://github.com/AnushkaJagtap22.png" width="50px" loading="lazy" title="AnushkaJagtap22" style="border-radius:50%;margin:5px;" alt="AnushkaJagtap22" /></a><a href="https://github.com/Arpitawork24"><img src="https://github.com/Arpitawork24.png" width="50px" loading="lazy" title="Arpitawork24" style="border-radius:50%;margin:5px;" alt="Arpitawork24" /></a><a href="https://github.com/Bhairavi-28"><img src="https://github.com/Bhairavi-28.png" width="50px" loading="lazy" title="Bhairavi-28" style="border-radius:50%;margin:5px;" alt="Bhairavi-28" /></a><a href="https://github.com/C4aZy"><img src="https://github.com/C4aZy.png" width="50px" loading="lazy" title="C4aZy" style="border-radius:50%;margin:5px;" alt="C4aZy" /></a><a href="https://github.com/Diksha57-git"><img src="https://github.com/Diksha57-git.png" width="50px" loading="lazy" title="Diksha57-git" style="border-radius:50%;margin:5px;" alt="Diksha57-git" /></a><a href="https://github.com/Facelessism"><img src="https://github.com/Facelessism.png" width="50px" loading="lazy" title="Facelessism" style="border-radius:50%;margin:5px;" alt="Facelessism" /></a><a href="https://github.com/Indrayani11-15"><img src="https://github.com/Indrayani11-15.png" width="50px" loading="lazy" title="Indrayani11-15" style="border-radius:50%;margin:5px;" alt="Indrayani11-15" /></a><a href="https://github.com/Juhi4433"><img src="https://github.com/Juhi4433.png" width="50px" loading="lazy" title="Juhi4433" style="border-radius:50%;margin:5px;" alt="Juhi4433" /></a><a href="https://github.com/Kartikeyji17"><img src="https://github.com/Kartikeyji17.png" width="50px" loading="lazy" title="Kartikeyji17" style="border-radius:50%;margin:5px;" alt="Kartikeyji17" /></a><a href="https://github.com/KhushiVadadoriya"><img src="https://github.com/KhushiVadadoriya.png" width="50px" loading="lazy" title="KhushiVadadoriya" style="border-radius:50%;margin:5px;" alt="KhushiVadadoriya" /></a><a href="https://github.com/Kunal241207"><img src="https://github.com/Kunal241207.png" width="50px" loading="lazy" title="Kunal241207" style="border-radius:50%;margin:5px;" alt="Kunal241207" /></a><a href="https://github.com/Mounika-39"><img src="https://github.com/Mounika-39.png" width="50px" loading="lazy" title="Mounika-39" style="border-radius:50%;margin:5px;" alt="Mounika-39" /></a><a href="https://github.com/Naveen-Boddepalli"><img src="https://github.com/Naveen-Boddepalli.png" width="50px" loading="lazy" title="Naveen-Boddepalli" style="border-radius:50%;margin:5px;" alt="Naveen-Boddepalli" /></a><a href="https://github.com/NileshRaut2601"><img src="https://github.com/NileshRaut2601.png" width="50px" loading="lazy" title="NileshRaut2601" style="border-radius:50%;margin:5px;" alt="NileshRaut2601" /></a><a href="https://github.com/PRODHOSH"><img src="https://github.com/PRODHOSH.png" width="50px" loading="lazy" title="PRODHOSH" style="border-radius:50%;margin:5px;" alt="PRODHOSH" /></a><a href="https://github.com/PragatiNigam29"><img src="https://github.com/PragatiNigam29.png" width="50px" loading="lazy" title="PragatiNigam29" style="border-radius:50%;margin:5px;" alt="PragatiNigam29" /></a><a href="https://github.com/SANDHIYAPRIYADHARSHINI"><img src="https://github.com/SANDHIYAPRIYADHARSHINI.png" width="50px" loading="lazy" title="SANDHIYAPRIYADHARSHINI" style="border-radius:50%;margin:5px;" alt="SANDHIYAPRIYADHARSHINI" /></a><a href="https://github.com/Sanjhivvarshan-b-s"><img src="https://github.com/Sanjhivvarshan-b-s.png" width="50px" loading="lazy" title="Sanjhivvarshan-b-s" style="border-radius:50%;margin:5px;" alt="Sanjhivvarshan-b-s" /></a><a href="https://github.com/Sreekuttan-007"><img src="https://github.com/Sreekuttan-007.png" width="50px" loading="lazy" title="Sreekuttan-007" style="border-radius:50%;margin:5px;" alt="Sreekuttan-007" /></a><a href="https://github.com/TheBinaryAVA"><img src="https://github.com/TheBinaryAVA.png" width="50px" loading="lazy" title="TheBinaryAVA" style="border-radius:50%;margin:5px;" alt="TheBinaryAVA" /></a><a href="https://github.com/Tiago-Vier-Preto"><img src="https://github.com/Tiago-Vier-Preto.png" width="50px" loading="lazy" title="Tiago-Vier-Preto" style="border-radius:50%;margin:5px;" alt="Tiago-Vier-Preto" /></a><a href="https://github.com/Vanshikakhasat"><img src="https://github.com/Vanshikakhasat.png" width="50px" loading="lazy" title="Vanshikakhasat" style="border-radius:50%;margin:5px;" alt="Vanshikakhasat" /></a><a href="https://github.com/ash-heinz"><img src="https://github.com/ash-heinz.png" width="50px" loading="lazy" title="ash-heinz" style="border-radius:50%;margin:5px;" alt="ash-heinz" /></a><a href="https://github.com/ayushyadav0707"><img src="https://github.com/ayushyadav0707.png" width="50px" loading="lazy" title="ayushyadav0707" style="border-radius:50%;margin:5px;" alt="ayushyadav0707" /></a><a href="https://github.com/codewithakshyaaa"><img src="https://github.com/codewithakshyaaa.png" width="50px" loading="lazy" title="codewithakshyaaa" style="border-radius:50%;margin:5px;" alt="codewithakshyaaa" /></a><a href="https://github.com/gatiksolanki13-netizen"><img src="https://github.com/gatiksolanki13-netizen.png" width="50px" loading="lazy" title="gatiksolanki13-netizen" style="border-radius:50%;margin:5px;" alt="gatiksolanki13-netizen" /></a><a href="https://github.com/iamprasoon2006-cell"><img src="https://github.com/iamprasoon2006-cell.png" width="50px" loading="lazy" title="iamprasoon2006-cell" style="border-radius:50%;margin:5px;" alt="iamprasoon2006-cell" /></a><a href="https://github.com/itsdakshjain"><img src="https://github.com/itsdakshjain.png" width="50px" loading="lazy" title="itsdakshjain" style="border-radius:50%;margin:5px;" alt="itsdakshjain" /></a><a href="https://github.com/jyotish6699"><img src="https://github.com/jyotish6699.png" width="50px" loading="lazy" title="jyotish6699" style="border-radius:50%;margin:5px;" alt="jyotish6699" /></a><a href="https://github.com/kumudasrip"><img src="https://github.com/kumudasrip.png" width="50px" loading="lazy" title="kumudasrip" style="border-radius:50%;margin:5px;" alt="kumudasrip" /></a><a href="https://github.com/madhavcodes25"><img src="https://github.com/madhavcodes25.png" width="50px" loading="lazy" title="madhavcodes25" style="border-radius:50%;margin:5px;" alt="madhavcodes25" /></a><a href="https://github.com/mahi-8758"><img src="https://github.com/mahi-8758.png" width="50px" loading="lazy" title="mahi-8758" style="border-radius:50%;margin:5px;" alt="mahi-8758" /></a><a href="https://github.com/nene-hana"><img src="https://github.com/nene-hana.png" width="50px" loading="lazy" title="nene-hana" style="border-radius:50%;margin:5px;" alt="nene-hana" /></a><a href="https://github.com/nishtha-agarwal-211"><img src="https://github.com/nishtha-agarwal-211.png" width="50px" loading="lazy" title="nishtha-agarwal-211" style="border-radius:50%;margin:5px;" alt="nishtha-agarwal-211" /></a><a href="https://github.com/parasmani-dev"><img src="https://github.com/parasmani-dev.png" width="50px" loading="lazy" title="parasmani-dev" style="border-radius:50%;margin:5px;" alt="parasmani-dev" /></a><a href="https://github.com/priya05-git"><img src="https://github.com/priya05-git.png" width="50px" loading="lazy" title="priya05-git" style="border-radius:50%;margin:5px;" alt="priya05-git" /></a><a href="https://github.com/sanzzzz-g"><img src="https://github.com/sanzzzz-g.png" width="50px" loading="lazy" title="sanzzzz-g" style="border-radius:50%;margin:5px;" alt="sanzzzz-g" /></a><a href="https://github.com/shreyasarote7717-cyber"><img src="https://github.com/shreyasarote7717-cyber.png" width="50px" loading="lazy" title="shreyasarote7717-cyber" style="border-radius:50%;margin:5px;" alt="shreyasarote7717-cyber" /></a><a href="https://github.com/ssuyashhhh"><img src="https://github.com/ssuyashhhh.png" width="50px" loading="lazy" title="ssuyashhhh" style="border-radius:50%;margin:5px;" alt="ssuyashhhh" /></a>
+<div align="center"><a href="https://github.com/01mayankk" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/01mayankk.png" width="80" height="80" loading="lazy" title="01mayankk" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="01mayankk" />\n  <div style="font-size:12px;margin-top:6px;">@01mayankk</div>\n</a><a href="https://github.com/Aayuiiitmg" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Aayuiiitmg.png" width="80" height="80" loading="lazy" title="Aayuiiitmg" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Aayuiiitmg" />\n  <div style="font-size:12px;margin-top:6px;">@Aayuiiitmg</div>\n</a><a href="https://github.com/AnushkaJagtap22" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/AnushkaJagtap22.png" width="80" height="80" loading="lazy" title="AnushkaJagtap22" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="AnushkaJagtap22" />\n  <div style="font-size:12px;margin-top:6px;">@AnushkaJagtap22</div>\n</a><a href="https://github.com/Aqifcodes" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Aqifcodes.png" width="80" height="80" loading="lazy" title="Aqifcodes" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Aqifcodes" />\n  <div style="font-size:12px;margin-top:6px;">@Aqifcodes</div>\n</a><a href="https://github.com/Arpitawork24" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Arpitawork24.png" width="80" height="80" loading="lazy" title="Arpitawork24" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Arpitawork24" />\n  <div style="font-size:12px;margin-top:6px;">@Arpitawork24</div>\n</a><a href="https://github.com/Bhairavi-28" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Bhairavi-28.png" width="80" height="80" loading="lazy" title="Bhairavi-28" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Bhairavi-28" />\n  <div style="font-size:12px;margin-top:6px;">@Bhairavi-28</div>\n</a><a href="https://github.com/C4aZy" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/C4aZy.png" width="80" height="80" loading="lazy" title="C4aZy" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="C4aZy" />\n  <div style="font-size:12px;margin-top:6px;">@C4aZy</div>\n</a><a href="https://github.com/Devexhhh" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Devexhhh.png" width="80" height="80" loading="lazy" title="Devexhhh" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Devexhhh" />\n  <div style="font-size:12px;margin-top:6px;">@Devexhhh</div>\n</a><a href="https://github.com/Diksha57-git" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Diksha57-git.png" width="80" height="80" loading="lazy" title="Diksha57-git" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Diksha57-git" />\n  <div style="font-size:12px;margin-top:6px;">@Diksha57-git</div>\n</a><a href="https://github.com/Facelessism" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Facelessism.png" width="80" height="80" loading="lazy" title="Facelessism" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Facelessism" />\n  <div style="font-size:12px;margin-top:6px;">@Facelessism</div>\n</a><a href="https://github.com/Grihika" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Grihika.png" width="80" height="80" loading="lazy" title="Grihika" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Grihika" />\n  <div style="font-size:12px;margin-top:6px;">@Grihika</div>\n</a><a href="https://github.com/HARSHP-16" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/HARSHP-16.png" width="80" height="80" loading="lazy" title="HARSHP-16" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="HARSHP-16" />\n  <div style="font-size:12px;margin-top:6px;">@HARSHP-16</div>\n</a><a href="https://github.com/Indrayani11-15" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Indrayani11-15.png" width="80" height="80" loading="lazy" title="Indrayani11-15" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Indrayani11-15" />\n  <div style="font-size:12px;margin-top:6px;">@Indrayani11-15</div>\n</a><a href="https://github.com/Juhi4433" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Juhi4433.png" width="80" height="80" loading="lazy" title="Juhi4433" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Juhi4433" />\n  <div style="font-size:12px;margin-top:6px;">@Juhi4433</div>\n</a><a href="https://github.com/Kartikeyji17" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Kartikeyji17.png" width="80" height="80" loading="lazy" title="Kartikeyji17" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Kartikeyji17" />\n  <div style="font-size:12px;margin-top:6px;">@Kartikeyji17</div>\n</a><a href="https://github.com/KhushiVadadoriya" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/KhushiVadadoriya.png" width="80" height="80" loading="lazy" title="KhushiVadadoriya" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="KhushiVadadoriya" />\n  <div style="font-size:12px;margin-top:6px;">@KhushiVadadoriya</div>\n</a><a href="https://github.com/Kunal241207" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Kunal241207.png" width="80" height="80" loading="lazy" title="Kunal241207" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Kunal241207" />\n  <div style="font-size:12px;margin-top:6px;">@Kunal241207</div>\n</a><a href="https://github.com/Lavanya-Talele" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Lavanya-Talele.png" width="80" height="80" loading="lazy" title="Lavanya-Talele" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Lavanya-Talele" />\n  <div style="font-size:12px;margin-top:6px;">@Lavanya-Talele</div>\n</a><a href="https://github.com/Mayank251125" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Mayank251125.png" width="80" height="80" loading="lazy" title="Mayank251125" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Mayank251125" />\n  <div style="font-size:12px;margin-top:6px;">@Mayank251125</div>\n</a><a href="https://github.com/Mounika-39" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Mounika-39.png" width="80" height="80" loading="lazy" title="Mounika-39" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Mounika-39" />\n  <div style="font-size:12px;margin-top:6px;">@Mounika-39</div>\n</a><a href="https://github.com/Naveen-Boddepalli" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Naveen-Boddepalli.png" width="80" height="80" loading="lazy" title="Naveen-Boddepalli" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Naveen-Boddepalli" />\n  <div style="font-size:12px;margin-top:6px;">@Naveen-Boddepalli</div>\n</a><a href="https://github.com/NileshRaut2601" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/NileshRaut2601.png" width="80" height="80" loading="lazy" title="NileshRaut2601" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="NileshRaut2601" />\n  <div style="font-size:12px;margin-top:6px;">@NileshRaut2601</div>\n</a><a href="https://github.com/PRODHOSH" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/PRODHOSH.png" width="80" height="80" loading="lazy" title="PRODHOSH" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="PRODHOSH" />\n  <div style="font-size:12px;margin-top:6px;">@PRODHOSH</div>\n</a><a href="https://github.com/PragatiNigam29" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/PragatiNigam29.png" width="80" height="80" loading="lazy" title="PragatiNigam29" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="PragatiNigam29" />\n  <div style="font-size:12px;margin-top:6px;">@PragatiNigam29</div>\n</a><a href="https://github.com/Quantum3600" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Quantum3600.png" width="80" height="80" loading="lazy" title="Quantum3600" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Quantum3600" />\n  <div style="font-size:12px;margin-top:6px;">@Quantum3600</div>\n</a><a href="https://github.com/Ranjanmaiti6" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Ranjanmaiti6.png" width="80" height="80" loading="lazy" title="Ranjanmaiti6" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Ranjanmaiti6" />\n  <div style="font-size:12px;margin-top:6px;">@Ranjanmaiti6</div>\n</a><a href="https://github.com/SANDHIYAPRIYADHARSHINI" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/SANDHIYAPRIYADHARSHINI.png" width="80" height="80" loading="lazy" title="SANDHIYAPRIYADHARSHINI" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="SANDHIYAPRIYADHARSHINI" />\n  <div style="font-size:12px;margin-top:6px;">@SANDHIYAPRIYADHARSHINI</div>\n</a><a href="https://github.com/Sanjhivvarshan-b-s" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Sanjhivvarshan-b-s.png" width="80" height="80" loading="lazy" title="Sanjhivvarshan-b-s" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Sanjhivvarshan-b-s" />\n  <div style="font-size:12px;margin-top:6px;">@Sanjhivvarshan-b-s</div>\n</a><a href="https://github.com/Sparshjoshi-iit" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Sparshjoshi-iit.png" width="80" height="80" loading="lazy" title="Sparshjoshi-iit" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Sparshjoshi-iit" />\n  <div style="font-size:12px;margin-top:6px;">@Sparshjoshi-iit</div>\n</a><a href="https://github.com/Sreekuttan-007" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Sreekuttan-007.png" width="80" height="80" loading="lazy" title="Sreekuttan-007" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Sreekuttan-007" />\n  <div style="font-size:12px;margin-top:6px;">@Sreekuttan-007</div>\n</a><a href="https://github.com/Tech4Aditya" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Tech4Aditya.png" width="80" height="80" loading="lazy" title="Tech4Aditya" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Tech4Aditya" />\n  <div style="font-size:12px;margin-top:6px;">@Tech4Aditya</div>\n</a><a href="https://github.com/TheBinaryAVA" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/TheBinaryAVA.png" width="80" height="80" loading="lazy" title="TheBinaryAVA" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="TheBinaryAVA" />\n  <div style="font-size:12px;margin-top:6px;">@TheBinaryAVA</div>\n</a><a href="https://github.com/Tiago-Vier-Preto" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Tiago-Vier-Preto.png" width="80" height="80" loading="lazy" title="Tiago-Vier-Preto" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Tiago-Vier-Preto" />\n  <div style="font-size:12px;margin-top:6px;">@Tiago-Vier-Preto</div>\n</a><a href="https://github.com/Vanshikakhasat" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Vanshikakhasat.png" width="80" height="80" loading="lazy" title="Vanshikakhasat" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Vanshikakhasat" />\n  <div style="font-size:12px;margin-top:6px;">@Vanshikakhasat</div>\n</a><a href="https://github.com/Vinanthi07" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/Vinanthi07.png" width="80" height="80" loading="lazy" title="Vinanthi07" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="Vinanthi07" />\n  <div style="font-size:12px;margin-top:6px;">@Vinanthi07</div>\n</a><a href="https://github.com/abdullahxyz85" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/abdullahxyz85.png" width="80" height="80" loading="lazy" title="abdullahxyz85" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="abdullahxyz85" />\n  <div style="font-size:12px;margin-top:6px;">@abdullahxyz85</div>\n</a><a href="https://github.com/abhi-nav-25" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/abhi-nav-25.png" width="80" height="80" loading="lazy" title="abhi-nav-25" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="abhi-nav-25" />\n  <div style="font-size:12px;margin-top:6px;">@abhi-nav-25</div>\n</a><a href="https://github.com/advikdivekar" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/advikdivekar.png" width="80" height="80" loading="lazy" title="advikdivekar" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="advikdivekar" />\n  <div style="font-size:12px;margin-top:6px;">@advikdivekar</div>\n</a><a href="https://github.com/ash-heinz" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/ash-heinz.png" width="80" height="80" loading="lazy" title="ash-heinz" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="ash-heinz" />\n  <div style="font-size:12px;margin-top:6px;">@ash-heinz</div>\n</a><a href="https://github.com/ayushyadav0707" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/ayushyadav0707.png" width="80" height="80" loading="lazy" title="ayushyadav0707" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="ayushyadav0707" />\n  <div style="font-size:12px;margin-top:6px;">@ayushyadav0707</div>\n</a><a href="https://github.com/codewithakshyaaa" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/codewithakshyaaa.png" width="80" height="80" loading="lazy" title="codewithakshyaaa" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="codewithakshyaaa" />\n  <div style="font-size:12px;margin-top:6px;">@codewithakshyaaa</div>\n</a><a href="https://github.com/developer-yash03" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/developer-yash03.png" width="80" height="80" loading="lazy" title="developer-yash03" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="developer-yash03" />\n  <div style="font-size:12px;margin-top:6px;">@developer-yash03</div>\n</a><a href="https://github.com/dhanushrajvr" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/dhanushrajvr.png" width="80" height="80" loading="lazy" title="dhanushrajvr" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="dhanushrajvr" />\n  <div style="font-size:12px;margin-top:6px;">@dhanushrajvr</div>\n</a><a href="https://github.com/gatiksolanki13-netizen" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/gatiksolanki13-netizen.png" width="80" height="80" loading="lazy" title="gatiksolanki13-netizen" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="gatiksolanki13-netizen" />\n  <div style="font-size:12px;margin-top:6px;">@gatiksolanki13-netizen</div>\n</a><a href="https://github.com/iamprasoon2006-cell" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/iamprasoon2006-cell.png" width="80" height="80" loading="lazy" title="iamprasoon2006-cell" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="iamprasoon2006-cell" />\n  <div style="font-size:12px;margin-top:6px;">@iamprasoon2006-cell</div>\n</a><a href="https://github.com/itsdakshjain" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/itsdakshjain.png" width="80" height="80" loading="lazy" title="itsdakshjain" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="itsdakshjain" />\n  <div style="font-size:12px;margin-top:6px;">@itsdakshjain</div>\n</a><a href="https://github.com/jyotish6699" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/jyotish6699.png" width="80" height="80" loading="lazy" title="jyotish6699" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="jyotish6699" />\n  <div style="font-size:12px;margin-top:6px;">@jyotish6699</div>\n</a><a href="https://github.com/kumudasrip" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/kumudasrip.png" width="80" height="80" loading="lazy" title="kumudasrip" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="kumudasrip" />\n  <div style="font-size:12px;margin-top:6px;">@kumudasrip</div>\n</a><a href="https://github.com/madhavcodes25" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/madhavcodes25.png" width="80" height="80" loading="lazy" title="madhavcodes25" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="madhavcodes25" />\n  <div style="font-size:12px;margin-top:6px;">@madhavcodes25</div>\n</a><a href="https://github.com/mahi-8758" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/mahi-8758.png" width="80" height="80" loading="lazy" title="mahi-8758" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="mahi-8758" />\n  <div style="font-size:12px;margin-top:6px;">@mahi-8758</div>\n</a><a href="https://github.com/mrinmoyChakraborty-mrinox" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/mrinmoyChakraborty-mrinox.png" width="80" height="80" loading="lazy" title="mrinmoyChakraborty-mrinox" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="mrinmoyChakraborty-mrinox" />\n  <div style="font-size:12px;margin-top:6px;">@mrinmoyChakraborty-mrinox</div>\n</a><a href="https://github.com/nene-hana" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/nene-hana.png" width="80" height="80" loading="lazy" title="nene-hana" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="nene-hana" />\n  <div style="font-size:12px;margin-top:6px;">@nene-hana</div>\n</a><a href="https://github.com/nimkarprachi17" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/nimkarprachi17.png" width="80" height="80" loading="lazy" title="nimkarprachi17" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="nimkarprachi17" />\n  <div style="font-size:12px;margin-top:6px;">@nimkarprachi17</div>\n</a><a href="https://github.com/nishtha-agarwal-211" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/nishtha-agarwal-211.png" width="80" height="80" loading="lazy" title="nishtha-agarwal-211" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="nishtha-agarwal-211" />\n  <div style="font-size:12px;margin-top:6px;">@nishtha-agarwal-211</div>\n</a><a href="https://github.com/parasmani-dev" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/parasmani-dev.png" width="80" height="80" loading="lazy" title="parasmani-dev" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="parasmani-dev" />\n  <div style="font-size:12px;margin-top:6px;">@parasmani-dev</div>\n</a><a href="https://github.com/prasad-0007" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/prasad-0007.png" width="80" height="80" loading="lazy" title="prasad-0007" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="prasad-0007" />\n  <div style="font-size:12px;margin-top:6px;">@prasad-0007</div>\n</a><a href="https://github.com/priya05-git" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/priya05-git.png" width="80" height="80" loading="lazy" title="priya05-git" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="priya05-git" />\n  <div style="font-size:12px;margin-top:6px;">@priya05-git</div>\n</a><a href="https://github.com/sanzzzz-g" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/sanzzzz-g.png" width="80" height="80" loading="lazy" title="sanzzzz-g" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="sanzzzz-g" />\n  <div style="font-size:12px;margin-top:6px;">@sanzzzz-g</div>\n</a><a href="https://github.com/shreyasarote7717-cyber" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/shreyasarote7717-cyber.png" width="80" height="80" loading="lazy" title="shreyasarote7717-cyber" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="shreyasarote7717-cyber" />\n  <div style="font-size:12px;margin-top:6px;">@shreyasarote7717-cyber</div>\n</a><a href="https://github.com/shreyasgawande19" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/shreyasgawande19.png" width="80" height="80" loading="lazy" title="shreyasgawande19" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="shreyasgawande19" />\n  <div style="font-size:12px;margin-top:6px;">@shreyasgawande19</div>\n</a><a href="https://github.com/ssuyashhhh" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/ssuyashhhh.png" width="80" height="80" loading="lazy" title="ssuyashhhh" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="ssuyashhhh" />\n  <div style="font-size:12px;margin-top:6px;">@ssuyashhhh</div>\n</a><a href="https://github.com/vedikabajaj05" style="display:inline-block;text-decoration:none;color:inherit;margin:6px;">\n  <img src="https://github.com/vedikabajaj05.png" width="80" height="80" loading="lazy" title="vedikabajaj05" style="border-radius:50%;object-fit:cover;border:2px solid #eee;" alt="vedikabajaj05" />\n  <div style="font-size:12px;margin-top:6px;">@vedikabajaj05</div>\n</a></div>
 <!-- CONTRIBUTORS_END -->
 
 ---
@@ -631,3 +192,14 @@ Found this helpful? Show some love!
 [⬆ Back to Top](#-python-mini-projects-collection-)
 
 </div>
+
+
+## 🙌 Contributors
+
+- Lavanya-Talele
+
+
+- prasad-0007
+
+
+- developer-yash03

@@ -44,10 +44,11 @@ jobs:
       - name: Build Gallery HTML
         run: |
           set -euo pipefail
-          GALLERY_HTML=""
+          GALLERY_HTML="<div align=\"center\">"
           for USERNAME in $(jq -r '.[]' contributors.json); do
-            GALLERY_HTML="${GALLERY_HTML}<a href=\"https://github.com/${USERNAME}\"><img src=\"https://github.com/${USERNAME}.png\" width=\"50px\" loading=\"lazy\" title=\"${USERNAME}\" style=\"border-radius:50%;margin:5px;\" alt=\"${USERNAME}\" /></a>"
+            GALLERY_HTML="${GALLERY_HTML}<a href=\"https://github.com/${USERNAME}\" style=\"display:inline-block;text-decoration:none;color:inherit;margin:6px;\">\n  <img src=\"https://github.com/${USERNAME}.png\" width=\"80\" height=\"80\" loading=\"lazy\" title=\"${USERNAME}\" style=\"border-radius:50%;object-fit:cover;border:2px solid #eee;\" alt=\"${USERNAME}\" />\n  <div style=\"font-size:12px;margin-top:6px;\">@${USERNAME}</div>\n</a>"
           done
+          GALLERY_HTML="${GALLERY_HTML}</div>"
           echo "$GALLERY_HTML" > gallery_fragment.txt
 
       - name: Update README.md

@@ -32,17 +32,21 @@ try:
                 print(f"Row {i+1}: {row_str.center(max_width)}")
         
         elif choice == '2':
-            row_num = int(input(f"\n📍 Enter row number (1 to {n}): "))
-            
-            if 1 <= row_num <= len(triangle):
+            try:
+                row_num = int(input(f"\n📍 Enter row number (1 to {n}): "))
+            except ValueError:
+                print("⚠️ Oops! That doesn't look like a valid number. Please try again.")
+                row_num = None
+
+            if row_num is not None and 1 <= row_num <= len(triangle):
                 print(f"\n📍 Row {row_num} of Pascal's Triangle:")
                 print(f"   {triangle[row_num-1]}")
                 print(f"\n📊 Elements: {' → '.join(map(str, triangle[row_num-1]))}")
-            else:
+            elif row_num is not None:
                 print(f"\n❌ Row {row_num} doesn't exist in the generated triangle!")
-        
-        else:
-            print("❌ Invalid choice!")
+
+            else:
+                print("❌ Invalid choice!")
         
         print(f"\n💡 Total rows generated: {n}")
 

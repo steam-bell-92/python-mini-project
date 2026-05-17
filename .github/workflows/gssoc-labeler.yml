@@ -40,6 +40,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issueNum,
-                labels: ["gssoc:accepted"],
+                labels: ["gssoc:approved"],
               });
             }

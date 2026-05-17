@@ -1,6 +1,7 @@
 import tkinter as tk
 import random
 import os
+from pathlib import Path
 
 GRID_SIZE = 4
 CELL_SIZE = 100
@@ -37,6 +38,7 @@ TEXT_COLORS = {
 }
 
 HIGH_SCORE_FILE = "highscore.txt"
+HIGH_SCORE_PATH = Path(__file__).with_name(HIGH_SCORE_FILE)
 
 
 class Game2048:
@@ -76,14 +78,15 @@ class Game2048:
         self.root.bind("<Key>", self.handle_keypress)
 
     def load_high_score(self):
-        if os.path.exists(HIGH_SCORE_FILE):
-            with open(HIGH_SCORE_FILE, "r") as file:
-                return int(file.read())
+        if HIGH_SCORE_PATH.exists():
+            try:
+                return int(HIGH_SCORE_PATH.read_text().strip() or 0)
+            except ValueError:
+                return 0
         return 0
 
     def save_high_score(self):
-        with open(HIGH_SCORE_FILE, "w") as file:
-            file.write(str(self.high_score))
+        HIGH_SCORE_PATH.write_text(str(self.high_score))
 
     def create_grid(self):
         for row in range(GRID_SIZE):

@@ -4,15 +4,21 @@ function getMorseCodeHTML() {
             <h2>📻 Morse Code Translator</h2>
             <div class="morse-container">
                 <div class="input-section">
-                    <label for="textInput">Enter Text:</label>
+                    <div class="mode-toggle">
+                        <input type="radio" id="modeTextToMorse" name="translationMode" value="textToMorse" checked>
+                        <label for="modeTextToMorse">Text to Morse</label>
+                        <input type="radio" id="modeMorseToText" name="translationMode" value="morseToText">
+                        <label for="modeMorseToText">Morse to Text</label>
+                    </div>
+                    <label id="inputLabel" for="textInput">Enter Text:</label>
                     <textarea id="textInput" rows="4" placeholder="Type your message here..."></textarea>
                     <button class="btn-translate" id="translateBtn">📻 Translate to Morse</button>
                 </div>
                 
                 <div class="output-section">
-                    <h3>Morse Code Output:</h3>
+                    <h3>Translation Output:</h3>
                     <div class="morse-output" id="morseOutput">
-                        <p class="placeholder">Your morse code will appear here...</p>
+                        <p class="placeholder">Your translation will appear here...</p>
                     </div>
                 </div>
                 
@@ -32,6 +38,33 @@ function getMorseCodeHTML() {
             
             .input-section {
                 margin-bottom: 2rem;
+            }
+            
+            .mode-toggle {
+                display: flex;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            .mode-toggle input[type="radio"] {
+                display: none;
+            }
+            
+            .mode-toggle label {
+                padding: 0.5rem 1rem;
+                border: 2px solid var(--primary-color);
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: bold;
+                color: var(--text-color);
+                transition: var(--transition);
+                margin-bottom: 0 !important;
+                display: inline-block !important;
+            }
+            
+            .mode-toggle input[type="radio"]:checked + label {
+                background: var(--primary-color);
+                color: white;
             }
             
             .input-section label {
@@ -149,13 +182,39 @@ function initMorseCode() {
         'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
         'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
         '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
-        '8': '---..', '9': '----.', ' ': '/'
+        '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..',
+        '!': '-.-.--', '-': '-....-', '/': '-..-.', '@': '.--.-.', '(': '-.--.',
+        ')': '-.--.-', ' ': '/'
     };
     
     const textInput = document.getElementById('textInput');
     const translateBtn = document.getElementById('translateBtn');
     const morseOutput = document.getElementById('morseOutput');
     const morseChart = document.getElementById('morseChart');
+    const modeTextToMorse = document.getElementById('modeTextToMorse');
+    const modeMorseToText = document.getElementById('modeMorseToText');
+    const inputLabel = document.getElementById('inputLabel');
+    
+    // Switch Modes
+    modeTextToMorse.addEventListener('change', () => {
+        if (modeTextToMorse.checked) {
+            inputLabel.textContent = 'Enter Text:';
+            textInput.placeholder = 'Type your message here...';
+            textInput.value = '';
+            morseOutput.innerHTML = '<p class="placeholder">Your translation will appear here...</p>';
+            translateBtn.innerHTML = '📻 Translate to Morse';
+        }
+    });
+
+    modeMorseToText.addEventListener('change', () => {
+        if (modeMorseToText.checked) {
+            inputLabel.textContent = 'Enter Morse Code:';
+            textInput.placeholder = "Type morse code (separate letters with space, words with double spaces)...";
+            textInput.value = '';
+            morseOutput.innerHTML = '<p class="placeholder">Your translation will appear here...</p>';
+            translateBtn.innerHTML = '📝 Translate to Text';
+        }
+    });
     
     Object.keys(morseCode).forEach(char => {
         if (char !== ' ') {
@@ -172,29 +231,63 @@ function initMorseCode() {
     function translate() {
         const text = textInput.value.toUpperCase();
         if (!text.trim()) {
-            morseOutput.innerHTML = '<p class="placeholder">Please enter some text to translate!</p>';
+            morseOutput.innerHTML = '<p class="placeholder">Please enter something to translate!</p>';
             return;
         }
         
         morseOutput.innerHTML = '';
-        const words = text.split(' ');
         
-        words.forEach((word, wordIndex) => {
-            let morseWord = '';
-            for (let char of word) {
-                if (morseCode[char]) {
-                    morseWord += morseCode[char] + ' ';
-                }
-            }
+        if (modeMorseToText.checked) {
+            // Morse to Text
+            const reverseMorseCode = {};
+            Object.keys(morseCode).forEach(key => {
+                reverseMorseCode[morseCode[key]] = key;
+            });
             
-            if (morseWord.trim()) {
-                const wordEl = document.createElement('div');
-                wordEl.className = 'morse-word';
-                wordEl.textContent = morseWord.trim();
-                wordEl.style.animationDelay = `${wordIndex * 0.1}s`;
-                morseOutput.appendChild(wordEl);
-            }
-        });
+            const words = text.trim().split(/(?:\s*\/\s*|\s{2,})/);
+            
+            words.forEach((word, wordIndex) => {
+                const chars = word.trim().split(/\s+/);
+                let textWord = '';
+                chars.forEach(char => {
+                    if (reverseMorseCode[char]) {
+                        textWord += reverseMorseCode[char];
+                    } else if (char) {
+                        textWord += '?';
+                    }
+                });
+                
+                if (textWord.trim()) {
+                    const wordEl = document.createElement('div');
+                    wordEl.className = 'morse-word';
+                    wordEl.style.fontFamily = 'inherit';
+                    wordEl.style.letterSpacing = '2px';
+                    wordEl.textContent = textWord.trim();
+                    wordEl.style.animationDelay = `${wordIndex * 0.1}s`;
+                    morseOutput.appendChild(wordEl);
+                }
+            });
+        } else {
+            // Text to Morse
+            const words = text.split(' ');
+            
+            words.forEach((word, wordIndex) => {
+                let morseWord = '';
+                for (let char of word) {
+                    if (morseCode[char]) {
+                        morseWord += morseCode[char] + ' ';
+                    }
+                }
+                
+                if (morseWord.trim()) {
+                    const wordEl = document.createElement('div');
+                    wordEl.className = 'morse-word';
+                    wordEl.textContent = morseWord.trim();
+                    wordEl.style.animationDelay = `${wordIndex * 0.1}s`;
+                    morseOutput.appendChild(wordEl);
+                }
+            });
+        }
     }
     
     translateBtn.addEventListener('click', translate);

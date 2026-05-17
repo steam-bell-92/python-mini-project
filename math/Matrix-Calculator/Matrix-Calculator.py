@@ -1,8 +1,8 @@
 print("🎮 Matrix Calculator 🎮")
-print("Easily add, subtract, multiply, or transpose matrices! \n")
+print("Easily add, subtract, multiply, transpose, and calculate determinant of matrices! \n")
 
 while True:
-    choice = input("🎯 Choose Operation: Add (A), Subtract (S), Multiply (M), Transpose (T), or Quit (Q): ").upper()
+    choice = input("🎯 Choose Operation: Add (A), Subtract (S), Multiply (M), Transpose (T), Determinant (D), or Quit (Q): ").upper()
 
     if choice in ["Q", "QUIT"]:
         break
@@ -100,6 +100,34 @@ while True:
         except Exception:
             print("❌ Error: Please enter valid numbers.\n")
             
+
+    elif choice == "D":
+        try:
+            n = int(input("➡️ Enter size of square matrix (n x n): "))
+            
+            print(f"\n📝 Enter elements for Matrix ({n}x{n}) row by row (space separated):")
+            matrix = []
+            for _ in range(n):
+                row = list(map(float, input("🔢 ").split()))
+                matrix.append(row)
+                
+            def determinant(m):
+                if len(m) == 1:
+                    return m[0][0]
+                if len(m) == 2:
+                    return m[0][0] * m[1][1] - m[0][1] * m[1][0]
+                det = 0
+                for c in range(len(m)):
+                    det += ((-1)**c) * m[0][c] * determinant([row[:c] + row[c+1:] for row in m[1:]])
+                return det
+            
+            det_value = determinant(matrix)
+            print(f"\n📊 Determinant: {det_value}")
+            print("✅ Calculation successful!\n")
+
+        except Exception:
+            print("❌ Error: Please enter valid numbers or ensure it's a square matrix.\n")
+
     else:
         print("⚠️ Invalid input\n")
 
