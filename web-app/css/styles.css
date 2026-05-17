@@ -59,7 +59,7 @@ body {
 .navbar {
     background: #111827cc;
     backdrop-filter: blur(8px);
-    padding: 1rem 0;
+    padding: 1.25rem 0;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -70,6 +70,28 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 2rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-tagline {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.025em;
+    opacity: 0.85;
+    white-space: nowrap;
 }
 
 .logo h1 {
@@ -1272,6 +1294,10 @@ body {
 
 /* Tablet: 768px */
 @media (max-width: 768px) {
+    .navbar-tagline {
+        display: none;
+    }
+    
     .hero-section {
         padding: 6rem 0;
     }
