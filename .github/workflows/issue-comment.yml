@@ -22,4 +22,4 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "⚠️ Important Contribution Guideline\n\nPlease do not open a Pull Request without being assigned to this issue first.\n\nHow to proceed:\n1. Comment on this issue to express interest\n2. Wait for maintainers to assign you to the issue\n3. Once assigned, you can start working on the PR\n4. Include the assignment in your PR checklist\n\nNote: PRs raised without prior assignment may be closed or marked invalid.\n\nThank you for helping us maintain a smooth workflow! 🙏"
-            })
+            });
