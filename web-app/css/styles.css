@@ -217,8 +217,7 @@ body {
     justify-content: center;
 }
 
-.theme-toggle:hover,
-.sound-toggle:hover {
+.theme-toggle:hover, .sound-toggle:hover {
     background: rgba(74, 222, 128, 0.28);
     box-shadow: 0 0 14px var(--hero-green-glow);
     color: var(--hero-green-200);
@@ -226,8 +225,9 @@ body {
     box-shadow: 0 0 15px rgba(124, 92, 255, 0.4);
 }
 
-.sound-toggle:hover  { transform: scale(1.1) rotate(5deg); }
-.theme-toggle:active { transform: scale(0.95); }
+.theme-toggle:active, .sound-toggle:active {
+    transform: scale(0.95);
+}
 
 /* ═══════════════════════════════════════
    HERO SECTION
