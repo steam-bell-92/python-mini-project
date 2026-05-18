@@ -8,6 +8,7 @@ This folder contains Python mini-projects focused on math concepts, number patte
 - Armstrong-Number
 - Caesar-Cipher
 - Collatz-Conjecture
+- Conways-Game-of-Life
 - Coordinate-to-Polar-Transformation
 - Derivative-Calculator
 - Fibonacci-Series
