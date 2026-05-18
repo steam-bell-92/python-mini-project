@@ -9,13 +9,19 @@ import random
 import json
 import os
 import time
-import winsound
+try:
+    import winsound
+except ImportError:
+    winsound = None
 
 # ─────────────────────────────────────────────
 # Utility Functions
 # ─────────────────────────────────────────────
 
 def play_sound(sound_type):
+    if not winsound:
+        print('\a', end='', flush=True)
+        return
     try:
         if sound_type == 'correct':
             winsound.Beep(1000, 150) # Frequency, duration
