@@ -3841,7 +3841,7 @@ function initializeProject(projectName) {
         initializers[projectName]();
     }
 }
-}
+
 
 //Removed Redundant game and project Logics and seperated them to different individual files located at (web-app/js/projects/)
 
