@@ -5,6 +5,7 @@ This folder contains beginner-friendly Python mini games. Each game is self-cont
 ## Projects in `games/`
 
 - 2048-Game
+- Brick-Breaker
 - Dots-Boxes-AI
 - Emoji-Memory-Game
 - FLAMES-Game
