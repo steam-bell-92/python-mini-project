@@ -70,7 +70,8 @@ function initializeProject(projectName) {
         'derivative-calculator': initDerivativeCalculator,
         'morse-code': initMorseCode,
         'tower-of-hanoi': initTowerOfHanoi,
-        '2048-game': init2048Game // Added explicit mapped hook definition binding reference
+        '2048-game': init2048Game, // Added explicit mapped hook definition binding reference
+        'typing-speed-tester': initTypingSpeedTester
     };
     
     if (initializers[projectName]) {
