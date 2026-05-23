@@ -133,6 +133,9 @@ function initProgressionRecognizer() {
         if (allZero) {
             return { ok: true, ratio: 0 };
         }
+        if (isClose(sequence[0], 0)) {
+            return { ok: false };
+        }
 
         for (let i = 1; i < sequence.length; i++) {
             if (isClose(sequence[i - 1], 0)) {
