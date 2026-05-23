@@ -38,11 +38,11 @@ function getCoinFlipHTML() {
                 <div class="prediction-section">
                     <p class="section-title">Select your prediction:</p>
                     <div class="prediction-cards">
-                        <div class="predict-card" id="predictHeads" data-choice="heads">
+                        <div class="predict-card" id="predictHeads" data-choice="heads" tabindex="0" role="button" aria-label="Predict Heads">
                             <span class="predict-emoji">👑</span>
                             <span class="predict-name">Heads</span>
                         </div>
-                        <div class="predict-card" id="predictTails" data-choice="tails">
+                        <div class="predict-card" id="predictTails" data-choice="tails" tabindex="0" role="button" aria-label="Predict Tails">
                             <span class="predict-emoji">🦅</span>
                             <span class="predict-name">Tails</span>
                         </div>
@@ -474,6 +474,18 @@ function initCoinFlip() {
             selectPrediction('tails');
         }
     });
+
+    function handleCardKey(e, choice) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            if (!flipBtn.disabled || selectedPrediction === null) {
+                selectPrediction(choice);
+            }
+        }
+    }
+
+    predictHeadsBtn.addEventListener('keydown', (e) => handleCardKey(e, 'heads'));
+    predictTailsBtn.addEventListener('keydown', (e) => handleCardKey(e, 'tails'));
 
     // 3D Coin Rotate Calculations
     function setCoinFace(isHeads, seed) {
