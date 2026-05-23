@@ -591,12 +591,14 @@ function initDotsBoxes() {
     }
 
     function simulateMove(move) {
+        if (!move || !move.dataset || !move.dataset.key) return;
         const key = move.dataset.key;
         if (move.classList.contains('line-h')) horizontal[key] = true;
         else                                    vertical[key]   = true;
     }
 
     function undoSimulation(move) {
+        if (!move || !move.dataset || !move.dataset.key) return;
         const key = move.dataset.key;
         if (move.classList.contains('line-h')) horizontal[key] = false;
         else                                    vertical[key]   = false;
