@@ -454,16 +454,11 @@ function init2048Game() {
         let moved = false;
 
         if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 30) moved = moveRight();
-            else if (dx < -30) moved = moveLeft();
+            if (dx > 30) makeMove("right");
+            else if (dx < -30) makeMove("left");
         } else {
-            if (dy > 30) moved = moveDown();
-            else if (dy < -30) moved = moveUp();
-        }
-
-        if(moved) {
-            addNewTile();
-            drawBoard();
+            if (dy > 30) makeMove("down");
+            else if (dy < -30) makeMove("up");
         }
     }, { passive: false });
 
