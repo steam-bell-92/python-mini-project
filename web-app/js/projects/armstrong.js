@@ -140,6 +140,7 @@ function getArmstrongHTML() {
                 padding:15px;
                 border-radius:30px;
                 background-color:var(--bg-color);
+                color: var(--text-color);
                 outline:none;
                 border:1px solid white;
             }
