@@ -44,7 +44,7 @@ function getPasswordForgeHTML() {
                 margin-top: 1rem;
                 font-size: 1rem;
                 background-color: var(--bg-color);
-                color: #000;
+                color: var(--text-color);
             }
 
             .btn-check {
@@ -110,6 +110,11 @@ function initPasswordForge() {
         }
     });
 
+    const rulesContainer = document.getElementById('rulesContainer');
+    const result = document.getElementById('passwordResult');
+
+    function checkRules() {
+        const password = passwordInput.value;
     checkBtn.addEventListener('click', () => {
         const password = passwordInput.value;
 
@@ -117,7 +122,14 @@ function initPasswordForge() {
         const hasLength = password.length >= 8;
         const hasNumber = /\d/.test(password);
         const hasUpper = /[A-Z]/.test(password);
-        const hasSpecial = /[!@#$%^&*]/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
+
+        rulesContainer.innerHTML = `
+            <p>${hasLength ? '✅' : '❌'} Must contain at least 8 characters</p>
+            <p>${hasNumber ? '✅' : '❌'} Must contain a number</p>
+            <p>${hasUpper ? '✅' : '❌'} Must contain an uppercase letter</p>
+            <p>${hasSpecial ? '✅' : '❌'} Must contain a special character</p>
+        `;
 
         // 2. Update Individual Rule UI
         ruleLength.textContent = hasLength ? '✅ Must contain at least 8 characters' : '❌ Must contain at least 8 characters';
