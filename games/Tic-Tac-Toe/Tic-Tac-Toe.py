@@ -1,187 +1,189 @@
 import random
 import math
 import time
+import os
 
-# ─────────────────────────────────────────
-#  🎮 Tic Tac Toe — Smart AI Edition
-# ─────────────────────────────────────────
+# ═══════════════════════════════════════════════
+#   🎮  TIC TAC TOE  —  Full Featured Edition
+# ═══════════════════════════════════════════════
 
-EMPTY = "⬜"
-X = "❌"
-O = "⭕"
+EMPTY = " "
+X = "X"
+O = "O"
+
+WINS = [
+    (0, 1, 2), (3, 4, 5), (6, 7, 8),   # rows
+    (0, 3, 6), (1, 4, 7), (2, 5, 8),   # cols
+    (0, 4, 8), (2, 4, 6)               # diagonals
+]
 
 
-# ─────────────────────────────────────────
-# BOARD FUNCTIONS
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
+# DISPLAY
+# ───────────────────────────────────────────────
+
+def clear():
+    os.system("cls" if os.name == "nt" else "clear")
+
+
+def color(text, code):
+    """ANSI color wrapper."""
+    return f"\033[{code}m{text}\033[0m"
+
+
+def RED(t):    return color(t, "91")
+def BLUE(t):   return color(t, "94")
+def GREEN(t):  return color(t, "92")
+def YELLOW(t): return color(t, "93")
+def BOLD(t):   return color(t, "1")
+def DIM(t):    return color(t, "2")
+def CYAN(t):   return color(t, "96")
+
+
+def banner():
+    print(BOLD(CYAN("""
+╔══════════════════════════════════════╗
+║       🎮  TIC  TAC  TOE  🎮          ║
+╚══════════════════════════════════════╝""")))
+
+
+def fmt_cell(val, pos):
+    """Color X red, O blue, empty show position number."""
+    if val == X:
+        return BOLD(RED(f" {X} "))
+    elif val == O:
+        return BOLD(BLUE(f" {O} "))
+    else:
+        return DIM(f" {pos} ")
+
+
+def display_board(board):
+    b = board
+    sep = "───┼───┼───"
+    print()
+    print(f"  {fmt_cell(b[0],1)}│{fmt_cell(b[1],2)}│{fmt_cell(b[2],3)}")
+    print(f"  {sep}")
+    print(f"  {fmt_cell(b[3],4)}│{fmt_cell(b[4],5)}│{fmt_cell(b[5],6)}")
+    print(f"  {sep}")
+    print(f"  {fmt_cell(b[6],7)}│{fmt_cell(b[7],8)}│{fmt_cell(b[8],9)}")
+    print()
+
+
+def display_scoreboard(scores, names):
+    p1, p2 = names
+    s1, s2, draws = scores["p1"], scores["p2"], scores["draws"]
+    print(BOLD("  ┌─── SCOREBOARD ───────────────┐"))
+    print(f"  │  {RED(p1):<20} {BOLD(str(s1)):>3}  │")
+    print(f"  │  {BLUE(p2):<20} {BOLD(str(s2)):>3}  │")
+    print(f"  │  {'Draws':<20} {BOLD(str(draws)):>3}  │")
+    print(BOLD("  └───────────────────────────────┘"))
+    print()
+
+
+# ───────────────────────────────────────────────
+# GAME LOGIC
+# ───────────────────────────────────────────────
 
 def create_board():
     return [EMPTY] * 9
 
 
-def display_board(board):
-    print()
-    for i in range(0, 9, 3):
-        print(f"  {board[i]}  {board[i+1]}  {board[i+2]}")
-    print()
-
-
-def display_position_guide():
-    print("\n  📌 Position guide:")
-    for i in range(1, 10, 3):
-        print(f"  {i}  {i+1}  {i+2}")
-    print()
-
-
 def available_moves(board):
-    return [i for i, cell in enumerate(board) if cell == EMPTY]
+    return [i for i, c in enumerate(board) if c == EMPTY]
 
-
-# ─────────────────────────────────────────
-# GAME LOGIC
-# ─────────────────────────────────────────
 
 def check_winner(board, symbol):
-    wins = [
-        [0, 1, 2],
-        [3, 4, 5],
-        [6, 7, 8],
-
-        [0, 3, 6],
-        [1, 4, 7],
-        [2, 5, 8],
-
-        [0, 4, 8],
-        [2, 4, 6]
-    ]
-
     return any(
         board[a] == board[b] == board[c] == symbol
-        for a, b, c in wins
+        for a, b, c in WINS
     )
 
 
+def get_winning_cells(board, symbol):
+    for a, b, c in WINS:
+        if board[a] == board[b] == board[c] == symbol:
+            return (a, b, c)
+    return None
+
+
 def check_draw(board):
-    return all(cell != EMPTY for cell in board)
+    return EMPTY not in board
 
 
-# ─────────────────────────────────────────
-# PLAYER INPUT
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
+# AI ENGINES
+# ───────────────────────────────────────────────
 
-def get_player_move(board, symbol, name):
-    while True:
-        try:
-            pos = int(input(
-                f"  {symbol} {name}'s turn!\n"
-                f"  ➡️ Enter position (1-9): "
-            ))
-
-            if pos < 1 or pos > 9:
-                print("  ⚠️ Enter a number between 1 and 9.\n")
-
-            elif board[pos - 1] != EMPTY:
-                print("  ⚠️ Position already taken.\n")
-
-            else:
-                return pos - 1
-
-        except ValueError:
-            print("  ⚠️ Invalid input.\n")
-
-
-# ─────────────────────────────────────────
-# EASY AI
-# ─────────────────────────────────────────
-
-def easy_ai(board):
+def easy_ai(board, _symbol):
     return random.choice(available_moves(board))
 
 
-# ─────────────────────────────────────────
-# MEDIUM AI
-# ─────────────────────────────────────────
+def medium_ai(board, symbol):
+    opponent = X if symbol == O else O
 
-def medium_ai(board):
-    # Try to win
+    # 1. Win if possible
     for move in available_moves(board):
-        board[move] = O
-
-        if check_winner(board, O):
+        board[move] = symbol
+        if check_winner(board, symbol):
             board[move] = EMPTY
             return move
-
         board[move] = EMPTY
 
-    # Block player win
+    # 2. Block opponent win
     for move in available_moves(board):
-        board[move] = X
-
-        if check_winner(board, X):
+        board[move] = opponent
+        if check_winner(board, opponent):
             board[move] = EMPTY
             return move
-
         board[move] = EMPTY
 
-    # Otherwise random
+    # 3. Prefer center, then corners, then sides
+    for preferred in [4, 0, 2, 6, 8, 1, 3, 5, 7]:
+        if board[preferred] == EMPTY:
+            return preferred
+
     return random.choice(available_moves(board))
 
 
-# ─────────────────────────────────────────
-# HARD AI (MINIMAX)
-# ─────────────────────────────────────────
-
-def minimax(board, depth, is_maximizing):
-
-    if check_winner(board, O):
-        return 1
-
-    if check_winner(board, X):
-        return -1
-
+def minimax(board, depth, is_max, symbol, opponent, alpha, beta):
+    if check_winner(board, symbol):
+        return 10 - depth
+    if check_winner(board, opponent):
+        return depth - 10
     if check_draw(board):
         return 0
 
-    if is_maximizing:
-        best_score = -math.inf
-
+    if is_max:
+        best = -math.inf
         for move in available_moves(board):
-            board[move] = O
-
-            score = minimax(board, depth + 1, False)
-
+            board[move] = symbol
+            best = max(best, minimax(board, depth+1, False, symbol, opponent, alpha, beta))
             board[move] = EMPTY
-
-            best_score = max(score, best_score)
-
-        return best_score
-
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break
+        return best
     else:
-        best_score = math.inf
-
+        best = math.inf
         for move in available_moves(board):
-            board[move] = X
-
-            score = minimax(board, depth + 1, True)
-
+            board[move] = opponent
+            best = min(best, minimax(board, depth+1, True, symbol, opponent, alpha, beta))
             board[move] = EMPTY
+            beta = min(beta, best)
+            if beta <= alpha:
+                break
+        return best
 
-            best_score = min(score, best_score)
 
-        return best_score
-
-
-def hard_ai(board):
+def hard_ai(board, symbol):
+    opponent = X if symbol == O else O
     best_score = -math.inf
     best_move = None
 
     for move in available_moves(board):
-        board[move] = O
-
-        score = minimax(board, 0, False)
-
+        board[move] = symbol
+        score = minimax(board, 0, False, symbol, opponent, -math.inf, math.inf)
         board[move] = EMPTY
-
         if score > best_score:
             best_score = score
             best_move = move
@@ -189,216 +191,235 @@ def hard_ai(board):
     return best_move
 
 
-# ─────────────────────────────────────────
-# AI CONTROLLER
-# ─────────────────────────────────────────
-
-def get_computer_move(board, difficulty):
-
-    if difficulty == "easy":
-        return easy_ai(board)
-
-    elif difficulty == "medium":
-        return medium_ai(board)
-
-    else:
-        return hard_ai(board)
+AI_ENGINES = {
+    "easy":   easy_ai,
+    "medium": medium_ai,
+    "hard":   hard_ai,
+}
 
 
-# ─────────────────────────────────────────
-# GAME MODE
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
+# INPUT HELPERS
+# ───────────────────────────────────────────────
 
-def choose_difficulty():
+def get_player_move(board, symbol, name):
+    sym_colored = RED(symbol) if symbol == X else BLUE(symbol)
     while True:
-
-        print("\n  🎯 Choose Difficulty:")
-        print("  1️⃣ Easy")
-        print("  2️⃣ Medium")
-        print("  3️⃣ Hard")
-
-        choice = input("  ➡️ Enter choice (1/2/3): ").strip()
-
-        if choice == "1":
-            return "easy"
-
-        elif choice == "2":
-            return "medium"
-
-        elif choice == "3":
-            return "hard"
-
-        else:
-            print("  ⚠️ Invalid choice.\n")
+        try:
+            raw = input(f"  {sym_colored} {BOLD(name)} → enter position (1-9): ").strip()
+            pos = int(raw)
+            if not 1 <= pos <= 9:
+                print(YELLOW("  ⚠  Enter a number from 1 to 9.\n"))
+            elif board[pos - 1] != EMPTY:
+                print(YELLOW("  ⚠  That cell is already taken.\n"))
+            else:
+                return pos - 1
+        except ValueError:
+            print(YELLOW("  ⚠  Please enter a valid number.\n"))
 
 
-def play_vs_computer():
-
-    board = create_board()
-
-    difficulty = choose_difficulty()
-
-    print(f"\n  👤 You = {X}  |  🤖 Computer = {O}")
-    print(f"  🎯 Difficulty: {difficulty.upper()}")
-
-    display_position_guide()
-
+def prompt(msg, valid):
     while True:
-
-        # PLAYER TURN
-        display_board(board)
-
-        move = get_player_move(board, X, "You")
-
-        board[move] = X
-
-        if check_winner(board, X):
-            display_board(board)
-            print("  🎉 You win! 🏆\n")
-            return
-
-        if check_draw(board):
-            display_board(board)
-            print("  🤝 It's a draw!\n")
-            return
-
-        # COMPUTER TURN
-        print("\n  🤖 Computer is thinking...")
-        time.sleep(1)
-
-        comp_move = get_computer_move(board, difficulty)
-
-        board[comp_move] = O
-
-        print(f"  🤖 Computer chose position {comp_move + 1}")
-
-        if check_winner(board, O):
-            display_board(board)
-            print("  😔 Computer wins!\n")
-            return
-
-        if check_draw(board):
-            display_board(board)
-            print("  🤝 It's a draw!\n")
-            return
+        ans = input(msg).strip().lower()
+        if ans in valid:
+            return ans
+        print(YELLOW(f"  ⚠  Enter one of: {', '.join(valid)}\n"))
 
 
-# ─────────────────────────────────────────
-# TWO PLAYER MODE
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
+# MENUS
+# ───────────────────────────────────────────────
 
-def play_two_players():
+def menu_mode():
+    print(BOLD("\n  Choose Game Mode:"))
+    print("  1  →  Two Players (local)")
+    print("  2  →  vs Computer (AI)")
+    return prompt("\n  ➜ Your choice (1/2): ", {"1", "2"})
 
+
+def menu_difficulty():
+    print(BOLD("\n  Choose Difficulty:"))
+    print("  1  →  Easy    (random moves)")
+    print("  2  →  Medium  (smart blocking)")
+    print("  3  →  Hard    (unbeatable AI)")
+    choice = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
+    return {"1": "easy", "2": "medium", "3": "hard"}[choice]
+
+
+def menu_first_turn(p1_name, p2_name):
+    print(BOLD("\n  Who goes first?"))
+    print(f"  1  →  {p1_name}")
+    print(f"  2  →  {p2_name}")
+    print(f"  3  →  Random")
+    choice = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
+    if choice == "3":
+        return random.choice(["1", "2"])
+    return choice
+
+
+# ───────────────────────────────────────────────
+# CORE GAME ROUND
+# ───────────────────────────────────────────────
+
+def play_round(players, scores, mode, difficulty=None):
+    """
+    players: list of dicts with keys: name, symbol, is_human
+    Returns: "p1", "p2", or "draw"
+    """
     board = create_board()
-
-    players = [
-        {"name": "Player 1", "symbol": X},
-        {"name": "Player 2", "symbol": O}
-    ]
-
-    print(f"\n  👤 Player 1 = {X} | Player 2 = {O}")
-
-    display_position_guide()
-
     turn = 0
 
     while True:
-
+        clear()
+        banner()
+        display_scoreboard(scores, [p["name"] for p in players])
         display_board(board)
 
-        player = players[turn % 2]
+        current = players[turn % 2]
+        other   = players[(turn + 1) % 2]
 
-        move = get_player_move(
-            board,
-            player["symbol"],
-            player["name"]
-        )
+        sym_label = RED(current["symbol"]) if current["symbol"] == X else BLUE(current["symbol"])
 
-        board[move] = player["symbol"]
+        # ── Get move ──
+        if current["is_human"]:
+            move = get_player_move(board, current["symbol"], current["name"])
+        else:
+            print(f"  🤖 {BOLD(current['name'])} is thinking", end="", flush=True)
+            for _ in range(3):
+                time.sleep(0.35)
+                print(".", end="", flush=True)
+            print()
+            time.sleep(0.2)
+            move = AI_ENGINES[difficulty](board, current["symbol"])
+            print(f"  🤖 {current['name']} chose position {BOLD(str(move + 1))}\n")
+            time.sleep(0.5)
 
-        if check_winner(board, player["symbol"]):
+        board[move] = current["symbol"]
+
+        # ── Check result ──
+        if check_winner(board, current["symbol"]):
+            clear()
+            banner()
+            display_scoreboard(scores, [p["name"] for p in players])
             display_board(board)
-
-            print(
-                f"  🎉 {player['name']} wins! 🏆\n"
-            )
-
-            return
+            win_sym = "🏆"
+            print(GREEN(BOLD(f"  {win_sym}  {current['name']} wins this round!  {win_sym}\n")))
+            time.sleep(1.5)
+            return "p1" if turn % 2 == 0 else "p2"
 
         if check_draw(board):
+            clear()
+            banner()
+            display_scoreboard(scores, [p["name"] for p in players])
             display_board(board)
-            print("  🤝 It's a draw!\n")
-            return
+            print(YELLOW(BOLD("  🤝  It's a draw!\n")))
+            time.sleep(1.5)
+            return "draw"
 
         turn += 1
 
 
-# ─────────────────────────────────────────
-# MENU
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
+# FULL MATCH (BEST OF N)
+# ───────────────────────────────────────────────
 
-def choose_mode():
+def play_match(mode, difficulty=None):
+    clear()
+    banner()
 
-    while True:
+    # Names
+    if mode == "1":
+        p1_name = input(BOLD("  Player 1 name: ")).strip() or "Player 1"
+        p2_name = input(BOLD("  Player 2 name: ")).strip() or "Player 2"
+        players = [
+            {"name": p1_name, "symbol": X, "is_human": True},
+            {"name": p2_name, "symbol": O, "is_human": True},
+        ]
+    else:
+        p1_name = input(BOLD("  Your name: ")).strip() or "You"
+        p2_name = "Computer"
+        players = [
+            {"name": p1_name, "symbol": X, "is_human": True},
+            {"name": p2_name, "symbol": O, "is_human": False},
+        ]
 
-        print("\n  Choose mode:")
-        print("  1️⃣ 2 Players")
-        print("  2️⃣ vs Computer")
+    # First turn
+    first = menu_first_turn(players[0]["name"], players[1]["name"])
+    if first == "2":
+        players.reverse()
+        # Keep X always first to move; reassign symbols
+        players[0]["symbol"] = X
+        players[1]["symbol"] = O
 
-        choice = input(
-            "  ➡️ Enter choice (1/2): "
-        ).strip()
+    scores = {"p1": 0, "p2": 0, "draws": 0}
 
-        if choice == "1":
-            return "two"
+    # Rounds
+    print(BOLD("\n  Best of how many rounds?"))
+    print("  1  →  1 round")
+    print("  2  →  3 rounds (best of 3)")
+    print("  3  →  5 rounds (best of 5)")
+    rc = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
+    max_rounds = {"1": 1, "2": 3, "3": 5}[rc]
+    rounds_played = 0
 
-        elif choice == "2":
-            return "computer"
+    while rounds_played < max_rounds:
+        remaining = max_rounds - rounds_played
+        winner = play_round(players, scores, mode, difficulty)
 
+        if winner == "p1":
+            scores["p1"] += 1
+        elif winner == "p2":
+            scores["p2"] += 1
         else:
-            print("  ⚠️ Invalid choice.\n")
+            scores["draws"] += 1
+
+        rounds_played += 1
+
+        # Early exit if someone has won majority
+        majority = (max_rounds // 2) + 1
+        if scores["p1"] >= majority or scores["p2"] >= majority:
+            break
+
+        if rounds_played < max_rounds:
+            cont = prompt(f"  ➜ Next round? (y/n): ", {"y", "n"})
+            if cont == "n":
+                break
+
+    # Final result
+    clear()
+    banner()
+    p1_name_display = players[0]["name"] if first == "1" else players[1]["name"]
+    p2_name_display = players[1]["name"] if first == "1" else players[0]["name"]
+    display_scoreboard(scores, [players[0]["name"], players[1]["name"]])
+
+    if scores["p1"] > scores["p2"]:
+        print(GREEN(BOLD(f"  🏆  {players[0]['name']} wins the match!\n")))
+    elif scores["p2"] > scores["p1"]:
+        print(GREEN(BOLD(f"  🏆  {players[1]['name']} wins the match!\n")))
+    else:
+        print(YELLOW(BOLD("  🤝  The match is a tie!\n")))
 
 
-def play_again():
-
-    while True:
-
-        answer = input(
-            "  🔄 Play again? (y/n): "
-        ).strip().lower()
-
-        if answer in ("y", "yes"):
-            return True
-
-        elif answer in ("n", "no"):
-            return False
-
-        else:
-            print("  ⚠️ Enter y or n.\n")
-
-
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
 # MAIN
-# ─────────────────────────────────────────
+# ───────────────────────────────────────────────
 
 def main():
-
-    print("\n" + "=" * 42)
-    print("      🎮 TIC TAC TOE — SMART AI")
-    print("=" * 42)
-
     while True:
+        clear()
+        banner()
 
-        mode = choose_mode()
+        mode = menu_mode()
+        difficulty = None
+        if mode == "2":
+            difficulty = menu_difficulty()
 
-        if mode == "two":
-            play_two_players()
+        play_match(mode, difficulty)
 
-        else:
-            play_vs_computer()
-
-        if not play_again():
-            print("\n  👋 Thanks for playing!\n")
+        again = prompt("  ➜ Play again? (y/n): ", {"y", "n"})
+        if again == "n":
+            clear()
+            print(CYAN(BOLD("\n  👋  Thanks for playing! See you next time.\n")))
             break
 
 

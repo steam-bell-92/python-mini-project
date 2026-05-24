@@ -85,6 +85,7 @@ function getCoordinatePolarTransformHTML() {
                 outline:none;
                 background-color:var(--bg-color);
                 border:1px solid white;
+                color: var(--text-color);
             }
             #cartesianY{
                 padding:15px;
@@ -92,6 +93,7 @@ function getCoordinatePolarTransformHTML() {
                 outline:none;
                 background-color:var(--bg-color);
                 border:1px solid white;
+                color: var(--text-color);
             }
             .btn-primary{
                 padding:15px;

@@ -1,6 +1,5 @@
 import tkinter as tk
 import random
-import os
 from pathlib import Path
 
 GRID_SIZE = 4
@@ -45,12 +44,13 @@ class Game2048:
     def __init__(self, root):
         self.root = root
         self.root.title("2048 Game")
+        self.root.resizable(False, False)
 
         self.score = 0
         self.high_score = self.load_high_score()
 
         self.main_frame = tk.Frame(root, bg=BACKGROUND_COLOR)
-        self.main_frame.grid()
+        self.main_frame.grid(padx=10, pady=10)
 
         self.score_label = tk.Label(
             root,
@@ -67,13 +67,21 @@ class Game2048:
         )
         self.restart_button.grid(pady=5)
 
+        self.instruction_label = tk.Label(
+            root,
+            text="🎮 Controls: ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
+            font=("Arial", 10),
+            fg="#6a635b",
+        )
+        self.instruction_label.grid(pady=5)
+
         self.cells = []
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
 
+        self.game_over_label = None
+
         self.create_grid()
-        self.add_new_tile()
-        self.add_new_tile()
-        self.update_grid()
+        self.start_new_game()
 
         self.root.bind("<Key>", self.handle_keypress)
 
@@ -89,7 +97,7 @@ class Game2048:
         try:
             HIGH_SCORE_PATH.write_text(str(self.high_score))
         except Exception as e:
-            print(f"⚠️ Warning: Could not save high score: {e}")
+            print(f"Warning: Could not save high score: {e}")
 
     def create_grid(self):
         for row in range(GRID_SIZE):
@@ -110,26 +118,30 @@ class Game2048:
                     pady=CELL_PADDING
                 )
 
+                frame.grid_propagate(False)
+
                 label = tk.Label(
-                    self.main_frame,
+                    frame,
                     text="",
                     bg=EMPTY_CELL_COLOR,
                     justify=tk.CENTER,
-                    font=("Arial", 24, "bold"),
-                    width=4,
-                    height=2
+                    font=("Arial", 24, "bold")
                 )
 
-                label.grid(
-                    row=row,
-                    column=col,
-                    padx=CELL_PADDING,
-                    pady=CELL_PADDING
-                )
+                label.place(relx=0.5, rely=0.5, anchor="center")
 
                 row_cells.append(label)
 
             self.cells.append(row_cells)
+
+    def start_new_game(self):
+        self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
+        self.score = 0
+
+        self.add_new_tile()
+        self.add_new_tile()
+
+        self.update_grid()
 
     def add_new_tile(self):
         empty_cells = []
@@ -168,9 +180,7 @@ class Game2048:
 
     def compress(self, row):
         new_row = [num for num in row if num != 0]
-
         new_row += [0] * (GRID_SIZE - len(new_row))
-
         return new_row
 
     def merge(self, row):
@@ -184,7 +194,6 @@ class Game2048:
 
     def move_left(self):
         moved = False
-
         new_board = []
 
         for row in self.board:
@@ -198,7 +207,6 @@ class Game2048:
             new_board.append(final)
 
         self.board = new_board
-
         return moved
 
     def reverse(self):
@@ -228,6 +236,7 @@ class Game2048:
     def check_game_over(self):
         for row in range(GRID_SIZE):
             for col in range(GRID_SIZE):
+
                 if self.board[row][col] == 0:
                     return False
 
@@ -243,7 +252,6 @@ class Game2048:
 
     def handle_keypress(self, event):
         key = event.keysym
-
         moved = False
 
         if key == "Left":
@@ -258,6 +266,9 @@ class Game2048:
         elif key == "Down":
             moved = self.move_down()
 
+        else:
+            return
+
         if moved:
             self.add_new_tile()
 
@@ -267,27 +278,40 @@ class Game2048:
 
             self.update_grid()
 
-            if self.check_game_over():
-                self.game_over()
+        # FIXED BUG:
+        # Game over is now checked even when no movement happens
+        if self.check_game_over():
+            self.game_over()
 
     def game_over(self):
+
+        # Prevent duplicate labels
+        if self.game_over_label is not None:
+            return
+
+        # Disable controls after game over
+        self.root.unbind("<Key>")
+
         self.game_over_label = tk.Label(
             self.root,
             text="GAME OVER",
             font=("Arial", 24, "bold"),
             fg="red"
         )
+
         self.game_over_label.grid(pady=10)
 
     def restart_game(self):
-        if hasattr(self, 'game_over_label'):
+
+        # Remove old game over label
+        if self.game_over_label is not None:
             self.game_over_label.destroy()
-            
-        self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
-        self.score = 0
-        self.add_new_tile()
-        self.add_new_tile()
-        self.update_grid()
+            self.game_over_label = None
+
+        self.start_new_game()
+
+        # Re-enable keyboard controls
+        self.root.bind("<Key>", self.handle_keypress)
 
 
 if __name__ == "__main__":
