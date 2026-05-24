@@ -75,10 +75,14 @@ total_boxes = size * size
 
 def print_board():
     print("\n")
+
     for row in range(size):
+
+        # Horizontal lines
         line = ""
         for col in range(size):
             line += "•"
+
             if horizontal_lines[row][col]:
                 if boxes[row][col] == 'P':
                     line += BLUE + "━━" + RESET
@@ -88,11 +92,15 @@ def print_board():
                     line += "━━"
             else:
                 line += "  "
+
         line += "•"
         print(line)
 
+        # Vertical lines and boxes
         line = ""
+
         for col in range(size):
+
             if vertical_lines[row][col]:
                 if boxes[row][col] == 'P':
                     line += BLUE + "┃" + RESET
@@ -112,12 +120,17 @@ def print_board():
 
         if vertical_lines[row][size]:
             line += "┃"
+        else:
+            line += " "
+
         print(line)
 
+    # Bottom horizontal line
     line = ""
     for col in range(size):
         line += "•"
         line += "━━" if horizontal_lines[size][col] else "  "
+
     line += "•"
     print(line)
     print("\n")
@@ -125,52 +138,74 @@ def print_board():
 
 def check_boxes(symbol):
     global player_score, computer_score
+
     completed = False
+
     for row in range(size):
         for col in range(size):
+
             if boxes[row][col] == ' ':
+
                 top = horizontal_lines[row][col]
                 bottom = horizontal_lines[row + 1][col]
                 left = vertical_lines[row][col]
                 right = vertical_lines[row][col + 1]
+
                 if top and bottom and left and right:
+
                     boxes[row][col] = symbol
                     completed = True
+
                     if symbol == 'P':
                         player_score += 1
                     else:
                         computer_score += 1
+
     return completed
 
 
 def get_available_moves():
+
     moves = []
+
     for row in range(size + 1):
         for col in range(size):
+
             if not horizontal_lines[row][col]:
                 moves.append(('h', row, col))
+
     for row in range(size):
         for col in range(size + 1):
+
             if not vertical_lines[row][col]:
                 moves.append(('v', row, col))
+
     return moves
 
 
 def count_box_sides(row, col):
+
     count = 0
+
     if horizontal_lines[row][col]:
         count += 1
+
     if horizontal_lines[row + 1][col]:
         count += 1
+
     if vertical_lines[row][col]:
         count += 1
+
     if vertical_lines[row][col + 1]:
         count += 1
+
     return count
 
 
 def simulate_move(move):
+
     direction, row, col = move
+
     if direction == 'h':
         horizontal_lines[row][col] = True
     else:
@@ -178,7 +213,9 @@ def simulate_move(move):
 
 
 def undo_move(move):
+
     direction, row, col = move
+
     if direction == 'h':
         horizontal_lines[row][col] = False
     else:
@@ -186,82 +223,146 @@ def undo_move(move):
 
 
 def completes_box(move):
+
     simulate_move(move)
+
     for row in range(size):
         for col in range(size):
+
             if count_box_sides(row, col) == 4:
                 undo_move(move)
                 return True
+
     undo_move(move)
     return False
 
 
 def creates_danger(move):
+
     simulate_move(move)
+
     for row in range(size):
         for col in range(size):
+
             if count_box_sides(row, col) == 3:
                 undo_move(move)
                 return True
+
     undo_move(move)
     return False
 
 
 def ai_move():
+
     available_moves = get_available_moves()
 
     if ai_difficulty == 'easy':
+
         return random.choice(available_moves)
 
     elif ai_difficulty == 'medium':
+
+        # Prioritize completing boxes
         for move in available_moves:
             if completes_box(move):
                 return move
-        safe_moves = [m for m in available_moves if not creates_danger(m)]
+
+        # Avoid dangerous moves
+        safe_moves = [
+            move for move in available_moves
+            if not creates_danger(move)
+        ]
+
         return random.choice(safe_moves) if safe_moves else random.choice(available_moves)
 
     else:  # hard
+
         best_move = None
         best_score = -999
+
         for move in available_moves:
+
             score = 0
+
             if completes_box(move):
                 score += 100
+
             if creates_danger(move):
                 score -= 50
+
             simulate_move(move)
+
             for row in range(size):
                 for col in range(size):
+
                     sides = count_box_sides(row, col)
+
                     if sides == 2:
                         score += 2
                     elif sides == 1:
                         score += 1
+
             undo_move(move)
+
             if score > best_score:
                 best_score = score
                 best_move = move
+
         return best_move
+
+
+# =========================
+# FIXED INPUT VALIDATION
+# =========================
+
+def is_valid_move(direction, row, col):
+
+    # Prevent negative indexing bug
+    if row < 0 or col < 0:
+        return False
+
+    # Horizontal move validation
+    if direction == 'h':
+
+        if row >= size + 1 or col >= size:
+            return False
+
+    # Vertical move validation
+    else:
+
+        if row >= size or col >= size + 1:
+            return False
+
+    return True
 
 
 # Main game loop
 while player_score + computer_score < total_boxes:
+
     print_board()
+
     print(BOLD + "=" * 70 + RESET)
     print(BLUE + f"🔵 Player Score: {player_score}" + RESET)
+
     if mode == '2':
         print(RED + f"🤖 AI Score: {computer_score}" + RESET)
     else:
         print(RED + f"🔴 Player 2 Score: {computer_score}" + RESET)
+
     print(BOLD + "=" * 70 + RESET)
 
+    # =========================
+    # PLAYER TURN
+    # =========================
     if current_player == 1 or mode == '1':
+
         if current_player == 1:
             print(BLUE + "\n🔵 Player 1 Turn" + RESET)
         else:
             print(RED + "\n🔴 Player 2 Turn" + RESET)
 
         direction = input("➡️ Horizontal(h) or Vertical(v): ").lower()
+
         if direction not in ['h', 'v']:
             print(RED + "❌ Invalid direction!" + RESET)
             continue
@@ -269,38 +370,59 @@ while player_score + computer_score < total_boxes:
         row = input("📍 Enter row: ")
         col = input("📍 Enter column: ")
 
-        if not row.isdigit() or not col.isdigit():
-            print(RED + "❌ Invalid position!" + RESET)
+        # FIXED:
+        # Proper integer validation
+        try:
+            row = int(row)
+            col = int(col)
+
+        except ValueError:
+            print(RED + "❌ Please enter valid numbers!" + RESET)
             continue
 
-        row, col = int(row), int(col)
-
-        try:
-            if direction == 'h':
-                if horizontal_lines[row][col]:
-                    print(YELLOW + "⚠️ Line already taken!" + RESET)
-                    continue
-                horizontal_lines[row][col] = True
-            else:
-                if vertical_lines[row][col]:
-                    print(YELLOW + "⚠️ Line already taken!" + RESET)
-                    continue
-                vertical_lines[row][col] = True
-        except:
+        # FIXED:
+        # Proper range validation
+        if not is_valid_move(direction, row, col):
             print(RED + "❌ Position out of range!" + RESET)
             continue
 
+        # Check if line already exists
+        if direction == 'h':
+
+            if horizontal_lines[row][col]:
+                print(YELLOW + "⚠️ Line already taken!" + RESET)
+                continue
+
+            horizontal_lines[row][col] = True
+
+        else:
+
+            if vertical_lines[row][col]:
+                print(YELLOW + "⚠️ Line already taken!" + RESET)
+                continue
+
+            vertical_lines[row][col] = True
+
         symbol = 'P' if current_player == 1 else 'A'
+
         got_box = check_boxes(symbol)
+
         if not got_box:
             current_player = 2 if current_player == 1 else 1
 
+    # =========================
+    # AI TURN
+    # =========================
     else:
+
         print(RED + "\n🤖 AI is thinking..." + RESET)
+
         time.sleep(1)
 
         move = ai_move()
+
         direction, row, col = move
+
         print(CYAN + f"🎯 AI selected: {direction} ({row}, {col})" + RESET)
 
         if direction == 'h':
@@ -309,11 +431,17 @@ while player_score + computer_score < total_boxes:
             vertical_lines[row][col] = True
 
         got_box = check_boxes('A')
+
         if not got_box:
             current_player = 1
 
-# Game over
+
+# =========================
+# GAME OVER
+# =========================
+
 print_board()
+
 print(BOLD + GREEN)
 print("=" * 70)
 print("🏁 GAME OVER 🏁")
@@ -321,6 +449,7 @@ print("=" * 70)
 print(RESET)
 
 print(BLUE + f"🔵 Player Score: {player_score}" + RESET)
+
 if mode == '2':
     print(RED + f"🤖 AI Score: {computer_score}" + RESET)
 else:
@@ -329,13 +458,18 @@ else:
 print()
 
 if player_score > computer_score:
+
     print(GREEN + BOLD + "🎉 PLAYER 1 WINS!" + RESET)
+
 elif computer_score > player_score:
+
     if mode == '2':
         print(RED + BOLD + "🤖 AI WINS!" + RESET)
     else:
         print(RED + BOLD + "🎉 PLAYER 2 WINS!" + RESET)
+
 else:
+
     print(YELLOW + BOLD + "🤝 IT'S A DRAW!" + RESET)
 
 print(CYAN + "\n👋 Thanks for playing Dots & Boxes!\n" + RESET)
