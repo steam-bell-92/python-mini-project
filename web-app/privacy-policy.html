@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Read the Privacy Policy of py.mini(). Learn how we protect user privacy, minimize data tracking, and store state natively in local storage.">
     
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://steam-bell-92.github.io/python-mini-project/privacy-policy.html">
     <meta property="og:title" content="Privacy Policy - py.mini() Lab">
@@ -13,20 +12,17 @@
     <meta property="og:image" content="https://steam-bell-92.github.io/python-mini-project/assets/logo.png">
     <meta property="og:site_name" content="py.mini() lab">
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://steam-bell-92.github.io/python-mini-project/privacy-policy.html">
     <meta name="twitter:title" content="Privacy Policy - py.mini() Lab">
     <meta name="twitter:description" content="Read the Privacy Policy of py.mini(). Learn how we protect user privacy, minimize data tracking, and store state natively in local storage.">
     <meta name="twitter:image" content="https://steam-bell-92.github.io/python-mini-project/assets/logo.png">
 
-    <!-- Canonical Link -->
     <link rel="canonical" href="https://steam-bell-92.github.io/python-mini-project/privacy-policy.html">
 
     <title>Privacy Policy - py.mini() Lab</title>
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
     
-    <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -52,29 +48,37 @@
 
     <style>
         /* ==========================================================================
-           COLOR TOKENS & ROOT STYLES (Defaults to Dark Theme)
+           COLOR TOKENS & ROOT STYLES
            ========================================================================== */
         :root {
-            --bg-main: #060b13;       
-            --bg-card: #0a1322;       
+            --bg-main: #050505;       
+            --bg-card: #0d0d0d;       
             --text-primary: #ffffff;
-            --text-muted: #8fa0b7;    
-            --accent-green: #22c55e;  /* Exactly matches the navbar green line */
-            --border-color: rgba(255, 255, 255, 0.06);
-            --header-bg: #071227;
+            --text-muted: #9ca3af;    
+            --accent-green: #4ade80;  
+            --accent-orange: #f59e0b; 
+            --accent-cyan: #00cecb;    /* Specific Cyan tint from the target image */
+            --border-color: #1f2937;  
+            --header-bg: #050505;
+            --btn-bg: #0d0d0d;
+            --btn-border: #1a1a1a;
         }
 
         /* ==========================================================================
            DYNAMIC LIGHT THEME STATE
            ========================================================================== */
         html[data-theme="light"], body.light-mode {
-            --bg-main: #f8fafc;       /* Slate-50 background */
+            --bg-main: #f8fafc;       
             --bg-card: #ffffff;       
-            --text-primary: #0f172a;  /* Slate-900 typography */
-            --text-muted: #475569;    /* Slate-600 paragraphs */
-            --border-color: #e2e8f0;  /* Slate-200 dividers */
-            --accent-green: #16a34a;  /* Deeper contrast green for accessibility */
+            --text-primary: #0f172a;  
+            --text-muted: #475569;    
+            --border-color: #e2e8f0;  
+            --accent-green: #16a34a;  
+            --accent-orange: #d97706;
+            --accent-cyan: #008482;
             --header-bg: #ffffff;
+            --btn-bg: #ffffff;
+            --btn-border: #e2e8f0;
         }
 
         body {
@@ -87,38 +91,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        /* ==========================================================================
-           NAVIGATION HEADER
-           ========================================================================== */
-        .privacy-header {
-            background: var(--header-bg);
-            border-bottom: 1px solid var(--border-color);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            transition: background 0.3s ease, border-color 0.3s ease;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            height: 92px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-wrap {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-        }
-
-        .logo-py { color: var(--text-muted); }
+        .logo-py { color: var(--accent-orange); } 
         .logo-mini { color: var(--text-primary); }
         .logo-parens { color: var(--accent-green); }
 
@@ -128,39 +101,23 @@
             gap: 14px;
         }
 
-        .back-btn, .theme-toggle-btn {
+        .theme-toggle-btn {
+            width: 48px;
             height: 48px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 50px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 600;
             cursor: pointer;
-            text-decoration: none;
             transition: all 0.25s ease;
             border: none;
-        }
-
-        .back-btn {
-            background: transparent;
-            color: var(--text-muted);
-            padding: 0 1.25rem;
-            border: 1px solid var(--border-color);
-            font-size: 0.95rem;
-        }
-
-        .back-btn:hover {
-            color: var(--accent-green);
-            border-color: var(--accent-green);
-            transform: translateY(-1px);
-        }
-
-        .theme-toggle-btn {
-            width: 48px;
             background: var(--accent-green);
-            color: white;
+            color: #050505; 
             font-size: 1.1rem;
+        }
+
+        html[data-theme="light"] .theme-toggle-btn, body.light-mode .theme-toggle-btn {
+            color: #ffffff;
         }
 
         .theme-toggle-btn:hover {
@@ -168,23 +125,57 @@
         }
 
         /* ==========================================================================
-           MAIN CONTAINER CONTENT
+           MAIN CONTENT AND NEW PILL BACK BUTTON
            ========================================================================== */
         .privacy-wrapper {
             padding: 3rem 1rem 5rem 1rem;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-container {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Exact layout and style matching reference image */
+        .back-home-pill {
+            align-self: flex-start;
+            background-color: var(--btn-bg);
+            border: 1px solid var(--btn-border);
+            color: var(--accent-cyan);
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .back-home-pill:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-cyan);
+            box-shadow: 0 6px 16px rgba(0, 206, 203, 0.15);
         }
 
         .privacy-card {
             background-color: var(--bg-card);
-            max-width: 850px;
             width: 100%;
             padding: 3.5rem;
             border-radius: 16px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
             transition: background-color 0.3s ease, border-color 0.3s ease;
+            box-sizing: border-box;
         }
 
         .privacy-card h1 {
@@ -193,6 +184,10 @@
             margin-top: 0;
             margin-bottom: 0.5rem;
             letter-spacing: -0.5px;
+        }
+
+        .title-accent {
+            color: var(--accent-orange);
         }
 
         .last-updated {
@@ -252,88 +247,79 @@
     </style>
 </head>
 <body>
-
-    <header class="privacy-header">
-        <div class="header-container">
-            <a href="index.html" class="logo-wrap" style="text-decoration: none; color: inherit;">
-                <span class="logo-py">py</span><span class="logo-mini">.mini</span><span class="logo-parens">()</span>
-            </a>
-            <div class="controls-row">
-                <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Home</a>
-                <button type="button" class="theme-toggle-btn" id="privacyThemeToggle" aria-label="Toggle visual theme">
-                    <i class="fas fa-sun" id="themeIcon"></i>
-                </button>
-            </div>
-        </div>
-    </header>
-
     <main class="privacy-wrapper">
-        <article class="privacy-card">
-            <h1>Privacy Policy</h1>
-            <p class="last-updated">Last Updated: May 20, 2026</p>
-            
-            <p>At <strong>py.mini()</strong>, accessible from our web platform, protecting the privacy of our visitors is one of our primary commitments. This Privacy Policy document outlines the types of information we collect, how it is managed, and your rights regarding your data when you interact with our suite of games, math tools, and terminal applications.</p>
-            
-            <hr class="divider">
+        <div class="content-container">
+            <a href="index.html" class="back-home-pill">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
 
-            <section>
-                <h2>1. Information We Collect</h2>
-                <p>Because py.mini() operates primarily as a client-side open-source application, we minimize the data we handle. However, depending on how you interact with our platform, we may process the following:</p>
-                <ul>
-                    <li><strong>Voluntary Information:</strong> If you sign up for updates, submit a form, report a bug, or contact us directly, we may collect your name, email address, and the contents of your message.</li>
-                    <li><strong>Open Source Contributions:</strong> If you contribute to our project via GitHub, your public profile information, commits, and issue descriptions are publicly visible according to GitHub's infrastructure.</li>
-                    <li><strong>Technical Data:</strong> Standard system configuration metrics (such as screen size, browser type, and operating system) are structural inputs used temporarily to ensure fluid interface responsive rendering.</li>
-                </ul>
-            </section>
+            <article class="privacy-card">
+                <h1>Privacy <span class="title-accent">Policy</span></h1>
+                <p class="last-updated">Last Updated: May 20, 2026</p>
+                
+                <p>At <strong>py.mini()</strong>, accessible from our web platform, protecting the privacy of our visitors is one of our primary commitments. This Privacy Policy document outlines the types of information we collect, how it is managed, and your rights regarding your data when you interact with our suite of games, math tools, and terminal applications.</p>
+                
+                <hr class="divider">
 
-            <section>
-                <h2>2. Log Files and Analytics</h2>
-                <p>py.mini() follows standard operational procedures by leveraging hosting infrastructure log files. These logs capture background details when visitors navigate to the application. The logged information includes:</p>
-                <ul>
-                    <li>Internet Protocol (IP) addresses</li>
-                    <li>Browser user-agent strings and language settings</li>
-                    <li>Internet Service Provider (ISP) network signatures</li>
-                    <li>Date, time, and duration stamps of site interactions</li>
-                    <li>Referring and exit page sequences</li>
-                </ul>
-                <p>This automated collection is purely used for system administration, infrastructure troubleshooting, tracking user patterns, and diagnosing layout bugs. Critically, <strong>none of this data is linked to any information that is personally identifiable</strong>.</p>
-            </section>
+                <section>
+                    <h2>1. Information We Collect</h2>
+                    <p>Because py.mini() operates primarily as a client-side open-source application, we minimize the data we handle. However, depending on how you interact with our platform, we may process the following:</p>
+                    <ul>
+                        <li><strong>Voluntary Information:</strong> If you sign up for updates, submit a form, report a bug, or contact us directly, we may collect your name, email address, and the contents of your message.</li>
+                        <li><strong>Open Source Contributions:</strong> If you contribute to our project via GitHub, your public profile information, commits, and issue descriptions are publicly visible according to GitHub's infrastructure.</li>
+                        <li><strong>Technical Data:</strong> Standard system configuration metrics (such as screen size, browser type, and operating system) are structural inputs used temporarily to ensure fluid interface responsive rendering.</li>
+                    </ul>
+                </section>
 
-            <section>
-                <h2>3. Browser Storage (Cookies & LocalStorage)</h2>
-                <p>To optimize performance and store application state natively without external cloud storage dependencies, we use client-side storage technologies:</p>
-                <ul>
-                    <li><strong>LocalStorage & SessionStorage:</strong> We use your browser's internal local storage mechanisms to persist state configurations across sessions. This includes saving your "Favorites" list, recording game progress (e.g., your high score in the 2048 game), and maintaining interface configurations. This data is kept strictly inside your individual browser sandbox and never transmitted to our servers.</li>
-                    <li><strong>Cookies:</strong> If third-party tools or integrations (such as embedded widgets or analytics providers) are deployed on the platform, they may issue temporary cookies to evaluate interface health or remember configuration settings.</li>
-                </ul>
-                <p>You can manage, restrict, or entirely purge your local storage components at any point through your browser's security panel settings.</p>
-            </section>
+                <section>
+                    <h2>2. Log Files and Analytics</h2>
+                    <p>py.mini() follows standard operational procedures by leveraging hosting infrastructure log files. These logs capture background details when visitors navigate to the application. The logged information includes:</p>
+                    <ul>
+                        <li>Internet Protocol (IP) addresses</li>
+                        <li>Browser user-agent strings and language settings</li>
+                        <li>Internet Service Provider (ISP) network signatures</li>
+                        <li>Date, time, and duration stamps of site interactions</li>
+                        <li>Referring and exit page sequences</li>
+                    </ul>
+                    <p>This automated collection is purely used for system administration, infrastructure troubleshooting, tracking user patterns, and diagnosing layout bugs. Critically, <strong>none of this data is linked to any information that is personally identifiable</strong>.</p>
+                </section>
 
-            <section>
-                <h2>4. Third-Party Services & Links</h2>
-                <p>Our platform references and links to various external web properties, frameworks, and developer environments. This includes GitHub, deployment environments, and third-party content management tools. This Privacy Policy applies solely to py.mini(). We do not exert authority over, nor accept liability for, the data tracking practices or privacy rules of external third-party landing nodes.</p>
-            </section>
+                <section>
+                    <h2>3. Browser Storage (Cookies & LocalStorage)</h2>
+                    <p>To optimize performance and store application state natively without external cloud storage dependencies, we use client-side storage technologies:</p>
+                    <ul>
+                        <li><strong>LocalStorage & SessionStorage:</strong> We use your browser's internal local storage mechanisms to persist state configurations across sessions. This includes saving your "Favorites" list, recording game progress (e.g., your high score in the 2048 game), and maintaining interface configurations. This data is kept strictly inside your individual browser sandbox and never transmitted to our servers.</li>
+                        <li><strong>Cookies:</strong> If third-party tools or integrations (such as embedded widgets or analytics providers) are deployed on the platform, they may issue temporary cookies to evaluate interface health or remember configuration settings.</li>
+                    </ul>
+                    <p>You can manage, restrict, or entirely purge your local storage components at any point through your browser's security panel settings.</p>
+                </section>
 
-            <section>
-                <h2>5. Data Security</h2>
-                <p>We deploy standard procedural and technological measures to insulate client interactions from unauthorized access, loss, or manipulation. However, because no transmission technique across the web or system of network hosting can offer a 100% security guarantee, we encourage users to engage safely with external developer systems.</p>
-            </section>
+                <section>
+                    <h2>4. Third-Party Services & Links</h2>
+                    <p>Our platform references and links to various external web properties, frameworks, and developer environments. This includes GitHub, deployment environments, and third-party content management tools. This Privacy Policy applies solely to py.mini(). We do not exert authority over, nor accept liability for, the data tracking practices or privacy rules of external third-party landing nodes.</p>
+                </section>
 
-            <section>
-                <h2>6. Children's Privacy Information</h2>
-                <p>An additional component of our priority framework involves protecting children while navigating online. py.mini() offers educational resources, terminal toys, and mathematics tools appropriate for general audiences. We do not intentionally harvest or compile Personal Identifiable Information from individuals under the age of 13.</p>
-            </section>
+                <section>
+                    <h2>5. Data Security</h2>
+                    <p>We deploy standard procedural and technological measures to insulate client interactions from unauthorized access, loss, or manipulation. However, because no transmission technique across the web or system of network hosting can offer a 100% security guarantee, we encourage users to engage safely with external developer systems.</p>
+                </section>
 
-            <section>
-                <h2>7. Policy Amendments</h2>
-                <p>We retain the operational authority to update or refine this layout document dynamically over time to match evolving functional code deployments. When updates occur, we will adjust the "Last Updated" timestamp featured at the top of this document.</p>
-            </section>
+                <section>
+                    <h2>6. Children's Privacy Information</h2>
+                    <p>An additional component of our priority framework involves protecting children while navigating online. py.mini() offers educational resources, terminal toys, and mathematics tools appropriate for general audiences. We do not intentionally harvest or compile Personal Identifiable Information from individuals under the age of 13.</p>
+                </section>
 
-            <section>
-                <h2>8. Contact & Governance</h2>
-                <p>If you possess unresolved queries, require explicitly deeper breakdowns of our compliance mechanisms, or wish to propose security patches, please open a public ticket or discussion query inside our official GitHub repository infrastructure.</p>
-            </section>
-        </article>
+                <section>
+                    <h2>7. Policy Amendments</h2>
+                    <p>We retain the operational authority to update or refine this layout document dynamically over time to match evolving functional code deployments. When updates occur, we will adjust the "Last Updated" timestamp featured at the top of this document.</p>
+                </section>
+
+                <section>
+                    <h2>8. Contact & Governance</h2>
+                    <p>If you possess unresolved queries, require explicitly deeper breakdowns of our compliance mechanisms, or wish to propose security patches, please open a public ticket or discussion query inside our official GitHub repository infrastructure.</p>
+                </section>
+            </article>
+        </div>
     </main>
 
     <footer class="privacy-footer">
@@ -345,34 +331,30 @@
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
 
-        // 1. Sync theme immediately on load based on localStorage values set by index.html
         function initTheme() {
             const savedTheme = localStorage.getItem('theme') || 'dark';
             applyTheme(savedTheme);
         }
 
-        // 2. Change appropriate tokens and attributes dynamically
         function applyTheme(theme) {
             if (theme === 'light') {
                 htmlElement.setAttribute('data-theme', 'light');
                 document.body.classList.add('light-mode');
-                themeIcon.className = 'fas fa-moon'; // Icon turns into Moon to allow going back to dark
+                themeIcon.className = 'fas fa-moon'; 
             } else {
                 htmlElement.removeAttribute('data-theme');
                 document.body.classList.remove('light-mode');
-                themeIcon.className = 'fas fa-sun'; // Icon turns into Sun to toggle light mode
+                themeIcon.className = 'fas fa-sun'; 
             }
             localStorage.setItem('theme', theme);
         }
 
-        // 3. User can explicitly override it directly on the privacy page
         themeToggleBtn.addEventListener('click', () => {
             const currentTheme = htmlElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
             const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
             applyTheme(nextTheme);
         });
 
-        // Initialize immediately
         initTheme();
     </script>
 </body>

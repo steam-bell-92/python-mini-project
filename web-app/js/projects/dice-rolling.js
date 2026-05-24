@@ -3,30 +3,19 @@ function getDiceRollingHTML() {
         <div class="project-content">
             <h2>🎲 Dice Rolling</h2>
             <div class="dice-container">
-                <div class="dice-display">
-                    <div class="dice-scene">
-                        <div class="dice-cube" id="dice1">
-                            <div class="cube-face face-1"></div>
-                            <div class="cube-face face-2"></div>
-                            <div class="cube-face face-3"></div>
-                            <div class="cube-face face-4"></div>
-                            <div class="cube-face face-5"></div>
-                            <div class="cube-face face-6"></div>
-                        </div>
-                        <div class="dice-shadow"></div>
+                <div class="dice-selector-container">
+                    <span class="dice-selector-label">Number of Dice</span>
+                    <div class="dice-btn-group" id="diceBtnGroup">
+                        <button class="dice-btn" data-count="1" aria-label="1 Dice">1</button>
+                        <button class="dice-btn active" data-count="2" aria-label="2 Dice">2</button>
+                        <button class="dice-btn" data-count="3" aria-label="3 Dice">3</button>
+                        <button class="dice-btn" data-count="4" aria-label="4 Dice">4</button>
+                        <button class="dice-btn" data-count="5" aria-label="5 Dice">5</button>
                     </div>
+                </div>
 
-                    <div class="dice-scene">
-                        <div class="dice-cube" id="dice2">
-                            <div class="cube-face face-1"></div>
-                            <div class="cube-face face-2"></div>
-                            <div class="cube-face face-3"></div>
-                            <div class="cube-face face-4"></div>
-                            <div class="cube-face face-5"></div>
-                            <div class="cube-face face-6"></div>
-                        </div>
-                        <div class="dice-shadow"></div>
-                    </div>
+                <div class="dice-display" id="diceDisplay">
+                    <!-- Dynamic dice will be rendered here -->
                 </div>
                 
                 <div class="dice-total">
@@ -41,15 +30,112 @@ function getDiceRollingHTML() {
         <style>
             .dice-container {
                 text-align: center;
-                padding: 3rem 2rem;
+                padding: 2rem 1.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .dice-selector-container {
+                margin-bottom: 2.5rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+
+            .dice-selector-label {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: #e2e8f0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            [data-theme="light"] .dice-selector-label {
+                color: #334155;
+            }
+
+            .dice-btn-group {
+                display: flex;
+                gap: 0.6rem;
+                background: rgba(255, 255, 255, 0.06);
+                padding: 0.4rem;
+                border-radius: 50px;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            }
+
+            [data-theme="light"] .dice-btn-group {
+                background: rgba(15, 23, 42, 0.05);
+                border: 1px solid rgba(15, 23, 42, 0.08);
+                box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            }
+
+            .dice-btn {
+                background: transparent;
+                border: none;
+                color: #94a3b8;
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                font-size: 1.1rem;
+                font-weight: bold;
+                cursor: pointer;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            [data-theme="light"] .dice-btn {
+                color: #64748b;
+            }
+
+            .dice-btn:hover {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.1);
+                transform: scale(1.08);
+            }
+
+            [data-theme="light"] .dice-btn:hover {
+                color: #0f172a;
+                background: rgba(15, 23, 42, 0.08);
+            }
+
+            .dice-btn.active {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+                color: white;
+                box-shadow: 0 4px 15px rgba(238, 90, 111, 0.4);
+                transform: scale(1.12);
+            }
+
+            [data-theme="light"] .dice-btn.active {
+                box-shadow: 0 4px 12px rgba(238, 90, 111, 0.3);
+            }
+
+            .dice-btn:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                transform: none !important;
+                background: transparent;
+                color: #94a3b8;
+            }
+
+            .dice-btn.active:disabled {
+                background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+                color: white;
+                opacity: 0.8;
             }
             
             .dice-display {
                 display: flex;
-                gap: 2rem;
+                gap: 2.5rem;
                 justify-content: center;
                 margin-bottom: 2rem;
                 flex-wrap: wrap;
+                width: 100%;
+                max-width: 800px;
             }
 
             .dice-scene {
@@ -167,29 +253,44 @@ function getDiceRollingHTML() {
             }
             
             .dice-total {
-                font-size: 2rem;
-                margin: 2rem 0;
+                font-size: 2.2rem;
+                margin: 1.5rem 0;
                 font-weight: bold;
+                color: #ffffff;
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            }
+
+            [data-theme="light"] .dice-total {
+                color: #0f172a;
             }
             
             .btn-roll {
                 background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
                 color: white;
                 border: none;
-                padding: 1rem 3rem;
+                padding: 1.1rem 3.5rem;
                 border-radius: 50px;
-                font-size: 1.3rem;
+                font-size: 1.4rem;
+                font-weight: 600;
                 cursor: pointer;
                 transition: var(--transition);
+                box-shadow: 0 8px 25px rgba(238, 90, 111, 0.3);
             }
             
             .btn-roll:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 20px rgba(255, 107, 107, 0.4);
+                transform: translateY(-2px) scale(1.03);
+                box-shadow: 0 12px 30px rgba(238, 90, 111, 0.45);
+            }
+
+            .btn-roll:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none;
+                box-shadow: none;
             }
 
             @keyframes diceLanding {
-                0% { transform: translateY(-10px); }
+                0% { transform: translateY(-12px); }
                 55% { transform: translateY(4px); }
                 80% { transform: translateY(-2px); }
                 100% { transform: translateY(0); }
@@ -197,23 +298,51 @@ function getDiceRollingHTML() {
 
             @keyframes diceShadowFloat {
                 0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.32; }
-                45% { transform: translateX(-50%) scale(0.72); opacity: 0.2; }
+                45% { transform: translateX(-50%) scale(0.72); opacity: 0.18; }
             }
 
             @keyframes diceShadowImpact {
-                0% { transform: translateX(-50%) scale(0.74); opacity: 0.2; }
+                0% { transform: translateX(-50%) scale(0.74); opacity: 0.18; }
                 55% { transform: translateX(-50%) scale(1.08); opacity: 0.38; }
                 100% { transform: translateX(-50%) scale(1); opacity: 0.32; }
+            }
+
+            /* Responsive tweaks for wrapping up to 5 dice */
+            @media (max-width: 600px) {
+                .dice-display {
+                    gap: 1.5rem;
+                }
+                .dice-scene {
+                    width: 100px;
+                    height: 130px;
+                }
+                .dice-cube {
+                    width: 100px;
+                    height: 100px;
+                }
+                .cube-face {
+                    --size: 100px;
+                    --dot: 11px;
+                    border-radius: 14px;
+                }
+                .face-1 { transform: translateZ(50px); }
+                .face-2 { transform: rotateY(90deg) translateZ(50px); }
+                .face-3 { transform: rotateY(180deg) translateZ(50px); }
+                .face-4 { transform: rotateY(-90deg) translateZ(50px); }
+                .face-5 { transform: rotateX(90deg) translateZ(50px); }
+                .face-6 { transform: rotateX(-90deg) translateZ(50px); }
+                .dice-shadow {
+                    width: 65px;
+                    height: 11px;
+                }
             }
         </style>
     `;
 }
 
 function initDiceRolling() {
-    const dice1 = document.getElementById('dice1');
-    const dice2 = document.getElementById('dice2');
-    const diceScene1 = dice1.closest('.dice-scene');
-    const diceScene2 = dice2.closest('.dice-scene');
+    const diceDisplay = document.getElementById('diceDisplay');
+    const diceBtnGroup = document.getElementById('diceBtnGroup');
     const rollBtn = document.getElementById('rollDice');
     const totalDisplay = document.getElementById('diceTotal');
 
@@ -226,8 +355,24 @@ function initDiceRolling() {
         6: { x: 90, y: 0 }
     };
 
-    let spins1 = 0;
-    let spins2 = 0;
+    let currentDiceCount = 2;
+    let spins = {};
+
+    function createDiceHTML(id) {
+        return `
+            <div class="dice-scene">
+                <div class="dice-cube" id="${id}">
+                    <div class="cube-face face-1"></div>
+                    <div class="cube-face face-2"></div>
+                    <div class="cube-face face-3"></div>
+                    <div class="cube-face face-4"></div>
+                    <div class="cube-face face-5"></div>
+                    <div class="cube-face face-6"></div>
+                </div>
+                <div class="dice-shadow"></div>
+            </div>
+        `;
+    }
 
     function setCubeFace(cube, value, spinSeed) {
         const target = faceRotation[value];
@@ -246,30 +391,86 @@ function initDiceRolling() {
         }, 420);
     }
 
-    setCubeFace(dice1, 1, 0);
-    setCubeFace(dice2, 1, 1);
-    totalDisplay.textContent = '2';
-    
+    function renderDice(count) {
+        diceDisplay.innerHTML = '';
+        spins = {};
+        for (let i = 1; i <= count; i++) {
+            diceDisplay.insertAdjacentHTML('beforeend', createDiceHTML(`dice${i}`));
+            spins[`dice${i}`] = i - 1; // Unique starting rotation / spin seed per dice
+        }
+        
+        // Initialize cubes to face 1
+        for (let i = 1; i <= count; i++) {
+            const cube = document.getElementById(`dice${i}`);
+            setCubeFace(cube, 1, spins[`dice${i}`]);
+        }
+        
+        totalDisplay.textContent = count;
+    }
+
+    // Set up button selector event listeners
+    const diceBtns = diceBtnGroup.querySelectorAll('.dice-btn');
+    diceBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (rollBtn.disabled) return; // Prevent changing count during roll
+            
+            diceBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            currentDiceCount = parseInt(btn.getAttribute('data-count'));
+            renderDice(currentDiceCount);
+            
+            // Audio effect on click if API is loaded
+            if (window.playgroundAPI && window.playgroundAPI.playSound) {
+                window.playgroundAPI.playSound('click');
+            }
+        });
+    });
+
+    // Initial render call to set up the default 2 dice
+    renderDice(currentDiceCount);
+
     rollBtn.addEventListener('click', () => {
         rollBtn.disabled = true;
-        diceScene1.classList.add('rolling');
-        diceScene2.classList.add('rolling');
+        
+        // Disable selector buttons during roll
+        diceBtns.forEach(b => b.disabled = true);
 
-        const value1 = Math.floor(Math.random() * 6) + 1;
-        const value2 = Math.floor(Math.random() * 6) + 1;
-        spins1 += 1;
-        spins2 += 1;
+        // Sound effect if available
+        if (window.playgroundAPI && window.playgroundAPI.playSound) {
+            window.playgroundAPI.playSound('roll');
+        }
 
-        setCubeFace(dice1, value1, spins1);
-        setCubeFace(dice2, value2, spins2);
+        const values = [];
+        const cubes = [];
+        const scenes = [];
+
+        for (let i = 1; i <= currentDiceCount; i++) {
+            const cube = document.getElementById(`dice${i}`);
+            const scene = cube.closest('.dice-scene');
+            cubes.push(cube);
+            scenes.push(scene);
+            
+            scene.classList.add('rolling');
+            
+            const val = Math.floor(Math.random() * 6) + 1;
+            values.push(val);
+            
+            spins[`dice${i}`] += 1;
+            setCubeFace(cube, val, spins[`dice${i}`]);
+        }
 
         setTimeout(() => {
-            diceScene1.classList.remove('rolling');
-            diceScene2.classList.remove('rolling');
-            triggerLanding(diceScene1);
-            triggerLanding(diceScene2);
-            totalDisplay.textContent = value1 + value2;
+            let total = 0;
+            for (let i = 0; i < currentDiceCount; i++) {
+                scenes[i].classList.remove('rolling');
+                triggerLanding(scenes[i]);
+                total += values[i];
+            }
+            totalDisplay.textContent = total;
+            
             rollBtn.disabled = false;
+            diceBtns.forEach(b => b.disabled = false);
         }, 1300);
     });
 }

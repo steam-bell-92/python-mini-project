@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Resume Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 class="title">AI RESUME ANALYZER</h1>
+
+    <!-- UPLOAD -->
+    <div class="upload-box">
+        <i class="fa-solid fa-file-lines icon"></i>
+
+        <label class="file-btn">
+            Choose File
+            <input type="file" id="resumeInput" hidden>
+        </label>
+
+        <p>Drag & Drop or Click</p>
+    </div>
+
+    <button id="analyzeBtn">Analyze Resume 🚀</button>
+
+    <!-- ATS SCORE -->
+    <div id="ats" class="card hidden">
+        <h3>ATS Score</h3>
+
+        <div class="progress-circle">
+            <span>82%</span>
+        </div>
+
+        <div class="extra-info">
+            <p>✔ Formatting Score: 80%</p>
+            <p>✔ Keyword Match: 75%</p>
+        </div>
+    </div>
+
+    <!-- LOWER SECTION -->
+    <div class="bottom-section hidden" id="bottomSection">
+
+        <!-- KEYWORDS -->
+        <div class="card">
+            <h3>Keywords Match</h3>
+
+            <div class="keyword-item">
+                <span>Python</span>
+                <div class="bar"><div style="width: 90%"></div></div>
+            </div>
+
+            <div class="keyword-item">
+                <span>Machine Learning</span>
+                <div class="bar"><div style="width: 75%"></div></div>
+            </div>
+
+            <div class="keyword-item">
+                <span>Data Analysis</span>
+                <div class="bar"><div style="width: 65%"></div></div>
+            </div>
+        </div>
+
+        <!-- SUGGESTIONS -->
+        <div class="card">
+            <h3><i class="fa-solid fa-lightbulb"></i> Suggestions</h3>
+
+            <div class="suggestion">
+                <i class="fa-solid fa-check"></i>
+                <p>Add more projects</p>
+            </div>
+
+            <div class="suggestion">
+                <i class="fa-solid fa-check"></i>
+                <p>Improve formatting</p>
+            </div>
+
+            <div class="suggestion">
+                <i class="fa-solid fa-check"></i>
+                <p>Use action verbs</p>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

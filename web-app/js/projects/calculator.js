@@ -3,47 +3,47 @@ function getCalculatorHTML() {
     <div class="project-content">
         <h2>🧮 Ultra Pro Calculator</h2>
 
-        <div class="calculator">
+        <div class="calculator" tabindex="0">
             <div class="calc-display" id="calcDisplay">0</div>
 
             <div class="calc-buttons">
 
                 <!-- TOP ROW -->
-                <button class="calc-btn clear" data-action="clear">C</button>
-                <button class="calc-btn operator" data-action="delete">⌫</button>
-                <button class="calc-btn operator" data-action="(">(</button>
-                <button class="calc-btn operator" data-action=")">)</button>
+                <button class="calc-btn clear" data-action="clear" tabindex="-1">C</button>
+                <button class="calc-btn operator" data-action="delete" tabindex="-1">⌫</button>
+                <button class="calc-btn operator" data-action="(" tabindex="-1">(</button>
+                <button class="calc-btn operator" data-action=")" tabindex="-1">)</button>
 
                 <!-- SCIENTIFIC -->
-                <button class="calc-btn operator" data-action="sin">sin</button>
-                <button class="calc-btn operator" data-action="cos">cos</button>
-                <button class="calc-btn operator" data-action="tan">tan</button>
-                <button class="calc-btn operator" data-action="sqrt">√</button>
+                <button class="calc-btn operator" data-action="sin" tabindex="-1">sin</button>
+                <button class="calc-btn operator" data-action="cos" tabindex="-1">cos</button>
+                <button class="calc-btn operator" data-action="tan" tabindex="-1">tan</button>
+                <button class="calc-btn operator" data-action="sqrt" tabindex="-1">√</button>
 
-                <button class="calc-btn operator" data-action="square">x²</button>
-                <button class="calc-btn operator" data-action="inv">1/x</button>
-                <button class="calc-btn operator" data-action="^">xʸ</button>
-                <button class="calc-btn operator" data-action="/">÷</button>
+                <button class="calc-btn operator" data-action="square" tabindex="-1">x²</button>
+                <button class="calc-btn operator" data-action="inv" tabindex="-1">1/x</button>
+                <button class="calc-btn operator" data-action="^" tabindex="-1">xʸ</button>
+                <button class="calc-btn operator" data-action="/" tabindex="-1">÷</button>
 
                 <!-- NUMBERS -->
-                <button class="calc-btn number" data-value="7">7</button>
-                <button class="calc-btn number" data-value="8">8</button>
-                <button class="calc-btn number" data-value="9">9</button>
-                <button class="calc-btn operator" data-action="*">×</button>
+                <button class="calc-btn number" data-value="7" tabindex="-1">7</button>
+                <button class="calc-btn number" data-value="8" tabindex="-1">8</button>
+                <button class="calc-btn number" data-value="9" tabindex="-1">9</button>
+                <button class="calc-btn operator" data-action="*" tabindex="-1">×</button>
 
-                <button class="calc-btn number" data-value="4">4</button>
-                <button class="calc-btn number" data-value="5">5</button>
-                <button class="calc-btn number" data-value="6">6</button>
-                <button class="calc-btn operator" data-action="-">−</button>
+                <button class="calc-btn number" data-value="4" tabindex="-1">4</button>
+                <button class="calc-btn number" data-value="5" tabindex="-1">5</button>
+                <button class="calc-btn number" data-value="6" tabindex="-1">6</button>
+                <button class="calc-btn operator" data-action="-" tabindex="-1">−</button>
 
-                <button class="calc-btn number" data-value="1">1</button>
-                <button class="calc-btn number" data-value="2">2</button>
-                <button class="calc-btn number" data-value="3">3</button>
-                <button class="calc-btn operator" data-action="+">+</button>
+                <button class="calc-btn number" data-value="1" tabindex="-1">1</button>
+                <button class="calc-btn number" data-value="2" tabindex="-1">2</button>
+                <button class="calc-btn number" data-value="3" tabindex="-1">3</button>
+                <button class="calc-btn operator" data-action="+" tabindex="-1">+</button>
 
-                <button class="calc-btn number span-2" data-value="0">0</button>
-                <button class="calc-btn number" data-value=".">.</button>
-                <button class="calc-btn equals" data-action="=">=</button>
+                <button class="calc-btn number span-2" data-value="0" tabindex="-1">0</button>
+                <button class="calc-btn number" data-value="." tabindex="-1">.</button>
+                <button class="calc-btn equals" data-action="=" tabindex="-1">=</button>
 
             </div>
         </div>
@@ -124,7 +124,6 @@ function getCalculatorHTML() {
 function initCalculator() {
     const display = document.getElementById("calcDisplay");
     if (!display) return;
-
     let expression = "";
 
     function update() {
@@ -140,7 +139,11 @@ function initCalculator() {
 
     function safeEval(expr) {
         try {
-            return String(eval(format(expr)));
+            if (!expr) return "";
+            let result = eval(format(expr));
+            if (result === undefined) return "";
+            if (isNaN(result)) return "Error";
+            return String(result);
         } catch {
             return "Error";
         }
@@ -149,27 +152,42 @@ function initCalculator() {
     function applyFunction(type) {
         try {
             let value = eval(format(expression || "0"));
-
+            let result;
             switch (type) {
-                case "sin": return String(Math.sin(value));
-                case "cos": return String(Math.cos(value));
-                case "tan": return String(Math.tan(value));
-                case "sqrt": return String(Math.sqrt(value));
-                case "square": return String(value * value);
-                case "inv": return value === 0 ? "Error" : String(1 / value);
+                case "sin": result = Math.sin(value); break;
+                case "cos": result = Math.cos(value); break;
+                case "tan": result = Math.tan(value); break;
+                case "sqrt": result = Math.sqrt(value); break;
+                case "square": result = value * value; break;
+                case "inv": result = 1 / value; break; 
             }
+            if (isNaN(result)) return "Error"; 
+            return String(result);
         } catch {
             return "Error";
         }
     }
 
-    document.querySelectorAll(".calc-btn").forEach(btn => {
-        btn.addEventListener("click", () => {
+ 
+    function clearIfFinished() {
+        if (expression === "Error" || expression === "NaN") {
+            expression = "";
+        }
+    }
 
+    document.querySelectorAll(".calc-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            clearIfFinished();
+            
             const value = btn.dataset.value;
             const action = btn.dataset.action;
 
             if (value !== undefined) {
+                if (value === ".") {
+               
+                    const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
+                    if (lastOperand.includes(".")) return;
+                }
                 expression += value;
                 update();
                 return;
@@ -177,20 +195,21 @@ function initCalculator() {
 
             if (!action) return;
 
+    
             switch (action) {
-
                 case "clear":
                     expression = "";
                     break;
-
                 case "delete":
-                    expression = expression.slice(0, -1);
+                    if (expression === "Infinity" || expression === "-Infinity") {
+                        expression = "";
+                    } else {
+                        expression = expression.slice(0, -1);
+                    }
                     break;
-
                 case "=":
                     expression = safeEval(expression);
                     break;
-
                 case "sin":
                 case "cos":
                 case "tan":
@@ -199,31 +218,67 @@ function initCalculator() {
                 case "inv":
                     expression = applyFunction(action);
                     break;
-
                 case "^":
-                    expression += "^";
+                case "+":
+                case "-":
+                case "*":
+                case "/":
+        
+                    const lastChar = expression.slice(-1);
+                    if (["+", "-", "*", "/", "^"].includes(lastChar)) {
+                        expression = expression.slice(0, -1) + action;
+                    } else {
+                        expression += action;
+                    }
                     break;
-
                 default:
                     expression += action;
             }
-
             update();
         });
     });
 
     document.addEventListener("keydown", (e) => {
+        const key = e.key;
+        if (!document.getElementById("calcDisplay")) return;
 
-        if (!isNaN(e.key) || e.key === ".") expression += e.key;
+        // Whitelist allowed keys to prevent typing letters
+        const allowedKeys = ["Enter", "Backspace", "Escape", "=", "+", "-", "*", "/", "^", ".", "(", ")"];
+        if (allowedKeys.includes(key) || /^[0-9]$/.test(key)) {
+            e.preventDefault();
+        } else {
+            return;
+        }
 
-        if (["+", "-", "*", "/"].includes(e.key)) expression += e.key;
+        clearIfFinished();
 
-        if (e.key === "^") expression += "^";
-
-        if (e.key === "Enter") expression = safeEval(expression);
-
-        if (e.key === "Backspace") expression = expression.slice(0, -1);
-
+        if (/^[0-9]$/.test(key)) {
+            expression += key;
+        } else if (key === ".") {
+            const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
+            if (!lastOperand.includes(".")) {
+                expression += ".";
+            }
+        } else if (["+", "-", "*", "/", "^"].includes(key)) {
+            const lastChar = expression.slice(-1);
+            if (["+", "-", "*", "/", "^"].includes(lastChar)) {
+                expression = expression.slice(0, -1) + key;
+            } else {
+                expression += key;
+            }
+        } else if (key === ")" || key === "(") {
+            expression += key;
+        } else if (key === "Enter" || key === "=") {
+            expression = safeEval(expression);
+        } else if (key === "Backspace") {
+            if (expression === "Infinity" || expression === "-Infinity") {
+                expression = "";
+            } else {
+                expression = expression.slice(0, -1);
+            }
+        } else if (key === "Escape" || key.toLowerCase() === "c") {
+            expression = "";
+        }
         update();
     });
 
