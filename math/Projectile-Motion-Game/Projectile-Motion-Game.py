@@ -60,6 +60,7 @@ def show_plot(x, y):
     plt.xlabel("Horizontal Distance (m)")
     plt.ylabel("Vertical Height (m)")
     plt.grid(alpha=0.3)
+    plt.gca().set_aspect('equal', adjustable='box')
     plt.ylim(bottom=0)
     plt.xlim(left=0)
     plt.legend()

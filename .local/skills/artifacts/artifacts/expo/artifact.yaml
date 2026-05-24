@@ -1,0 +1,47 @@
+name: expo
+description: "mobile app"
+kind: mobile
+priority: 2
+
+access:
+  type: stack
+  name: PNPM_WORKSPACE
+
+bootstrap_constraints: |
+  ### Mobile bootstrap rules (`artifact: "expo"`)
+
+  - Expo now uses the shared Express API server in the monorepo. Add backend routes in `artifacts/api-server`.
+  - The generated package owns its Expo dependencies; keep them in `files/package.json.template` so `pnpm install` produces a runnable app.
+
+service_configs:
+  - name: expo
+    ensurePreviewReachable: /status
+    development:
+      run: pnpm --filter @workspace/__SLUG__ run dev
+    production:
+      build:
+        - pnpm
+        - --filter
+        - '@workspace/__SLUG__'
+        - run
+        - build
+      run:
+        - pnpm
+        - --filter
+        - '@workspace/__SLUG__'
+        - run
+        - serve
+
+initial_open_files:
+  - app.json
+  - constants/colors.ts
+  - app/_layout.tsx
+  - app/(tabs)/_layout.tsx
+  - app/(tabs)/index.tsx
+  - /lib/api-spec/openapi.yaml
+  - /artifacts/api-server/src/index.ts
+  - /artifacts/api-server/package.json
+
+additional_skills:
+  - media-generation
+  - references/first_build.md

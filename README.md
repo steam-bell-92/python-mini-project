@@ -6,7 +6,7 @@
 
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Projects](https://img.shields.io/badge/projects-20-orange.svg)]()
+[![Projects](https://img.shields.io/badge/projects-24-orange.svg)]()
 [![Code Scanning](https://img.shields.io/badge/CodeQL-enabled-brightgreen.svg)]()
 
 **🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful UI | ⚡ Zero setup required**
@@ -35,11 +35,11 @@ We built this collection to make learning Python **fun, interactive, and instant
 ## ⚡ Quick Start
 
 ### 🌐 **Try the Web App** (Recommended!)
-Experience all 20 projects in your browser with beautiful animations and visualizations!
+Experience all 24 projects in your browser with beautiful animations and visualizations!
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/python-mini-project.git
+git clone https://github.com/steam-bell-92/python-mini-project.git
 
 # Navigate to the web app
 cd python-mini-project/web-app
@@ -164,6 +164,18 @@ python games/Number-Guessing-Game/Number-Guessing-Game.py
 <tr>
 <td width="50%">
 
+#### 🧠 Emoji Memory Game
+Memorize a growing emoji sequence and repeat it correctly!
+- 🧩 Increasing difficulty with each level
+- 🧠 Memory training with fun emoji patterns
+- 🔁 Restart anytime and improve your high score
+```bash
+python games/Emoji-Memory-Game/emoji_memory_game.py
+```
+
+</td>
+<td width="50%">
+
 #### 🎮 Hangman Game
 Classic word-guessing game!
 - 📝 Random word selection
@@ -174,6 +186,9 @@ python games/Hangman-Game/Hangman-Game.py
 ```
 
 </td>
+</tr>
+
+<tr>
 <td width="50%">
 
 #### 💖 FLAMES Game
@@ -186,8 +201,85 @@ python games/FLAMES-Game/FLAMES-Game.py
 ```
 
 </td>
+<td width="50%">
+
+
+<tr>
+<td width="50%">
+
+
+#### 🔐 Password Forge
+Survive evolving firewall rules by continuously upgrading your password!
+- 🔓 Progressive rule unlocking
+- ❤️ Lives system
+- 🏆 Score tracking
+- 🎯 Multiple difficulty levels
+```bash
+python games/Password-Forge/Password-Forge.py
+```
+
+</td>
+
+
+#### 📐 AP/GP/AGP/HP Recognizer
+Identify progression types from a number sequence!
+- 🔍 Detects Arithmetic, Geometric, Arithmetic-Geometric, and Harmonic patterns
+- 🧠 Supports integer and decimal values
+- 📘 Great for quick sequence practice
+#### 🧩 Tic-Tac-Toe
+Classic X and O strategy game!
+- 👤 Play against another player
+- 🤖 Smart computer opponent
+- 🏆 Result tracking
+```bash
+python games/Tic-Tac-Toe/Tic-Tac-Toe.py
+```
+
+</td>
+<td width="50%">
+
+#### 🧠 Emoji Memory Game
+Test your memory with matching emojis!
+- 🎴 Dynamic emoji grid
+- ⏱️ Score tracking
+- 🧠 Brain training fun
+```bash
+python games/Emoji-Memory-Game/emoji_memory_game.py
+```
+
+</td>
 </tr>
 
+<tr>
+<td width="50%">
+
+#### 🗣️ Simon Says - Memory Game
+Test your memory with an ever-growing sequence!
+- 🔴🔵🟢🟡 Colorful emoji buttons
+- 🧠 Watch and repeat the sequence
+- 📈 Sequence grows each round
+- 🏆 Win by completing 10 rounds
+```bash
+python games/Simon-Says/Simon-Says.py
+```
+
+</td>
+<td width="50%">
+
+#### 🔍 Spot the Difference
+Find all the hidden differences between two interactive canvases!
+- 🎨 Programmatically drawn dynamic scenes
+- 🌟 Three distinct difficulty levels
+- ⏱️ Built-in timer and hint system
+- 🌐 *Web App Exclusive Project*
+
+</td>
+</tr>
+</table>
+
+### 🔢 **Mathematical Wizards** - Explore Number Magic!
+
+<table>
 <tr>
 <td width="50%">
 
@@ -201,14 +293,6 @@ python math/AP-GP-AGP-HP-Recognizer/AP-GP-AGP-HP-Recognizer.py
 ```
 
 </td>
-<td width="50%"></td>
-</tr>
-</table>
-
-### 🔢 **Mathematical Wizards** - Explore Number Magic!
-
-<table>
-<tr>
 <td width="50%">
 
 #### ✨ Fibonacci Series
@@ -221,6 +305,9 @@ python math/Fibonacci-Series/Fibonacci-Series.py
 ```
 
 </td>
+</tr>
+
+<tr>
 <td width="50%">
 
 #### 🔺 Pascal's Triangle
@@ -233,9 +320,6 @@ python math/Pascal-Triangle/Pascal-Triangle.py
 ```
 
 </td>
-</tr>
-
-<tr>
 <td width="50%">
 
 #### 💎 Armstrong Number Checker
@@ -248,6 +332,9 @@ python math/Armstrong-Number/Armstrong-Number.py
 ```
 
 </td>
+</tr>
+
+<tr>
 <td width="50%">
 
 #### 🧮 Simple Calculator
@@ -260,9 +347,6 @@ python math/Simple-Calculator/Simple-Calculator.py
 ```
 
 </td>
-</tr>
-
-<tr>
 <td width="50%">
 
 #### 🔢 Collatz Conjecture
@@ -275,6 +359,9 @@ python math/Collatz-Conjecture/Collatz-Conjecture.py
 ```
 
 </td>
+</tr>
+
+<tr>
 <td width="50%">
 
 #### 🔱 Prime Number Analyzer
@@ -288,6 +375,7 @@ python math/Prime-Number-Analyzer/Prime-Number-Analyzer.py
 ```
 
 </td>
+<td width="50%"></td>
 </tr>
 </table>
 
@@ -320,12 +408,55 @@ python utilities/Tower-of-Hanoi/Tower-of-Hanoi.py
 
 </td>
 </tr>
+
+<tr>
+<td width="50%">
+
+#### 🔢 Number System Converter
+Convert between Decimal, Binary, Hex, and Octal!
+- 🔄 Seamless base conversions
+- 📚 Educational step-by-step logic
+- 🖥️ Zero-dependency built-in functions
+```bash
+python utilities/Number-System-Converter/Number-System-Converter.py
+```
+
+</td>
+<td width="50%">
+
+#### ⌨️ Typing Speed Tester
+Test your typing speed and accuracy!
+- ⏱️ Real-time timing
+- 🚀 Words Per Minute (WPM) calculation
+- 🎯 Accuracy percentage feedback
+```bash
+python utilities/Typing-Speed-Tester/Typing-Speed-Tester.py
+```
+
+</td>
+</tr>
+
+<tr>
+<td width="50%">
+
+#### 🐾 Productivity Pet
+Keep your virtual pet happy by staying productive!
+- 🐶 Interactive pet companion
+- 📊 Task-based mood tracking
+- 📈 Productivity stats
+```bash
+python utilities/Productivity-Pet/Productivity-Pet.py
+```
+
+</td>
+<td width="50%"></td>
+</tr>
 </table>
 
 ## ✨ Features
 
 ### 🌐 Interactive Web Application
-- **All 20 Projects in Your Browser** - No Python installation required!
+- **All 24 Projects in Your Browser** - No Python installation required!
 - **Beautiful Animations** - Smooth transitions and visual effects
 - **Dark/Light Theme** - Toggle between themes for comfort
 - **Category Filtering** - Browse by Games, Math, or Utilities
@@ -365,7 +496,7 @@ Working through these projects, you'll master:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/python-mini-project.git
+   git clone https://github.com/steam-bell-92/python-mini-project.git
    cd python-mini-project/web-app
    ```
 
@@ -380,7 +511,7 @@ Working through these projects, you'll master:
 
 3. **Open your browser** and visit `http://localhost:8000`
 
-4. **Enjoy all 20 projects** with beautiful animations! 🎉
+4. **Enjoy all 24 projects** with beautiful animations! 🎉
 
 ### 🐍 Python CLI Projects
 
@@ -444,7 +575,13 @@ We love contributions! Here's how you can help:
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ---
+## Contributors
 
+<!-- CONTRIBUTORS_START -->
+<a href="https://github.com/Aayuiiitmg"><img src="https://github.com/Aayuiiitmg.png" width="50px" style="border-radius:50%;margin:5px;" alt="Aayuiiitmg" /></a><a href="https://github.com/Arpitawork24"><img src="https://github.com/Arpitawork24.png" width="50px" style="border-radius:50%;margin:5px;" alt="Arpitawork24" /></a><a href="https://github.com/Bhairavi-28"><img src="https://github.com/Bhairavi-28.png" width="50px" style="border-radius:50%;margin:5px;" alt="Bhairavi-28" /></a><a href="https://github.com/C4aZy"><img src="https://github.com/C4aZy.png" width="50px" style="border-radius:50%;margin:5px;" alt="C4aZy" /></a><a href="https://github.com/Diksha57-git"><img src="https://github.com/Diksha57-git.png" width="50px" style="border-radius:50%;margin:5px;" alt="Diksha57-git" /></a><a href="https://github.com/Facelessism"><img src="https://github.com/Facelessism.png" width="50px" style="border-radius:50%;margin:5px;" alt="Facelessism" /></a><a href="https://github.com/Indrayani11-15"><img src="https://github.com/Indrayani11-15.png" width="50px" style="border-radius:50%;margin:5px;" alt="Indrayani11-15" /></a><a href="https://github.com/Juhi4433"><img src="https://github.com/Juhi4433.png" width="50px" style="border-radius:50%;margin:5px;" alt="Juhi4433" /></a><a href="https://github.com/Kartikeyji17"><img src="https://github.com/Kartikeyji17.png" width="50px" style="border-radius:50%;margin:5px;" alt="Kartikeyji17" /></a><a href="https://github.com/KhushiVadadoriya"><img src="https://github.com/KhushiVadadoriya.png" width="50px" style="border-radius:50%;margin:5px;" alt="KhushiVadadoriya" /></a><a href="https://github.com/Kunal241207"><img src="https://github.com/Kunal241207.png" width="50px" style="border-radius:50%;margin:5px;" alt="Kunal241207" /></a><a href="https://github.com/Mounika-39"><img src="https://github.com/Mounika-39.png" width="50px" style="border-radius:50%;margin:5px;" alt="Mounika-39" /></a><a href="https://github.com/Naveen-Boddepalli"><img src="https://github.com/Naveen-Boddepalli.png" width="50px" style="border-radius:50%;margin:5px;" alt="Naveen-Boddepalli" /></a><a href="https://github.com/PRODHOSH"><img src="https://github.com/PRODHOSH.png" width="50px" style="border-radius:50%;margin:5px;" alt="PRODHOSH" /></a><a href="https://github.com/SANDHIYAPRIYADHARSHINI"><img src="https://github.com/SANDHIYAPRIYADHARSHINI.png" width="50px" style="border-radius:50%;margin:5px;" alt="SANDHIYAPRIYADHARSHINI" /></a><a href="https://github.com/Sanjhivvarshan-b-s"><img src="https://github.com/Sanjhivvarshan-b-s.png" width="50px" style="border-radius:50%;margin:5px;" alt="Sanjhivvarshan-b-s" /></a><a href="https://github.com/Sreekuttan-007"><img src="https://github.com/Sreekuttan-007.png" width="50px" style="border-radius:50%;margin:5px;" alt="Sreekuttan-007" /></a><a href="https://github.com/TheBinaryAVA"><img src="https://github.com/TheBinaryAVA.png" width="50px" style="border-radius:50%;margin:5px;" alt="TheBinaryAVA" /></a><a href="https://github.com/Tiago-Vier-Preto"><img src="https://github.com/Tiago-Vier-Preto.png" width="50px" style="border-radius:50%;margin:5px;" alt="Tiago-Vier-Preto" /></a><a href="https://github.com/ayushyadav0707"><img src="https://github.com/ayushyadav0707.png" width="50px" style="border-radius:50%;margin:5px;" alt="ayushyadav0707" /></a><a href="https://github.com/codewithakshyaaa"><img src="https://github.com/codewithakshyaaa.png" width="50px" style="border-radius:50%;margin:5px;" alt="codewithakshyaaa" /></a><a href="https://github.com/gatiksolanki13-netizen"><img src="https://github.com/gatiksolanki13-netizen.png" width="50px" style="border-radius:50%;margin:5px;" alt="gatiksolanki13-netizen" /></a><a href="https://github.com/iamprasoon2006-cell"><img src="https://github.com/iamprasoon2006-cell.png" width="50px" style="border-radius:50%;margin:5px;" alt="iamprasoon2006-cell" /></a><a href="https://github.com/jyotish6699"><img src="https://github.com/jyotish6699.png" width="50px" style="border-radius:50%;margin:5px;" alt="jyotish6699" /></a><a href="https://github.com/kumudasrip"><img src="https://github.com/kumudasrip.png" width="50px" style="border-radius:50%;margin:5px;" alt="kumudasrip" /></a><a href="https://github.com/madhavcodes25"><img src="https://github.com/madhavcodes25.png" width="50px" style="border-radius:50%;margin:5px;" alt="madhavcodes25" /></a><a href="https://github.com/mahi-8758"><img src="https://github.com/mahi-8758.png" width="50px" style="border-radius:50%;margin:5px;" alt="mahi-8758" /></a><a href="https://github.com/nene-hana"><img src="https://github.com/nene-hana.png" width="50px" style="border-radius:50%;margin:5px;" alt="nene-hana" /></a><a href="https://github.com/nishtha-agarwal-211"><img src="https://github.com/nishtha-agarwal-211.png" width="50px" style="border-radius:50%;margin:5px;" alt="nishtha-agarwal-211" /></a><a href="https://github.com/parasmani-dev"><img src="https://github.com/parasmani-dev.png" width="50px" style="border-radius:50%;margin:5px;" alt="parasmani-dev" /></a><a href="https://github.com/sanzzzz-g"><img src="https://github.com/sanzzzz-g.png" width="50px" style="border-radius:50%;margin:5px;" alt="sanzzzz-g" /></a><a href="https://github.com/ssuyashhhh"><img src="https://github.com/ssuyashhhh.png" width="50px" style="border-radius:50%;margin:5px;" alt="ssuyashhhh" /></a>
+<!-- CONTRIBUTORS_END -->
+
+---
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

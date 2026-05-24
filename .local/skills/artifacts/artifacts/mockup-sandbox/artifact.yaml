@@ -1,0 +1,15 @@
+name: mockup-sandbox
+description: "isolated mockup sandbox for rapid UI prototyping on the canvas"
+kind: design
+
+access:
+  type: flag
+  name: flag-mockup-sandbox-skill
+  variation: "true"
+
+service_configs:
+  - name: "Component Preview Server"
+    development:
+      run: npm run dev
+
+initial_open_files: []

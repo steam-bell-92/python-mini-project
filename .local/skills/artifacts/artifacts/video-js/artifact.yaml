@@ -1,0 +1,38 @@
+name: video-js
+description: "Replit Animation app"
+kind: video
+
+access:
+  type: stack
+  name: PNPM_WORKSPACE
+
+service_configs:
+  - name: web
+    development:
+      run: pnpm --filter @workspace/__SLUG__ run dev
+    production:
+      serve: static
+      build:
+        - pnpm
+        - --filter
+        - '@workspace/__SLUG__'
+        - run
+        - build
+      publicDir: artifacts/__SLUG__/dist/public
+      rewrites:
+        - from: "/*"
+          to: /index.html
+
+initial_open_files:
+  - index.html
+  - src/main.tsx
+  - src/components/video/VideoTemplate.tsx
+  - src/lib/video/hooks.ts
+  - src/lib/video/index.ts
+  - src/lib/video/animations.ts
+  - src/index.css
+
+additional_skills:
+  - media-generation
+  - references/first_build.md
+  - references/scene_selectors.md

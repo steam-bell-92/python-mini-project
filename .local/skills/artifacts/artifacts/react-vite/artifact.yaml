@@ -1,0 +1,41 @@
+name: react-vite
+description: "React + Vite web app"
+kind: web
+
+access:
+  type: stack
+  name: PNPM_WORKSPACE
+
+service_configs:
+  - name: web
+    development:
+      run: pnpm --filter @workspace/__SLUG__ run dev
+    production:
+      serve: static
+      build:
+        - pnpm
+        - --filter
+        - '@workspace/__SLUG__'
+        - run
+        - build
+      publicDir: artifacts/__SLUG__/dist/public
+      rewrites:
+        - from: "/*"
+          to: /index.html
+
+initial_open_files:
+  - src/main.tsx
+  - src/App.tsx
+  - src/index.css
+  - package.json
+  - tsconfig.json
+  - vite.config.ts
+  - /lib/api-spec/openapi.yaml
+  - /lib/db/src/index.ts
+  - /lib/db/src/schema/index.ts
+  - /artifacts/api-server/src/index.ts
+  - /artifacts/api-server/package.json
+
+additional_skills:
+  - database
+  - /pnpm-workspace/references/openapi.md

@@ -54,3 +54,5 @@ body:
           required: true
         - label: "I want to work on this issue"
           required: false
+        - label: "I am participating in GSSoC 2026"
+          required: false

@@ -1,0 +1,47 @@
+{
+  "name": "__REPLIT_ARTIFACT_PACKAGE_NAME__",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "mastra dev",
+    "build": "mastra build",
+    "check": "tsc",
+    "check:format": "prettier --check '**/*.ts'",
+    "format": "prettier --write '**/*.ts'"
+  },
+  "keywords": [],
+  "type": "module",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "engines": {
+    "node": ">=20.9.0"
+  },
+  "dependencies": {
+    "@ai-sdk/openai": "^3.0.11",
+    "@inngest/realtime": "^0.4.5",
+    "@mastra/core": "^1.0.4",
+    "@mastra/inngest": "^1.0.0",
+    "@mastra/libsql": "^1.0.0",
+    "@mastra/loggers": "^1.0.0",
+    "@mastra/memory": "^1.0.0",
+    "@mastra/pg": "^1.0.0",
+    "@slack/web-api": "^7.9.3",
+    "@types/pg": "^8.15.5",
+    "ai": "^5.0.0",
+    "dotenv": "^17.2.0",
+    "inngest": "^3.47.0",
+    "inngest-cli": "^1.14.3",
+    "pino": "^9.9.4",
+    "tsx": "^4.20.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "mastra": "^1.0.1",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,40 @@
+name: automation
+description: "Mastra automation scaffold"
+priority: 1
+kind: automation
+
+access:
+  type: all_of
+  conditions:
+    - type: flag
+      name: flag-automation-artifact
+      variation: "true"
+    - type: stack
+      name: PNPM_WORKSPACE
+
+service_configs:
+  - name: automation
+    development:
+      run: pnpm --filter @workspace/__SLUG__ run dev
+    production:
+      build:
+        - pnpm
+        - --filter
+        - '@workspace/__SLUG__'
+        - run
+        - build
+      run:
+        - sh
+        - -c
+        - cd artifacts/__SLUG__/.mastra/output && NODE_ENV=production node index.mjs
+  - name: inngest
+    development:
+      run: bash scripts/inngest.sh
+
+initial_open_files:
+  - src/mastra/tools/exampleTool.ts
+  - src/mastra/agents/agent.ts
+  - src/mastra/workflows/workflow.ts
+  - src/mastra/index.ts
+  - src/mastra/inngest/client.ts
+  - src/mastra/inngest/index.ts

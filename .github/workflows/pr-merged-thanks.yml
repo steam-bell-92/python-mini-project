@@ -8,7 +8,9 @@ jobs:
   thank-contributor:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+
     permissions:
+      pull-requests: write
       issues: write
 
     steps:
@@ -16,18 +18,17 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            github.rest.issues.createComment({
+            await github.rest.issues.createComment({
               issue_number: context.payload.pull_request.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: |
-                🎉 **Thank you for your contribution!**
+              body: `🎉 **Thank you for your contribution!**
 
-                Your Pull Request has been merged successfully.
+            Your Pull Request has been merged successfully.
 
-                We appreciate the time and effort you put into improving this project. Contributions like yours help the repository grow and stay useful for everyone.
+            We appreciate the time and effort you put into improving this project. Contributions like yours help the repository grow and stay useful for everyone.
 
-                If you'd like to contribute again, please check the open issues and make sure you are assigned before opening another Pull Request.
+            If you'd like to contribute again, please check the open issues and make sure you are assigned before opening another Pull Request.
 
-                Thanks again for your support! 🙌
-            })
+            Thanks again for your support! 🙌`
+            });

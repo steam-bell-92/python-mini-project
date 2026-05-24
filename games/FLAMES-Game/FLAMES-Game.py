@@ -1,5 +1,5 @@
 print("=" * 50)
-print("FLAMES GAME")
+print("FLAMES GAME - FIND YOUR RELATIONSHIP STATUS!")
 print("=" * 50)
 print("\nF - Friends")
 print("L - Love")
@@ -27,6 +27,10 @@ else:
             name2_list.remove(char)
     
     count = len(name1_list) + len(name2_list)
+
+    total_len = len(original_name1) + len(original_name2)
+    matched_chars = total_len - count
+    score = 30 + round((matched_chars / total_len) * 70) if total_len > 0 else 0
     
     print(f"\nAfter removing common letters:")
     print(f"Remaining letters: {count}")
@@ -41,24 +45,31 @@ else:
             index = 0
     
     result = flames[0]
-    
+
+    mapping = {
+        'F': {"rel": "Friends", "emoji": "🤝", "metric": "Bond Strength"},
+        'L': {"rel": "Love", "emoji": "❤️", "metric": "Compatibility Score"},
+        'A': {"rel": "Affection", "emoji": "😊", "metric": "Crush Intensity"},
+        'M': {"rel": "Marriage", "emoji": "💍", "metric": "Marital Bliss"},
+        'E': {"rel": "Enemies", "emoji": "😈", "metric": "Rivalry Quotient"},
+        'S': {"rel": "Siblings", "emoji": "🏠", "metric": "Nuisance Factor"}
+    }
+
+    final = mapping[result]
+   
     print("\n" + "=" * 50)
-    print("RESULT")
+    print("MATCH REPORT CARD")
+    print("=" * 50)         
+    print(f"\nNames: {original_name1.capitalize()} & {original_name2.capitalize()}")
+    print(f"Status: {final['emoji']} {final['rel'].upper()} {final['emoji']}")
+    print(f"{final['metric']}: {score}%")
+    print("\n" + "=" * 50)
+
+    share_text = (f"✨ FLAMES Match Report ✨\n"
+                  f"{original_name1.capitalize()} + {original_name2.capitalize()}\n"
+                  f"Result: {final['rel']} {final['emoji']}\n"
+                  f"{final['metric']}: {score}%")
+    
+    print("📋 COPY TO SHARE:")
+    print(share_text)
     print("=" * 50)
-    
-    if result == 'F':
-        relationship = "Friends"
-    elif result == 'L':
-        relationship = "Love"
-    elif result == 'A':
-        relationship = "Affection"
-    elif result == 'M':
-        relationship = "Marriage"
-    elif result == 'E':
-        relationship = "Enemies"
-    else:
-        relationship = "Siblings"
-    
-    print(f"\n{original_name1.capitalize()} & {original_name2.capitalize()}")
-    print(f"💖 {relationship} 💖")
-    print("\n" + "=" * 50)
