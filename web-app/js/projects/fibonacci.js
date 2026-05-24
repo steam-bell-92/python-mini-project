@@ -138,10 +138,11 @@ function initFibonacci() {
                 Math.PI * (direction + 1) / 2);
             ctx.stroke();
             
+            const nextTerm = (fib[i+1] !== undefined ? fib[i+1] : num);
             switch(direction) {
-                case 0: y -= fib[i+1] * scale; break;
+                case 0: y -= nextTerm * scale; break;
                 case 1: x -= size; break;
-                case 2: y -= size; x -= fib[i+1] * scale; break;
+                case 2: y -= size; x -= nextTerm * scale; break;
                 case 3: x += size; break;
             }
             

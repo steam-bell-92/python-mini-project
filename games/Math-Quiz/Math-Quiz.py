@@ -35,7 +35,7 @@ def play_sound(sound_type):
             winsound.Beep(300, 300)
         elif sound_type == 'game_over':
             winsound.Beep(200, 600)
-    except:
+    except (RuntimeError, OSError):
         pass
 
 def load_scores():
@@ -43,7 +43,7 @@ def load_scores():
         try:
             with open("math_quiz_scores.json", "r") as f:
                 return json.load(f)
-        except:
+        except (FileNotFoundError, json.JSONDecodeError, OSError, UnicodeDecodeError):
             pass
     return {"highest_score": 0, "longest_streak": 0}
 

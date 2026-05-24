@@ -1,4 +1,4 @@
-// Project Registry
+﻿// Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
 
@@ -39,6 +39,8 @@ function getProjectHTML(projectName) {
         '2048-game': () => get2048GameHTML(),
         'productive-pet': () => getProductivePetHTML(),
         'color-palette': () => getColorPaletteHTML(),
+        'resume-analyzer': () => getAIResumeAnalyzerHTML(),
+        'caesar-cipher': () => getCaesarCipherHTML(),
     };
 
     try {
@@ -591,278 +593,7 @@ function initPascalTriangle() {
     generatePascal(); // Initial generation
 }
 
-// ============================================
-// CALCULATOR
-// ============================================
-function getCalculatorHTML() {
-    return `
-        <div class="project-content">
-            <h2>🧮 Calculator</h2>
-            <div class="calculator">
-                <div class="calc-display" id="calcDisplay">0</div>
-                <div class="calc-buttons">
-                    <button class="calc-btn clear" data-action="clear" tabindex="-1">C</button>
-                    <button class="calc-btn operator" data-action="delete" tabindex="-1">⌫</button>
-                    <button class="calc-btn operator" data-action="/" tabindex="-1">/</button>
-                    <button class="calc-btn operator" data-action="*" tabindex="-1">×</button>
-                    
-                    <button class="calc-btn number" data-value="7" tabindex="-1">7</button>
-                    <button class="calc-btn number" data-value="8" tabindex="-1">8</button>
-                    <button class="calc-btn number" data-value="9" tabindex="-1">9</button>
-                    <button class="calc-btn operator" data-action="-" tabindex="-1">−</button>
-                    
-                    <button class="calc-btn number" data-value="4" tabindex="-1">4</button>
-                    <button class="calc-btn number" data-value="5" tabindex="-1">5</button>
-                    <button class="calc-btn number" data-value="6" tabindex="-1">6</button>
-                    <button class="calc-btn operator" data-action="+" tabindex="-1">+</button>
-                    
-                    <button class="calc-btn number" data-value="1" tabindex="-1">1</button>
-                    <button class="calc-btn number" data-value="2" tabindex="-1">2</button>
-                    <button class="calc-btn number" data-value="3" tabindex="-1">3</button>
-                    <button class="calc-btn operator" data-action="**" tabindex="-1">^</button>
-                    
-                    <button class="calc-btn number span-2" data-value="0" tabindex="-1">0</button>
-                    <button class="calc-btn number" data-value="." tabindex="-1">.</button>
-                    <button class="calc-btn equals" data-action="=" tabindex="-1">=</button>
-                </div>
-            </div>
-        </div>
-        
-        <style>
-            .calculator {
-                max-width: 350px;
-                margin: 2rem auto;
-                background: var(--surface-color);
-                padding: 1.5rem;
-                border-radius: 20px;
-                box-shadow: var(--shadow);
-            }
-            
-            .calc-display {
-                background: var(--bg-color);
-                padding: 2rem;
-                border-radius: 15px;
-                font-size: 2.5rem;
-                text-align: right;
-                margin-bottom: 1rem;
-                min-height: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-                word-break: break-all;
-            }
-            
-            .calc-buttons {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0.75rem;
-            }
-            
-            .calc-btn {
-                padding: 1.5rem;
-                font-size: 1.5rem;
-                border: none;
-                border-radius: 15px;
-                cursor: pointer;
-                transition: var(--transition);
-                font-weight: 600;
-            }
-            
-            .calc-btn.number {
-                background: var(--surface-color);
-                border: 2px solid var(--border-color);
-                color: var(--text-color);
-            }
-            
-            .calc-btn.operator {
-                background: var(--primary-color);
-                color: white;
-            }
-            
-            .calc-btn.equals {
-                background: var(--success-color);
-                color: white;
-            }
-            
-            .calc-btn.clear {
-                background: var(--danger-color);
-                color: white;
-            }
-            
-            .calc-btn:hover {
-                transform: scale(1.05);
-            }
-            
-            .calc-btn.span-2 {
-                grid-column: span 2;
-            }
-        </style>
-    `;
-}
-
-function initCalculator() {
-    const display = document.getElementById("calcDisplay");
-    if (!display) return;
-    let expression = "";
-
-    function update() {
-        display.textContent = expression || "0";
-    }
-
-    function format(expr) {
-        return expr
-            .replace(/÷/g, "/")
-            .replace(/×/g, "*")
-            .replace(/\^/g, "**");
-    }
-
-    function safeEval(expr) {
-        try {
-            if (!expr) return "";
-            let result = eval(format(expr));
-            if (result === undefined) return "";
-            if (isNaN(result)) return "Error";
-            return String(result);
-        } catch {
-            return "Error";
-        }
-    }
-
-    function applyFunction(type) {
-        try {
-            let value = eval(format(expression || "0"));
-            let result;
-            switch (type) {
-                case "sin": result = Math.sin(value); break;
-                case "cos": result = Math.cos(value); break;
-                case "tan": result = Math.tan(value); break;
-                case "sqrt": result = Math.sqrt(value); break;
-                case "square": result = value * value; break;
-                case "inv": result = 1 / value; break; 
-            }
-            if (isNaN(result)) return "Error"; 
-            return String(result);
-        } catch {
-            return "Error";
-        }
-    }
-
- 
-    function clearIfFinished() {
-        if (expression === "Error" || expression === "NaN") {
-            expression = "";
-        }
-    }
-
-    document.querySelectorAll(".calc-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            clearIfFinished();
-            
-            const value = btn.dataset.value;
-            const action = btn.dataset.action;
-
-            if (value !== undefined) {
-                if (value === ".") {
-               
-                    const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
-                    if (lastOperand.includes(".")) return;
-                }
-                expression += value;
-                update();
-                return;
-            }
-
-            if (!action) return;
-
-    
-            switch (action) {
-                case "clear":
-                    expression = "";
-                    break;
-                case "delete":
-                    if (expression === "Infinity" || expression === "-Infinity") {
-                        expression = "";
-                    } else {
-                        expression = expression.slice(0, -1);
-                    }
-                    break;
-                case "=":
-                    expression = safeEval(expression);
-                    break;
-                case "sin":
-                case "cos":
-                case "tan":
-                case "sqrt":
-                case "square":
-                case "inv":
-                    expression = applyFunction(action);
-                    break;
-                case "^":
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-        
-                    const lastChar = expression.slice(-1);
-                    if (["+", "-", "*", "/", "^"].includes(lastChar)) {
-                        expression = expression.slice(0, -1) + action;
-                    } else {
-                        expression += action;
-                    }
-                    break;
-                default:
-                    expression += action;
-            }
-            update();
-        });
-    });
-
-    document.addEventListener("keydown", (e) => {
-        const key = e.key;
-        if (!document.getElementById("calcDisplay")) return;
-
-        // Whitelist allowed keys to prevent typing letters
-        const allowedKeys = ["Enter", "Backspace", "Escape", "=", "+", "-", "*", "/", "^", ".", "(", ")"];
-        if (allowedKeys.includes(key) || /^[0-9]$/.test(key)) {
-            e.preventDefault();
-        } else {
-            return;
-        }
-
-        clearIfFinished();
-
-        if (/^[0-9]$/.test(key)) {
-            expression += key;
-        } else if (key === ".") {
-            const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
-            if (!lastOperand.includes(".")) {
-                expression += ".";
-            }
-        } else if (["+", "-", "*", "/", "^"].includes(key)) {
-            const lastChar = expression.slice(-1);
-            if (["+", "-", "*", "/", "^"].includes(lastChar)) {
-                expression = expression.slice(0, -1) + key;
-            } else {
-                expression += key;
-            }
-        } else if (key === ")" || key === "(") {
-            expression += key;
-        } else if (key === "Enter" || key === "=") {
-            expression = safeEval(expression);
-        } else if (key === "Backspace") {
-            if (expression === "Infinity" || expression === "-Infinity") {
-                expression = "";
-            } else {
-                expression = expression.slice(0, -1);
-            }
-        } else if (key === "Escape" || key.toLowerCase() === "c") {
-            expression = "";
-        }
-        update();
-    });
-
-    update();
-}
+// Calculator module is in js/projects/calculator.js.
 
 // ============================================
 // FIBONACCI
@@ -3022,187 +2753,541 @@ function initTowerOfHanoi() {
     initializeGame();
 }
 
+// ============================================
+// Tic-Tac-Toe
+// ============================================
+
 function getTicTacToeHTML() {
-    return `
-        <style>
-            .tic-tac-toe-container {
-                text-align: center;
-                padding: 20px;
-            }
+  return `
+<div class="ttt-wrap">
 
-            .board {
-                display: grid;
-                grid-template-columns: repeat(3, 100px);
-                gap: 10px;
-                justify-content: center;
-                margin: 20px auto;
-            }
+  <!-- ░░ SETUP SCREEN ░░ -->
+  <div id="ttt-setup" class="ttt-screen ttt-screen--active">
+    <div class="ttt-logo">
+      <span class="ttt-logo-x">X</span>
+      <span class="ttt-logo-dot">·</span>
+      <span class="ttt-logo-o">O</span>
+    </div>
+    <h2 class="ttt-title">Tic Tac Toe</h2>
+    <p class="ttt-sub">Two players or vs AI — classic strategy game!</p>
 
-            .cell {
-                width: 100px;
-                height: 100px;
-                font-size: 2rem;
-                font-weight: bold;
-                border: 2px solid #333;
-                background: white;
-                cursor: pointer;
-                border-radius: 10px;
-            }
+    <div class="ttt-field-group">
+      <span class="ttt-label">Game Mode</span>
+      <div class="ttt-pill-group" id="ttt-mode-group">
+        <button class="ttt-pill ttt-pill--on" data-val="2p">👥 Two Players</button>
+        <button class="ttt-pill" data-val="ai">🤖 vs Computer</button>
+      </div>
+    </div>
 
-            .cell:hover {
-                background-color: #f0f0f0;
-            }
+    <div class="ttt-field-group" id="ttt-diff-group" style="display:none">
+      <span class="ttt-label">Difficulty</span>
+      <div class="ttt-pill-group" id="ttt-diff-pills">
+        <button class="ttt-pill ttt-pill--on" data-val="easy">🟢 Easy</button>
+        <button class="ttt-pill" data-val="medium">🟡 Medium</button>
+        <button class="ttt-pill" data-val="hard">🔴 Hard</button>
+      </div>
+    </div>
 
-            #status {
-                font-size: 1.2rem;
-                margin: 15px 0;
-                font-weight: bold;
-            }
+    <div class="ttt-field-group">
+      <span class="ttt-label">Rounds</span>
+      <div class="ttt-pill-group" id="ttt-rounds-group">
+        <button class="ttt-pill" data-val="1">1</button>
+        <button class="ttt-pill ttt-pill--on" data-val="3">Best of 3</button>
+        <button class="ttt-pill" data-val="5">Best of 5</button>
+      </div>
+    </div>
 
-            .restart-btn {
-                padding: 10px 20px;
-                border: none;
-                background: #4CAF50;
-                color: white;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 1rem;
-            }
+    <div class="ttt-names-row">
+      <div class="ttt-name-box">
+        <span class="ttt-label">Player 1 <em class="ttt-x-tag">❌</em></span>
+        <input class="ttt-input" type="text" id="ttt-p1" placeholder="Player 1" maxlength="12"/>
+      </div>
+      <div class="ttt-name-box" id="ttt-p2-box">
+        <span class="ttt-label">Player 2 <em class="ttt-o-tag">⭕</em></span>
+        <input class="ttt-input" type="text" id="ttt-p2" placeholder="Player 2" maxlength="12"/>
+      </div>
+    </div>
 
-            .restart-btn:hover {
-                background: #45a049;
-            }
-        </style>
+    <button class="ttt-cta" id="ttt-start">🚀 Start Game</button>
+  </div><!-- /setup -->
 
-        <div class="tic-tac-toe-container">
-            <h2>Tic Tac Toe</h2>
+  <!-- ░░ GAME SCREEN ░░ -->
+  <div id="ttt-game" class="ttt-screen">
 
-            <div class="board">
-                <button class="cell" onclick="makeMove(0)"></button>
-                <button class="cell" onclick="makeMove(1)"></button>
-                <button class="cell" onclick="makeMove(2)"></button>
+    <!-- Scoreboard -->
+    <div class="ttt-scores">
+      <div class="ttt-score ttt-score--x">
+        <div class="ttt-score-name" id="ttt-sn1">P1</div>
+        <div class="ttt-score-val"  id="ttt-sv1">0</div>
+      </div>
+      <div class="ttt-score ttt-score--d">
+        <div class="ttt-score-name">Draws</div>
+        <div class="ttt-score-val" id="ttt-svd">0</div>
+      </div>
+      <div class="ttt-score ttt-score--o">
+        <div class="ttt-score-name" id="ttt-sn2">P2</div>
+        <div class="ttt-score-val"  id="ttt-sv2">0</div>
+      </div>
+    </div>
 
-                <button class="cell" onclick="makeMove(3)"></button>
-                <button class="cell" onclick="makeMove(4)"></button>
-                <button class="cell" onclick="makeMove(5)"></button>
+    <div class="ttt-round-tag" id="ttt-round-tag">Round 1 of 3</div>
 
-                <button class="cell" onclick="makeMove(6)"></button>
-                <button class="cell" onclick="makeMove(7)"></button>
-                <button class="cell" onclick="makeMove(8)"></button>
-            </div>
+    <!-- Turn banner -->
+    <div class="ttt-turn-banner" id="ttt-turn-banner">
+      <span class="ttt-turn-sym" id="ttt-turn-sym">❌</span>
+      <span id="ttt-turn-name">Player 1</span>'s turn
+    </div>
 
-            <p id="status">Player X's Turn</p>
+    <!-- Board -->
+    <div style="position:relative;">
+    <div id="ttt-board">
 
-            <button class="restart-btn" onclick="resetGame()">
-                Restart Game
-            </button>
-        </div>
-    `;
+      ${[0,1,2,3,4,5,6,7,8].map(i =>
+        `<button class="ttt-cell" data-i="${i}" aria-label="Cell ${i+1}"></button>`
+      ).join('')}
+    </div>
+
+    <!-- Win-line SVG overlay -->
+    <svg class="ttt-win-svg" id="ttt-win-svg" viewBox="0 0 3 3" xmlns="http://www.w3.org/2000/svg">
+      <line id="ttt-win-line" x1="0" y1="0" x2="0" y2="0"
+            stroke="var(--ttt-accent)" stroke-width="0.18"
+            stroke-linecap="round" opacity="0"/>
+    </svg>
+</div>
+    <!-- Result overlay -->
+    <div class="ttt-result-overlay" id="ttt-result-overlay" style="display:none">
+      <div class="ttt-result-card">
+        <div class="ttt-result-emoji" id="ttt-res-emoji">🏆</div>
+        <div class="ttt-result-text"  id="ttt-res-text">Player 1 wins!</div>
+        <button class="ttt-cta ttt-cta--sm" id="ttt-next">Next Round →</button>
+      </div>
+    </div>
+
+    <button class="ttt-ghost-btn" id="ttt-back">← Menu</button>
+  </div><!-- /game -->
+
+  <!-- ░░ FINAL SCREEN ░░ -->
+  <div id="ttt-final" class="ttt-screen">
+    <div class="ttt-final-trophy">🏆</div>
+    <div class="ttt-final-title" id="ttt-final-title">Player 1 Wins!</div>
+    <div class="ttt-final-scoreline">
+      <span class="ttt-fs-name ttt-fs-x" id="ttt-fp1">P1</span>
+      <span class="ttt-fs-score" id="ttt-fp1s">0</span>
+      <span class="ttt-fs-sep">—</span>
+      <span class="ttt-fs-score" id="ttt-fp2s">0</span>
+      <span class="ttt-fs-name ttt-fs-o" id="ttt-fp2">P2</span>
+    </div>
+    <div class="ttt-final-draws" id="ttt-final-draws">0 draws</div>
+    <div class="ttt-final-actions">
+      <button class="ttt-cta" id="ttt-rematch">🔄 Rematch</button>
+      <button class="ttt-ghost-btn" id="ttt-menu">← Main Menu</button>
+    </div>
+  </div><!-- /final -->
+
+</div><!-- /ttt-wrap -->
+`;
 }
+function initTicTacToe() {
 
-let currentPlayer = 'X';
+  // Win combos
+  const WINS = [
+    [0,1,2],[3,4,5],[6,7,8],   // rows
+    [0,3,6],[1,4,7],[2,5,8],   // cols
+    [0,4,8],[2,4,6]            // diagonals
+  ];
 
-let board = [
-    '', '', '',
-    '', '', '',
-    '', '', ''
-];
+  // Win-line centre coordinates (column, row) in 0-2 grid space
+  const WIN_COORDS = [
+    [[0,0],[2,0]], [[0,1],[2,1]], [[0,2],[2,2]],  // rows
+    [[0,0],[0,2]], [[1,0],[1,2]], [[2,0],[2,2]],  // cols
+    [[0,0],[2,2]], [[2,0],[0,2]]                   // diagonals
+  ];
 
-let gameActive = true;
+  // ── State ──
+  let mode       = "2p";
+  let difficulty = "easy";
+  let maxRounds  = 3;
+  let p1         = "Player 1";
+  let p2         = "Player 2";
+  let scores     = { p1:0, p2:0, draws:0 };
+  let board      = [];
+  let current    = "X";   // "X" | "O"
+  let round      = 1;
+  let gameOver   = false;
 
-const winningPatterns = [
-    [0,1,2],
-    [3,4,5],
-    [6,7,8],
+  // ── Helpers ──
+  function qs(sel, ctx) { return (ctx||document).querySelector(sel); }
 
-    [0,3,6],
-    [1,4,7],
-    [2,5,8],
+  // Show one of the three screens
+  function showScreen(id) {
+    ["ttt-setup","ttt-game","ttt-final"].forEach(s => {
+      const el = document.getElementById(s);
+      if (el) {
+        el.classList.toggle("ttt-screen--active", s === id);
+      }
+    });
+  }
 
-    [0,4,8],
-    [2,4,6]
-];
+  // Pill-toggle group helper
+  function initPillGroup(groupId, onChange) {
+    const grp = document.getElementById(groupId);
+    if (!grp) return;
+    grp.querySelectorAll(".ttt-pill").forEach(btn => {
+      btn.addEventListener("click", () => {
+        grp.querySelectorAll(".ttt-pill").forEach(b => b.classList.remove("ttt-pill--on"));
+        btn.classList.add("ttt-pill--on");
+        onChange(btn.dataset.val);
+      });
+    });
+  }
 
-function makeMove(index) {
-
-    if (!gameActive || board[index] !== '') {
-        return;
-    }
-
-    const cells = document.querySelectorAll('.cell');
-
-    board[index] = currentPlayer;
-
-    cells[index].innerText = currentPlayer;
-
-    if (currentPlayer === 'X') {
-        cells[index].style.color = '#ff4d4d';
+  // ── Wire up Setup ──
+  initPillGroup("ttt-mode-group", val => {
+    mode = val;
+    const diffGroup = document.getElementById("ttt-diff-group");
+    const p2box     = document.getElementById("ttt-p2-box");
+    const p2inp     = document.getElementById("ttt-p2");
+    if (val === "ai") {
+      diffGroup.style.display = "block";
+      p2box.classList.add("ttt-dimmed");
+      p2inp.disabled = true;
+      p2inp.placeholder = "Computer 🤖";
     } else {
-        cells[index].style.color = '#4d79ff';
+      diffGroup.style.display = "none";
+      p2box.classList.remove("ttt-dimmed");
+      p2inp.disabled = false;
+      p2inp.placeholder = "Player 2";
     }
+  });
 
-    // CHECK WINNER FIRST
-    if (checkWinner()) {
+  initPillGroup("ttt-diff-pills",   val => { difficulty = val; });
+  initPillGroup("ttt-rounds-group", val => { maxRounds = parseInt(val); });
 
-        document.getElementById('status').innerText =
-            `Player ${currentPlayer} Wins!`;
-
-        gameActive = false;
-        return;
-    }
-
-    // DRAW CONDITION
-    const isDraw = board.every(cell => cell !== '');
-
-    if (isDraw) {
-
-        document.getElementById('status').innerText =
-            "It's a Draw!";
-
-        gameActive = false;
-        return;
-    }
-
-    // SWITCH PLAYER
-    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-
-    document.getElementById('status').innerText =
-        `Player ${currentPlayer}'s Turn`;
-}
-
-
-function checkWinner() {
-
-    return winningPatterns.some(pattern => {
-
-        return pattern.every(index => {
-            return board[index] === currentPlayer;
-        });
-
+  // Start button
+  const startBtn = document.getElementById("ttt-start");
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      p1 = (document.getElementById("ttt-p1").value.trim()) || "Player 1";
+      p2 = mode === "ai"
+        ? "Computer 🤖"
+        : ((document.getElementById("ttt-p2").value.trim()) || "Player 2");
+      scores = { p1:0, p2:0, draws:0 };
+      round  = 1;
+      newRound();
+      showScreen("ttt-game");
     });
-}
+  }
 
-function resetGame() {
+  // Back / Menu buttons
+  const backBtn = document.getElementById("ttt-back");
+  if (backBtn) backBtn.addEventListener("click", () => showScreen("ttt-setup"));
 
-    board = [
-        '', '', '',
-        '', '', '',
-        '', '', ''
-    ];
+  const menuBtn = document.getElementById("ttt-menu");
+  if (menuBtn) menuBtn.addEventListener("click", () => showScreen("ttt-setup"));
 
-    currentPlayer = 'X';
+  // Rematch button
+  const rematchBtn = document.getElementById("ttt-rematch");
+  if (rematchBtn) {
+    rematchBtn.addEventListener("click", () => {
+      scores = { p1:0, p2:0, draws:0 };
+      round  = 1;
+      newRound();
+      showScreen("ttt-game");
+    });
+  }
 
-    gameActive = true;
+  // Next-round button
+  const nextBtn = document.getElementById("ttt-next");
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      const majority = Math.ceil(maxRounds / 2);
+      const matchDone = round >= maxRounds
+        || scores.p1 >= majority
+        || scores.p2 >= majority;
+      if (matchDone) {
+        renderFinal();
+        showScreen("ttt-final");
+      } else {
+        round++;
+        newRound();
+      }
+    });
+  }
 
-    const cells = document.querySelectorAll('.cell');
+  // ── Round management ──
+  function newRound() {
+    board    = Array(9).fill(null);
+    current  = "X";
+    gameOver = false;
 
-    cells.forEach(cell => {
-        cell.textContent = '';
+    // Reset cells
+    document.querySelectorAll(".ttt-cell").forEach(c => {
+      c.textContent = "";
+      c.className   = "ttt-cell";
+      c.disabled    = false;
     });
 
-    document.getElementById('status').textContent =
-        "Player X's Turn";
+    // Hide result overlay
+    const overlay = document.getElementById("ttt-result-overlay");
+    if (overlay) overlay.style.display = "none";
+
+    // Clear win line
+    clearWinLine();
+
+    // Update scoreboard
+    syncScoreboard();
+
+    // Round label
+    const tag = document.getElementById("ttt-round-tag");
+    if (tag) {
+      tag.textContent = maxRounds === 1
+        ? "Single Round"
+        : `Round ${round} of ${maxRounds}`;
+    }
+
+    refreshTurnBanner();
+
+    // If AI goes first (not default, but safe to handle)
+    if (mode === "ai" && current === "O") {
+      lockBoard(true);
+      setTimeout(aiTurn, 600);
+    }
+  }
+
+  function syncScoreboard() {
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set("ttt-sn1", p1);
+    set("ttt-sn2", p2);
+    set("ttt-sv1", scores.p1);
+    set("ttt-sv2", scores.p2);
+    set("ttt-svd", scores.draws);
+  }
+
+  function refreshTurnBanner() {
+    const name = current === "X" ? p1 : p2;
+    const sym  = current === "X" ? "X" : "O";
+    const symEl  = document.getElementById("ttt-turn-sym");
+    const nameEl = document.getElementById("ttt-turn-name");
+    const banner = document.getElementById("ttt-turn-banner");
+    if (symEl)  symEl.textContent  = sym;
+    if (nameEl) nameEl.textContent = name;
+    if (banner) {
+      banner.classList.toggle("ttt-turn-banner--x", current === "X");
+      banner.classList.toggle("ttt-turn-banner--o", current === "O");
+    }
+  }
+
+  // ── Cell clicks ──
+  document.querySelectorAll(".ttt-cell").forEach(cell => {
+    cell.addEventListener("click", () => {
+      const i = parseInt(cell.dataset.i);
+      if (gameOver || board[i]) return;
+      if (mode === "ai" && current === "O") return; // AI's turn
+
+      placeMove(i, current);
+      afterMove();
+    });
+  });
+
+  function placeMove(i, sym) {
+    board[i] = sym;
+    const cell = document.querySelector(`.ttt-cell[data-i="${i}"]`);
+    if (!cell) return;
+   cell.textContent = sym;
+    cell.classList.add(sym === "X" ? "ttt-cell--x" : "ttt-cell--o");
+    cell.disabled = true;
+  }
+
+  function afterMove() {
+    const win = getWinner(board);
+    if (win)              { endRound(win);  return; }
+    if (board.every(c=>c)){ endRound(null); return; }
+
+    current = current === "X" ? "O" : "X";
+    refreshTurnBanner();
+
+    if (mode === "ai" && current === "O") {
+      lockBoard(true);
+      setTimeout(aiTurn, 480 + Math.random()*200);
+    }
+  }
+
+  function lockBoard(on) {
+    document.querySelectorAll(".ttt-cell").forEach(c => {
+      if (!board[parseInt(c.dataset.i)]) c.disabled = on;
+    });
+  }
+
+  // ── Win detection ──
+  function getWinner(b) {
+    for (let idx=0; idx<WINS.length; idx++) {
+      const [a,x,c] = WINS[idx];
+      if (b[a] && b[a]===b[x] && b[x]===b[c]) {
+        return { sym: b[a], combo: WINS[idx], coordIdx: idx };
+      }
+    }
+    return null;
+  }
+
+  // ── End of round ──
+  function endRound(win) {
+    gameOver = true;
+    lockBoard(true);
+
+    if (win) {
+      // Highlight winning cells
+      win.combo.forEach(i => {
+        const cell = document.querySelector(`.ttt-cell[data-i="${i}"]`);
+        if (cell) cell.classList.add("ttt-cell--win");
+      });
+      // Draw SVG win line
+      drawWinLine(win.coordIdx);
+
+      const winnerName = win.sym === "X" ? p1 : p2;
+      if (win.sym === "X") scores.p1++; else scores.p2++;
+      syncScoreboard();
+
+      setResult("🏆", `${winnerName} wins this round!`);
+    } else {
+      scores.draws++;
+      syncScoreboard();
+      setResult("🤝", "It's a draw!");
+    }
+
+    // Update Next button label
+    setTimeout(() => {
+      const majority  = Math.ceil(maxRounds / 2);
+      const matchDone = round >= maxRounds
+        || scores.p1 >= majority
+        || scores.p2 >= majority;
+      const nextBtn = document.getElementById("ttt-next");
+      if (nextBtn) nextBtn.textContent = matchDone ? "See Results →" : "Next Round →";
+
+      const overlay = document.getElementById("ttt-result-overlay");
+      if (overlay) overlay.style.display = "flex";
+    }, 600);
+  }
+
+  function setResult(emoji, text) {
+    const e = document.getElementById("ttt-res-emoji");
+    const t = document.getElementById("ttt-res-text");
+    if (e) e.textContent = emoji;
+    if (t) t.textContent = text;
+  }
+
+  // ── Win-line SVG ──
+  // Grid cells are (col, row) 0-indexed; centre of cell = col+0.5, row+0.5
+  function drawWinLine(comboIdx) {
+  const line = document.getElementById("ttt-win-line");
+  const svg  = document.getElementById("ttt-win-svg");
+  if (!line || !svg) return;
+
+  const [[c1,r1],[c2,r2]] = WIN_COORDS[comboIdx];
+  line.setAttribute("x1", c1 + 0.5);
+  line.setAttribute("y1", r1 + 0.5);
+  line.setAttribute("x2", c2 + 0.5);
+  line.setAttribute("y2", r2 + 0.5);
+  line.setAttribute("opacity", "1");
+  svg.classList.add("ttt-win-svg--visible");
 }
+
+  function clearWinLine() {
+    const line = document.getElementById("ttt-win-line");
+    const svg  = document.getElementById("ttt-win-svg");
+    if (line) line.setAttribute("opacity","0");
+    if (svg)  svg.classList.remove("ttt-win-svg--visible");
+  }
+
+  // ── Final screen ──
+  function renderFinal() {
+    const set = (id,v) => { const el=document.getElementById(id); if(el) el.textContent=v; };
+    set("ttt-fp1",  p1);
+    set("ttt-fp2",  p2);
+    set("ttt-fp1s", scores.p1);
+    set("ttt-fp2s", scores.p2);
+    set("ttt-final-draws", `${scores.draws} draw${scores.draws!==1?"s":""}`);
+
+    let title;
+    if      (scores.p1 > scores.p2) title = `🏆 ${p1} wins the match!`;
+    else if (scores.p2 > scores.p1) title = `🏆 ${p2} wins the match!`;
+    else                             title = "🤝 The match is tied!";
+    set("ttt-final-title", title);
+  }
+
+  // ── AI engines ──
+  function freeCells(b) {
+    return b.reduce((acc,v,i) => { if(!v) acc.push(i); return acc; }, []);
+  }
+
+  function checkWinFor(b, sym) {
+    return WINS.some(([a,x,c]) => b[a]===sym && b[x]===sym && b[c]===sym);
+  }
+
+  function minimax(b, isMax, alpha, beta, depth) {
+    if (checkWinFor(b,"O")) return 10 - depth;
+    if (checkWinFor(b,"X")) return depth - 10;
+    if (b.every(c=>c))      return 0;
+
+    const moves = freeCells(b);
+    if (isMax) {
+      let best = -Infinity;
+      for (const m of moves) {
+        b[m] = "O";
+        best = Math.max(best, minimax(b, false, alpha, beta, depth+1));
+        b[m] = null;
+        alpha = Math.max(alpha, best);
+        if (beta <= alpha) break;
+      }
+      return best;
+    } else {
+      let best = Infinity;
+      for (const m of moves) {
+        b[m] = "X";
+        best = Math.min(best, minimax(b, true, alpha, beta, depth+1));
+        b[m] = null;
+        beta = Math.min(beta, best);
+        if (beta <= alpha) break;
+      }
+      return best;
+    }
+  }
+
+  function chooseMove(b, diff) {
+    const moves = freeCells(b);
+    if (!moves.length) return null;
+
+    // Easy — random
+    if (diff === "easy") return moves[Math.floor(Math.random()*moves.length)];
+
+    // Medium — win → block → center/corners
+    if (diff === "medium") {
+      for (const m of moves) { b[m]="O"; if(checkWinFor(b,"O")){b[m]=null;return m;} b[m]=null; }
+      for (const m of moves) { b[m]="X"; if(checkWinFor(b,"X")){b[m]=null;return m;} b[m]=null; }
+      for (const p of [4,0,2,6,8,1,3,5,7]) { if(!b[p]) return p; }
+      return moves[0];
+    }
+
+    // Hard — minimax
+    let bestScore=-Infinity, bestMove=moves[0];
+    for (const m of moves) {
+      b[m]="O";
+      const s = minimax(b, false, -Infinity, Infinity, 0);
+      b[m]=null;
+      if (s > bestScore) { bestScore=s; bestMove=m; }
+    }
+    return bestMove;
+  }
+
+  function aiTurn() {
+    if (gameOver) return;
+    const move = chooseMove([...board], difficulty); // pass copy so minimax doesn't corrupt state
+    lockBoard(false);
+    if (move !== null) placeMove(move, "O");
+    afterMove();
+  }
+
+} // end initTicTacToe
+// ================================
 function getProductivePetHTML() {
     return `
         <div class="productive-pet-container">
@@ -3233,6 +3318,106 @@ function getProductivePetHTML() {
             </div>
         </div>
     `;
+}
+
+function getAIResumeAnalyzerHTML() {
+    return `
+        <div class="resume-analyzer-shell">
+            <div class="resume-analyzer-hero">
+                <div class="resume-analyzer-copy">
+                    <span class="resume-analyzer-badge">GSSoC Utility</span>
+                    <h2>AI Resume Analyzer</h2>
+                    <p>Upload a resume and get a quick ATS-style snapshot with keyword, structure, and formatting feedback.</p>
+                </div>
+                <div class="resume-analyzer-pill">No backend required</div>
+            </div>
+
+            <div class="resume-analyzer-grid">
+                <section class="resume-panel resume-upload-panel">
+                    <div class="resume-upload-box">
+                        <i class="fa-solid fa-file-lines resume-upload-icon"></i>
+                        <label class="resume-file-btn">
+                            Choose File
+                            <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" hidden>
+                        </label>
+                        <p>Drag &amp; drop or click to choose a resume</p>
+                    </div>
+
+                    <button class="resume-analyze-btn" id="analyzeBtn" type="button">Analyze Resume 🚀</button>
+                </section>
+
+                <section class="resume-panel resume-score-panel hidden" id="ats">
+                    <h3>ATS Score</h3>
+                    <div class="resume-progress-circle">
+                        <span>82%</span>
+                    </div>
+                    <div class="resume-extra-info">
+                        <p>✔ Formatting Score: 80%</p>
+                        <p>✔ Keyword Match: 75%</p>
+                    </div>
+                </section>
+
+                <section class="resume-panel resume-bottom-panel hidden" id="bottomSection">
+                    <div class="resume-mini-card">
+                        <h3>Keywords Match</h3>
+
+                        <div class="resume-keyword-item">
+                            <span>Python</span>
+                            <div class="resume-bar"><div style="width: 90%"></div></div>
+                        </div>
+
+                        <div class="resume-keyword-item">
+                            <span>Machine Learning</span>
+                            <div class="resume-bar"><div style="width: 75%"></div></div>
+                        </div>
+
+                        <div class="resume-keyword-item">
+                            <span>Data Analysis</span>
+                            <div class="resume-bar"><div style="width: 65%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="resume-mini-card">
+                        <h3><i class="fa-solid fa-lightbulb"></i> Suggestions</h3>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Add more projects</p>
+                        </div>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Improve formatting</p>
+                        </div>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Use action verbs</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    `;
+}
+
+function initAIResumeAnalyzer() {
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const resumeInput = document.getElementById('resumeInput');
+    const ats = document.getElementById('ats');
+    const bottomSection = document.getElementById('bottomSection');
+
+    if (!analyzeBtn || !resumeInput || !ats || !bottomSection) return;
+
+    analyzeBtn.addEventListener('click', () => {
+        if (!resumeInput.files.length) {
+            alert('Upload resume first!');
+            return;
+        }
+
+        ats.classList.remove('hidden');
+        bottomSection.classList.remove('hidden');
+    });
 }
 
 
@@ -3276,7 +3461,9 @@ function initializeProject(projectName) {
         'simon-says': 'initSimonSays',
         '2048-game': 'init2048Game',
         'color-palette': 'initColorPalette',
-        'math-quiz': 'initMathQuiz'
+        'math-quiz': 'initMathQuiz',
+        'resume-analyzer': 'initAIResumeAnalyzer',
+        'caesar-cipher': 'initCaesarCipher'
     };
     
     const initializerName = initializers[projectName];

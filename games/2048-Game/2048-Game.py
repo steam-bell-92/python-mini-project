@@ -67,6 +67,14 @@ class Game2048:
         )
         self.restart_button.grid(pady=5)
 
+        self.instruction_label = tk.Label(
+            root,
+            text="🎮 Controls: ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
+            font=("Arial", 10),
+            fg="#6a635b",
+        )
+        self.instruction_label.grid(pady=5)
+
         self.cells = []
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
 

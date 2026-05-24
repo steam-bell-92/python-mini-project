@@ -5,6 +5,7 @@ This folder contains practical Python mini-tools and utility-based projects such
 ## Projects in `utilities/`
 
 - AI-Resume-Analyzer
+- Caesar-Cipher
 - Fake-News-Headline-Generator
 - Number-System-Converter
 - Productivity-Pet
