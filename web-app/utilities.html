@@ -90,43 +90,102 @@
     </style>
 </head>
 
-<body data-page="utilities">
+<body data-page="utilities" class="sidebar-active">
     <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
 
-    <!-- Navigation -->
-    <nav class="navbar" aria-label="Primary">
-        <div class="container">
-            <div class="logo">
-                <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
-                    <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 10px;">🎮 Python Mini Projects</span>
-                </a>
+    <!-- Mobile Sidebar Toggle -->
+    <button type="button" class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- ── PRIMARY SIDEBAR DOCK ──────────────────────────────────── -->
+    <aside class="sidebar-dock" id="mainSidebar" aria-label="Primary Navigation">
+      <div class="sidebar-brand">
+        <a class="logo-wrap" href="index.html">
+          <div class="logo-top-row">
+            <img alt="PyMini Logo" class="navbar-logo" src="assets/logo.png"/>
+            <div class="logo-text">
+              <span class="logo-py">py</span>
+              <span class="logo-mini">.mini</span>
+              <span class="logo-parens">()</span>
             </div>
-            <div class="nav-controls">
-                <button type="button" class="sound-toggle" id="soundToggle" aria-label="Mute sounds">
-                    <i class="fas fa-volume-up" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="theme-toggle" id="themeToggle" aria-label="Switch to light mode">
-                    <i class="fas fa-moon" aria-hidden="true"></i>
-                </button>
+          </div>
+          <span class="logo-tagline">games, math &amp; terminal toys</span>
+        </a>
+      </div>
+
+      <div class="sidebar-search">
+        <div class="search-box" style="position:relative">
+          <i class="fas fa-search"></i>
+          <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"/>
+          <div class="search-dropdown" id="searchDropdown">
+            <div class="dropdown-content" id="searchDropdownContent">
+              <div class="search-loader" id="searchLoader" style="display:none"><div class="spinner"></div></div>
+              <div class="recent-searches-section" id="recentSearchesSection">
+                <div class="dropdown-section-title">Recent</div>
+                <div class="dropdown-list" id="recentSearchesList"></div>
+              </div>
+              <div class="results-section" id="resultsSection" style="display:none">
+                <div class="dropdown-section-title">Projects</div>
+                <div class="dropdown-list" id="resultsList"></div>
+              </div>
+              <div class="tips-section" id="tipsSection">
+                <p><strong>Search tips</strong></p>
+                <ul>
+                  <li>Type a project name — <code>snake</code>, <code>quiz</code></li>
+                  <li>Filter by tag — <code>game</code>, <code>math</code>, <code>utility</code></li>
+                  <li>Press <code>Ctrl+K</code> to focus search</li>
+                </ul>
+              </div>
+              <div class="no-results-message" id="noResultsMessage" style="display:none">No projects found. Try a different keyword.</div>
             </div>
+          </div>
         </div>
-    </nav>
+      </div>
+
+      <div class="sidebar-menu-wrapper">
+        <div class="sidebar-menu-title">Categories</div>
+        <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
+          <button aria-selected="false" class="sidebar-tab" data-category="all" role="tab" tabindex="-1">
+            <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
+            <span class="sidebar-label">All Projects</span>
+          </button>
+          <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
+            <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg></span>
+            <span class="sidebar-label">Games Arcade</span>
+          </button>
+          <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
+            <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
+            <span class="sidebar-label">Math Visuals</span>
+          </button>
+          <button aria-selected="true" class="sidebar-tab active" data-category="utilities" role="tab" tabindex="0">
+            <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
+            <span class="sidebar-label">Utilities Lab</span>
+          </button>
+          <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
+            <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
+            <span class="sidebar-label">My Favorites</span>
+          </button>
+          <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
+            <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
+            <span class="sidebar-label">Playground</span>
+          </button>
+        </nav>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-controls">
+          <button aria-label="Mute sounds" class="sound-toggle" id="soundToggle" type="button">
+            <i class="fas fa-volume-up"></i>
+          </button>
+          <button aria-label="Switch theme" class="theme-toggle" id="themeToggle" type="button">
+            <i class="fas fa-moon"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
 
     <main id="main-content" tabindex="-1">
-
-        <!-- Category Tabs -->
-        <section class="tabs-section" aria-label="Project categories">
-            <div class="container">
-                <div class="tabs-wrapper">
-                    <div class="tabs" role="tablist" aria-label="Project categories">
-                        <a href="index.html" class="tab" role="tab">🌟 All Projects</a>
-                        <a href="games.html" class="tab" role="tab">🎮 Games</a>
-                        <a href="math.html" class="tab" role="tab">🔢 Math</a>
-                        <a href="utilities.html" class="tab active" role="tab" aria-selected="true">🔐 Utilities</a>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- Page Title Section -->
         <section class="page-title-section" style="text-align: center; padding: 2rem 0 1rem 0;">
@@ -226,7 +285,9 @@
     <script src="js/projects/number-converter.js"></script>
     <script src="js/projects/typing-speed-tester.js"></script>
     <script src="js/projects.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="js/main.js"></script>
+    <script>lucide.createIcons();</script>
 
 </body>
 </html>

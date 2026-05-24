@@ -1,1251 +1,1153 @@
-/*
-  main.js – lightweight app wiring
-  ─────────────────────────────────────────────────────────────────────
-  CHANGES vs original (search "── PLAYGROUND" for every touched area):
-    1. projectsSection reference added (to hide/show vs playground)
-    2. applyCategoryFilter() guards against 'playground' category
-    3. Tab click handler detects playground tab and delegates to
-       window.playgroundAPI (defined in playground.js)
-    4. moveTabFocus() skips playground-only activation; other tabs
-       call deactivatePlayground automatically
-    5. randomProjectBtn is hidden while playground is active
-  ─────────────────────────────────────────────────────────────────────
-  Everything else is 100 % identical to the original.
-*/
+/* ═══════════════════════════════════════════════════════════════
+   main.js — App wiring for Premium Python Projects Gallery
+   ═══════════════════════════════════════════════════════════════ */
 
 function prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-// Accessibility helper referenced by modal code
-function setMainInert(isInert) {
+function safeRun(fn) { try { fn(); } catch (e) { console.error(e); } }
+
+function debounce(fn, ms) {
+  var timer;
+  return function () {
+    var args = arguments; var ctx = this;
+    clearTimeout(timer);
+    timer = setTimeout(function () { fn.apply(ctx, args); }, ms);
+  };
+}
+
+function syncThemeColor(theme) {
+  var meta = document.getElementById('themeColorMeta');
+  if (meta) meta.setAttribute('content', theme === 'light' ? '#f4f6f9' : '#0c0f1a');
+}
+
+function escapeHtml(str) {
+  var d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ── DOMContentLoaded ──────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', function () {
+  var html = document.documentElement;
+  var themeToggle = document.getElementById('themeToggle');
+  var soundToggle = document.getElementById('soundToggle');
+  var backToTopButton = document.getElementById('backToTop');
+  var searchInput = document.getElementById('searchInput');
+  var searchDropdown = document.getElementById('searchDropdown');
+  var searchLoader = document.getElementById('searchLoader');
+  var recentSearchesList = document.getElementById('recentSearchesList');
+  var recentSearchesSection = document.getElementById('recentSearchesSection');
+  var resultsList = document.getElementById('resultsList');
+  var resultsSection = document.getElementById('resultsSection');
+  var tipsSection = document.getElementById('tipsSection');
+  var noResultsMessage = document.getElementById('noResultsMessage');
+  var projectsSection = document.getElementById('projectsSection');
+  var playgroundSection = document.getElementById('playgroundSection');
+  var stickyFilterBar = document.getElementById('stickyFilterBar');
+  var stickyTabs = document.querySelectorAll('.sticky-tab');
+  var heroSection = document.querySelector('.hero-section');
+  var cursorGlow = document.getElementById('cursorGlow');
+  var heroProjectCount = document.getElementById('heroProjectCount');
+  var heroGameCount = document.getElementById('heroGameCount');
+  var heroUtilityCount = document.getElementById('heroUtilityCount');
+  var modal = document.getElementById('projectModal');
+  var modalBody = document.getElementById('modalBody');
+  var modalClose = document.getElementById('modalClose');
+  var modalTitle = document.getElementById('modalDialogTitle');
+  var exploreBtn = document.getElementById('exploreBtn');
+  var randomProjectBtn = document.getElementById('randomProjectBtn');
+  var randomProjectBtnSidebar = document.getElementById('randomProjectBtnSidebar');
+  var emptyState = document.getElementById('emptyState');
+  var emptyStateHint = document.getElementById('emptyStateHint');
+  var projectCountBadge = document.getElementById('projectCountBadge');
+  var mobileMenuToggle = document.getElementById('mobileMenuToggle');
+  var navControls = document.getElementById('navControls');
+  var navbar = document.getElementById('mainNavbar');
+
+  var currentCategory = 'all';
+  var currentSearchQuery = '';
+  var playgroundActive = false;
+  var selectedSuggestionIndex = -1;
+  var removeTrap = null;
+  var lastFocusedElement = null;
+  var projectCards = [];
+  var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
+
+  /* ── Helper: setMainInert ─────────────────────────────────── */
+  function setMainInert(isInert) {
     var main = document.getElementById('main-content');
     if (!main) return;
     if (isInert) main.setAttribute('inert', ''); else main.removeAttribute('inert');
-}
+  }
 
-function safeRun(fn) {
-    try { fn(); } catch (err) { console.error(err); }
-}
+  /* ── Theme Toggle ─────────────────────────────────────────── */
+  function updateThemeToggleAria(isLight) {
+    if (!themeToggle) return;
+    themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
+  }
 
-// Debounce function for smooth search performance
-function debounce(func, delay) {
-    var timeoutId;
-    return function () {
-        var args = arguments;
-        clearTimeout(timeoutId);
-        timeoutId = setTimeout(function () { func.apply(null, args); }, delay);
-    };
-}
+  if (themeToggle) {
+    var savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    syncThemeColor(savedTheme);
+    themeToggle.innerHTML = savedTheme === 'light'
+      ? '<i class="fas fa-sun"></i>'
+      : '<i class="fas fa-moon"></i>';
+    updateThemeToggleAria(savedTheme === 'light');
 
-// Sync the theme-color <meta> tag with the current theme
-function syncThemeColor(theme) {
-    var meta = document.getElementById('themeColorMeta');
-    if (meta) meta.setAttribute('content', theme === 'light' ? '#fffdf8' : '#201a18');
-}
+    themeToggle.addEventListener('click', function () {
+      var current = html.getAttribute('data-theme');
+      var next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      syncThemeColor(next);
+      themeToggle.innerHTML = next === 'light'
+        ? '<i class="fas fa-sun"></i>'
+        : '<i class="fas fa-moon"></i>';
+      updateThemeToggleAria(next === 'light');
+    });
+  }
 
-document.addEventListener('DOMContentLoaded', function () {
-
-    // Sort project cards lexicographically (alphabetically) by title
-    var projectsGrid = document.querySelector('.projects-grid');
-    var rawCards = projectsGrid ? Array.from(projectsGrid.querySelectorAll('.project-card')) : [];
-    if (rawCards.length > 0) {
-        rawCards.sort(function (a, b) {
-            var h3A = a.querySelector('h3');
-            var h3B = b.querySelector('h3');
-            var titleA = h3A ? h3A.textContent.trim() : '';
-            var titleB = h3B ? h3B.textContent.trim() : '';
-            return titleA.localeCompare(titleB);
-        });
-        var reorderedCards = document.createDocumentFragment();
-        rawCards.forEach(function (card) {
-            reorderedCards.appendChild(card);
-        });
-        projectsGrid.appendChild(reorderedCards);
+  /* ── Sound Toggle ─────────────────────────────────────────── */
+  if (soundToggle && window.audioController) {
+    function updateSoundIcon() {
+      soundToggle.innerHTML = window.audioController.isMuted
+        ? '<i class="fas fa-volume-mute"></i>'
+        : '<i class="fas fa-volume-up"></i>';
     }
-
-    // ── DOM references ──────────────────────────────────────────────
-    var html = document.documentElement;
-    var themeToggle = document.getElementById('themeToggle');
-    var soundToggle = document.getElementById('soundToggle');
-    var backToTopButton = document.getElementById('backToTop');
-    var tabs = document.querySelectorAll('.tab');
-    var projectCards = Array.from(document.querySelectorAll('.project-card'));
-    var searchInput = document.getElementById('projectSearch') || document.getElementById('searchInput');
-    var searchClear = document.getElementById('searchClear');
-    var searchDropdown = document.getElementById('searchDropdown');
-    var searchShortcut = document.getElementById('searchShortcut');
-    var searchLoader = document.getElementById('searchLoader');
-    var projectsSection = document.getElementById('projectsSection');
-    var playgroundSection = document.getElementById('playgroundSection');
-    var stickyFilterBar = document.getElementById('stickyFilterBar');
-    var stickyTabs = document.querySelectorAll('.sticky-tab');
-    var heroSection = document.querySelector('.hero-section');
-    var cursorGlow = document.getElementById('cursorGlow');
-    var heroTypewriter = document.getElementById('heroTypewriter');
-    var heroProjectCount = document.getElementById('heroProjectCount');
-    var heroGameCount = document.getElementById('heroGameCount');
-    var heroUtilityCount = document.getElementById('heroUtilityCount');
-    var revealItems = document.querySelectorAll('.reveal-on-scroll');
-    var featureLaunchers = document.querySelectorAll('[data-project-target]');
-    var emptyState = document.getElementById('emptyState');
-    var resultsList = document.getElementById('resultsList');
-    var resultsSection = document.getElementById('resultsSection');
-    var recentSearchesList = document.getElementById('recentSearchesList');
-    var recentSearchesSection = document.getElementById('recentSearchesSection');
-    var tipsSection = document.getElementById('tipsSection');
-    var noResultsMessage = document.getElementById('noResultsMessage');
-    var modal = document.getElementById('projectModal');
-    var modalBody = document.getElementById('modalBody');
-    var modalClose = document.getElementById('modalClose');
-    var modalTitle = document.getElementById('modalDialogTitle');
-    /* randomProjectBtn and playgroundHeroBtn removed — sidebar handles those actions */
-
-
-    var currentCategory = 'all';
-    var currentSearchQuery = '';
-    var playgroundActive = false;
-    var selectedSuggestionIndex = -1;
-    var removeTrap = null;
-    var lastFocusedElement = null;
-    var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
-    //-----------------------project count badge------------------------------------
-    const projectCountBadge = document.getElementById("projectCountBadge");
-    const projectCount = document.querySelectorAll(".project-card").length;
-    const gameCount = projectCards.filter(function (card) { return card.getAttribute('data-category') === 'games'; }).length;
-    const utilityCount = projectCards.filter(function (card) { return card.getAttribute('data-category') === 'utilities'; }).length;
-
-    if (projectCountBadge) {
-        projectCountBadge.textContent = `${projectCount} projects`;
-    }
-    if (heroProjectCount) heroProjectCount.textContent = String(projectCount);
-    if (heroGameCount) heroGameCount.textContent = String(gameCount);
-    if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
-
-    var rotatePhrases = [
-        'typing speed drills',
-        'math quiz rounds',
-        'logic puzzle practice',
-        'browser-ready Python wins'
-    ];
-
-    if (heroTypewriter && !prefersReducedMotion()) {
-        var phraseIndex = 0;
-        setInterval(function () {
-            phraseIndex = (phraseIndex + 1) % rotatePhrases.length;
-            heroTypewriter.textContent = rotatePhrases[phraseIndex];
-        }, 2200);
-    }
-
-    if (cursorGlow && !prefersReducedMotion()) {
-        document.addEventListener('pointermove', function (event) {
-            cursorGlow.style.left = event.clientX + 'px';
-            cursorGlow.style.top = event.clientY + 'px';
-        });
-        document.addEventListener('pointerleave', function () {
-            cursorGlow.style.opacity = '0';
-        });
-        document.addEventListener('pointerenter', function () {
-            cursorGlow.style.opacity = '0.5';
-        });
-    }
-    // ── Theme Toggle ────────────────────────────────────────────────
-    function updateThemeToggleAria(isLightTheme) {
-        if (!themeToggle) return;
-        themeToggle.setAttribute(
-            'aria-label',
-            isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'
-        );
-    }
-
-    if (themeToggle) {
-        var savedTheme = localStorage.getItem('theme') || 'light';
-        html.setAttribute('data-theme', savedTheme);
-        syncThemeColor(savedTheme);
-        themeToggle.innerHTML =
-            savedTheme === 'light'
-                ? '<img src="assets/sun.svg" alt="" aria-hidden="true" class="theme-icon">'
-                : '<img src="assets/moon.svg" alt="" aria-hidden="true" class="theme-icon">';
-        updateThemeToggleAria(savedTheme === 'light');
-
-        themeToggle.addEventListener('click', function () {
-            var currentTheme = html.getAttribute('data-theme');
-            var newTheme = currentTheme === 'light' ? 'dark' : 'light';
-
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            syncThemeColor(newTheme);
-
-            themeToggle.innerHTML =
-                newTheme === 'light'
-                    ? '<img src="assets/sun.svg" alt="" aria-hidden="true" class="theme-icon">'
-                    : '<img src="assets/moon.svg" alt="" aria-hidden="true" class="theme-icon">';
-            updateThemeToggleAria(newTheme === 'light');
-        });
-    }
-
-    // ── Sound Toggle ─────────────────────────────────────────────────
-    if (soundToggle) {
-        var updateSoundIcon = function () {
-            if (window.audioController) {
-                soundToggle.innerHTML = window.audioController.isMuted
-                    ? '<i class="fas fa-volume-mute"></i>'
-                    : '<i class="fas fa-volume-up"></i>';
-            }
-        };
+    updateSoundIcon();
+    soundToggle.addEventListener('click', function () {
+      if (typeof window.audioController.toggleMute === 'function') {
+        window.audioController.toggleMute();
         updateSoundIcon();
-        soundToggle.addEventListener('click', function () {
-            if (window.audioController && typeof window.audioController.toggleMute === 'function') {
-                window.audioController.toggleMute();
-                updateSoundIcon();
-                if (!window.audioController.isMuted && typeof window.audioController.play === 'function') {
-                    window.audioController.play('click');
-                }
-            }
-        });
-    }
-
-    // ── Back to Top ──────────────────────────────────────────────────
-    if (backToTopButton) {
-        var toggleBackToTopButton = function () {
-            backToTopButton.classList.toggle('visible', window.scrollY > 300);
-            var navbar = document.querySelector('.navbar');
-            if (navbar) navbar.classList.toggle('scrolled', window.scrollY > 12);
-        };
-        window.addEventListener('scroll', toggleBackToTopButton, { passive: true });
-        toggleBackToTopButton();
-
-        backToTopButton.addEventListener('click', function () {
-            window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-        });
-    }
-
-    // ── PLAYGROUND: helpers to show / hide sections ─────────────────
-    /* ← PLAYGROUND ADD (entire block) */
-    function showProjectsSection() {
-        playgroundActive = false;
-        if (playgroundSection) playgroundSection.style.display = 'none';
-        if (projectsSection) projectsSection.style.display = '';
-        if (window.playgroundAPI && typeof window.playgroundAPI.deactivate === 'function') {
-            window.playgroundAPI.deactivate();
+        if (!window.audioController.isMuted && typeof window.audioController.play === 'function') {
+          window.audioController.play('click');
         }
-    }
-
-    function showPlaygroundSection() {
-        playgroundActive = true;
-        syncStickyTabs('playground');
-        if (projectsSection) projectsSection.style.display = 'none';
-        if (window.playgroundAPI && typeof window.playgroundAPI.activate === 'function') {
-            window.playgroundAPI.activate();
-        }
-    }
-    /* ← PLAYGROUND ADD end */
-    // ── Sticky Filter Bar: position + show/hide on scroll ────────────
-function syncStickyTabs(category) {
-    stickyTabs.forEach(function (st) {
-        var selected = st.getAttribute('data-sticky-category') === category;
-        st.classList.toggle('active', selected);
-        st.setAttribute('aria-selected', selected ? 'true' : 'false');
-        st.setAttribute('tabindex', selected ? '0' : '-1');
+      }
     });
-}
-
-if (stickyFilterBar && heroSection) {
-    // Position the bar directly below the navbar
-    var navbar = document.querySelector('.navbar');
-    function positionStickyBar() {
-        var navHeight = navbar ? navbar.getBoundingClientRect().height : 0;
-        stickyFilterBar.style.top = navHeight + 'px';
-    }
-    positionStickyBar();
-    window.addEventListener('resize', positionStickyBar);
-
-    var heroObserver = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-            stickyFilterBar.classList.toggle('visible', !entry.isIntersecting);
-        });
-    }, { threshold: 0 });
-    heroObserver.observe(heroSection);
-}
-
-    // Wire sticky tab clicks — mirrors main tab behaviour
-    stickyTabs.forEach(function (st) {
-        st.addEventListener('click', function () {
-            var category = st.getAttribute('data-sticky-category');
-
-            // Sync sticky tabs UI
-            syncStickyTabs(category);
-
-            // Sync hero tabs UI
-            tabs.forEach(function (t) {
-                var selected = t.getAttribute('data-category') === category;
-                t.classList.toggle('active', selected);
-                t.setAttribute('aria-selected', selected ? 'true' : 'false');
-                t.setAttribute('tabindex', selected ? '0' : '-1');
-            });
-
-            // Delegate section logic (same as hero tab click)
-            if (category === 'playground') {
-                showPlaygroundSection();
-            } else {
-                showProjectsSection();
-                applyCategoryFilter(category);
-            }
-        });
+  } else if (soundToggle) {
+    soundToggle.addEventListener('click', function () {
+      var icon = soundToggle.querySelector('i');
+      if (icon) icon.className = icon.className === 'fas fa-volume-up' ? 'fas fa-volume-mute' : 'fas fa-volume-up';
     });
+  }
 
-    // ── Category Filtering ───────────────────────────────────────────
-    function applyCategoryFilter(category) {
-        /* ── PLAYGROUND ADD: skip filtering when playground tab is selected ── */
-        if (category === 'playground') return;
-        /* ── PLAYGROUND ADD end ── */
+  /* ── Hero Controls Mirror Toggles ─────────────────────────── */
+  var heroSoundToggle = document.getElementById('heroSoundToggle');
+  var heroThemeToggle = document.getElementById('heroThemeToggle');
 
-        currentCategory = category;
-        syncStickyTabs(category);
-        var visibleCount = 0;
-        var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        projectCards.forEach(function (card) {
-            var cardCategory = card.getAttribute('data-category');
-            var projectName = card.getAttribute('data-project');
-            var isFavorite = favorites.includes(projectName);
-
-            if (category === 'all' || 
-                (category === 'favorites' && isFavorite) || 
-                (category !== 'favorites' && cardCategory === category)) {
-                card.style.display = '';
-                card.style.animation = prefersReducedMotion() ? 'none' : 'fadeIn 0.6s ease';
-                visibleCount++;
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        if (emptyState) {
-            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-        }
-        if (sidebarBadge) {
-            sidebarBadge.textContent = String(visibleCount);
-        }
+  function syncHeroControlsIcons() {
+    if (heroSoundToggle && soundToggle) {
+      var realSoundIcon = soundToggle.querySelector('i');
+      var heroSoundIcon = heroSoundToggle.querySelector('i');
+      if (realSoundIcon && heroSoundIcon) {
+        heroSoundIcon.className = realSoundIcon.className;
+      }
     }
-
-    function moveTabFocus(fromIndex, delta) {
-        var len = tabs.length;
-        var next = (fromIndex + delta + len) % len;
-        tabs.forEach(function (t, i) {
-            var selected = i === next;
-            t.classList.toggle('active', selected);
-            t.setAttribute('aria-selected', selected ? 'true' : 'false');
-            t.setAttribute('tabindex', selected ? '0' : '-1');
-        });
-        tabs[next].focus();
-
-        /* ── PLAYGROUND ADD: delegate to section helpers ── */
-        var nextCategory = tabs[next].getAttribute('data-category');
-        if (nextCategory === 'playground') {
-            showPlaygroundSection();
-        } else {
-            showProjectsSection();
-            applyCategoryFilter(nextCategory);
-        }
-        /* ── PLAYGROUND ADD end ── */
+    if (heroThemeToggle && themeToggle) {
+      var realThemeIcon = themeToggle.querySelector('i');
+      var heroThemeIcon = heroThemeToggle.querySelector('i');
+      if (realThemeIcon && heroThemeIcon) {
+        heroThemeIcon.className = realThemeIcon.className;
+      }
     }
+  }
 
-    tabs.forEach(function (tab, index) {
-        tab.addEventListener('click', function () {
-            /* Update active state on all tabs */
-            tabs.forEach(function (t) {
-                var selected = t === tab;
-                t.classList.toggle('active', selected);
-                t.setAttribute('aria-selected', selected ? 'true' : 'false');
-                t.setAttribute('tabindex', selected ? '0' : '-1');
-            });
-
-            var category = tab.getAttribute('data-category');
-
-            /* ── PLAYGROUND ADD: playground tab gets its own section ── */
-            if (category === 'playground') {
-                showPlaygroundSection();
-            } else {
-                showProjectsSection();
-                applyCategoryFilter(category);
-            }
-            /* ── PLAYGROUND ADD end ── */
-        });
-
-        tab.addEventListener('keydown', function (e) {
-            var handled = false;
-            if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-                moveTabFocus(index, 1);
-                handled = true;
-            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-                moveTabFocus(index, -1);
-                handled = true;
-            } else if (e.key === 'Home') {
-                moveTabFocus(index, -index);
-                handled = true;
-            } else if (e.key === 'End') {
-                moveTabFocus(index, tabs.length - 1 - index);
-                handled = true;
-            }
-            if (handled) e.preventDefault();
-        });
+  if (heroSoundToggle && soundToggle) {
+    heroSoundToggle.addEventListener('click', function () {
+      soundToggle.click();
+      setTimeout(syncHeroControlsIcons, 50);
     });
+  }
 
-    // ── Sidebar Filter Tabs ───────────────────────────────────────────
-    var sidebarTabs = document.querySelectorAll('.sidebar-tab');
-    var sidebarBadge = document.getElementById('sidebarProjectCount');
-    var sidebarRandomBtn = document.getElementById('randomProjectBtnSidebar');
-
-    function syncSidebarTabs(category) {
-        sidebarTabs.forEach(function (st) {
-            var selected = st.getAttribute('data-category') === category;
-            st.classList.toggle('active', selected);
-            st.setAttribute('aria-selected', selected ? 'true' : 'false');
-            st.setAttribute('tabindex', selected ? '0' : '-1');
-        });
-        if (sidebarBadge) {
-            var visible = projectCards.filter(function (c) { return c.style.display !== 'none'; }).length;
-            sidebarBadge.textContent = String(visible);
-        }
-    }
-
-    sidebarTabs.forEach(function (st) {
-        st.addEventListener('click', function () {
-            var category = st.getAttribute('data-category');
-            syncSidebarTabs(category);
-            syncStickyTabs(category);
-
-            if (category === 'playground') {
-                showPlaygroundSection();
-                var pg = document.getElementById('playgroundSection');
-                if (pg) pg.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            } else {
-                showProjectsSection();
-                applyCategoryFilter(category);
-                if (projectsSection) {
-                    projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            }
-        });
+  if (heroThemeToggle && themeToggle) {
+    heroThemeToggle.addEventListener('click', function () {
+      themeToggle.click();
+      setTimeout(syncHeroControlsIcons, 50);
     });
+  }
 
-    if (sidebarRandomBtn) {
-        sidebarRandomBtn.addEventListener('click', function () {
-            var visible = projectCards.filter(function (c) { return c.style.display !== 'none'; });
-            var pool = visible.length ? visible : projectCards;
-            var pick = pool[Math.floor(Math.random() * pool.length)];
-            var name = pick.getAttribute('data-project');
-            if (name && typeof openProjectSafe === 'function') {
-                openProjectSafe(name, sidebarRandomBtn);
-                setTimeout(function () {
-                    pick.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-            }
-        });
-    }
+  // Initial sync on load
+  setTimeout(syncHeroControlsIcons, 100);
 
-    // ── Search / Autocomplete ─────────────────────────────────────────
-    function getMatchingProjects(query) {
-        if (!query) return [];
-        var matches = [];
-        projectCards.forEach(function (card) {
-            var category = card.getAttribute('data-category');
-            var title = card.querySelector('h3').textContent.toLowerCase();
-            var description = card.querySelector('p').textContent.toLowerCase();
-            var tags = (card.getAttribute('data-tags') || '').toLowerCase();
-
-            var categoryMatch = currentCategory === 'all' || category === currentCategory;
-            var searchMatch = title.includes(query) ||
-                description.includes(query) ||
-                tags.includes(query);
-
-            if (categoryMatch && searchMatch) {
-                matches.push({
-                    card: card,
-                    title: card.querySelector('h3').textContent,
-                    tags: card.getAttribute('data-tags') || '',
-                    category: category
-                });
-            }
-        });
-        return matches;
-    }
-
-    function highlightText(container, text, query) {
-        var safeQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        var chunks = text.split(new RegExp('(' + safeQuery + ')', 'gi'));
-
-        chunks.forEach(function (part) {
-            if (part.toLowerCase() === query.toLowerCase()) {
-                var highlight = document.createElement('mark');
-                highlight.style.background = 'rgba(99, 102, 241, 0.3)';
-                highlight.style.color = 'var(--primary-color)';
-                highlight.style.fontWeight = '600';
-                highlight.textContent = part;
-                container.appendChild(highlight);
-            } else if (part) {
-                container.appendChild(document.createTextNode(part));
-            }
-        });
-    }
-
-    function updateSuggestionHighlight() {
-        if (!resultsList) return;
-        var items = resultsList.querySelectorAll('.dropdown-item');
-        items.forEach(function (item, i) {
-            item.classList.toggle('selected', i === selectedSuggestionIndex);
-        });
-    }
-
-    function selectSuggestion(title) {
-        if (!searchInput) return;
-        searchInput.value = title;
-        currentSearchQuery = title.toLowerCase();
-        performSearch();
-        closeDropdown();
-        if (projectsSection) {
-            projectsSection.scrollIntoView({
-                behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-                block: 'start'
-            });
-        }
-    }
-
-    function cleanSearchHighlights() {
-        projectCards.forEach(function (card) {
-            var titleEl = card.querySelector('h3');
-            var descEl = card.querySelector('p');
-            [titleEl, descEl].forEach(function (el) {
-                if (!el) return;
-                el.querySelectorAll('mark.search-highlight').forEach(function (m) {
-                    m.replaceWith(m.textContent);
-                });
-            });
-        });
-    }
-
-    function escapeHtml(str) {
-        var div = document.createElement('div');
-        div.textContent = str;
-        return div.innerHTML;
-    }
-
-    function highlightCardText(el, query) {
-        var safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        var regex = new RegExp('(' + safe + ')', 'gi');
-        var escaped = escapeHtml(el.textContent);
-        var html = escaped.replace(regex, '<mark class="search-highlight" style="background:rgba(255,198,132,0.35);color:inherit;border-radius:3px;padding:0 2px;font-weight:600">$1</mark>');
-        el.innerHTML = html;
-    }
-
-    function performSearch() {
-        var query = currentSearchQuery;
-        cleanSearchHighlights();
-
-        if (!query) {
-            applyCategoryFilter(currentCategory);
-            updateSearchResultCount(0);
-            var hint = document.getElementById('emptyStateHint');
-            if (hint) hint.textContent = 'Try adjusting your search or category filter.';
-            return;
-        }
-
-        if (currentCategory !== 'all') {
-            currentCategory = 'all';
-            syncSidebarTabs('all');
-            syncStickyTabs('all');
-        }
-
-        recentSearches = recentSearches.filter(function (s) { return s !== query; });
-        recentSearches.unshift(query);
-        recentSearches = recentSearches.slice(0, 10);
-        localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-
-        var visibleCount = 0;
-        var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        projectCards.forEach(function (card) {
-            var category    = card.getAttribute('data-category');
-            var titleText   = (card.querySelector('h3') || {}).textContent || '';
-            var descText    = (card.querySelector('p') || {}).textContent || '';
-            var title       = titleText.toLowerCase();
-            var description = descText.toLowerCase();
-            var tags        = (card.getAttribute('data-tags') || '').toLowerCase();
-            var projectName = card.getAttribute('data-project');
-            var isFavorite  = favorites.includes(projectName);
-
-            var categoryMatch = currentCategory === 'all' || 
-                                (currentCategory === 'favorites' && isFavorite) ||
-                                (currentCategory !== 'favorites' && category === currentCategory);
-            var searchMatch   = title.includes(query) ||
-                                description.includes(query) ||
-                                tags.includes(query);
-
-            if (categoryMatch && searchMatch) {
-                card.style.display = '';
-                card.style.animation = prefersReducedMotion() ? 'none' : 'fadeIn 0.5s ease';
-                visibleCount++;
-                var titleEl = card.querySelector('h3');
-                var descEl = card.querySelector('p');
-                if (titleEl) highlightCardText(titleEl, query);
-                if (descEl) highlightCardText(descEl, query);
-            } else {
-                card.style.display = 'none';
-            }
-        });
-        
-        if (emptyState) {
-            var showEmpty = visibleCount === 0;
-            emptyState.style.display = showEmpty ? 'block' : 'none';
-            if (showEmpty) {
-                var hint = document.getElementById('emptyStateHint');
-                if (hint) hint.textContent = 'No projects match "' + query + '". Try a different keyword.';
-            }
-        }
-
-        updateSearchResultCount(visibleCount);
-    }
-
-    function updateSearchResultCount(count) {
-        var badge = document.getElementById('searchResultCount');
-        if (!badge) {
-            if (!searchInput) return;
-            badge = document.createElement('span');
-            badge.id = 'searchResultCount';
-            badge.style.cssText = 'font-family:IBM Plex Mono,monospace;font-size:0.72rem;color:var(--text-secondary);margin-left:0.5rem;white-space:nowrap;opacity:0;transition:opacity 0.2s ease';
-            searchInput.parentNode.appendChild(badge);
-        }
-        if (count > 0) {
-            badge.textContent = count + ' result' + (count !== 1 ? 's' : '');
-            badge.style.opacity = '1';
-        } else {
-            badge.style.opacity = '0';
-        }
-    }
-
-    function closeDropdown() {
-        if (searchDropdown) searchDropdown.classList.remove('active');
-    }
-
-    function renderRecentSearches() {
-        if (noResultsMessage) noResultsMessage.style.display = 'none';
-        if (!recentSearchesSection) return;
-
-        if (recentSearches.length === 0) {
-            recentSearchesSection.style.display = 'none';
-            if (tipsSection) tipsSection.style.display = 'block';
-            if (resultsSection) resultsSection.style.display = 'none';
-            return;
-        }
-
-        if (recentSearchesList) {
-            recentSearchesList.innerHTML = '';
-            recentSearches.slice(0, 5).forEach(function (search) {
-                var item = document.createElement('div');
-                item.className = 'dropdown-recent-item';
-                var recentText = document.createElement('div');
-                recentText.className = 'dropdown-recent-text';
-
-                var clockIcon = document.createElement('i');
-                clockIcon.className = 'fas fa-history';
-                clockIcon.style.opacity = '0.5';
-                clockIcon.style.fontSize = '0.9rem';
-
-                var searchLabel = document.createElement('span');
-                searchLabel.style.flex = '1';
-                searchLabel.style.cursor = 'pointer';
-                searchLabel.style.color = 'var(--text-secondary)';
-                searchLabel.textContent = search;
-
-                recentText.append(clockIcon, searchLabel);
-
-                var removeButton = document.createElement('button');
-                removeButton.className = 'dropdown-recent-remove';
-                removeButton.setAttribute('aria-label', 'Remove search');
-
-                var removeIcon = document.createElement('i');
-                removeIcon.className = 'fas fa-x';
-                removeButton.appendChild(removeIcon);
-
-                item.append(recentText, removeButton);
-
-                searchLabel.addEventListener('click', function () {
-                    if (searchInput) {
-                        searchInput.value = search;
-                        currentSearchQuery = search;
-                        performSearch();
-                        closeDropdown();
-                    }
-                });
-
-                removeButton.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    recentSearches = recentSearches.filter(function (s) { return s !== search; });
-                    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-                    renderRecentSearches();
-                });
-
-                recentSearchesList.appendChild(item);
-            });
-        }
-
-        recentSearchesSection.style.display = 'block';
-        if (resultsSection) resultsSection.style.display = 'none';
-        if (tipsSection) tipsSection.style.display = 'block';
-    }
-
-    function renderSuggestions(query) {
-        if (searchLoader) searchLoader.style.display = 'none';
-        if (!query) { renderRecentSearches(); return; }
-
-        var matches = getMatchingProjects(query);
-
-        if (matches.length === 0) {
-            if (resultsSection) resultsSection.style.display = 'none';
-            if (recentSearchesSection) recentSearchesSection.style.display = 'none';
-            if (tipsSection) tipsSection.style.display = 'block';
-            if (noResultsMessage) noResultsMessage.style.display = 'block';
-            return;
-        }
-        
-        if (noResultsMessage) noResultsMessage.style.display = 'none';
-
-        if (resultsList) {
-            resultsList.innerHTML = '';
-            matches.slice(0, 8).forEach(function (project, index) {
-                var item = document.createElement('div');
-                item.className = 'dropdown-item' + (index === selectedSuggestionIndex ? ' selected' : '');
-                var bannerEl = project.card.querySelector('.card-banner');
-                var iconBox = document.createElement('div');
-                iconBox.className = 'dropdown-item-icon';
-                if (bannerEl) {
-                    var img = document.createElement('img');
-                    img.src = bannerEl.src;
-                    img.alt = '';
-                    img.style.cssText = 'width:24px;height:24px;border-radius:4px;object-fit:cover';
-                    iconBox.appendChild(img);
-                }
-
-                var titleBox = document.createElement('div');
-                titleBox.className = 'dropdown-item-text';
-                highlightText(titleBox, project.title, query);
-
-                var categoryTag = document.createElement('span');
-                categoryTag.className = 'dropdown-item-tag';
-                categoryTag.textContent = project.category;
-
-                item.append(iconBox, titleBox, categoryTag);
-                item.addEventListener('click', function () { selectSuggestion(project.title); });
-                item.addEventListener('mouseenter', function () {
-                    selectedSuggestionIndex = index;
-                    updateSuggestionHighlight();
-                });
-                resultsList.appendChild(item);
-            });
-        }
-
-        if (resultsSection) resultsSection.style.display = 'block';
-        if (recentSearchesSection) recentSearchesSection.style.display = 'none';
-        if (tipsSection) tipsSection.style.display = 'none';
-        selectedSuggestionIndex = -1;
-    }
-
-    if (searchInput) {
-        var debouncedSearch = debounce(function (query) {
-            renderSuggestions(query);
-        }, 200);
-
-        searchInput.addEventListener('input', function (e) {
-            var query = e.target.value.trim().toLowerCase();
-            currentSearchQuery = query;
-            if (searchClear) searchClear.style.display = query ? 'flex' : 'none';
-            if (searchLoader) searchLoader.style.display = query ? 'block' : 'none';
-            debouncedSearch(query);
-            performSearch();
-            if (query && projectsSection && document.activeElement === searchInput) {
-                projectsSection.scrollIntoView({
-                    behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-
-        searchInput.addEventListener('focus', function () {
-            if (searchDropdown) searchDropdown.classList.add('active');
-            if (searchShortcut) searchShortcut.style.display = 'none';
-            if (!currentSearchQuery) renderRecentSearches();
-        });
-
-        searchInput.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') { closeDropdown(); searchInput.blur(); }
-        });
-    }
-
-    if (searchClear) {
-        searchClear.addEventListener('click', function () {
-            if (searchInput) searchInput.value = '';
-            currentSearchQuery = '';
-            searchClear.style.display = 'none';
-            if (searchLoader) searchLoader.style.display = 'none';
-            cleanSearchHighlights();
-            updateSearchResultCount(0);
-            var hint = document.getElementById('emptyStateHint');
-            if (hint) hint.textContent = 'Try adjusting your search or category filter.';
-            applyCategoryFilter(currentCategory);
-            closeDropdown();
-        });
-    }
+  /* ── Mobile Sidebar Toggle ──────────────────────────────── */
+  var mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
+  var mainSidebar = document.getElementById('mainSidebar');
+  if (mobileSidebarToggle && mainSidebar) {
+    mobileSidebarToggle.addEventListener('click', function () {
+      var active = mainSidebar.classList.toggle('open');
+      mobileSidebarToggle.setAttribute('aria-expanded', active);
+      var icon = mobileSidebarToggle.querySelector('i');
+      if (icon) icon.className = active ? 'fas fa-times' : 'fas fa-bars';
+    });
 
     document.addEventListener('click', function (e) {
-        if (searchDropdown && searchInput &&
-            !searchDropdown.contains(e.target) && e.target !== searchInput) {
-            closeDropdown();
-        }
+      if (mainSidebar && mobileSidebarToggle &&
+          !mainSidebar.contains(e.target) && e.target !== mobileSidebarToggle &&
+          mainSidebar.classList.contains('open')) {
+        mainSidebar.classList.remove('open');
+        mobileSidebarToggle.setAttribute('aria-expanded', 'false');
+        var icon = mobileSidebarToggle.querySelector('i');
+        if (icon) icon.className = 'fas fa-bars';
+      }
     });
+  }
 
-    document.addEventListener('keydown', function (e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-            e.preventDefault();
-            if (searchInput) searchInput.focus();
-        }
+  if (backToTopButton) {
+    var toggleBackToTop = function () {
+      backToTopButton.classList.toggle('visible', window.scrollY > 300);
+    };
+    window.addEventListener('scroll', toggleBackToTop, { passive: true });
+    toggleBackToTop();
+
+    backToTopButton.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
     });
+  }
 
-    renderRecentSearches();
-
-    // ── Init sidebar ─────────────────────────────────────────────────
-    if (sidebarTabs.length) syncSidebarTabs('all');
-
-    // ── Central Dynamic Auto-Scaling (ResizeObserver) ─────────────────
-    var modalResizeObserver = null;
-
-    function applyModalScaling() {
-        var modalContent = document.querySelector('.modal-content');
-        var modalBody = document.getElementById('modalBody');
-        if (!modalContent || !modalBody) return;
-
-        modalContent.scrollTop = 0;
-        modalBody.scrollTop = 0;
-
-        modalContent.style.overflow = 'auto';
-
-        modalBody.style.transform = '';
-        modalBody.style.transformOrigin = '';
-        modalBody.style.width = '100%';
-        modalBody.style.height = '';
-        modalBody.style.display = 'flex';
-        modalBody.style.flexDirection = 'column';
-        modalBody.style.alignItems = 'stretch';
-        modalBody.style.gap = '1rem';
-
-        var targetEl = Array.from(modalBody.children).find(function (el) {
-            return el.tagName.toLowerCase() !== 'style';
-        }) || modalBody.firstElementChild;
-        if (!targetEl) return;
-
-        targetEl.style.transform = '';
-        targetEl.style.transformOrigin = '';
-        targetEl.style.width = '100%';
-        targetEl.style.maxWidth = '100%';
-    }
-
-    function initModalScaling() {
-        applyModalScaling();
-
-        if (modalResizeObserver) {
-            modalResizeObserver.disconnect();
-        }
-
-        var modalBody = document.getElementById('modalBody');
-        var targetEl = modalBody ? Array.from(modalBody.children).find(function (el) {
-            return el.tagName.toLowerCase() !== 'style';
-        }) || modalBody.firstElementChild : null;
-        if (targetEl) {
-            modalResizeObserver = new ResizeObserver(function () {
-                requestAnimationFrame(applyModalScaling);
-            });
-            modalResizeObserver.observe(targetEl);
-        }
-
-        window.addEventListener('resize', applyModalScaling);
-    }
-
-    function destroyModalScaling() {
-        if (modalResizeObserver) {
-            modalResizeObserver.disconnect();
-            modalResizeObserver = null;
-        }
-        window.removeEventListener('resize', applyModalScaling);
-    }
-
-    // ── Focus Trap for Modal ──────────────────────────────────────────
-    function getFocusableElements(root) {
-        var selector =
-            'button:not([disabled]), [href], input:not([disabled]), ' +
-            'select:not([disabled]), textarea:not([disabled]), ' +
-            '[tabindex]:not([tabindex="-1"])';
-        return Array.from(root.querySelectorAll(selector)).filter(function (el) {
-            return !el.closest('[aria-hidden="true"]') &&
-                !el.classList.contains('visually-hidden');
-        });
-    }
-
-    function trapFocus(modalEl) {
-        var handler = function (e) {
-            if (e.key !== 'Tab' || !modalEl.classList.contains('active')) return;
-            var focusables = getFocusableElements(modalEl);
-            if (!focusables.length) return;
-            var first = focusables[0];
-            var last = focusables[focusables.length - 1];
-            if (e.shiftKey && document.activeElement === first) {
-                e.preventDefault(); last.focus({ preventScroll: true });
-            } else if (!e.shiftKey && document.activeElement === last) {
-                e.preventDefault(); first.focus({ preventScroll: true });
-            }
-        };
-        document.addEventListener('keydown', handler, true);
-        return function () { document.removeEventListener('keydown', handler, true); };
-    }
-
-    // ── Open / Close Project Modal ────────────────────────────────────
-    /*
-     * PLAYGROUND NOTE: openProjectSafe() is called synchronously from
-     * card clicks. It NEVER touches Pyodide and NEVER waits for it.
-     * The modal opens instantly regardless of Pyodide load state.
-     */
-    function openProjectSafe(name, trigger) {
-        if (!modal || !modalBody) return;
-
-        lastFocusedElement = trigger || document.activeElement;
-
-        if (modalTitle) modalTitle.textContent = name || 'Interactive project';
-
-        modal.classList.add('active');
-        modal.setAttribute('aria-hidden', 'false');
-        
-        // Prevent scroll shift by adding padding equal to scrollbar width
-        var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-        document.body.style.paddingRight = scrollbarWidth + 'px';
-        document.body.style.overflow = 'hidden';
-        setMainInert(true);
-
-        safeRun(function () {
-            if (typeof getProjectHTML === 'function') {
-                modalBody.innerHTML =
-                    getProjectHTML(name) ||
-                    '<div style="padding:1rem">Project content unavailable.</div>';
-            } else {
-                modalBody.innerHTML = '<div style="padding:1rem">Project content unavailable.</div>';
-            }
-            if (typeof initializeProject === 'function') initializeProject(name);
-        });
-
-        // Initialize reactive scale calculations
-        initModalScaling();
-
-        removeTrap = trapFocus(modal);
-        var focusables = getFocusableElements(modalBody);
-        var firstFocusable = focusables[0] || modalClose;
-        if (firstFocusable && typeof firstFocusable.focus === 'function') {
-            firstFocusable.focus({ preventScroll: true });
-        }
-    }
-
-    function closeProjectSafe() {
-        if (!modal || !modal.classList.contains('active')) return;
-
-        destroyModalScaling();
-
-        modal.classList.remove('active');
-        modal.setAttribute('aria-hidden', 'true');
-        document.body.style.paddingRight = '';
-        document.body.style.overflow = '';
-        setMainInert(false);
-        if (removeTrap) { removeTrap(); removeTrap = null; }
-        if (modalBody) {
-            modalBody.innerHTML = '';
-            modalBody.style.transform = '';
-            modalBody.style.transformOrigin = '';
-            modalBody.style.width = '';
-            modalBody.style.height = '';
-            modalBody.style.display = '';
-            modalBody.style.alignItems = '';
-            modalBody.style.gap = '';
-        }
-        if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-            lastFocusedElement.focus({ preventScroll: true });
-        }
-        lastFocusedElement = null;
-    }
-
-    if (modalClose) modalClose.addEventListener('click', closeProjectSafe);
-    if (modal) {
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) closeProjectSafe();
-        });
-    }
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') closeProjectSafe();
+  /* ── Cursor Glow ──────────────────────────────────────────── */
+  if (cursorGlow && !prefersReducedMotion() && html.getAttribute('data-theme') !== 'light') {
+    var glowTimeout;
+    document.addEventListener('pointermove', function (e) {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+      cursorGlow.style.opacity = '0.5';
+      clearTimeout(glowTimeout);
+      glowTimeout = setTimeout(function () { cursorGlow.style.opacity = '0'; }, 3000);
     });
+    document.addEventListener('pointerleave', function () {
+      cursorGlow.style.opacity = '0';
+    });
+  }
 
-    // ── Wire Cards and Play Buttons ───────────────────────────────────
+  /* ── Gather Project Cards ─────────────────────────────────── */
+  var projectsGrid = document.querySelector('.projects-grid');
+  projectCards = Array.from(document.querySelectorAll('.project-card'));
+
+  /* ── Hero Stats ───────────────────────────────────────────── */
+  var totalCount = projectCards.length;
+  var gameCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'games'; }).length;
+  var utilityCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'utilities'; }).length;
+
+  if (heroProjectCount) heroProjectCount.textContent = String(totalCount);
+  if (heroGameCount) heroGameCount.textContent = String(gameCount);
+  if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
+  if (projectCountBadge) projectCountBadge.textContent = String(totalCount) + ' projects';
+
+  /* ── Explore Button ───────────────────────────────────────── */
+  if (exploreBtn) {
+    exploreBtn.addEventListener('click', function () {
+      if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }
+
+  /* ── Category Filtering ───────────────────────────────────── */
+  var sidebarTabs = document.querySelectorAll('.sidebar-tab');
+  var sidebarBadge = null;
+
+  function applyCategoryFilter(category) {
+    if (category === 'playground') return;
+    currentCategory = category;
+    syncSidebarTabs(category);
+    syncStickyTabs(category);
+    var visibleCount = 0;
+    var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
     projectCards.forEach(function (card) {
-        var name = card.getAttribute('data-project');
-        var categoryName = card.getAttribute('data-category') || 'project';
-        var metaRow = document.createElement('div');
-        metaRow.className = 'project-card-meta';
-
-        var categoryBadge = document.createElement('span');
-        categoryBadge.className = 'project-card-badge';
-        categoryBadge.textContent = categoryName;
-        metaRow.appendChild(categoryBadge);
-
-        var favBtn = document.createElement('button');
-        favBtn.className = 'btn-favorite';
-        favBtn.setAttribute('aria-label', 'Toggle favorite');
-        favBtn.textContent = '\u2606';
-
-        var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-        if (favorites.includes(name)) {
-            favBtn.classList.add('active');
-            favBtn.textContent = '\u2605';
-        }
-
-        favBtn.addEventListener('click', function (e) {
-            e.stopPropagation();
-            var favs = JSON.parse(localStorage.getItem('favorites') || '[]');
-            var idx = favs.indexOf(name);
-            if (idx === -1) {
-                favs.push(name);
-                favBtn.classList.add('active');
-                favBtn.textContent = '\u2605';
-            } else {
-                favs.splice(idx, 1);
-                favBtn.classList.remove('active');
-                favBtn.textContent = '\u2606';
-                if (currentCategory === 'favorites') {
-                    card.style.display = 'none';
-                }
-            }
-            localStorage.setItem('favorites', JSON.stringify(favs));
-        });
-        var cardActions = card.querySelector('.card-actions');
-        if (cardActions) {
-            cardActions.appendChild(favBtn);
-        } else {
-            card.appendChild(favBtn);
-        }
-
-        var play = card.querySelector('.btn-play');
-        if (play) {
-            play.setAttribute('aria-label', 'Open ' + name);
-            play.addEventListener('click', function (e) {
-                e.stopPropagation();
-                openProjectSafe(name, play);
-            });
-        }
-        card.appendChild(metaRow);
-        card.addEventListener('click', function () { openProjectSafe(name, card); });
+      var cardCat = card.getAttribute('data-category');
+      var projectName = card.getAttribute('data-project');
+      var isFav = favorites.includes(projectName);
+      if (category === 'all' ||
+          (category === 'favorites' && isFav) ||
+          (category !== 'favorites' && cardCat === category)) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
     });
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+    if (projectCountBadge) {
+      projectCountBadge.textContent = String(visibleCount) + ' projects';
+    }
+  }
 
-    // ── Random button is in the sidebar (#randomProjectBtnSidebar) ─────
-
-    featureLaunchers.forEach(function (node) {
-        node.addEventListener('click', function (e) {
-            if (e.target.closest('[data-project-target]') === node) {
-                var targetProject = node.getAttribute('data-project-target');
-                if (targetProject) openProjectSafe(targetProject, node);
-            }
-        });
+  function syncSidebarTabs(category) {
+    sidebarTabs.forEach(function (st) {
+      var selected = st.getAttribute('data-category') === category;
+      st.classList.toggle('active', selected);
+      st.setAttribute('aria-selected', selected ? 'true' : 'false');
+      st.setAttribute('tabindex', selected ? '0' : '-1');
     });
+  }
 
-    if (!prefersReducedMotion()) {
-        projectCards.forEach(function (card) {
-            card.addEventListener('mousemove', function (event) {
-                var rect = card.getBoundingClientRect();
-                var px = (event.clientX - rect.left) / rect.width;
-                var py = (event.clientY - rect.top) / rect.height;
-                var rotateY = (px - 0.5) * 10;
-                var rotateX = (0.5 - py) * 8;
-                card.style.transform = 'perspective(900px) rotateX(' + rotateX + 'deg) rotateY(' + rotateY + 'deg) translateY(-8px)';
-            });
-            card.addEventListener('mouseleave', function () {
-                card.style.transform = '';
-            });
-        });
+  function syncStickyTabs(category) {
+    stickyTabs.forEach(function (st) {
+      var selected = st.getAttribute('data-sticky-category') === category;
+      st.classList.toggle('active', selected);
+      st.setAttribute('aria-selected', selected ? 'true' : 'false');
+      st.setAttribute('tabindex', selected ? '0' : '-1');
+    });
+  }
 
-        var parallaxItems = document.querySelectorAll('[data-parallax]');
-        window.addEventListener('scroll', function () {
-            var scrollY = window.scrollY;
-            parallaxItems.forEach(function (item) {
-                var ratio = parseFloat(item.getAttribute('data-parallax') || '0');
-                item.style.transform = 'translateY(' + Math.round(scrollY * ratio) + 'px)';
-            });
-        }, { passive: true });
+  /* ── Playground Section Toggle ────────────────────────────── */
+  function showProjectsSection() {
+    playgroundActive = false;
+    if (playgroundSection) playgroundSection.style.display = 'none';
+    if (projectsSection) projectsSection.style.display = '';
+    if (window.playgroundAPI && typeof window.playgroundAPI.deactivate === 'function') {
+      window.playgroundAPI.deactivate();
     }
+  }
 
-    // ── Intersection Observer Animations ─────────────────────────────
-    if (!prefersReducedMotion()) {
-        try {
-            var observer = new IntersectionObserver(function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.style.animation = 'fadeInUp 0.6s ease';
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -100px 0px' });
-            projectCards.forEach(function (c) { observer.observe(c); });
-        } catch (e) { /* ignore */ }
+  function showPlaygroundSection() {
+    playgroundActive = true;
+    syncStickyTabs('playground');
+    if (projectsSection) projectsSection.style.display = 'none';
+    if (playgroundSection) {
+      playgroundSection.style.display = '';
+      if (window.playgroundAPI && typeof window.playgroundAPI.activate === 'function') {
+        window.playgroundAPI.activate();
+      }
     }
+  }
 
-    if (!prefersReducedMotion()) {
-        try {
-            var revealObserver = new IntersectionObserver(function (entries, obs) {
-                entries.forEach(function (entry) {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add('is-visible');
-                    obs.unobserve(entry.target);
-                });
-            }, { threshold: 0.2 });
+  /* ── Sidebar Tabs ─────────────────────────────────────────── */
+  sidebarTabs.forEach(function (st) {
+    st.addEventListener('click', function () {
+      var category = st.getAttribute('data-category');
+      
+      var pageCategory = document.body.getAttribute('data-page');
+      if (pageCategory) {
+        // We are on a subpage (games, math, or utilities)
+        if (category === pageCategory) {
+          var grid = document.getElementById('projectsGrid');
+          if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        var pageMap = {
+          'all': 'index.html',
+          'games': 'games.html',
+          'math': 'math.html',
+          'utilities': 'utilities.html',
+          'favorites': 'index.html?category=favorites',
+          'playground': 'index.html?category=playground'
+        };
+        window.location.href = pageMap[category] || 'index.html';
+        return;
+      }
 
-            revealItems.forEach(function (item) { revealObserver.observe(item); });
-        } catch (e) { /* ignore */ }
+      syncSidebarTabs(category);
+      syncStickyTabs(category);
+
+      if (category === 'playground') {
+        showPlaygroundSection();
+        if (playgroundSection) playgroundSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        showProjectsSection();
+        applyCategoryFilter(category);
+        if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* ── Sticky Tabs ──────────────────────────────────────────── */
+  stickyTabs.forEach(function (st) {
+    st.addEventListener('click', function () {
+      var category = st.getAttribute('data-sticky-category');
+      syncStickyTabs(category);
+      syncSidebarTabs(category);
+
+      if (category === 'playground') {
+        showPlaygroundSection();
+        if (playgroundSection) playgroundSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        showProjectsSection();
+        applyCategoryFilter(category);
+        if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  /* ── Sticky Filter Bar Visibility ─────────────────────────── */
+  if (stickyFilterBar && heroSection) {
+    var heroObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        stickyFilterBar.classList.toggle('visible', !entry.isIntersecting);
+      });
+    }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+    heroObserver.observe(heroSection);
+
+    window.addEventListener('scroll', function () {
+      var navH = navbar ? navbar.getBoundingClientRect().height : 72;
+      stickyFilterBar.style.top = (navH + 16) + 'px';
+    }, { passive: true });
+  }
+
+  /* ── Random Project ───────────────────────────────────────── */
+  function openRandomProject(trigger) {
+    var visible = projectCards.filter(function (c) { return c.style.display !== 'none'; });
+    var pool = visible.length ? visible : projectCards;
+    var pick = pool[Math.floor(Math.random() * pool.length)];
+    var name = pick.getAttribute('data-project');
+    if (name && typeof openProjectSafe === 'function') {
+      openProjectSafe(name, trigger);
+    }
+  }
+
+  if (randomProjectBtn) {
+    randomProjectBtn.addEventListener('click', function () { openRandomProject(randomProjectBtn); });
+  }
+  if (randomProjectBtnSidebar) {
+    randomProjectBtnSidebar.addEventListener('click', function () { openRandomProject(randomProjectBtnSidebar); });
+  }
+
+  /* ── Init sidebar ─────────────────────────────────────────── */
+  var pageCategory = document.body.getAttribute('data-page');
+  if (sidebarTabs.length) {
+    if (pageCategory) {
+      syncSidebarTabs(pageCategory);
     } else {
-        revealItems.forEach(function (item) { item.classList.add('is-visible'); });
+      syncSidebarTabs('all');
+    }
+  }
+  if (stickyTabs.length) syncStickyTabs('all');
+
+  /* ── Sidebar Active Scroll Observer ───────────────────────── */
+  if (!pageCategory && projectsSection) {
+    // On homepage, observe projectsSection to toggle sidebar-active class
+    var sidebarActiveObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        var isVisible = entry.isIntersecting || entry.boundingClientRect.top < 200;
+        document.body.classList.toggle('sidebar-active', isVisible);
+      });
+    }, { threshold: 0.05 });
+    sidebarActiveObserver.observe(projectsSection);
+  } else if (pageCategory) {
+    // On subpages, always ensure sidebar is active
+    document.body.classList.add('sidebar-active');
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+     SEARCH
+     ═══════════════════════════════════════════════════════════════ */
+  function getMatchingProjects(query) {
+    if (!query) return [];
+    var matches = [];
+    projectCards.forEach(function (card) {
+      var category = card.getAttribute('data-category');
+      var title = (card.querySelector('h3') || {}).textContent || '';
+      var desc = (card.querySelector('p') || {}).textContent || '';
+      var tags = (card.getAttribute('data-tags') || '').toLowerCase();
+      var q = query.toLowerCase();
+
+      var catMatch = currentCategory === 'all' || category === currentCategory;
+      var searchMatch = title.toLowerCase().includes(q) ||
+                        desc.toLowerCase().includes(q) ||
+                        tags.includes(q);
+
+      if (catMatch && searchMatch) {
+        matches.push({ card: card, title: title, tags: tags, category: category });
+      }
+    });
+    return matches;
+  }
+
+  function highlightText(container, text, query) {
+    var safe = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    var parts = text.split(new RegExp('(' + safe + ')', 'gi'));
+    parts.forEach(function (part) {
+      if (part.toLowerCase() === query.toLowerCase()) {
+        var mark = document.createElement('mark');
+        mark.style.background = 'var(--accent-soft)';
+        mark.style.color = 'var(--accent)';
+        mark.style.fontWeight = '600';
+        mark.style.borderRadius = '2px';
+        mark.style.padding = '0 2px';
+        mark.textContent = part;
+        container.appendChild(mark);
+      } else if (part) {
+        container.appendChild(document.createTextNode(part));
+      }
+    });
+  }
+
+  function closeDropdown() {
+    if (searchDropdown) searchDropdown.classList.remove('active');
+  }
+
+  function renderRecentSearches() {
+    if (noResultsMessage) noResultsMessage.style.display = 'none';
+    if (!recentSearchesSection) return;
+
+    if (recentSearches.length === 0) {
+      recentSearchesSection.style.display = 'none';
+      if (tipsSection) tipsSection.style.display = 'block';
+      if (resultsSection) resultsSection.style.display = 'none';
+      return;
     }
 
-    // ── Hero Timeline scroll reveal ────────────────────────────
-    var timelineNodes = document.querySelectorAll('.timeline-node[data-reveal]');
-    var heroTimeline = document.getElementById('heroTimeline');
+    if (recentSearchesList) {
+      recentSearchesList.innerHTML = '';
+      recentSearches.slice(0, 5).forEach(function (search) {
+        var item = document.createElement('div');
+        item.className = 'dropdown-recent-item';
+        var text = document.createElement('div');
+        text.className = 'dropdown-recent-text';
 
-    function updateSpineProgress() {
-        if (!heroTimeline) return;
-        var revealed = document.querySelectorAll('.timeline-node.revealed').length;
-        var total = timelineNodes.length;
-        var pct = total > 0 ? (revealed / total) * 100 : 0;
-        heroTimeline.style.setProperty('--spine-progress', pct);
+        var clock = document.createElement('i');
+        clock.className = 'fas fa-history';
+        clock.style.opacity = '0.5';
+        clock.style.fontSize = '0.8rem';
+
+        var label = document.createElement('span');
+        label.textContent = search;
+
+        text.append(clock, label);
+
+        var removeBtn = document.createElement('button');
+        removeBtn.className = 'dropdown-recent-remove';
+        removeBtn.setAttribute('aria-label', 'Remove search');
+        removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+
+        item.append(text, removeBtn);
+
+        label.addEventListener('click', function () {
+          if (searchInput) searchInput.value = search;
+          currentSearchQuery = search;
+          performSearch();
+          closeDropdown();
+        });
+
+        removeBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          recentSearches = recentSearches.filter(function (s) { return s !== search; });
+          localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+          renderRecentSearches();
+        });
+
+        recentSearchesList.appendChild(item);
+      });
     }
 
-    if (timelineNodes.length) {
-        timelineNodes[0].classList.add('revealed');
-        updateSpineProgress();
+    recentSearchesSection.style.display = 'block';
+    if (resultsSection) resultsSection.style.display = 'none';
+    if (tipsSection) tipsSection.style.display = 'block';
+  }
+
+  function renderSuggestions(query) {
+    if (searchLoader) searchLoader.style.display = 'none';
+    if (!query) { renderRecentSearches(); return; }
+
+    var matches = getMatchingProjects(query);
+
+    if (matches.length === 0) {
+      if (resultsSection) resultsSection.style.display = 'none';
+      if (recentSearchesSection) recentSearchesSection.style.display = 'none';
+      if (tipsSection) tipsSection.style.display = 'block';
+      if (noResultsMessage) noResultsMessage.style.display = 'block';
+      return;
     }
 
-    if (timelineNodes.length > 1 && !prefersReducedMotion()) {
-        var revealedCount = 1;
-        var scrollAccum = 0;
-        var prevScrollY = window.scrollY;
+    if (noResultsMessage) noResultsMessage.style.display = 'none';
 
-        window.addEventListener('scroll', function () {
-            var currentScrollY = window.scrollY;
-            var delta = currentScrollY - prevScrollY;
-            scrollAccum += delta;
-            prevScrollY = currentScrollY;
+    if (resultsList) {
+      resultsList.innerHTML = '';
+      matches.slice(0, 8).forEach(function (project, index) {
+        var item = document.createElement('div');
+        item.className = 'dropdown-item' + (index === selectedSuggestionIndex ? ' selected' : '');
 
-            if (scrollAccum >= 60) {
-                while (scrollAccum >= 60 && revealedCount < timelineNodes.length) {
-                    timelineNodes[revealedCount].classList.add('revealed');
-                    revealedCount++;
-                    scrollAccum -= 60;
-                }
-            } else if (scrollAccum <= -60) {
-                while (scrollAccum <= -60 && revealedCount > 1) {
-                    revealedCount--;
-                    timelineNodes[revealedCount].classList.remove('revealed');
-                    scrollAccum += 60;
-                }
-            }
-            updateSpineProgress();
-        }, { passive: true });
-    } else if (timelineNodes.length > 1) {
-        for (var i = 1; i < timelineNodes.length; i++) {
-            timelineNodes[i].classList.add('revealed');
+        var iconBox = document.createElement('div');
+        iconBox.className = 'dropdown-item-icon';
+        var banner = project.card.querySelector('.card-banner');
+        if (banner) {
+          var img = document.createElement('img');
+          img.src = banner.src;
+          img.alt = '';
+          iconBox.appendChild(img);
         }
-        updateSpineProgress();
+
+        var titleBox = document.createElement('div');
+        titleBox.className = 'dropdown-item-text';
+        highlightText(titleBox, project.title, query);
+
+        var tag = document.createElement('span');
+        tag.className = 'dropdown-item-tag';
+        tag.textContent = project.category;
+
+        item.append(iconBox, titleBox, tag);
+        item.addEventListener('click', function () { selectSuggestion(project.title); });
+        item.addEventListener('mouseenter', function () {
+          selectedSuggestionIndex = index;
+          updateSuggestionHighlight();
+        });
+        resultsList.appendChild(item);
+      });
     }
 
-    // ── Share Button Feature ──────────────────────────────────────────
+    if (resultsSection) resultsSection.style.display = 'block';
+    if (recentSearchesSection) recentSearchesSection.style.display = 'none';
+    if (tipsSection) tipsSection.style.display = 'none';
+    selectedSuggestionIndex = -1;
+  }
 
-// 1. Inject share button into every card dynamically
-projectCards.forEach(function (card) {
-    var projectName = card.getAttribute('data-project');
+  function updateSuggestionHighlight() {
+    if (!resultsList) return;
+    var items = resultsList.querySelectorAll('.dropdown-item');
+    items.forEach(function (item, i) {
+      item.classList.toggle('selected', i === selectedSuggestionIndex);
+    });
+  }
+
+  function selectSuggestion(title) {
+    if (!searchInput) return;
+    searchInput.value = title;
+    currentSearchQuery = title.toLowerCase();
+    performSearch();
+    closeDropdown();
+    if (projectsSection) {
+      projectsSection.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+    }
+  }
+
+  function performSearch() {
+    var query = currentSearchQuery;
+    if (!query) {
+      applyCategoryFilter(currentCategory);
+      if (emptyStateHint) emptyStateHint.textContent = 'Try adjusting your search or category filter.';
+      return;
+    }
+
+    if (currentCategory !== 'all') {
+      currentCategory = 'all';
+      syncSidebarTabs('all');
+      syncStickyTabs('all');
+    }
+
+    recentSearches = recentSearches.filter(function (s) { return s !== query; });
+    recentSearches.unshift(query);
+    recentSearches = recentSearches.slice(0, 10);
+    localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+
+    var visibleCount = 0;
+    var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    projectCards.forEach(function (card) {
+      var category = card.getAttribute('data-category');
+      var title = (card.querySelector('h3') || {}).textContent || '';
+      var desc = (card.querySelector('p') || {}).textContent || '';
+      var tags = (card.getAttribute('data-tags') || '').toLowerCase();
+      var projectName = card.getAttribute('data-project');
+      var isFav = favorites.includes(projectName);
+
+      var catMatch = (currentCategory === 'all') ||
+                     (currentCategory === 'favorites' && isFav) ||
+                     (currentCategory !== 'favorites' && category === currentCategory);
+      var searchMatch = title.toLowerCase().includes(query) ||
+                        desc.toLowerCase().includes(query) ||
+                        tags.includes(query);
+
+      if (catMatch && searchMatch) {
+        card.style.display = '';
+        visibleCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    if (emptyState) {
+      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+      if (visibleCount === 0 && emptyStateHint) {
+        emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
+      }
+    }
+    if (projectCountBadge) projectCountBadge.textContent = String(visibleCount) + ' projects';
+  }
+
+  if (searchInput) {
+    var debouncedSearch = debounce(function (query) {
+      renderSuggestions(query);
+    }, 200);
+
+    searchInput.addEventListener('input', function (e) {
+      var query = e.target.value.trim().toLowerCase();
+      currentSearchQuery = query;
+      if (searchLoader) searchLoader.style.display = query ? 'block' : 'none';
+      debouncedSearch(query);
+      performSearch();
+    });
+
+    searchInput.addEventListener('focus', function () {
+      if (searchDropdown) searchDropdown.classList.add('active');
+      if (!currentSearchQuery) renderRecentSearches();
+    });
+
+    searchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closeDropdown(); searchInput.blur(); }
+    });
+  }
+
+  document.addEventListener('click', function (e) {
+    if (searchDropdown && searchInput &&
+        !searchDropdown.contains(e.target) && e.target !== searchInput) {
+      closeDropdown();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      if (searchInput) searchInput.focus();
+    }
+  });
+
+  renderRecentSearches();
+
+  /* ═══════════════════════════════════════════════════════════════
+     MODAL
+     ═══════════════════════════════════════════════════════════════ */
+  function getFocusableElements(root) {
+    var sel = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    return Array.from(root.querySelectorAll(sel)).filter(function (el) {
+      return !el.closest('[aria-hidden="true"]') && !el.classList.contains('visually-hidden');
+    });
+  }
+
+  function trapFocus(modalEl) {
+    var handler = function (e) {
+      if (e.key !== 'Tab' || !modalEl.classList.contains('active')) return;
+      var focusables = getFocusableElements(modalEl);
+      if (!focusables.length) return;
+      var first = focusables[0];
+      var last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault(); last.focus({ preventScroll: true });
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault(); first.focus({ preventScroll: true });
+      }
+    };
+    document.addEventListener('keydown', handler, true);
+    return function () { document.removeEventListener('keydown', handler, true); };
+  }
+
+  function openProjectSafe(name, trigger) {
+    if (!modal || !modalBody) return;
+    lastFocusedElement = trigger || document.activeElement;
+    if (modalTitle) modalTitle.textContent = name || 'Interactive project';
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    var scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.body.style.paddingRight = scrollbarWidth + 'px';
+    document.body.style.overflow = 'hidden';
+    setMainInert(true);
+
+    safeRun(function () {
+      if (typeof getProjectHTML === 'function') {
+        modalBody.innerHTML = getProjectHTML(name) || '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
+      } else {
+        modalBody.innerHTML = '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
+      }
+      if (typeof initializeProject === 'function') initializeProject(name);
+    });
+
+    removeTrap = trapFocus(modal);
+    var focusables = getFocusableElements(modalBody);
+    var firstFocusable = focusables[0] || modalClose;
+    if (firstFocusable && typeof firstFocusable.focus === 'function') {
+      firstFocusable.focus({ preventScroll: true });
+    }
+  }
+
+  function closeProjectSafe() {
+    if (!modal || !modal.classList.contains('active')) return;
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.paddingRight = '';
+    document.body.style.overflow = '';
+    setMainInert(false);
+    if (removeTrap) { removeTrap(); removeTrap = null; }
+    if (modalBody) {
+      modalBody.innerHTML = '';
+    }
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+      lastFocusedElement.focus({ preventScroll: true });
+    }
+    lastFocusedElement = null;
+  }
+
+  if (modalClose) modalClose.addEventListener('click', closeProjectSafe);
+  if (modal) {
+    modal.addEventListener('click', function (e) {
+      if (e.target === modal) closeProjectSafe();
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeProjectSafe();
+  });
+
+  /* ── Expose for inline use ────────────────────────────────── */
+  window.openProjectSafe = openProjectSafe;
+  window.closeProjectSafe = closeProjectSafe;
+
+  /* ═══════════════════════════════════════════════════════════════
+     WIRE PROJECT CARDS
+     ═══════════════════════════════════════════════════════════════ */
+  projectCards.forEach(function (card) {
+    var name = card.getAttribute('data-project');
+
+    /* ── Favorite Button ──────────────────────────────────── */
+    var favBtn = document.createElement('button');
+    favBtn.className = 'btn-favorite';
+    favBtn.setAttribute('aria-label', 'Toggle favorite');
+    favBtn.innerHTML = '<i class="far fa-star"></i>';
+
+    var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    if (favorites.includes(name)) {
+      favBtn.classList.add('active');
+      favBtn.innerHTML = '<i class="fas fa-star"></i>';
+    }
+
+    favBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+      var idx = favs.indexOf(name);
+      if (idx === -1) {
+        favs.push(name);
+        favBtn.classList.add('active');
+        favBtn.innerHTML = '<i class="fas fa-star"></i>';
+      } else {
+        favs.splice(idx, 1);
+        favBtn.classList.remove('active');
+        favBtn.innerHTML = '<i class="far fa-star"></i>';
+        if (currentCategory === 'favorites') {
+          card.style.display = 'none';
+        }
+      }
+      localStorage.setItem('favorites', JSON.stringify(favs));
+    });
+
+    var cardActions = card.querySelector('.card-actions');
+    if (cardActions) cardActions.appendChild(favBtn);
+
+    /* ── Share Button ─────────────────────────────────────── */
     var shareBtn = document.createElement('button');
     shareBtn.className = 'btn-share';
-    shareBtn.setAttribute('aria-label', 'Share ' + projectName);
+    shareBtn.setAttribute('aria-label', 'Share ' + name);
     shareBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
     shareBtn.title = 'Copy shareable link';
 
     shareBtn.addEventListener('click', function (e) {
-        e.stopPropagation(); // prevent card click opening modal
-        var url = window.location.origin + window.location.pathname + '?project=' + encodeURIComponent(projectName);
-        navigator.clipboard.writeText(url).then(function () {
-            showToast('Link copied!');
-        }).catch(function () {
-            // Fallback for browsers that block clipboard
-            showToast('Copy this: ' + url);
-        });
+      e.stopPropagation();
+      var url = window.location.origin + window.location.pathname + '?project=' + encodeURIComponent(name);
+      navigator.clipboard.writeText(url).then(function () {
+        showToast('Link copied!');
+      }).catch(function () {
+        showToast('Copy this: ' + url);
+      });
     });
 
-    var cardActions = card.querySelector('.card-actions');
-    if (cardActions) {
-        cardActions.appendChild(shareBtn);
-    } else {
-        card.appendChild(shareBtn);
-    }
-});
+    if (cardActions) cardActions.appendChild(shareBtn);
 
-// 2. Toast notification helper
-function showToast(message) {
+    /* ── Play Button ──────────────────────────────────────── */
+    var playBtns = card.querySelectorAll('.btn-play');
+    playBtns.forEach(function (play) {
+      play.setAttribute('aria-label', 'Open ' + name);
+      play.addEventListener('click', function (e) {
+        e.stopPropagation();
+        openProjectSafe(name, play);
+      });
+    });
+
+    /* ── Card Click ───────────────────────────────────────── */
+    card.addEventListener('click', function (e) {
+      if (e.target.closest('.btn-play') || e.target.closest('.btn-favorite') || e.target.closest('.btn-share')) return;
+      openProjectSafe(name, card);
+    });
+
+    /* ── Card Mouse Tracking for Border Glow ──────────────── */
+    if (!prefersReducedMotion()) {
+      card.addEventListener('mousemove', function (e) {
+        var rect = card.getBoundingClientRect();
+        var x = ((e.clientX - rect.left) / rect.width) * 100;
+        var y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', x + '%');
+        card.style.setProperty('--mouse-y', y + '%');
+      });
+    }
+  });
+
+  /* ── Toast ─────────────────────────────────────────────────── */
+  function showToast(message) {
     var existing = document.getElementById('shareToast');
     if (existing) existing.remove();
-
     var toast = document.createElement('div');
     toast.id = 'shareToast';
     toast.className = 'share-toast';
     toast.textContent = message;
     document.body.appendChild(toast);
-
-    // Trigger animation
     requestAnimationFrame(function () {
-        toast.classList.add('share-toast--visible');
+      toast.classList.add('share-toast--visible');
     });
-
     setTimeout(function () {
-        toast.classList.remove('share-toast--visible');
-        setTimeout(function () { toast.remove(); }, 300);
+      toast.classList.remove('share-toast--visible');
+      setTimeout(function () { toast.remove(); }, 300);
     }, 2500);
-}
+  }
 
-// 3. On page load, check for ?project= param and auto-open it
-(function () {
+  /* ── URL params auto-open ──────────────────────────────────── */
+  (function () {
     var params = new URLSearchParams(window.location.search);
     var projectParam = params.get('project');
-    if (!projectParam) return;
+    if (projectParam) {
+      var match = projectCards.find(function (c) { return c.getAttribute('data-project') === projectParam; });
+      if (match) {
+        setTimeout(function () {
+          openProjectSafe(projectParam, match);
+          match.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+      }
+    }
+    var catParam = params.get('category');
+    var valid = ['all', 'games', 'math', 'utilities', 'playground', 'favorites'];
+    if (catParam && valid.includes(catParam)) {
+      var tab = document.querySelector('[data-category="' + catParam + '"]');
+      if (tab) setTimeout(function () { tab.click(); }, 100);
+    }
+  })();
 
-    var matchingCard = projectCards.find(function (card) {
-        return card.getAttribute('data-project') === projectParam;
+  /* ═══════════════════════════════════════════════════════════════
+     TIMELINE SCROLL REVEAL
+     ═══════════════════════════════════════════════════════════════ */
+  var timelineItems = document.querySelectorAll('.timeline-item[data-reveal]');
+  var timelineFill = document.getElementById('timelineFill');
+  var timelineSection = document.getElementById('timelineSection');
+
+  if (timelineItems.length && !prefersReducedMotion()) {
+    var timelineObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.25, rootMargin: '0px 0px -50px 0px' });
+
+    timelineItems.forEach(function (item) {
+      timelineObserver.observe(item);
     });
 
-    if (matchingCard) {
-        setTimeout(function () {
-            var projectName = matchingCard.getAttribute('data-project');
-            openProjectSafe(projectName, matchingCard);
-            matchingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300); // small delay so the page fully loads first
+    /* ── Serpentine SVG Winding Timeline Path ─────────────────── */
+    var svgNamespace = 'http://www.w3.org/2000/svg';
+    
+    function getElementOffset(el, parent) {
+      var top = 0;
+      var left = 0;
+      var curr = el;
+      while (curr && curr !== parent) {
+        top += curr.offsetTop || 0;
+        left += curr.offsetLeft || 0;
+        curr = curr.offsetParent;
+      }
+      return { top: top, left: left };
     }
-})();
 
-// 4. On page load, check for ?category= param and apply filter
-(function () {
-    var params = new URLSearchParams(window.location.search);
-    var categoryParam = params.get('category');
-    var validCategories = ['all', 'games', 'math', 'utilities', 'playground', 'favorites'];
-    if (!categoryParam || !validCategories.includes(categoryParam)) return;
+    function rebuildTimelineSvg() {
+      var container = document.querySelector('.timeline-container');
+      if (!container) return;
+      var dots = document.querySelectorAll('.timeline-dot');
+      if (dots.length < 2) return;
 
-    var matchingTab = document.querySelector('[data-category="' + categoryParam + '"]');
-    if (matchingTab) {
-        setTimeout(function () {
-            matchingTab.click();
-        }, 100);
+      var containerWidth = container.offsetWidth;
+      var containerHeight = container.offsetHeight;
+
+      var svg = document.getElementById('timelineSvg');
+      if (!svg) {
+        svg = document.createElementNS(svgNamespace, 'svg');
+        svg.id = 'timelineSvg';
+        svg.setAttribute('class', 'timeline-svg');
+        
+        var defs = document.createElementNS(svgNamespace, 'defs');
+        var grad = document.createElementNS(svgNamespace, 'linearGradient');
+        grad.id = 'timelineGrad';
+        grad.setAttribute('x1', '0%');
+        grad.setAttribute('y1', '0%');
+        grad.setAttribute('x2', '0%');
+        grad.setAttribute('y2', '100%');
+
+        var stop1 = document.createElementNS(svgNamespace, 'stop');
+        stop1.setAttribute('offset', '0%');
+        stop1.setAttribute('stop-color', 'var(--accent)');
+
+        var stop2 = document.createElementNS(svgNamespace, 'stop');
+        stop2.setAttribute('offset', '100%');
+        stop2.setAttribute('stop-color', '#06b6d4');
+
+        grad.appendChild(stop1);
+        grad.appendChild(stop2);
+        defs.appendChild(grad);
+
+        // Define a dynamic layout mask path for progress crawling
+        var mask = document.createElementNS(svgNamespace, 'mask');
+        mask.id = 'timelineMask';
+
+        var maskPath = document.createElementNS(svgNamespace, 'path');
+        maskPath.id = 'timelineMaskPath';
+        maskPath.setAttribute('fill', 'none');
+        maskPath.setAttribute('stroke', '#ffffff');
+        maskPath.setAttribute('stroke-width', '24'); // Wide enough to fully cover glowing dots
+        maskPath.setAttribute('stroke-linecap', 'round');
+
+        mask.appendChild(maskPath);
+        defs.appendChild(mask);
+        svg.appendChild(defs);
+
+        var track = document.createElementNS(svgNamespace, 'path');
+        track.id = 'timelineSvgTrack';
+        track.setAttribute('class', 'timeline-svg-track');
+        track.setAttribute('fill', 'none');
+
+        var fill = document.createElementNS(svgNamespace, 'path');
+        fill.id = 'timelineSvgFill';
+        fill.setAttribute('class', 'timeline-svg-fill');
+        fill.setAttribute('fill', 'none');
+        fill.setAttribute('stroke', 'var(--accent)');
+        fill.setAttribute('mask', 'url(#timelineMask)');
+
+        svg.appendChild(track);
+        svg.appendChild(fill);
+
+        var grid = document.querySelector('.timeline-grid');
+        container.insertBefore(svg, grid);
+      }
+
+      // Determine layout stable coordinate points for all timeline dots
+      var coords = [];
+      dots.forEach(function (dot) {
+        var offset = getElementOffset(dot, container);
+        var x = offset.left + dot.offsetWidth / 2;
+        var y = offset.top + dot.offsetHeight / 2;
+        coords.push({ x: x, y: y });
+      });
+
+      // Create the winding path
+      var d = "";
+      var startX = containerWidth / 2;
+      d += "M " + startX + " 0";
+      d += " L " + coords[0].x + " " + coords[0].y;
+
+      // Calculate a sweep width that is perfectly responsive
+      // e.g. 16% of container width, capped at 180px for desktop beauty
+      var W = Math.min(180, containerWidth * 0.16);
+
+      for (var i = 0; i < coords.length - 1; i++) {
+        var pStart = coords[i];
+        var pEnd = coords[i + 1];
+        var H = pEnd.y - pStart.y;
+        var dy = H * 0.35; // Symmetrical control point height
+        
+        // Even segments (0, 2, 4...) snake to the right, odd segments to the left
+        var dx = (i % 2 === 0) ? W : -W;
+
+        var cp1x = pStart.x + dx;
+        var cp1y = pStart.y + dy;
+        var cp2x = pEnd.x + dx;
+        var cp2y = pEnd.y - dy;
+
+        d += " C " + cp1x + " " + cp1y + ", " + cp2x + " " + cp2y + ", " + pEnd.x + " " + pEnd.y;
+      }
+
+      // Straight exit to the bottom
+      d += " L " + coords[coords.length - 1].x + " " + containerHeight;
+
+      var trackPath = document.getElementById('timelineSvgTrack');
+      var fillPath = document.getElementById('timelineSvgFill');
+      var maskPath = document.getElementById('timelineMaskPath');
+      if (trackPath && fillPath && maskPath) {
+        trackPath.setAttribute('d', d);
+        fillPath.setAttribute('d', d);
+        maskPath.setAttribute('d', d);
+
+        var totalLength = maskPath.getTotalLength();
+        maskPath.style.strokeDasharray = totalLength;
+        maskPath.dataset.totalLength = totalLength;
+        
+        // Trigger scroll progress sync immediately
+        updateTimelineFill();
+      }
     }
-})();
+
+    /* ── Timeline Fill Progress ───────────────────────────── */
+    function updateTimelineFill() {
+      if (!timelineSection) return;
+      var container = document.querySelector('.timeline-container');
+      if (!container) return;
+
+      var containerRect = container.getBoundingClientRect();
+      var viewportCenterY = window.innerHeight / 2;
+
+      // Calculate relative vertical scroll position of the viewport center relative to the container
+      var relativeY = viewportCenterY - containerRect.top;
+      var offset = Math.max(0, Math.min(1, relativeY / containerRect.height));
+
+      /* ── Dynamic SVG path mask scroll synchronization ──────── */
+      var maskPath = document.getElementById('timelineMaskPath');
+      if (maskPath && maskPath.dataset.totalLength) {
+        var totalLength = parseFloat(maskPath.dataset.totalLength);
+        var dashoffset = totalLength - (offset * totalLength);
+        maskPath.style.strokeDashoffset = Math.max(0, Math.min(totalLength, dashoffset));
+      }
+
+      /* ── Activate item based on viewport center crossing timeline dots ── */
+      var activeIdx = -1;
+      var dots = document.querySelectorAll('.timeline-dot');
+      
+      dots.forEach(function (dot, i) {
+        var dotRect = dot.getBoundingClientRect();
+        var dotCenterY = dotRect.top + dotRect.height / 2;
+        
+        // A dot is crossed/passed if its vertical center in the viewport is <= the viewport center
+        if (dotCenterY <= viewportCenterY) {
+          activeIdx = i;
+        }
+      });
+
+      timelineItems.forEach(function (item, i) {
+        item.classList.toggle('active', i === activeIdx);
+      });
+    }
+
+    // Initialize SVG path layout recalculations on page render & resize
+    rebuildTimelineSvg();
+    window.addEventListener('resize', debounce(rebuildTimelineSvg, 150));
+    window.addEventListener('scroll', updateTimelineFill, { passive: true });
+  } else if (timelineItems.length) {
+    timelineItems.forEach(function (item) { item.classList.add('visible'); });
+  }
+
+  /* ── Reveal on Scroll (general) ────────────────────────────── */
+  var revealItems = document.querySelectorAll('.reveal-on-scroll');
+  if (revealItems.length && !prefersReducedMotion()) {
+    var revealObserver = new IntersectionObserver(function (entries, obs) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    revealItems.forEach(function (item) { revealObserver.observe(item); });
+  } else {
+    revealItems.forEach(function (item) { item.classList.add('is-visible'); });
+  }
+
+  /* ── Footer category links ────────────────────────────────── */
+  document.querySelectorAll('.footer-cat-link').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      var cat = a.getAttribute('data-cat');
+      var tab = document.querySelector('.sidebar-tab[data-category="' + cat + '"]');
+      if (tab) tab.click();
+    });
+  });
 
 });
