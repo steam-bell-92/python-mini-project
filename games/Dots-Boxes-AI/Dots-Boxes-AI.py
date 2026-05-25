@@ -14,7 +14,7 @@ BOLD = "\033[1m"
 # Title
 print(BOLD + CYAN)
 print("=" * 70)
-print("🔲        DOTS & BOXES AI - ADVANCED VERSION        🔲")
+print("🔲         DOTS & BOXES AI - ADVANCED VERSION        🔲")
 print("=" * 70)
 print(RESET)
 
@@ -266,32 +266,33 @@ while player_score + computer_score < total_boxes:
             print(RED + "❌ Invalid direction!" + RESET)
             continue
 
-        row = input("📍 Enter row: ")
-        col = input("📍 Enter column: ")
+        row_in = input("📍 Enter row: ")
+        col_in = input("📍 Enter column: ")
 
-        if not row.isdigit() or not col.isdigit():
-            print(RED + "❌ Invalid position!" + RESET)
+        # Check if empty, or starts with a negative sign, or isn't numeric
+        if not row_in.strip() or not col_in.strip() or '-' in row_in or '-' in col_in or not row_in.isdigit() or not col_in.isdigit():
+            print(RED + "❌ Invalid input! Rows and columns must be positive numbers." + RESET)
             continue
 
-        row, col = int(row), int(col)
+        row, col = int(row_in), int(col_in)
 
-        try:
-            if direction == 'h':
-                if horizontal_lines[row][col]:
-                    print(YELLOW + "⚠️ Line already taken!" + RESET)
-                    continue
-                horizontal_lines[row][col] = True
-            else:
-                if vertical_lines[row][col]:
-                    print(YELLOW + "⚠️ Line already taken!" + RESET)
-                    continue
-                vertical_lines[row][col] = True
-        except IndexError:
-            print(RED + "❌ Position out of range!" + RESET)
-            continue
-        except ValueError:
-            print(RED + "❌ Invalid input!" + RESET)
-            continue
+        # Explicit Boundaries Check Before Modifying Array
+        if direction == 'h':
+            if row < 0 or row >= (size + 1) or col < 0 or col >= size:
+                print(RED + f"❌ Position out of range! For 'h', Row must be 0-{size} and Col must be 0-{size-1}." + RESET)
+                continue
+            if horizontal_lines[row][col]:
+                print(YELLOW + "⚠️ Line already taken!" + RESET)
+                continue
+            horizontal_lines[row][col] = True
+        else:
+            if row < 0 or row >= size or col < 0 or col >= (size + 1):
+                print(RED + f"❌ Position out of range! For 'v', Row must be 0-{size-1} and Col must be 0-{size}." + RESET)
+                continue
+            if vertical_lines[row][col]:
+                print(YELLOW + "⚠️ Line already taken!" + RESET)
+                continue
+            vertical_lines[row][col] = True
 
         symbol = 'P' if current_player == 1 else 'A'
         got_box = check_boxes(symbol)
