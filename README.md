@@ -9,154 +9,80 @@
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-**🚀 Perfect for beginners | 💡 Learn by doing | 🎨 Beautiful UI | ⚡ Zero setup required**
+<p align="center">
+  <a href="https://python-mini-project-lovat.vercel.app/">
+    <img src="https://img.shields.io/badge/live_demo-View%20App-22c55e?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+</p>
 
-[Quick Start](#-quick-start) • [Contributing](CONTRIBUTING.md) • [Contributors](#-contributors) • [Features](#-features)
+<p align="center">
+  <a href="https://github.com/steam-bell-92/python-mini-project">
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=steam-bell-92.python-mini-project" alt="Visitors" />
+  </a>
+  <a href="https://github.com/steam-bell-92/python-mini-project/stargazers">
+    <img src="https://img.shields.io/github/stars/steam-bell-92/python-mini-project?style=flat&logo=github" alt="Stars" />
+  </a>
+  <a href="https://github.com/steam-bell-92/python-mini-project/network/members">
+    <img src="https://img.shields.io/github/forks/steam-bell-92/python-mini-project?style=flat&logo=github" alt="Forks" />
+  </a>
+  <a href="https://github.com/steam-bell-92/python-mini-project/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/steam-bell-92/python-mini-project?style=flat&logo=github" alt="Contributors" />
+  </a>
+</p>
+
+**🚀 Beginner-friendly projects | 💡 Learn by doing | 🎨 Clean UI | ⚡ Live demo available**
+
+[Live Demo](https://python-mini-project-lovat.vercel.app/) • [Contributors](#-contributors)
 
 ---
 
 </div>
 
-## 🎯 Why This Repository?
+## 🎯 Repo Introduction
 
-> **Tired of boring "Hello World" tutorials?** 
+This repository is a collection of small Python games and utility projects built to make learning Python more practical and engaging. It includes both command-line projects and a browser-based web app for trying the projects online.
 
-We built this collection to make learning Python **fun, interactive, and instantly rewarding**! Each project is:
-- ✅ **Complete & Ready to Run** - No setup, no dependencies, just pure Python fun
-- 🎨 **Visually Stunning** - Beautiful emoji-based UI that makes coding exciting
-- 📚 **Educational** - Learn core concepts while building real projects
-- 🎮 **Engaging** - From games to tools, there's something for everyone
-- 💪 **Beginner-Friendly** - Clean code with no complex functions
+## 🌐 Live Demo
 
-**Perfect for:** Students learning Python, teachers looking for class projects, or anyone wanting to code something fun in minutes!
+Try the web app here: https://python-mini-project-lovat.vercel.app/
 
----
+## 📂 Repo Structure
 
-## ⚡ Quick Start
-
-### 🌐 **Try the Web App** (Recommended!)
-Experience all 24 projects in your browser with beautiful animations and visualizations!
-
-```bash
-# Clone the repository
-git clone https://github.com/steam-bell-92/python-mini-project.git
-
-# Navigate to the web app
-cd python-mini-project/web-app
-
-# Start the web server
-python -m http.server 8000
-
-# Open http://localhost:8000 in your browser
+```text
+python-mini-project/
+├── games/
+│   ├── Snake-Game/
+│   ├── Rock-Paper-Scissor/
+│   └── ...
+├── math/
+│   ├── Fibonacci-Series/
+│   ├── Prime-Number-Analyzer/
+│   └── ...
+├── utilities/
+│   ├── Text-to-Morse/
+│   ├── Typing-Speed-Tester/
+│   └── ...
+├── tests/
+│   ├── test_armstrong.py
+│   ├── test_fibonacci.py
+│   └── ...
+├── web-app/
+│   ├── css/
+│   ├── js/
+│   └── assets/
+├── README.md
+└── requirements.txt
 ```
 
-### 🐍 **Or Run Python Projects Directly**
+## 🧩 What’s Inside
 
-```bash
-# Navigate to the project
-cd python-mini-project
-
-# Run any project (no installation needed!)
-python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
-```
-
-**That's it!** No pip installs, no virtual environments, just instant fun! 🎉
+- Games for quick interactive fun
+- Math projects for learning logic and problem solving
+- Utility tools for practical use cases
+- A web app version for browser-based access
 
 ---
 
-## ✨ Features
-
-### 🌐 Interactive Web Application
-- **All Projects in Your Browser** - No Python installation required!
-- **Beautiful Animations** - Smooth transitions and visual effects
-- **Dark/Light Theme** - Toggle between themes for comfort
-- **Category Filtering** - Browse by Games, Math, or Utilities
-- **Responsive Design** - Works on desktop, tablet, and mobile
-- **Zero Setup** - Just open and play!
-
-### 🐍 Python CLI Projects
-| Feature | Description |
-|---------|-------------|
-| **Beautiful UI** | Every project uses emojis for an engaging visual experience |
-| **Zero Dependencies** | Pure Python - no external packages required! |
-| **Well-Documented** | Clear code with helpful comments throughout |
-| **Beginner-Friendly** | Perfect for Python learners at any level |
-| **Instant Run** | No setup required - just download and play! |
-| **Interactive** | All projects feature user interaction and feedback |
-
----
-
-## 🚀 Getting Started Guide
-
-### 🌐 Web Application (Easiest Way!)
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/steam-bell-92/python-mini-project.git
-   cd python-mini-project/web-app
-   ```
-
-2. **Start a local server**
-   ```bash
-   # Using Python 3
-   python -m http.server 8000
-   
-   # Or using Node.js
-   npx http-server
-   ```
-
-3. **Open your browser** and visit `http://localhost:8000`
-
-4. **Enjoy all projects** with beautiful animations! 🎉
-
-### 🐍 Python CLI Projects
-
-#### Prerequisites
-- Python 3.10 or higher ([Download here](https://www.python.org/downloads/))
-- Any text editor or IDE (VS Code, PyCharm, or even Notepad!)
-
-#### Running Your First Project
-
-1. **Choose a project** from the list above
-2. **Open your terminal/command prompt**
-3. **Navigate to the project folder**
-4. **Run the Python file**:
-   ```bash
-   python games/Rock-Paper-Scissor/Rock-Paper-Scissor.py
-   ```
-5. **Have fun!** 🎉
-
-### Tips for Beginners
-- 💡 **Try the web app first** for an instant, visual experience
-- 🎮 Start with simple games like Coin Flip or Dice Rolling
-- 📖 Read through the code to understand how it works
-- 🎨 Try modifying emojis or messages to personalize the projects
-- 🔧 Experiment with changing game rules or adding features
-- 🤝 Share your improvements with the community!
-
----
-
-## 🤝 Contributing
-
-We love contributions! Here's how you can help:
-
-### Adding New Projects
-
-1. 🍴 **Fork** the repository
-2. 🌟 **Create** a new branch (`git checkout -b feature/AmazingProject`)
-3. 💻 **Add** your mini project
-   - Python CLI version in a category folder (`games/`, `math/`, or `utilities/`) and then its own project folder (for example `games/Project-Name/Project-Name.py`)
-   - Web implementation in `web-app/js/projects.js`
-4. ✅ **Ensure** it follows our style (emojis, clean code)
-5. 📤 **Commit** your changes (`git commit -m 'Add Amazing Project'`)
-6. 🚀 **Push** to the branch (`git push origin feature/AmazingProject`)
-7. 🎉 **Open** a Pull Request
-
-### Project Guidelines
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
-
----
 ## Contributors
 
 <!-- CONTRIBUTORS_START -->
@@ -172,6 +98,12 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
       <a href="https://github.com/Aayuiiitmg">
         <img src="https://github.com/Aayuiiitmg.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Aayuiiitmg" /><br />
         <sub><b>@Aayuiiitmg</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
+      <a href="https://github.com/Alvi24-hub">
+        <img src="https://github.com/Alvi24-hub.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Alvi24-hub" /><br />
+        <sub><b>@Alvi24-hub</b></sub>
       </a>
     </td>
     <td align="center" width="120">
@@ -192,14 +124,20 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Arpitawork24</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/ArshiBansal">
         <img src="https://github.com/ArshiBansal.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="ArshiBansal" /><br />
         <sub><b>@ArshiBansal</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
+    <td align="center" width="120">
+      <a href="https://github.com/Arun35-wolf">
+        <img src="https://github.com/Arun35-wolf.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Arun35-wolf" /><br />
+        <sub><b>@Arun35-wolf</b></sub>
+      </a>
+    </td>
     <td align="center" width="120">
       <a href="https://github.com/Ashvin-KS">
         <img src="https://github.com/Ashvin-KS.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Ashvin-KS" /><br />
@@ -224,6 +162,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Bhavikapatel06</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/C4aZy">
         <img src="https://github.com/C4aZy.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="C4aZy" /><br />
@@ -236,8 +176,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Devexhhh</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Diksha57-git">
         <img src="https://github.com/Diksha57-git.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Diksha57-git" /><br />
@@ -262,6 +200,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@HARSHP-16</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Indrayani11-15">
         <img src="https://github.com/Indrayani11-15.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Indrayani11-15" /><br />
@@ -274,8 +214,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Ishita-varshney</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Juhi4433">
         <img src="https://github.com/Juhi4433.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Juhi4433" /><br />
@@ -300,6 +238,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Kunal241207</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Lalitya31">
         <img src="https://github.com/Lalitya31.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Lalitya31" /><br />
@@ -312,8 +252,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Lavanya-Talele</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/Mayank251125">
         <img src="https://github.com/Mayank251125.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Mayank251125" /><br />
@@ -333,9 +271,23 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
       </a>
     </td>
     <td align="center" width="120">
+      <a href="https://github.com/Naina123kashyap">
+        <img src="https://github.com/Naina123kashyap.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Naina123kashyap" /><br />
+        <sub><b>@Naina123kashyap</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="120">
       <a href="https://github.com/Naveen-Boddepalli">
         <img src="https://github.com/Naveen-Boddepalli.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Naveen-Boddepalli" /><br />
         <sub><b>@Naveen-Boddepalli</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
+      <a href="https://github.com/Nencypatel21">
+        <img src="https://github.com/Nencypatel21.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Nencypatel21" /><br />
+        <sub><b>@Nencypatel21</b></sub>
       </a>
     </td>
     <td align="center" width="120">
@@ -350,8 +302,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@PIYUSH-NEXTGEN</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/PRODHOSH">
         <img src="https://github.com/PRODHOSH.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="PRODHOSH" /><br />
@@ -364,6 +314,8 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Papia-tech</b></sub>
       </a>
     </td>
+  </tr>
+  <tr>
     <td align="center" width="120">
       <a href="https://github.com/PragatiNigam29">
         <img src="https://github.com/PragatiNigam29.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="PragatiNigam29" /><br />
@@ -388,12 +340,24 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
         <sub><b>@Sanjhivvarshan-b-s</b></sub>
       </a>
     </td>
-  </tr>
-  <tr>
     <td align="center" width="120">
       <a href="https://github.com/SathvikaTalari">
         <img src="https://github.com/SathvikaTalari.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="SathvikaTalari" /><br />
         <sub><b>@SathvikaTalari</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
+      <a href="https://github.com/Shashank-8p">
+        <img src="https://github.com/Shashank-8p.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Shashank-8p" /><br />
+        <sub><b>@Shashank-8p</b></sub>
+      </a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="120">
+      <a href="https://github.com/Shital861">
+        <img src="https://github.com/Shital861.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="Shital861" /><br />
+        <sub><b>@Shital861</b></sub>
       </a>
     </td>
     <td align="center" width="120">
@@ -796,6 +760,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 <!-- CONTRIBUTORS_END -->
 
 ---
+
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

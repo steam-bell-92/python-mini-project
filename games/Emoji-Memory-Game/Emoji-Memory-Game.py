@@ -36,6 +36,20 @@ def show_countdown():
         time.sleep(1)
     clear_screen()
 
+def get_difficulty():
+    print("🎯 Select Difficulty")
+    print("1. Easy (5 sec)")
+    print("2. Medium (4 sec)")
+    print("3. Hard (2 sec)")
+
+    choice = input("Enter choice (1/2/3): ").strip()
+
+    if choice == "1":
+        return 5
+    elif choice == "3":
+        return 2
+    else:
+        return 4
 
 def play_game():
     score = 0
@@ -45,6 +59,9 @@ def play_game():
     print("🎮 Welcome to Emoji Memory Game!")
     print(f"🏅 High Score: {high_score}\n")
 
+    # Added difficulty mode
+    display_time = get_difficulty()
+
     show_countdown()
 
     while True:
@@ -53,10 +70,15 @@ def play_game():
         print("🧠 MEMORIZE THESE EMOJIS:")
         print(" ".join(sequence))
 
-        time.sleep(4)
+        # difficulty-based timing
+        time.sleep(display_time)
         clear_screen()
 
-        user_input = input("Type the emojis in order:\n> ").split()
+        # Improved input validation
+        user_input = input("Type the emojis in order:\n> ").strip().split()
+
+        # normalize input
+        user_input = [emoji.strip() for emoji in user_input]
 
         if not user_input:
             print("⚠️ Empty input detected!")
@@ -84,4 +106,12 @@ def play_game():
 
 
 if __name__ == "__main__":
-    play_game()
+    while True:
+        play_game()
+
+        # Replay option
+        choice = input("\nPlay again? (y/n): ").strip().lower()
+
+        if choice != "y":
+            print("👋 Thanks for playing!")
+            break

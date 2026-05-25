@@ -76,6 +76,7 @@ function getDerivativeCalculatorHTML() {
                 background-color:var(--bg-color);
                 outline:none;
                 border:1px solid white;
+                color: var(--text-color);
             }
             button{
                 padding:15px;

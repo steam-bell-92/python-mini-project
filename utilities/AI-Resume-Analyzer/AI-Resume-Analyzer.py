@@ -15,10 +15,11 @@ resume = input("\nPaste your resume text:\n").lower()
 words = word_tokenize(resume)
 
 stop_words = set(stopwords.words('english'))
+KEEP_AS_IS = {"c++", "c#", ".net"}
 
 clean_words = [
     w for w in words
-    if w.isalnum() and w not in stop_words
+    if (w.isalnum() or w in KEEP_AS_IS) and w not in stop_words  # ✅
 ]
 
 # Phrase tokens
@@ -69,7 +70,7 @@ normalized_bigrams = [
 
 # Skills
 skills = [
-    "python", "java", "c++", "django", "sql",
+    "python", "java", "c++", "c#", ".net", "django", "sql",
     "machine learning", "html", "css",
     "javascript", "communication", "teamwork"
 ]

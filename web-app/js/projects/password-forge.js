@@ -20,10 +20,10 @@ function getPasswordForgeHTML() {
                 </button>
 
                 <div id="rulesContainer" class="rules-container">
-                    <p>❌ Must contain at least 8 characters</p>
-                    <p>❌ Must contain a number</p>
-                    <p>❌ Must contain an uppercase letter</p>
-                    <p>❌ Must contain a special character</p>
+                    <p id="rule-length">❌ Must contain at least 8 characters</p>
+                    <p id="rule-number">❌ Must contain a number</p>
+                    <p id="rule-upper">❌ Must contain an uppercase letter</p>
+                    <p id="rule-special">❌ Must contain a special character</p>
                 </div>
 
                 <div id="passwordResult" class="result-message"></div>
@@ -44,7 +44,7 @@ function getPasswordForgeHTML() {
                 margin-top: 1rem;
                 font-size: 1rem;
                 background-color: var(--bg-color);
-                color: #000;
+                color: var(--text-color);
             }
 
             .btn-check {
@@ -91,29 +91,59 @@ function initPasswordForge() {
     const checkBtn = document.getElementById('checkPasswordBtn');
     const passwordInput = document.getElementById('passwordInput');
     const toggleBtn = document.getElementById('togglePasswordBtn');
+    
+    // New: Grab the individual rule DOM elements
+    const ruleLength = document.getElementById('rule-length');
+    const ruleNumber = document.getElementById('rule-number');
+    const ruleUpper = document.getElementById('rule-upper');
+    const ruleSpecial = document.getElementById('rule-special');
+    
+    const result = document.getElementById('passwordResult');
+
     toggleBtn.addEventListener('click', () => {
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        toggleBtn.textContent = 'Hide';
-    } else {
-        passwordInput.type = 'password';
-        toggleBtn.textContent = 'Show';
-    }
-});
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleBtn.textContent = 'Hide';
+        } else {
+            passwordInput.type = 'password';
+            toggleBtn.textContent = 'Show';
+        }
+    });
 
+    const rulesContainer = document.getElementById('rulesContainer');
+    const result = document.getElementById('passwordResult');
+
+    function checkRules() {
+        const password = passwordInput.value;
     checkBtn.addEventListener('click', () => {
-        const password = document.getElementById('passwordInput').value;
-        const result = document.getElementById('passwordResult');
+        const password = passwordInput.value;
 
+        // 1. Evaluate Booleans
         const hasLength = password.length >= 8;
         const hasNumber = /\d/.test(password);
         const hasUpper = /[A-Z]/.test(password);
-        const hasSpecial = /[!@#$%^&*]/.test(password);
+        const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(password);
 
+        rulesContainer.innerHTML = `
+            <p>${hasLength ? '✅' : '❌'} Must contain at least 8 characters</p>
+            <p>${hasNumber ? '✅' : '❌'} Must contain a number</p>
+            <p>${hasUpper ? '✅' : '❌'} Must contain an uppercase letter</p>
+            <p>${hasSpecial ? '✅' : '❌'} Must contain a special character</p>
+        `;
+
+        // 2. Update Individual Rule UI
+        ruleLength.textContent = hasLength ? '✅ Must contain at least 8 characters' : '❌ Must contain at least 8 characters';
+        ruleNumber.textContent = hasNumber ? '✅ Must contain a number' : '❌ Must contain a number';
+        ruleUpper.textContent = hasUpper ? '✅ Must contain an uppercase letter' : '❌ Must contain an uppercase letter';
+        ruleSpecial.textContent = hasSpecial ? '✅ Must contain a special character' : '❌ Must contain a special character';
+
+        // 3. Update Global Status
         if (hasLength && hasNumber && hasUpper && hasSpecial) {
             result.textContent = "✅ Strong Password!";
+            result.style.color = 'green';
         } else {
             result.textContent = "❌ Password does not meet all rules!";
+            result.style.color = 'red';
         }
     });
 }

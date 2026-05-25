@@ -221,8 +221,24 @@ function initProjectileMotion() {
     }
 
     function simulate() {
-        const speed = Math.max(1, Number(speedInput.value) || 1);
-        const angle = Math.min(89, Math.max(1, Number(angleInput.value) || 45));
+        const speed = Number(speedInput.value);
+        const angle = Number(angleInput.value);
+
+        // Reset previous states
+        resultEl.style.color = "";
+        
+        // Comprehensive Validation Check
+        if (isNaN(speed) || speed < 1 || speed > 200) {
+            resultEl.textContent = "❌ Error: Speed must be between 1 and 200 m/s.";
+            resultEl.style.color = "#ef4444";
+            return;
+        }
+
+        if (isNaN(angle) || angle < 1 || angle > 89) {
+            resultEl.textContent = "❌ Error: Angle must be between 1° and 89°.";
+            resultEl.style.color = "#ef4444";
+            return;
+        }
 
         const stats = projectileStats(speed, angle);
         const points = trajectoryPoints(speed, angle);
