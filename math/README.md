@@ -6,7 +6,6 @@ This folder contains Python mini-projects focused on math concepts, number patte
 
 - AP-GP-AGP-HP-Recognizer
 - Armstrong-Number
-- Caesar-Cipher
 - Collatz-Conjecture
 - Coordinate-to-Polar-Transformation
 - Derivative-Calculator

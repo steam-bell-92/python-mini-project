@@ -291,6 +291,7 @@ function init2048Game() {
         for (let i = 0; i < 3; i++) {
             if (row[i] && row[i] === row[i + 1]) {
                 row[i] *= 2;
+                if (window.AudioManager) AudioManager.play("score_point");
                 score += row[i];
                 row[i + 1] = 0;
             }
@@ -380,6 +381,7 @@ function init2048Game() {
 
             if (checkGameOver()) {
                 gameMessage.textContent = "GAME OVER!";
+                if (window.AudioManager) AudioManager.play("game_over");
             }
 
             drawBoard();
@@ -388,6 +390,7 @@ function init2048Game() {
 
             if (checkGameOver()) {
                 gameMessage.textContent = "GAME OVER!";
+                if (window.AudioManager) AudioManager.play("game_over");
             } else {
                 gameMessage.textContent =
                     "No move possible in this direction!";
@@ -454,16 +457,11 @@ function init2048Game() {
         let moved = false;
 
         if (Math.abs(dx) > Math.abs(dy)) {
-            if (dx > 30) moved = moveRight();
-            else if (dx < -30) moved = moveLeft();
+            if (dx > 30) makeMove("right");
+            else if (dx < -30) makeMove("left");
         } else {
-            if (dy > 30) moved = moveDown();
-            else if (dy < -30) moved = moveUp();
-        }
-
-        if(moved) {
-            addNewTile();
-            drawBoard();
+            if (dy > 30) makeMove("down");
+            else if (dy < -30) makeMove("up");
         }
     }, { passive: false });
 

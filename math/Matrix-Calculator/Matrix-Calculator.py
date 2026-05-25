@@ -167,13 +167,36 @@ while True:
                 matrix.append(row)
                 
             def determinant(m):
-                if len(m) == 1:
+                n = len(m)
+                if n == 1:
                     return m[0][0]
-                if len(m) == 2:
+                if n == 2:
                     return m[0][0] * m[1][1] - m[0][1] * m[1][0]
-                det = 0
-                for c in range(len(m)):
-                    det += ((-1)**c) * m[0][c] * determinant([row[:c] + row[c+1:] for row in m[1:]])
+                
+                mat = [row[:] for row in m]
+                det = 1.0
+                
+                for i in range(n):
+                    pivot_row = i
+                    while pivot_row < n and abs(mat[pivot_row][i]) < 1e-9:
+                        pivot_row += 1
+                        
+                    if pivot_row == n:
+                        return 0.0
+                        
+                    if pivot_row != i:
+                        mat[i], mat[pivot_row] = mat[pivot_row], mat[i]
+                        det *= -1.0
+                        
+                    pivot_val = mat[i][i]
+                    for r in range(i + 1, n):
+                        factor = mat[r][i] / pivot_val
+                        for c in range(i, n):
+                            mat[r][c] -= factor * mat[i][c]
+                            
+                for i in range(n):
+                    det *= mat[i][i]
+                    
                 return det
                 
             det_value = determinant(matrix)

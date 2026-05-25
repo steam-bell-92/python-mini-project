@@ -352,6 +352,32 @@ def generate_banner(name, category, filename):
             x = 220 + i * 80
             y = 175
             v_draw.ellipse([x, y, x + 65, y + 65], fill=col, outline=(255,255,255,100), width=2)
+    elif "resume" in n_lower or "analyzer" in n_lower:
+        # Resume analyzer dashboard
+        v_draw.rounded_rectangle([250, 100, 550, 350], radius=24, fill=(255,255,255,12), outline=color_accent, width=3)
+        v_draw.rounded_rectangle([285, 135, 515, 315], radius=18, fill=(255,255,255,8), outline=(255,255,255,50), width=2)
+        v_draw.polygon([(332, 135), (515, 135), (515, 190)], fill=(255,255,255,20), outline=color_accent)
+        v_draw.ellipse([280, 145, 390, 255], outline=color_accent, width=8)
+        v_draw.text((335, 200), "82%", fill=color_accent, anchor="mm")
+        for i, w in enumerate([90, 75, 65]):
+            y = 275 + i * 18
+            v_draw.rounded_rectangle([410, y, 410 + w, y + 10], radius=4, fill=color_accent)
+        v_draw.text((430, 165), "AI RESUME", fill=color_accent, anchor="lm")
+        v_draw.text((430, 188), "ANALYZER", fill=(255,255,255), anchor="lm")
+    elif "caesar" in n_lower:
+        # Cipher wheel and shifting letters
+        cx, cy = 400, 225
+        for r in range(55, 190, 28):
+            v_draw.ellipse([cx - r, cy - r, cx + r, cy + r], outline=color_accent, width=2)
+        for i, ch in enumerate("ABCDEFGHIJKLMNOPQRSTUVWXYZ"):
+            angle = (i / 26.0) * (2 * math.pi)
+            x = cx + int(175 * math.cos(angle))
+            y = cy + int(175 * math.sin(angle))
+            v_draw.text((x, y), ch, fill=color_accent, anchor="mm")
+        v_draw.line([(250, 115), (550, 335)], fill=color_accent_dim, width=3)
+        v_draw.line([(550, 115), (250, 335)], fill=color_accent_dim, width=3)
+        v_draw.rounded_rectangle([305, 160, 495, 290], radius=24, fill=(255,255,255,14), outline=color_accent, width=3)
+        v_draw.text((400, 225), "A+3", fill=color_accent, anchor="mm")
     elif "pet" in n_lower or "productivity" in n_lower:
         # Cute paw print
         cx, cy = 400, 225
@@ -444,12 +470,14 @@ projects = [
     ("Tower of Hanoi", "utilities", "tower-of-hanoi.jpg"),
     ("Typing Speed Tester", "utilities", "typing-speed-tester.jpg"),
     ("Color Palette Suggestor", "utilities", "color-palette.jpg"),
-    ("Productivity Pet", "utilities", "productive-pet.jpg"),
-    ("Tic Tac Toe", "games", "tic-tac-toe.jpg"),
+    ("AI Resume Analyzer", "utilities", "resume-analyzer.jpg"),
+    ("Caesar Cipher", "utilities", "caesar-cipher.jpg"),
+    ("Simon Says", "games", "simon-says.jpg"),
 ]
 
 # Run generation
-banners_dir = "assets/banners"
+script_dir = os.path.dirname(os.path.abspath(__file__))
+banners_dir = os.path.join(script_dir, "assets", "banners")
 for name, cat, filename in projects:
     dest_path = os.path.join(banners_dir, filename)
     generate_banner(name, cat, dest_path)

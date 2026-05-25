@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
   var cursorGlow = document.getElementById('cursorGlow');
   var heroProjectCount = document.getElementById('heroProjectCount');
   var heroGameCount = document.getElementById('heroGameCount');
+  var heroMathCount = document.getElementById('heroMathCount');
   var heroUtilityCount = document.getElementById('heroUtilityCount');
   var modal = document.getElementById('projectModal');
   var modalBody = document.getElementById('modalBody');
@@ -224,15 +225,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── Gather Project Cards ─────────────────────────────────── */
   var projectsGrid = document.querySelector('.projects-grid');
-  projectCards = Array.from(document.querySelectorAll('.project-card'));
+  var projectsTemplate = document.getElementById('projectsTemplate');
+  if (projectsGrid && projectsGrid.children.length === 0 && projectsTemplate && projectsTemplate.content) {
+    Array.from(projectsTemplate.content.querySelectorAll('.project-card')).forEach(function (card) {
+      projectsGrid.appendChild(card.cloneNode(true));
+    });
+  }
+
+  projectCards = projectsGrid
+    ? Array.from(projectsGrid.querySelectorAll('.project-card'))
+    : Array.from(document.querySelectorAll('.project-card'));
+
+  projectCards.sort(function (a, b) {
+    var titleA = (a.querySelector('h3') || {}).textContent || '';
+    var titleB = (b.querySelector('h3') || {}).textContent || '';
+    return titleA.localeCompare(titleB, undefined, { sensitivity: 'base', numeric: true });
+  });
+
+  if (projectsGrid) {
+    projectCards.forEach(function (card) {
+      projectsGrid.appendChild(card);
+    });
+  }
 
   /* ── Hero Stats ───────────────────────────────────────────── */
   var totalCount = projectCards.length;
   var gameCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'games'; }).length;
+  var mathCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'math'; }).length;
   var utilityCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'utilities'; }).length;
 
   if (heroProjectCount) heroProjectCount.textContent = String(totalCount);
   if (heroGameCount) heroGameCount.textContent = String(gameCount);
+  if (heroMathCount) heroMathCount.textContent = String(mathCount);
   if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
   if (projectCountBadge) projectCountBadge.textContent = String(totalCount) + ' projects';
 

@@ -34,7 +34,6 @@
   <div class="sidebar-brand">
     <a class="logo-wrap" href="index.html">
       <div class="logo-top-row">
-        <img alt="PyMini Logo" class="navbar-logo" src="assets/logo.png"/>
         <div class="logo-text">
           <span class="logo-py">py</span>
           <span class="logo-mini">.mini</span>
@@ -72,11 +71,11 @@
         </div>
       </div>
     </div>
-</section>
+  </div>
 
 
     
-<section class="projects-section" id="projectsSection">
+<template id="projectsTemplate">
     <div class="container">
         <div class="projects-grid" id="projectsGrid">
                     <div class="project-card" data-category="games" data-project="2048-game" data-tags="game,puzzle,2048,logic,tiles">
@@ -96,6 +95,18 @@
                         <div class="card-actions"><button class="btn-play">Try It</button></div>
                         <h3>Armstrong Numbers</h3>
                         <p>Check special number properties!</p>
+                    </div>
+                    <div class="project-card" data-category="utilities" data-project="binary-search" data-tags="search,algorithm,binary,sorted,visualizer">
+                        <img class="card-banner" src="assets/banners/binary-search.jpg" alt="Binary Search" loading="lazy">
+                        <div class="card-actions"><button class="btn-play">Try It</button></div>
+                        <h3>Binary Search</h3>
+                        <p>Visualize binary search step by step!</p>
+                    </div>
+                    <div class="project-card" data-category="utilities" data-project="bubble-sort" data-tags="sort,algorithm,bubble,visualizer,array">
+                        <img class="card-banner" src="assets/banners/bubble-sort.jpg" alt="Bubble Sort" loading="lazy">
+                        <div class="card-actions"><button class="btn-play">Try It</button></div>
+                        <h3>Bubble Sort</h3>
+                        <p>Watch bubble sort in real-time!</p>
                     </div>
                     <div class="project-card" data-category="games" data-project="blackjack(21)" data-tags="game,casino,card,random">
                         <img class="card-banner" src="assets/banners/blackjack21.jpg" alt="BlackJack21" loading="lazy">
@@ -132,6 +143,12 @@
                         <div class="card-actions"><button class="btn-play">Try It</button></div>
                         <h3>Color Palette Suggestor</h3>
                         <p>Generate palettes + CSS snippets for any website type and mood!</p>
+                    </div>
+                    <div class="project-card" data-category="utilities" data-project="resume-analyzer" data-tags="utility,resume,ats,career,analysis,keywords">
+                      <img class="card-banner" src="assets/banners/resume-analyzer.jpg" alt="AI Resume Analyzer" loading="lazy">
+                      <div class="card-actions"><button class="btn-play">Try It</button></div>
+                      <h3>AI Resume Analyzer</h3>
+                      <p>Score resumes with ATS-style keyword and formatting insights!</p>
                     </div>
                     <div class="project-card" data-category="math" data-project="coordinate-polar-transform" data-tags="math,coordinate,transformation,geometry">
                         <img class="card-banner" src="assets/banners/coordinate-polar-transform.jpg" alt="Coordinate to Polar" loading="lazy">
@@ -242,7 +259,7 @@
                         <p>Battle against the computer!</p>
                     </div>
                     <div class="project-card" data-category="games" data-project="simon-says" data-tags="game,memory,reflex,pattern,sequence">
-                        <img class="card-banner" src="assets/games-bg.jpg" alt="Simon Says" loading="lazy">
+                      <img class="card-banner" src="assets/banners/simon-says.jpg" alt="Simon Says" loading="lazy">
                         <div class="card-actions"><button class="btn-play">Try It</button></div>
                         <h3>Simon Says</h3>
                         <p>Repeat the pattern and test your memory skills!</p>
@@ -284,7 +301,7 @@
                     <p class="empty-state-hint">Try adjusting your search or category filter.</p>
                 </div>
             </div>
-        </section>
+        </template>
   </div>
 
   <div class="sidebar-menu-wrapper">
@@ -355,7 +372,6 @@
   <div class="hero-shell">
     <!-- ── Big Brand Header (Logo & Futuristic Title) ────────────────── -->
     <div class="hero-logo-header">
-      <img alt="PyMini Logo" class="hero-logo-image" src="assets/logo.png"/>
       <div class="hero-logo-text">
         <span class="hero-logo-py">py</span><span class="hero-logo-mini">.mini</span><span class="hero-logo-parens">()</span>
       </div>
@@ -401,6 +417,7 @@
     <div class="hero-meta">
       <span><strong id="heroProjectCount">0</strong> total projects</span>
       <span><strong id="heroGameCount">0</strong> games</span>
+      <span><strong id="heroMathCount">0</strong> maths</span>
       <span><strong id="heroUtilityCount">0</strong> utilities</span>
     </div>
   </div>
@@ -502,6 +519,12 @@
         <i class="fas fa-shuffle"></i>
         Surprise Me
       </button>
+    </div>
+    <div class="projects-grid" id="projectsGrid"></div>
+
+    <div id="emptyState" class="empty-state" style="display: none;">
+      <p>No Projects right now :)</p>
+      <p class="empty-state-hint">Try adjusting your search or category filter.</p>
     </div>
   </div>
 </section>
@@ -626,11 +649,6 @@ print('Hello, World!')" spellcheck="false"></textarea>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-bottom-links">
-        <a href="./privacy-policy.html">Privacy</a>
-        <span class="separator">&middot;</span>
-        <a href="./terms-condition.html">Terms</a>
-      </div>
       <p>Made with &hearts; for Python learners everywhere &copy; 2026</p>
     </div>
   </div>
@@ -639,10 +657,13 @@ print('Hello, World!')" spellcheck="false"></textarea>
 <!-- ── SCRIPTS ──────────────────────────────────────────────── -->
 <script src="https://unpkg.com/lucide@latest"></script>
 <script src="js/audio.js"></script>
+<script src="js/audioManager.js"></script>
 <script src="js/projects/rock-paper-scissor.js"></script>
 <script src="js/projects/dice-rolling.js"></script>
 <script src="js/projects/coin-flip.js"></script>
 <script src="js/projects/number-guessing.js"></script>
+<script src="js/projects/binary-search.js"></script>
+<script src="js/projects/bubble-sort.js"></script>
 <script src="js/projects/hangman.js"></script>
 <script src="js/projects/flames.js"></script>
 <script src="js/projects/fibonacci.js"></script>

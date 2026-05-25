@@ -286,8 +286,11 @@ while player_score + computer_score < total_boxes:
                     print(YELLOW + "⚠️ Line already taken!" + RESET)
                     continue
                 vertical_lines[row][col] = True
-        except:
+        except IndexError:
             print(RED + "❌ Position out of range!" + RESET)
+            continue
+        except ValueError:
+            print(RED + "❌ Invalid input!" + RESET)
             continue
 
         symbol = 'P' if current_player == 1 else 'A'

@@ -594,13 +594,6 @@ body.sidebar-active .hero-controls {
   margin-left: 0;
 }
 
-.navbar-logo {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 10px var(--accent-glow));
-}
-
 .logo-text {
   display: flex;
   align-items: center;
@@ -899,18 +892,8 @@ body.sidebar-active .hero-controls {
   gap: clamp(12px, 3vw, 20px);
   margin-bottom: 24px;
   animation: fadeInUp var(--duration-slow) var(--ease-out-expo) both;
-}
-
-.hero-logo-image {
-  width: clamp(48px, 8vw, 72px);
-  height: clamp(48px, 8vw, 72px);
-  object-fit: contain;
-  filter: drop-shadow(0 0 20px var(--accent-glow));
-  transition: transform var(--duration-base) var(--ease-out-expo);
-}
-
-.hero-logo-header:hover .hero-logo-image {
-  transform: scale(1.12) rotate(12deg);
+  width: 100%;
+  max-width: 100%;
 }
 
 .hero-logo-text {
@@ -920,7 +903,12 @@ body.sidebar-active .hero-controls {
   letter-spacing: -0.04em;
   display: flex;
   align-items: center;
+  justify-content: center;
   line-height: 1;
+  flex-wrap: wrap;
+  text-align: center;
+  max-width: 100%;
+  padding-inline: 12px;
 }
 
 .hero-logo-py {
@@ -949,6 +937,226 @@ body.sidebar-active .hero-controls {
 
 [data-theme='light'] .hero-logo-mini {
   color: #000;
+}
+
+/* ── AI Resume Analyzer ────────────────────────────────────── */
+.resume-analyzer-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0.25rem 0 0.75rem;
+}
+
+.resume-analyzer-hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.resume-analyzer-copy h2 {
+  margin: 0.35rem 0 0.45rem;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  letter-spacing: -0.04em;
+}
+
+.resume-analyzer-copy p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.resume-analyzer-badge,
+.resume-analyzer-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-glass);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.resume-analyzer-pill {
+  white-space: nowrap;
+}
+
+.resume-analyzer-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.resume-panel {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 1.1rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.resume-upload-box {
+  display: grid;
+  place-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border-radius: 18px;
+  border: 1.5px dashed var(--accent);
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.06), rgba(6, 182, 212, 0.04));
+  text-align: center;
+}
+
+.resume-upload-icon {
+  font-size: 2.4rem;
+  color: var(--accent);
+}
+
+.resume-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.15rem;
+  border-radius: 12px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--duration-fast) var(--ease-out-expo), box-shadow var(--duration-fast) ease;
+}
+
+.resume-file-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.resume-upload-box p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.resume-analyze-btn {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.95rem 1rem;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 14px 30px rgba(34, 197, 94, 0.18);
+  transition: transform var(--duration-fast) var(--ease-out-expo), box-shadow var(--duration-fast) ease;
+}
+
+.resume-analyze-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 34px rgba(34, 197, 94, 0.24);
+}
+
+.resume-score-panel h3,
+.resume-mini-card h3 {
+  margin: 0 0 0.9rem;
+  font-size: 1.05rem;
+}
+
+.resume-score-panel {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.resume-progress-circle {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  border: 10px solid var(--accent);
+  display: grid;
+  place-items: center;
+  margin: 0.2rem auto 1rem;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 55%);
+}
+
+.resume-progress-circle span {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.resume-extra-info {
+  color: var(--text-secondary);
+  font-size: 0.92rem;
+}
+
+.resume-bottom-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.resume-mini-card {
+  background: var(--bg-glass);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1rem;
+}
+
+.resume-keyword-item {
+  margin-bottom: 0.95rem;
+}
+
+.resume-keyword-item span {
+  display: inline-block;
+  margin-bottom: 0.45rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.resume-bar {
+  height: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bg-elevated);
+}
+
+.resume-bar > div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), #06b6d4);
+}
+
+.resume-suggestion {
+  display: flex;
+  gap: 0.7rem;
+  align-items: flex-start;
+  margin-top: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.resume-suggestion i {
+  color: var(--accent);
+  margin-top: 0.2rem;
+}
+
+@media (max-width: 720px) {
+  .resume-analyzer-hero {
+    flex-direction: column;
+  }
+
+  .resume-analyzer-pill {
+    white-space: normal;
+  }
+
+  .resume-bottom-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .resume-panel {
+    padding: 1rem;
+  }
 }
 
 /* ── Hero Badge Row (Glassified Kicker & Status Button) ──────── */
@@ -3037,6 +3245,10 @@ body.sidebar-active .hero-controls {
 @media (max-width: 480px) {
   .container {
     padding: 0 16px;
+  }
+
+  .hero-logo-text {
+    font-size: clamp(1.9rem, 11vw, 3rem);
   }
 
   .hero-title {

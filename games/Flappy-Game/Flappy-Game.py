@@ -51,7 +51,7 @@ highscore_path = os.path.join(current_dir, "highscore.txt")
 try:
     with open(highscore_path, "r") as file:
         high_score = int(file.read())
-except:
+except (FileNotFoundError, ValueError, OSError):
     high_score = 0
 
 def inside(point):

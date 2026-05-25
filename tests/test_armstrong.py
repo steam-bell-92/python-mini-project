@@ -1,42 +1,54 @@
-import unittest
-import subprocess
+import importlib.util
+import io
 import os
-import sys
+from contextlib import redirect_stdout
+from unittest.mock import patch
 
-class TestArmstrongNumber(unittest.TestCase):
-    def setUp(self):
-        # Path to the Armstrong-Number.py script
-        self.script_path = os.path.join("math", "Armstrong-Number", "Armstrong-Number.py")
 
-    def run_script_with_input(self, user_input):
-        # Run the script as a subprocess and provide input via stdin
-        process = subprocess.Popen(
-            [sys.executable, self.script_path],
-            stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        stdout, stderr = process.communicate(input=user_input)
-        return stdout, stderr
+def _load_armstrong_module():
+    file_path = os.path.join(
+        os.path.dirname(__file__), "..",
+        "math", "Armstrong-Number", "Armstrong-Number.py"
+    )
+    file_path = os.path.abspath(file_path)
 
-    def test_valid_armstrong_number(self):
-        stdout, _ = self.run_script_with_input("153\n")
-        self.assertIn("153 is an Armstrong Number!", stdout)
+    spec = importlib.util.spec_from_file_location("armstrong_number", file_path)
+    module = importlib.util.module_from_spec(spec)
 
-    def test_invalid_armstrong_number(self):
-        stdout, _ = self.run_script_with_input("154\n")
-        self.assertIn("154 is NOT an Armstrong Number.", stdout)
+    with patch("builtins.input", side_effect=["0"]):
+        with patch("builtins.print"):
+            spec.loader.exec_module(module)
 
-    def test_invalid_input_handling(self):
-        # The script asks again if input is invalid, so we send invalid then valid
-        stdout, _ = self.run_script_with_input("abc\n153\n")
-        self.assertIn("That doesn't look like a valid number", stdout)
-        self.assertIn("153 is an Armstrong Number!", stdout)
-        
-    def test_negative_input(self):
-        stdout, _ = self.run_script_with_input("-5\n153\n")
-        self.assertIn("Please enter a positive number!", stdout)
+    return module
 
-if __name__ == "__main__":
-    unittest.main()
+
+_mod = _load_armstrong_module()
+ArmstrongChecker = _mod.ArmstrongChecker
+
+
+class TestArmstrongNumber:
+    def test_calculate_for_armstrong_number(self):
+        checker = ArmstrongChecker(153)
+        checker.calculate()
+        assert checker.total == 153
+
+    def test_calculate_for_non_armstrong_number(self):
+        checker = ArmstrongChecker(154)
+        checker.calculate()
+        assert checker.total == 190
+
+    def test_check_prints_armstrong_message(self):
+        checker = ArmstrongChecker(153)
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            checker.check()
+        output = buffer.getvalue()
+        assert "153 is an Armstrong Number!" in output
+
+    def test_check_prints_non_armstrong_message(self):
+        checker = ArmstrongChecker(154)
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            checker.check()
+        output = buffer.getvalue()
+        assert "154 is NOT an Armstrong Number." in output

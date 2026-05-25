@@ -12,6 +12,8 @@ function getProjectHTML(projectName) {
         'flames': () => getFlamesHTML(),
         'emoji-memory': () => getEmojiMemoryGameHTML(),
         'fibonacci': () => getFibonacciHTML(),
+        'binary-search': () => getBinarySearchHTML(),
+        'bubble-sort': () => getBubbleSortHTML(),
         'progression-recognizer': () => getProgressionRecognizerHTML(),
         'pascal-triangle': () => getPascalTriangleHTML(),
         'armstrong': () => getArmstrongHTML(),
@@ -39,6 +41,7 @@ function getProjectHTML(projectName) {
         '2048-game': () => get2048GameHTML(),
         'productive-pet': () => getProductivePetHTML(),
         'color-palette': () => getColorPaletteHTML(),
+        'resume-analyzer': () => getAIResumeAnalyzerHTML(),
         'caesar-cipher': () => getCaesarCipherHTML(),
     };
 
@@ -592,278 +595,7 @@ function initPascalTriangle() {
     generatePascal(); // Initial generation
 }
 
-// ============================================
-// CALCULATOR
-// ============================================
-function getCalculatorHTML() {
-    return `
-        <div class="project-content">
-            <h2>🧮 Calculator</h2>
-            <div class="calculator">
-                <div class="calc-display" id="calcDisplay">0</div>
-                <div class="calc-buttons">
-                    <button class="calc-btn clear" data-action="clear" tabindex="-1">C</button>
-                    <button class="calc-btn operator" data-action="delete" tabindex="-1">⌫</button>
-                    <button class="calc-btn operator" data-action="/" tabindex="-1">/</button>
-                    <button class="calc-btn operator" data-action="*" tabindex="-1">×</button>
-                    
-                    <button class="calc-btn number" data-value="7" tabindex="-1">7</button>
-                    <button class="calc-btn number" data-value="8" tabindex="-1">8</button>
-                    <button class="calc-btn number" data-value="9" tabindex="-1">9</button>
-                    <button class="calc-btn operator" data-action="-" tabindex="-1">−</button>
-                    
-                    <button class="calc-btn number" data-value="4" tabindex="-1">4</button>
-                    <button class="calc-btn number" data-value="5" tabindex="-1">5</button>
-                    <button class="calc-btn number" data-value="6" tabindex="-1">6</button>
-                    <button class="calc-btn operator" data-action="+" tabindex="-1">+</button>
-                    
-                    <button class="calc-btn number" data-value="1" tabindex="-1">1</button>
-                    <button class="calc-btn number" data-value="2" tabindex="-1">2</button>
-                    <button class="calc-btn number" data-value="3" tabindex="-1">3</button>
-                    <button class="calc-btn operator" data-action="**" tabindex="-1">^</button>
-                    
-                    <button class="calc-btn number span-2" data-value="0" tabindex="-1">0</button>
-                    <button class="calc-btn number" data-value="." tabindex="-1">.</button>
-                    <button class="calc-btn equals" data-action="=" tabindex="-1">=</button>
-                </div>
-            </div>
-        </div>
-        
-        <style>
-            .calculator {
-                max-width: 350px;
-                margin: 2rem auto;
-                background: var(--surface-color);
-                padding: 1.5rem;
-                border-radius: 20px;
-                box-shadow: var(--shadow);
-            }
-            
-            .calc-display {
-                background: var(--bg-color);
-                padding: 2rem;
-                border-radius: 15px;
-                font-size: 2.5rem;
-                text-align: right;
-                margin-bottom: 1rem;
-                min-height: 80px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-end;
-                word-break: break-all;
-            }
-            
-            .calc-buttons {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 0.75rem;
-            }
-            
-            .calc-btn {
-                padding: 1.5rem;
-                font-size: 1.5rem;
-                border: none;
-                border-radius: 15px;
-                cursor: pointer;
-                transition: var(--transition);
-                font-weight: 600;
-            }
-            
-            .calc-btn.number {
-                background: var(--surface-color);
-                border: 2px solid var(--border-color);
-                color: var(--text-color);
-            }
-            
-            .calc-btn.operator {
-                background: var(--primary-color);
-                color: white;
-            }
-            
-            .calc-btn.equals {
-                background: var(--success-color);
-                color: white;
-            }
-            
-            .calc-btn.clear {
-                background: var(--danger-color);
-                color: white;
-            }
-            
-            .calc-btn:hover {
-                transform: scale(1.05);
-            }
-            
-            .calc-btn.span-2 {
-                grid-column: span 2;
-            }
-        </style>
-    `;
-}
-
-function initCalculator() {
-    const display = document.getElementById("calcDisplay");
-    if (!display) return;
-    let expression = "";
-
-    function update() {
-        display.textContent = expression || "0";
-    }
-
-    function format(expr) {
-        return expr
-            .replace(/÷/g, "/")
-            .replace(/×/g, "*")
-            .replace(/\^/g, "**");
-    }
-
-    function safeEval(expr) {
-        try {
-            if (!expr) return "";
-            let result = eval(format(expr));
-            if (result === undefined) return "";
-            if (isNaN(result)) return "Error";
-            return String(result);
-        } catch {
-            return "Error";
-        }
-    }
-
-    function applyFunction(type) {
-        try {
-            let value = eval(format(expression || "0"));
-            let result;
-            switch (type) {
-                case "sin": result = Math.sin(value); break;
-                case "cos": result = Math.cos(value); break;
-                case "tan": result = Math.tan(value); break;
-                case "sqrt": result = Math.sqrt(value); break;
-                case "square": result = value * value; break;
-                case "inv": result = 1 / value; break; 
-            }
-            if (isNaN(result)) return "Error"; 
-            return String(result);
-        } catch {
-            return "Error";
-        }
-    }
-
- 
-    function clearIfFinished() {
-        if (expression === "Error" || expression === "NaN") {
-            expression = "";
-        }
-    }
-
-    document.querySelectorAll(".calc-btn").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            clearIfFinished();
-            
-            const value = btn.dataset.value;
-            const action = btn.dataset.action;
-
-            if (value !== undefined) {
-                if (value === ".") {
-               
-                    const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
-                    if (lastOperand.includes(".")) return;
-                }
-                expression += value;
-                update();
-                return;
-            }
-
-            if (!action) return;
-
-    
-            switch (action) {
-                case "clear":
-                    expression = "";
-                    break;
-                case "delete":
-                    if (expression === "Infinity" || expression === "-Infinity") {
-                        expression = "";
-                    } else {
-                        expression = expression.slice(0, -1);
-                    }
-                    break;
-                case "=":
-                    expression = safeEval(expression);
-                    break;
-                case "sin":
-                case "cos":
-                case "tan":
-                case "sqrt":
-                case "square":
-                case "inv":
-                    expression = applyFunction(action);
-                    break;
-                case "^":
-                case "+":
-                case "-":
-                case "*":
-                case "/":
-        
-                    const lastChar = expression.slice(-1);
-                    if (["+", "-", "*", "/", "^"].includes(lastChar)) {
-                        expression = expression.slice(0, -1) + action;
-                    } else {
-                        expression += action;
-                    }
-                    break;
-                default:
-                    expression += action;
-            }
-            update();
-        });
-    });
-
-    document.addEventListener("keydown", (e) => {
-        const key = e.key;
-        if (!document.getElementById("calcDisplay")) return;
-
-        // Whitelist allowed keys to prevent typing letters
-        const allowedKeys = ["Enter", "Backspace", "Escape", "=", "+", "-", "*", "/", "^", ".", "(", ")"];
-        if (allowedKeys.includes(key) || /^[0-9]$/.test(key)) {
-            e.preventDefault();
-        } else {
-            return;
-        }
-
-        clearIfFinished();
-
-        if (/^[0-9]$/.test(key)) {
-            expression += key;
-        } else if (key === ".") {
-            const lastOperand = expression.split(/[\+\-\*\/\^\(\)]/).pop();
-            if (!lastOperand.includes(".")) {
-                expression += ".";
-            }
-        } else if (["+", "-", "*", "/", "^"].includes(key)) {
-            const lastChar = expression.slice(-1);
-            if (["+", "-", "*", "/", "^"].includes(lastChar)) {
-                expression = expression.slice(0, -1) + key;
-            } else {
-                expression += key;
-            }
-        } else if (key === ")" || key === "(") {
-            expression += key;
-        } else if (key === "Enter" || key === "=") {
-            expression = safeEval(expression);
-        } else if (key === "Backspace") {
-            if (expression === "Infinity" || expression === "-Infinity") {
-                expression = "";
-            } else {
-                expression = expression.slice(0, -1);
-            }
-        } else if (key === "Escape" || key.toLowerCase() === "c") {
-            expression = "";
-        }
-        update();
-    });
-
-    update();
-}
+// Calculator module is in js/projects/calculator.js.
 
 // ============================================
 // FIBONACCI
@@ -3590,6 +3322,106 @@ function getProductivePetHTML() {
     `;
 }
 
+function getAIResumeAnalyzerHTML() {
+    return `
+        <div class="resume-analyzer-shell">
+            <div class="resume-analyzer-hero">
+                <div class="resume-analyzer-copy">
+                    <span class="resume-analyzer-badge">GSSoC Utility</span>
+                    <h2>AI Resume Analyzer</h2>
+                    <p>Upload a resume and get a quick ATS-style snapshot with keyword, structure, and formatting feedback.</p>
+                </div>
+                <div class="resume-analyzer-pill">No backend required</div>
+            </div>
+
+            <div class="resume-analyzer-grid">
+                <section class="resume-panel resume-upload-panel">
+                    <div class="resume-upload-box">
+                        <i class="fa-solid fa-file-lines resume-upload-icon"></i>
+                        <label class="resume-file-btn">
+                            Choose File
+                            <input type="file" id="resumeInput" accept=".pdf,.doc,.docx,.txt" hidden>
+                        </label>
+                        <p>Drag &amp; drop or click to choose a resume</p>
+                    </div>
+
+                    <button class="resume-analyze-btn" id="analyzeBtn" type="button">Analyze Resume 🚀</button>
+                </section>
+
+                <section class="resume-panel resume-score-panel hidden" id="ats">
+                    <h3>ATS Score</h3>
+                    <div class="resume-progress-circle">
+                        <span>82%</span>
+                    </div>
+                    <div class="resume-extra-info">
+                        <p>✔ Formatting Score: 80%</p>
+                        <p>✔ Keyword Match: 75%</p>
+                    </div>
+                </section>
+
+                <section class="resume-panel resume-bottom-panel hidden" id="bottomSection">
+                    <div class="resume-mini-card">
+                        <h3>Keywords Match</h3>
+
+                        <div class="resume-keyword-item">
+                            <span>Python</span>
+                            <div class="resume-bar"><div style="width: 90%"></div></div>
+                        </div>
+
+                        <div class="resume-keyword-item">
+                            <span>Machine Learning</span>
+                            <div class="resume-bar"><div style="width: 75%"></div></div>
+                        </div>
+
+                        <div class="resume-keyword-item">
+                            <span>Data Analysis</span>
+                            <div class="resume-bar"><div style="width: 65%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="resume-mini-card">
+                        <h3><i class="fa-solid fa-lightbulb"></i> Suggestions</h3>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Add more projects</p>
+                        </div>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Improve formatting</p>
+                        </div>
+
+                        <div class="resume-suggestion">
+                            <i class="fa-solid fa-check"></i>
+                            <p>Use action verbs</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    `;
+}
+
+function initAIResumeAnalyzer() {
+    const analyzeBtn = document.getElementById('analyzeBtn');
+    const resumeInput = document.getElementById('resumeInput');
+    const ats = document.getElementById('ats');
+    const bottomSection = document.getElementById('bottomSection');
+
+    if (!analyzeBtn || !resumeInput || !ats || !bottomSection) return;
+
+    analyzeBtn.addEventListener('click', () => {
+        if (!resumeInput.files.length) {
+            alert('Upload resume first!');
+            return;
+        }
+
+        ats.classList.remove('hidden');
+        bottomSection.classList.remove('hidden');
+    });
+}
+
 
 
 
@@ -3609,6 +3441,8 @@ function initializeProject(projectName) {
         'dots-boxes': 'initDotsBoxes',
         'emoji-memory': 'initEmojiMemoryGame',
         'fibonacci': 'initFibonacci',
+        'binary-search': 'initBinarySearch',
+        'bubble-sort': 'initBubbleSort',
         'progression-recognizer': 'initProgressionRecognizer',
         'pascal-triangle': 'initPascalTriangle',
         'armstrong': 'initArmstrong',
@@ -3632,6 +3466,7 @@ function initializeProject(projectName) {
         '2048-game': 'init2048Game',
         'color-palette': 'initColorPalette',
         'math-quiz': 'initMathQuiz',
+        'resume-analyzer': 'initAIResumeAnalyzer',
         'caesar-cipher': 'initCaesarCipher'
     };
     

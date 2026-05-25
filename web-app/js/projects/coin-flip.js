@@ -502,6 +502,7 @@ function initCoinFlip() {
         flipBtn.disabled = true;
         predictionWrapper.classList.add('disabled-cards');
         result.textContent = 'Flipping...';
+        if (window.AudioManager) AudioManager.play("card_flip");
         result.className = 'coin-result flipping';
         coinScene.classList.add('rolling');
         
@@ -526,6 +527,7 @@ function initCoinFlip() {
             }
             
             if (isCorrect) {
+                if (window.AudioManager) AudioManager.play("game_win");
                 wins++;
                 streak++;
                 if (streak > bestStreak) {
@@ -536,6 +538,7 @@ function initCoinFlip() {
             } else {
                 losses++;
                 streak = 0;
+                if (window.AudioManager) AudioManager.play("wrong");
                 result.textContent = isHeads ? '👑 Heads! Wrong prediction. 😢' : '🦅 Tails! Wrong prediction. 😢';
                 result.className = 'coin-result lose';
             }

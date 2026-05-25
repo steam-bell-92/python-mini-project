@@ -267,7 +267,8 @@ function gameEngine() {
     if (isCollide(snakeArr)) {
         direction = { x: 0, y: 0 };
         document.getElementById('final-score').innerHTML = score;
-        document.getElementById('game-over-overlay').classList.remove('hidden');
+        document.getElementById("game-over-overlay").classList.remove("hidden");
+        if (window.AudioManager) AudioManager.play("snake_die");
 
         // Execute persistent local evaluations
         checkAndSaveHighScore();
@@ -284,6 +285,7 @@ function gameEngine() {
         score += (1 * scoreMultiplier); // Scaled multiplier calculations
         document.getElementById('score').innerHTML = score;
         snakeArr.unshift({ x: snakeArr[0].x + direction.x, y: snakeArr[0].y + direction.y });
+        if (window.AudioManager) AudioManager.play("snake_eat");
         let a = 2, b = 16;
         food = { x: Math.round(a + (b - a) * Math.random()), y: Math.round(a + (b - a) * Math.random()) };
     }
