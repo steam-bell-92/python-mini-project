@@ -4749,6 +4749,7 @@ html[data-theme="dark"] body {
     transform: translateY(-4px);
     box-shadow: 0 10px 0 rgba(128, 104, 85, 0.08), 0 14px 28px rgba(0, 0, 0, 0.08);
     background: rgba(255, 255, 255, 0.95);
+    color : #d4b48a;
 }
 
 .btn-secondary-hero:active {

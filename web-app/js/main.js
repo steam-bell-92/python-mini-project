@@ -248,16 +248,51 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  /* ── Counter Animation ───────────────────────────────────── */
+function animateCounter(element, target, duration) {
+  if (!element) return;
+
+  duration = duration || 1400;
+
+  var start = 0;
+  var startTime = null;
+
+  function updateCounter(timestamp) {
+    if (!startTime) startTime = timestamp;
+
+    var progress = Math.min((timestamp - startTime) / duration, 1);
+
+    // Ease-out effect
+    var easedProgress = 1 - Math.pow(1 - progress, 3);
+
+    var current = Math.floor(easedProgress * target);
+
+    element.textContent = current;
+
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      element.textContent = target;
+    }
+  }
+
+  requestAnimationFrame(updateCounter);
+}
+
   /* ── Hero Stats ───────────────────────────────────────────── */
   var totalCount = projectCards.length;
   var gameCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'games'; }).length;
   var mathCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'math'; }).length;
   var utilityCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'utilities'; }).length;
 
-  if (heroProjectCount) heroProjectCount.textContent = String(totalCount);
-  if (heroGameCount) heroGameCount.textContent = String(gameCount);
-  if (heroMathCount) heroMathCount.textContent = String(mathCount);
-  if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
+  // if (heroProjectCount) heroProjectCount.textContent = String(totalCount);
+  // if (heroGameCount) heroGameCount.textContent = String(gameCount);
+  // if (heroMathCount) heroMathCount.textContent = String(mathCount);
+  // if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
+  animateCounter(heroProjectCount, totalCount);
+  animateCounter(heroGameCount, gameCount);
+  animateCounter(heroMathCount, mathCount);
+  animateCounter(heroUtilityCount, utilityCount);
   if (projectCountBadge) projectCountBadge.textContent = String(totalCount) + ' projects';
 
   /* ── Explore Button ───────────────────────────────────────── */
