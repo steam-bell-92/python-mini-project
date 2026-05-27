@@ -170,6 +170,9 @@ while True:
         print("\n👋 Thanks for using Fibonacci Generator! Goodbye!\n")
         try:
             screen.bye()
-        except:
+        except turtle.Terminator:
+            # Expected when the user manually closes the Turtle window before bye() is called
             pass
+        except Exception as e:
+            print(f"⚠️  Warning: An error occurred while closing the Turtle window: {e}")
         break
