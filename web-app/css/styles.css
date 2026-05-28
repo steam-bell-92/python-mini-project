@@ -3152,6 +3152,378 @@ body.sidebar-active .hero-controls {
   color: var(--text-tertiary);
   opacity: 0.5;
 }
+/* ═══════════════════════════════════════════════════════════════════
+   FOOTER HOVER ENHANCEMENTS v3 — Drop-in override
+   Paste AFTER your existing stylesheet (or at the very end of it).
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── 1. Footer container — sweeping shimmer top line ───────────── */
+.footer {
+  overflow: hidden;
+  position: relative;
+}
+
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--accent, #22c55e) 40%,
+    #06b6d4 60%,
+    transparent
+  );
+  animation: footerShimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes footerShimmer {
+  0%   { left: -100%; opacity: 0; }
+  10%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 100%;  opacity: 0; }
+}
+
+[data-theme="light"] .footer::before {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #6abf8d 40%,
+    #f2a65a 60%,
+    transparent
+  );
+}
+
+/* ── 2. Social icons — ORIGINAL simple hover (restored) ─────────── */
+/*
+   Restores the original clean lift + accent tint from your first CSS.
+   Removes the sweep-fill animation entirely.
+*/
+.footer-social-icons a {
+  position: static;           /* undo any relative stacking */
+  overflow: visible;
+  transition:
+    background    var(--duration-fast, 200ms) ease,
+    border-color  var(--duration-fast, 200ms) ease,
+    color         var(--duration-fast, 200ms) ease,
+    transform     var(--duration-fast, 200ms) ease,
+    box-shadow    var(--duration-fast, 200ms) ease;
+  will-change: transform;
+}
+
+/* Remove the sweep-fill layer added in earlier versions */
+.footer-social-icons a::after {
+  display: none;
+  content: none;
+}
+
+.footer-social-icons a > * {
+  position: static;           /* reset z-index stacking */
+}
+
+.footer-social-icons a:hover {
+  background: var(--accent-soft, rgba(34,197,94,.12));
+  border-color: var(--border-accent, rgba(34,197,94,.2));
+  color: var(--accent, #22c55e);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.18);
+}
+
+/* Arcade light */
+[data-theme="light"] .footer-social-icons a:hover {
+  background: rgba(106,191,141,0.14);
+  border-color: rgba(106,191,141,0.35);
+  color: #3d8a5e;
+  box-shadow: 0 4px 12px rgba(106, 191, 141, 0.2);
+}
+
+/* Arcade dark */
+[data-theme="dark"] .footer-social-icons a:hover {
+  background: rgba(159,221,181,0.12);
+  border-color: rgba(159,221,181,0.32);
+  color: #9fddb5;
+  box-shadow: 0 4px 12px rgba(159, 221, 181, 0.18);
+}
+
+/* ── 3. Section headings — growing accent underline ─────────────── */
+.footer-links h3 {
+  display: inline-block;
+  position: relative;
+  padding-bottom: 6px;
+}
+
+.footer-links h3::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent, #22c55e), #06b6d4);
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.footer-links:hover h3::after,
+.footer-links:focus-within h3::after {
+  width: 100%;
+}
+
+[data-theme="light"] .footer-links h3::after {
+  background: linear-gradient(90deg, #6abf8d, #f2a65a);
+}
+[data-theme="dark"] .footer-links h3::after {
+  background: linear-gradient(90deg, #9fddb5, #f6c58d);
+}
+
+@media (max-width: 576px) {
+  .footer-links h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+/* ── 4. Nav links — gradient text + pill glow ───────────────────── */
+.footer-links a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 8px 3px 6px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition:
+    color             var(--duration-fast, 200ms) ease,
+    background-color  0.28s ease,
+    box-shadow        0.28s ease,
+    transform         0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+    padding-left      0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Pill glow background — expands from left */
+.footer-links a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    rgba(34, 197, 94, 0.10),
+    rgba(6, 182, 212, 0.08)
+  );
+  opacity: 0;
+  transform: scaleX(0.4);
+  transform-origin: left;
+  transition:
+    opacity   0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+
+/* Gradient underline slides in from left */
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 1px;
+  left: 6px;
+  right: 6px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent, #22c55e), #06b6d4);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 1;
+}
+
+/* Text + icons sit above pseudo layers */
+.footer-links a > * {
+  position: relative;
+  z-index: 2;
+}
+
+.footer-links a:hover {
+  /* Gradient text effect on the text content */
+  background-image: linear-gradient(90deg, var(--accent, #22c55e), #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-left: 10px;
+  transform: translateX(3px);
+  box-shadow: none;
+}
+
+.footer-links a:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.footer-links a:hover::after {
+  transform: scaleX(1);
+}
+
+/* ── FIX: icons inside hovered links must stay visible ──────────── */
+/*
+   background-clip:text makes ALL children transparent including icons.
+   These rules explicitly restore colour + visibility for every common
+   icon pattern: Font Awesome <i>, <svg>, <img>, inline SVG fills.
+*/
+.footer-links a:hover i,
+.footer-links a:hover svg,
+.footer-links a:hover img,
+.footer-links a:hover span.sidebar-icon,
+.footer-links a:hover [class*="fa-"],
+.footer-links a:hover [class*="icon"] {
+  -webkit-text-fill-color: initial;
+  background-image: none;
+  background-clip: initial;
+  -webkit-background-clip: initial;
+  color: var(--accent, #22c55e);     /* icon picks up accent colour */
+  opacity: 1;
+}
+
+/* SVG paths and shapes inherit fill from color */
+.footer-links a:hover svg path,
+.footer-links a:hover svg circle,
+.footer-links a:hover svg rect,
+.footer-links a:hover svg polyline,
+.footer-links a:hover svg line {
+  stroke: var(--accent, #22c55e);
+  fill: currentColor;
+}
+
+/* Mobile — centred layout resets */
+@media (max-width: 576px) {
+  .footer-links a { justify-content: center; }
+  .footer-links a:hover { transform: none; padding-left: 6px; }
+  .footer-links a::after { left: 50%; transform-origin: center; }
+}
+
+/* Arcade light */
+[data-theme="light"] .footer-links a::before {
+  background: linear-gradient(90deg, rgba(106,191,141,0.12), rgba(242,166,90,0.08));
+}
+[data-theme="light"] .footer-links a::after {
+  background: linear-gradient(90deg, #6abf8d, #f2a65a);
+}
+[data-theme="light"] .footer-links a:hover {
+  background-image: linear-gradient(90deg, #4a8a5e, #c07a3a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-theme="light"] .footer-links a:hover i,
+[data-theme="light"] .footer-links a:hover svg,
+[data-theme="light"] .footer-links a:hover [class*="fa-"],
+[data-theme="light"] .footer-links a:hover [class*="icon"] {
+  -webkit-text-fill-color: initial;
+  background-image: none;
+  background-clip: initial;
+  -webkit-background-clip: initial;
+  color: #4a8a5e;
+}
+
+/* Arcade dark */
+[data-theme="dark"] .footer-links a::before {
+  background: linear-gradient(90deg, rgba(159,221,181,0.12), rgba(246,197,141,0.08));
+}
+[data-theme="dark"] .footer-links a::after {
+  background: linear-gradient(90deg, #9fddb5, #f6c58d);
+}
+[data-theme="dark"] .footer-links a:hover {
+  background-image: linear-gradient(90deg, #9fddb5, #f6c58d);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+[data-theme="dark"] .footer-links a:hover i,
+[data-theme="dark"] .footer-links a:hover svg,
+[data-theme="dark"] .footer-links a:hover [class*="fa-"],
+[data-theme="dark"] .footer-links a:hover [class*="icon"] {
+  -webkit-text-fill-color: initial;
+  background-image: none;
+  background-clip: initial;
+  -webkit-background-clip: initial;
+  color: #9fddb5;
+}
+
+/* ── 5. Bottom bar links — dot-bloom underline ──────────────────── */
+.footer-bottom-links a {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 2px;
+  transition:
+    color     var(--duration-fast, 200ms) ease,
+    transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.footer-bottom-links a::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: linear-gradient(90deg, var(--accent, #22c55e), #06b6d4);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition:
+    width     0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    left      0.35s ease;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--accent, #22c55e);
+  transform: translateY(-2px);
+}
+
+.footer-bottom-links a:hover::after {
+  left: 0;
+  width: 100%;
+  transform: translateX(0) scaleX(1);
+}
+
+[data-theme="light"] .footer-bottom-links a::after { background: linear-gradient(90deg, #6abf8d, #f2a65a); }
+[data-theme="light"] .footer-bottom-links a:hover  { color: #4a8a5e; }
+[data-theme="dark"]  .footer-bottom-links a::after { background: linear-gradient(90deg, #9fddb5, #f6c58d); }
+[data-theme="dark"]  .footer-bottom-links a:hover  { color: #9fddb5; }
+
+/* ── 6. Brand description — subtle warm reveal ──────────────────── */
+.footer-brand p {
+  transition: color 0.4s ease;
+}
+.footer:hover .footer-brand p            { color: var(--text-secondary, #8892a4); }
+[data-theme="light"] .footer:hover .footer-brand p { color: #5a4e47; }
+[data-theme="dark"]  .footer:hover .footer-brand p { color: #e0c8b4; }
+
+/* ── 7. Reduced-motion safety ───────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .footer::before { animation: none !important; }
+  .footer-social-icons a,
+  .footer-links a::before,
+  .footer-links a::after,
+  .footer-links h3::after,
+  .footer-bottom-links a::after {
+    transition: none !important;
+    transform: none !important;
+  }
+  .footer-social-icons a:hover,
+  .footer-links a:hover,
+  .footer-bottom-links a:hover {
+    transform: none !important;
+  }
+  /* Restore plain colour when gradient-text can't animate */
+  .footer-links a:hover {
+    -webkit-text-fill-color: var(--accent, #22c55e);
+    background-image: none;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════
    BACK TO TOP
