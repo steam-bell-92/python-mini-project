@@ -42,7 +42,7 @@ while True:
     
     elif choice == '2':
         morse_input = input("\n📻 Enter Morse code (separate letters with space, words with ' / '): ")
-        morse_chars = morse_input.split(' ')
+        morse_chars = morse_input.strip().split()
         text_result = []
         
         for code in morse_chars:
