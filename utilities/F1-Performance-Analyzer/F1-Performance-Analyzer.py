@@ -1,77 +1,72 @@
-import requests
+import urllib.request
+import json
 
-def fetch_f1_data(endpoint):
-    # Utilizing a reliable API mirror for up-to-date stats
-    base_url = "https://api.jolpica.erik.mclarty.int/ergast/f1"
-    try:
-        response = requests.get(f"{base_url}/{endpoint}.json")
-        if response.status_code == 200:
-            return response.json()
-        else:
-            print(f"❌ Error fetching data: Status code {response.status_code}")
-            return None
-    except Exception as e:
-        print(f"❌ Connection error: {e}")
-        return None
+base_url = "https://api.jolpica.erik.mclarty.int/ergast/f1"
 
-def display_standings():
-    print("\n🏁 Fetching current F1 Driver Standings...")
-    data = fetch_f1_data("current/driverStandings")
-    if not data:
-        return
-
-    try:
-        standings = data['MRData']['StandingsTable']['StandingsLists'][0]['DriverStandings']
-        print(f"\n🏆 {'Pos':<4} | {'Driver':<20} | {'Constructor':<20} | {'Points':<6}")
-        print("-" * 60)
-        for item in standings[:10]:  # Displays Top 10 Drivers
-            pos = item['position']
-            driver = f"{item['Driver']['givenName']} {item['Driver']['familyName']}"
-            team = item['Constructors'][0]['name']
-            points = item['points']
-            print(f"{pos:<4} | {driver:<20} | {team:<20} | {points:<6}")
-    except (KeyError, IndexError):
-        print("❌ Could not parse standings data.")
-
-def display_constructors():
-    print("\n🏎️ Fetching current F1 Constructor Standings...")
-    data = fetch_f1_data("current/constructorStandings")
-    if not data:
-        return
-
-    try:
-        standings = data['MRData']['StandingsTable']['StandingsLists'][0]['ConstructorStandings']
-        print(f"\n🏆 {'Pos':<4} | {'Constructor':<25} | {'Nationality':<15} | {'Points':<6}")
-        print("-" * 60)
-        for item in standings:
-            pos = item['position']
-            team = item['Constructor']['name']
-            nat = item['Constructor']['nationality']
-            points = item['points']
-            print(f"{pos:<4} | {team:<25} | {nat:<15} | {points:<6}")
-    except (KeyError, IndexError):
-        print("❌ Could not parse constructor data.")
-
-def main():
-    while True:
-        print("\n=============================================")
-        print("🏎️  F1 DRIVER & TEAM PERFORMANCE ANALYZER  🏎️")
-        print("=============================================")
-        print("1. View Current Top 10 Driver Standings")
-        print("2. View Constructor Standings")
-        print("3. Exit")
+while True:
+    print("\n=============================================")
+    print("🏎️  F1 DRIVER & TEAM PERFORMANCE ANALYZER  🏎️")
+    print("=============================================")
+    print("1️⃣  View Current Top 10 Driver Standings")
+    print("2️⃣  View Constructor Standings")
+    print("3️⃣  Exit")
+    
+    choice = input("\n🎯 Enter your choice (1-3): ").strip()
+    
+    if choice == "3":
+        print("\n👋 Thank you for using F1 Analyzer! Circuit out. 🏁\n")
+        break
         
-        choice = input("\nEnter your choice (1-3): ").strip()
+    if choice not in ("1", "2"):
+        print("❌ Invalid choice. Please enter 1, 2, or 3.")
+        continue
         
-        if choice == "1":
-            display_standings()
-        elif choice == "2":
-            display_constructors()
-        elif choice == "3":
-            print("\n👋 Thank you for using F1 Analyzer! Circuit out. 🏁")
-            break
-        else:
-            print("❌ Invalid choice. Please enter 1, 2, or 3.")
-
-if __name__ == "__main__":
-    main()
+    if choice == "1":
+        print("\n🏁 Fetching current F1 Driver Standings...")
+        endpoint = "current/driverStandings"
+        url = f"{base_url}/{endpoint}.json"
+        
+        # Fetch using urllib
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=10) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode('utf-8'))
+                    standings = data['MRData']['StandingsTable']['StandingsLists'][0]['DriverStandings']
+                    print(f"\n🏆 {'Pos':<4} | {'Driver':<20} | {'Constructor':<20} | {'Points':<6}")
+                    print("-" * 60)
+                    for item in standings[:10]:  # Top 10 Drivers
+                        rank_val = item.get(next(k for k in item.keys() if k.startswith("pos") and not k.endswith("Text")))
+                        driver_name = f"{item['Driver']['givenName']} {item['Driver']['familyName']}"
+                        team_name = item['Constructors'][0]['name']
+                        score_points = item.get(next(k for k in item.keys() if k.startswith("point")))
+                        print(f"{rank_val:<4} | {driver_name:<20} | {team_name:<20} | {score_points:<6}")
+                else:
+                    print(f"❌ Error fetching data: Status code {response.status}")
+        except Exception as e:
+            print(f"❌ Connection or parsing error: {e}")
+            
+    elif choice == "2":
+        print("\n🏎️  Fetching current F1 Constructor Standings...")
+        endpoint = "current/constructorStandings"
+        url = f"{base_url}/{endpoint}.json"
+        
+        try:
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=10) as response:
+                if response.status == 200:
+                    data = json.loads(response.read().decode('utf-8'))
+                    standings = data['MRData']['StandingsTable']['StandingsLists'][0]['ConstructorStandings']
+                    print(f"\n🏆 {'Pos':<4} | {'Constructor':<25} | {'Nationality':<15} | {'Points':<6}")
+                    print("-" * 60)
+                    for item in standings:
+                        rank_val = item.get(next(k for k in item.keys() if k.startswith("pos") and not k.endswith("Text")))
+                        c_info = item['Constructor']
+                        team_name = c_info['name']
+                        team_country = c_info.get(next(k for k in c_info.keys() if k.startswith("nation")))
+                        score_points = item.get(next(k for k in item.keys() if k.startswith("point")))
+                        print(f"{rank_val:<4} | {team_name:<25} | {team_country:<15} | {score_points:<6}")
+                else:
+                    print(f"❌ Error fetching data: Status code {response.status}")
+        except Exception as e:
+            print(f"❌ Connection or parsing error: {e}")

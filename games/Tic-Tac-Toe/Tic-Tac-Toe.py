@@ -1,427 +1,207 @@
-import random
-import math
-import time
-import os
+import pygame
+import sys
 
-# ═══════════════════════════════════════════════
-#   🎮  TIC TAC TOE  —  Full Featured Edition
-# ═══════════════════════════════════════════════
+pygame.init()
 
-EMPTY = " "
-X = "X"
-O = "O"
+# ── Palette ──────────────────────────────────────────────
+BG        = (11, 11, 18)
+SURFACE   = (24, 24, 36)
+SURFACE2  = (34, 34, 52)
+BORDER    = (55, 55, 80)
+BORDER2   = (80, 80, 110)
+TEXT_PRI  = (240, 240, 248)
+TEXT_SEC  = (130, 130, 165)
+ACCENT_X  = (80, 170, 255)
+ACCENT_O  = (255, 100, 65)
+WIN_X_BG  = (15, 40, 75)
+WIN_O_BG  = (70, 25, 12)
+WIN_X_BD  = (80, 170, 255)
+WIN_O_BD  = (255, 100, 65)
+DRAW_COL  = (150, 150, 185)
+BTN_HOV   = (44, 44, 65)
 
-WINS = [
-    (0, 1, 2), (3, 4, 5), (6, 7, 8),   # rows
-    (0, 3, 6), (1, 4, 7), (2, 5, 8),   # cols
-    (0, 4, 8), (2, 4, 6)               # diagonals
-]
+# ── Window ────────────────────────────────────────────────
+W, H = 560, 820
+screen = pygame.display.set_mode((W, H))
+pygame.display.set_caption("Tic Tac Toe")
+clock = pygame.time.Clock()
 
+# ── Fonts ─────────────────────────────────────────────────
+def sf(size, bold=False):
+    for n in ["Segoe UI", "Helvetica Neue", "Arial", "DejaVu Sans"]:
+        try: return pygame.font.SysFont(n, size, bold=bold)
+        except: pass
+    return pygame.font.Font(None, size)
 
-# ───────────────────────────────────────────────
-# DISPLAY
-# ───────────────────────────────────────────────
+def mf(size, bold=False):
+    for n in ["Consolas", "Courier New", "DejaVu Sans Mono"]:
+        try: return pygame.font.SysFont(n, size, bold=bold)
+        except: pass
+    return pygame.font.Font(None, size)
 
-def clear():
-    os.system("cls" if os.name == "nt" else "clear")
+F_TAG    = sf(14, bold=True)
+F_TURN   = sf(34, bold=True)
+F_SYM    = sf(68, bold=True)
+F_SL     = sf(13, bold=True)
+F_SV     = mf(36, bold=True)
+F_RESULT = sf(28, bold=True)
+F_BTN    = sf(15, bold=True)
 
+# ── State ─────────────────────────────────────────────────
+board     = [""] * 9
+current   = "X"
+game_over = False
+scores    = {"X": 0, "O": 0, "D": 0}
+hover_idx = -1
+WINS      = [(0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)]
 
-def color(text, code):
-    """ANSI color wrapper."""
-    return f"\033[{code}m{text}\033[0m"
+# ── Layout ────────────────────────────────────────────────
+CELL  = 148
+GAP   = 10
+BX    = (W - (3*CELL + 2*GAP)) // 2   # board left edge  = 43
+BY    = 270                             # board top edge
 
+def cell_rect(i):
+    r, c = divmod(i, 3)
+    return pygame.Rect(BX + c*(CELL+GAP), BY + r*(CELL+GAP), CELL, CELL)
 
-def RED(t):    return color(t, "91")
-def BLUE(t):   return color(t, "94")
-def GREEN(t):  return color(t, "92")
-def YELLOW(t): return color(t, "93")
-def BOLD(t):   return color(t, "1")
-def DIM(t):    return color(t, "2")
-def CYAN(t):   return color(t, "96")
+# score pills  (3 × 150 px, 14 px gap)
+PW, PH   = 150, 80
+PGAP     = 14
+PY       = 140
+PX_START = (W - (3*PW + 2*PGAP)) // 2   # = 43
 
+# buttons  sit 28 px below the last row of cells
+BOARD_BOTTOM = BY + 3*CELL + 2*GAP      # = 270+3*148+2*10 = 734
+BTN_Y  = BOARD_BOTTOM + 28
+BW, BH = 200, 50
+BTN1   = pygame.Rect((W//2) - BW - 12, BTN_Y, BW, BH)
+BTN2   = pygame.Rect((W//2) + 12,      BTN_Y, BW, BH)
 
-def banner():
-    print(BOLD(CYAN("""
-╔══════════════════════════════════════╗
-║       🎮  TIC  TAC  TOE  🎮          ║
-╚══════════════════════════════════════╝""")))
+# ── Helpers ───────────────────────────────────────────────
+def rrect(surf, color, rect, r=14, bw=0, bc=None):
+    pygame.draw.rect(surf, color, rect, border_radius=r)
+    if bw and bc:
+        pygame.draw.rect(surf, bc, rect, bw, border_radius=r)
 
+def tc(surf, txt, font, color, cx, cy):
+    s = font.render(txt, True, color)
+    surf.blit(s, (cx - s.get_width()//2, cy - s.get_height()//2))
 
-def fmt_cell(val, pos):
-    """Color X red, O blue, empty show position number."""
-    if val == X:
-        return BOLD(RED(f" {X} "))
-    elif val == O:
-        return BOLD(BLUE(f" {O} "))
+def check_winner():
+    for a,b,c in WINS:
+        if board[a] and board[a]==board[b]==board[c]:
+            return board[a], [a,b,c]
+    if "" not in board:
+        return "D", []
+    return None, None
+
+def play(i):
+    global current, game_over
+    if game_over or board[i]: return
+    board[i] = current
+    w, _ = check_winner()
+    if w:
+        game_over = True
+        if w in ("X","O"): scores[w] += 1
+        else:               scores["D"] += 1
     else:
-        return DIM(f" {pos} ")
+        current = "O" if current == "X" else "X"
 
+def new_game():
+    global board, current, game_over
+    board = [""] * 9; current = "X"; game_over = False
 
-def display_board(board):
-    b = board
-    sep = "───┼───┼───"
-    print()
-    print(f"  {fmt_cell(b[0],1)}│{fmt_cell(b[1],2)}│{fmt_cell(b[2],3)}")
-    print(f"  {sep}")
-    print(f"  {fmt_cell(b[3],4)}│{fmt_cell(b[4],5)}│{fmt_cell(b[5],6)}")
-    print(f"  {sep}")
-    print(f"  {fmt_cell(b[6],7)}│{fmt_cell(b[7],8)}│{fmt_cell(b[8],9)}")
-    print()
+def reset_all():
+    scores["X"] = scores["O"] = scores["D"] = 0
+    new_game()
 
+# ── Draw ─────────────────────────────────────────────────
+def draw():
+    screen.fill(BG)
+    mx, my = pygame.mouse.get_pos()
 
-def display_scoreboard(scores, names):
-    p1, p2 = names
-    s1, s2, draws = scores["p1"], scores["p2"], scores["draws"]
-    print(BOLD("  ┌─── SCOREBOARD ───────────────┐"))
-    print(f"  │  {RED(p1):<20} {BOLD(str(s1)):>3}  │")
-    print(f"  │  {BLUE(p2):<20} {BOLD(str(s2)):>3}  │")
-    print(f"  │  {'Draws':<20} {BOLD(str(draws)):>3}  │")
-    print(BOLD("  └───────────────────────────────┘"))
-    print()
+    # ── title ──
+    tc(screen, "TIC  TAC  TOE", F_TAG, TEXT_SEC, W//2, 36)
 
-
-# ───────────────────────────────────────────────
-# GAME LOGIC
-# ───────────────────────────────────────────────
-
-def create_board():
-    return [EMPTY] * 9
-
-
-def available_moves(board):
-    return [i for i, c in enumerate(board) if c == EMPTY]
-
-
-def check_winner(board, symbol):
-    return any(
-        board[a] == board[b] == board[c] == symbol
-        for a, b, c in WINS
-    )
-
-
-def get_winning_cells(board, symbol):
-    for a, b, c in WINS:
-        if board[a] == board[b] == board[c] == symbol:
-            return (a, b, c)
-    return None
-
-
-def check_draw(board):
-    return EMPTY not in board
-
-
-# ───────────────────────────────────────────────
-# AI ENGINES
-# ───────────────────────────────────────────────
-
-def easy_ai(board, _symbol):
-    return random.choice(available_moves(board))
-
-
-def medium_ai(board, symbol):
-    opponent = X if symbol == O else O
-
-    # 1. Win if possible
-    for move in available_moves(board):
-        board[move] = symbol
-        if check_winner(board, symbol):
-            board[move] = EMPTY
-            return move
-        board[move] = EMPTY
-
-    # 2. Block opponent win
-    for move in available_moves(board):
-        board[move] = opponent
-        if check_winner(board, opponent):
-            board[move] = EMPTY
-            return move
-        board[move] = EMPTY
-
-    # 3. Prefer center, then corners, then sides
-    for preferred in [4, 0, 2, 6, 8, 1, 3, 5, 7]:
-        if board[preferred] == EMPTY:
-            return preferred
-
-    return random.choice(available_moves(board))
-
-
-def minimax(board, depth, is_max, symbol, opponent, alpha, beta):
-    if check_winner(board, symbol):
-        return 10 - depth
-    if check_winner(board, opponent):
-        return depth - 10
-    if check_draw(board):
-        return 0
-
-    if is_max:
-        best = -math.inf
-        for move in available_moves(board):
-            board[move] = symbol
-            best = max(best, minimax(board, depth+1, False, symbol, opponent, alpha, beta))
-            board[move] = EMPTY
-            alpha = max(alpha, best)
-            if beta <= alpha:
-                break
-        return best
+    # ── turn / result ──
+    w, combo = check_winner()
+    if not game_over:
+        col = ACCENT_X if current == "X" else ACCENT_O
+        tc(screen, f"{current}  to play", F_TURN, col, W//2, 90)
     else:
-        best = math.inf
-        for move in available_moves(board):
-            board[move] = opponent
-            best = min(best, minimax(board, depth+1, True, symbol, opponent, alpha, beta))
-            board[move] = EMPTY
-            beta = min(beta, best)
-            if beta <= alpha:
-                break
-        return best
-
-
-def hard_ai(board, symbol):
-    opponent = X if symbol == O else O
-    best_score = -math.inf
-    best_move = None
-
-    for move in available_moves(board):
-        board[move] = symbol
-        score = minimax(board, 0, False, symbol, opponent, -math.inf, math.inf)
-        board[move] = EMPTY
-        if score > best_score:
-            best_score = score
-            best_move = move
-
-    return best_move
-
-
-AI_ENGINES = {
-    "easy":   easy_ai,
-    "medium": medium_ai,
-    "hard":   hard_ai,
-}
-
-
-# ───────────────────────────────────────────────
-# INPUT HELPERS
-# ───────────────────────────────────────────────
-
-def get_player_move(board, symbol, name):
-    sym_colored = RED(symbol) if symbol == X else BLUE(symbol)
-    while True:
-        try:
-            raw = input(f"  {sym_colored} {BOLD(name)} → enter position (1-9): ").strip()
-            pos = int(raw)
-            if not 1 <= pos <= 9:
-                print(YELLOW("  ⚠  Enter a number from 1 to 9.\n"))
-            elif board[pos - 1] != EMPTY:
-                print(YELLOW("  ⚠  That cell is already taken.\n"))
-            else:
-                return pos - 1
-        except ValueError:
-            print(YELLOW("  ⚠  Please enter a valid number.\n"))
-
-
-def prompt(msg, valid):
-    while True:
-        ans = input(msg).strip().lower()
-        if ans in valid:
-            return ans
-        print(YELLOW(f"  ⚠  Enter one of: {', '.join(valid)}\n"))
-
-
-# ───────────────────────────────────────────────
-# MENUS
-# ───────────────────────────────────────────────
-
-def menu_mode():
-    print(BOLD("\n  Choose Game Mode:"))
-    print("  1  →  Two Players (local)")
-    print("  2  →  vs Computer (AI)")
-    return prompt("\n  ➜ Your choice (1/2): ", {"1", "2"})
-
-
-def menu_difficulty():
-    print(BOLD("\n  Choose Difficulty:"))
-    print("  1  →  Easy    (random moves)")
-    print("  2  →  Medium  (smart blocking)")
-    print("  3  →  Hard    (unbeatable AI)")
-    choice = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
-    return {"1": "easy", "2": "medium", "3": "hard"}[choice]
-
-
-def menu_first_turn(p1_name, p2_name):
-    print(BOLD("\n  Who goes first?"))
-    print(f"  1  →  {p1_name}")
-    print(f"  2  →  {p2_name}")
-    print(f"  3  →  Random")
-    choice = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
-    if choice == "3":
-        return random.choice(["1", "2"])
-    return choice
-
-
-# ───────────────────────────────────────────────
-# CORE GAME ROUND
-# ───────────────────────────────────────────────
-
-def play_round(players, scores, mode, difficulty=None):
-    """
-    players: list of dicts with keys: name, symbol, is_human
-    Returns: "p1", "p2", or "draw"
-    """
-    board = create_board()
-    turn = 0
-
-    while True:
-        clear()
-        banner()
-        display_scoreboard(scores, [p["name"] for p in players])
-        display_board(board)
-
-        current = players[turn % 2]
-        other   = players[(turn + 1) % 2]
-
-        sym_label = RED(current["symbol"]) if current["symbol"] == X else BLUE(current["symbol"])
-
-        # ── Get move ──
-        if current["is_human"]:
-            move = get_player_move(board, current["symbol"], current["name"])
+        if w in ("X","O"):
+            col = ACCENT_X if w=="X" else ACCENT_O
+            tc(screen, f"Player {w}  Wins! 🏆", F_RESULT, col, W//2, 90)
         else:
-            print(f"  🤖 {BOLD(current['name'])} is thinking", end="", flush=True)
-            for _ in range(3):
-                time.sleep(0.35)
-                print(".", end="", flush=True)
-            print()
-            time.sleep(0.2)
-            move = AI_ENGINES[difficulty](board, current["symbol"])
-            print(f"  🤖 {current['name']} chose position {BOLD(str(move + 1))}\n")
-            time.sleep(0.5)
+            tc(screen, "It's a Draw!", F_RESULT, DRAW_COL, W//2, 90)
 
-        board[move] = current["symbol"]
+    # ── score pills ──
+    pill_data = [
+        ("X",    scores["X"],  ACCENT_X),
+        ("DRAW", scores["D"],  DRAW_COL),
+        ("O",    scores["O"],  ACCENT_O),
+    ]
+    for idx, (lbl, val, col) in enumerate(pill_data):
+        px = PX_START + idx*(PW+PGAP)
+        pr = pygame.Rect(px, PY, PW, PH)
+        rrect(screen, SURFACE2, pr, r=14, bw=1, bc=BORDER)
+        tc(screen, lbl,      F_SL, TEXT_SEC, px+PW//2, PY+22)
+        tc(screen, str(val), F_SV, col,      px+PW//2, PY+57)
 
-        # ── Check result ──
-        if check_winner(board, current["symbol"]):
-            clear()
-            banner()
-            display_scoreboard(scores, [p["name"] for p in players])
-            display_board(board)
-            win_sym = "🏆"
-            print(GREEN(BOLD(f"  {win_sym}  {current['name']} wins this round!  {win_sym}\n")))
-            time.sleep(1.5)
-            return "p1" if turn % 2 == 0 else "p2"
+    # ── cells ──
+    for i in range(9):
+        rect = cell_rect(i)
+        hov  = hover_idx == i and not board[i] and not game_over
 
-        if check_draw(board):
-            clear()
-            banner()
-            display_scoreboard(scores, [p["name"] for p in players])
-            display_board(board)
-            print(YELLOW(BOLD("  🤝  It's a draw!\n")))
-            time.sleep(1.5)
-            return "draw"
-
-        turn += 1
-
-
-# ───────────────────────────────────────────────
-# FULL MATCH (BEST OF N)
-# ───────────────────────────────────────────────
-
-def play_match(mode, difficulty=None):
-    clear()
-    banner()
-
-    # Names
-    if mode == "1":
-        p1_name = input(BOLD("  Player 1 name: ")).strip() or "Player 1"
-        p2_name = input(BOLD("  Player 2 name: ")).strip() or "Player 2"
-        players = [
-            {"name": p1_name, "symbol": X, "is_human": True},
-            {"name": p2_name, "symbol": O, "is_human": True},
-        ]
-    else:
-        p1_name = input(BOLD("  Your name: ")).strip() or "You"
-        p2_name = "Computer"
-        players = [
-            {"name": p1_name, "symbol": X, "is_human": True},
-            {"name": p2_name, "symbol": O, "is_human": False},
-        ]
-
-    # First turn
-    first = menu_first_turn(players[0]["name"], players[1]["name"])
-    if first == "2":
-        players.reverse()
-        # Keep X always first to move; reassign symbols
-        players[0]["symbol"] = X
-        players[1]["symbol"] = O
-
-    scores = {"p1": 0, "p2": 0, "draws": 0}
-
-    # Rounds
-    print(BOLD("\n  Best of how many rounds?"))
-    print("  1  →  1 round")
-    print("  2  →  3 rounds (best of 3)")
-    print("  3  →  5 rounds (best of 5)")
-    rc = prompt("\n  ➜ Your choice (1/2/3): ", {"1", "2", "3"})
-    max_rounds = {"1": 1, "2": 3, "3": 5}[rc]
-    rounds_played = 0
-
-    while rounds_played < max_rounds:
-        remaining = max_rounds - rounds_played
-        winner = play_round(players, scores, mode, difficulty)
-
-        if winner == "p1":
-            scores["p1"] += 1
-        elif winner == "p2":
-            scores["p2"] += 1
+        # pick bg + border
+        if w and w in ("X","O") and combo and i in combo:
+            bg = WIN_X_BG if board[i]=="X" else WIN_O_BG
+            bd = WIN_X_BD if board[i]=="X" else WIN_O_BD
+            bw = 2
+        elif hov:
+            bg, bd, bw = SURFACE2, BORDER2, 1
         else:
-            scores["draws"] += 1
+            bg, bd, bw = SURFACE, BORDER, 1
 
-        rounds_played += 1
+        rrect(screen, bg, rect, r=18, bw=bw, bc=bd)
 
-        # Early exit if someone has won majority
-        majority = (max_rounds // 2) + 1
-        if scores["p1"] >= majority or scores["p2"] >= majority:
-            break
+        if board[i]:
+            col = ACCENT_X if board[i]=="X" else ACCENT_O
+            tc(screen, board[i], F_SYM, col, rect.centerx, rect.centery)
+        elif hov:
+            ghost = F_SYM.render(current, True,
+                                  ACCENT_X if current=="X" else ACCENT_O)
+            ghost.set_alpha(28)
+            screen.blit(ghost, (rect.centerx - ghost.get_width()//2,
+                                 rect.centery - ghost.get_height()//2))
 
-        if rounds_played < max_rounds:
-            cont = prompt(f"  ➜ Next round? (y/n): ", {"y", "n"})
-            if cont == "n":
-                break
+    # ── buttons ──
+    for rect, label in [(BTN1,"New Game"), (BTN2,"Reset Scores")]:
+        hov = rect.collidepoint(mx, my)
+        rrect(screen, BTN_HOV if hov else SURFACE2, rect, r=12, bw=1, bc=BORDER2 if hov else BORDER)
+        tc(screen, label, F_BTN, TEXT_PRI if hov else TEXT_SEC, rect.centerx, rect.centery)
 
-    # Final result
-    clear()
-    banner()
-    p1_name_display = players[0]["name"] if first == "1" else players[1]["name"]
-    p2_name_display = players[1]["name"] if first == "1" else players[0]["name"]
-    display_scoreboard(scores, [players[0]["name"], players[1]["name"]])
+    pygame.display.flip()
 
-    if scores["p1"] > scores["p2"]:
-        print(GREEN(BOLD(f"  🏆  {players[0]['name']} wins the match!\n")))
-    elif scores["p2"] > scores["p1"]:
-        print(GREEN(BOLD(f"  🏆  {players[1]['name']} wins the match!\n")))
-    else:
-        print(YELLOW(BOLD("  🤝  The match is a tie!\n")))
+# ── Main loop ─────────────────────────────────────────────
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit(); sys.exit()
 
+        elif event.type == pygame.MOUSEMOTION:
+            hover_idx = -1
+            for i in range(9):
+                if cell_rect(i).collidepoint(event.pos):
+                    hover_idx = i; break
 
-# ───────────────────────────────────────────────
-# MAIN
-# ───────────────────────────────────────────────
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for i in range(9):
+                if cell_rect(i).collidepoint(event.pos):
+                    play(i); break
+            if BTN1.collidepoint(event.pos): new_game()
+            if BTN2.collidepoint(event.pos): reset_all()
 
-def main():
-    while True:
-        clear()
-        banner()
-
-        mode = menu_mode()
-        difficulty = None
-        if mode == "2":
-            difficulty = menu_difficulty()
-
-        play_match(mode, difficulty)
-
-        again = prompt("  ➜ Play again? (y/n): ", {"y", "n"})
-        if again == "n":
-            clear()
-            print(CYAN(BOLD("\n  👋  Thanks for playing! See you next time.\n")))
-            break
-
-
-if __name__ == "__main__":
-    main()
+    draw()
+    clock.tick(60)

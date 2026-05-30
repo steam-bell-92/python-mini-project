@@ -26,6 +26,23 @@ function getFlamesHTML() {
         </div>
         
         <style>
+            .play-again-btn {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 30px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s ease;
+            backdrop-filter: blur(5px);
+            }
+            .play-again-btn:hover {
+            background: rgba(255,255,255,0.35);
+            transform: scale(1.05);
+            }
+
             .flames-container {
                 padding: 2rem;
                 max-width: 700px;
@@ -215,11 +232,20 @@ function initFlames() {
         
         const finalLetter = letters[0];
         const match = relationshipData[finalLetter];
+        const relationshipColors = {
+            Friends: 'linear-gradient(135deg, #3b82f6, #2563eb)',
+            Love: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+            Affection: 'linear-gradient(135deg, #f97316, #fb923c)',
+            Marriage: 'linear-gradient(135deg, #eab308, #facc15)',
+            Enemies: 'linear-gradient(135deg, #991b1b, #dc2626)',
+            Siblings: 'linear-gradient(135deg, #7c3aed, #8b5cf6)'
+        };
 
         resultDiv.replaceChildren();
 
         const resultCard = document.createElement('div');
         resultCard.className = 'result-card';
+        resultCard.style.background = relationshipColors[match.rel];
 
         const resultEmoji = document.createElement('div');
         resultEmoji.className = 'result-emoji';
@@ -231,13 +257,13 @@ function initFlames() {
 
         const resultName = document.createElement('div');
         resultName.className = 'result-relationship';
-        resultName.textContent = match.name;
+        resultName.textContent = match.rel;
 
         const infoBlock = document.createElement('div');
         infoBlock.className = 'result-details';
 
         const description = document.createElement('div');
-        description.textContent = match.message;
+        description.textContent = match.vibe;
 
         const remainingText = document.createElement('div');
         remainingText.style.marginTop = '1rem';
@@ -246,6 +272,20 @@ function initFlames() {
         remainingText.textContent = `Remaining letters: ${remainingCount}`;
 
         infoBlock.append(description, remainingText);
+        // Play-Again Button added
+        const playAgainBtn = document.createElement('button');
+        playAgainBtn.textContent = 'Play Again';
+        playAgainBtn.className = 'play-again-btn';
+
+        playAgainBtn.addEventListener('click', () => {
+            name1Input.value = '';
+            name2Input.value = '';
+            resultDiv.replaceChildren();
+            name1Input.focus();
+        });
+        
+        infoBlock.appendChild(playAgainBtn);
+
         resultCard.append(resultEmoji, nameLine, resultName, infoBlock);
         resultDiv.appendChild(resultCard);
     }

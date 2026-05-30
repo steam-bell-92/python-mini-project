@@ -1,105 +1,104 @@
 import random
 
+# Game constants
+MIN_NUMBER = 1
+MAX_NUMBER = 100
 
-def choose_difficulty():
-    print("🎯 Choose difficulty:")
-    print("  1) 🟢 Easy   - 15 attempts")
-    print("  2) 🟡 Medium - 10 attempts")
-    print("  3) 🔴 Hard   - 5 attempts")
+# Proximity hint thresholds
+VERY_CLOSE_THRESHOLD = 3
+CLOSE_THRESHOLD = 10
+NOT_CLOSE_THRESHOLD = 20
+
+print("🎯 Welcome to the Number Guessing Game!\n")
+
+while True:
+    print("Choose difficulty:")
+    print("  1) Easy   - 15 attempts 🟢")
+    print("  2) Medium - 10 attempts 🟡")
+    print("  3) Hard   - 5 attempts  🔴")
+
     while True:
         choice = input("Select 1, 2 or 3 (default 2): ").strip() or "2"
-        if choice in ("1", "2", "3"):
-            return {"1": 15, "2": 10, "3": 5}[choice]
+        if choice in ["1", "2", "3"]:
+            break
         print("⚠️ Invalid selection. Please enter 1, 2 or 3.")
 
+    if choice == "1":
+        max_attempts = 15
+    elif choice == "3":
+        max_attempts = 5
+    else:
+        max_attempts = 10
 
-def play_round(max_attempts: int):
-    number = random.randint(1, 100)
+    number = random.randint(MIN_NUMBER, MAX_NUMBER)
     attempts = 0
-    print(f"I'm thinking of a number between 1 and 100. You have {max_attempts} attempts.")
     guess_history = []
+    won = False
+
+    print(f"\n🤔 I'm thinking of a number between {MIN_NUMBER} and {MAX_NUMBER}.")
+    print(f"You have {max_attempts} attempts.")
 
     while attempts < max_attempts:
         remaining = max_attempts - attempts
+        
         try:
-            guess = input(f"Guess ({remaining} left): ").strip()
-            guess_num = int(guess)
+            guess_str = input(f"\n👉 Guess ({remaining} left): ").strip()
+            if not guess_str:
+                print("⚠️ Input cannot be empty.")
+                continue
+            
+            guess_num = int(guess_str)
+            
+            if not (MIN_NUMBER <= guess_num <= MAX_NUMBER):
+                print(f"⚠️ Enter a number between {MIN_NUMBER} and {MAX_NUMBER}.")
+                continue
+                
         except ValueError:
-            print("⚠️ Invalid input — please enter an integer between 1 and 100.")
-            continue
-
-        if not (1 <= guess_num <= 100):
-            print("🚫 Out of range — enter a number between 1 and 100.")
+            print("⚠️ Invalid input. Please enter a whole number.")
             continue
 
         attempts += 1
         guess_history.append(guess_num)
 
         if guess_num == number:
-            print("🏆 Correct! You guessed the number!")
-            print(f"✨ number: {number} — attempts: {attempts}/{max_attempts}")
-            return True, attempts
+            print("\n🎉 Correct! You guessed the number.")
+            print(f"✅ Number: {number}")
+            print(f"🎯 Attempts: {attempts}/{max_attempts}")
+            print("📜 Guesses:", ", ".join(map(str, guess_history)))
+            won = True
+            break
 
         if guess_num > number:
-            print("⬇️ High — try a smaller number.")
+            print("📉 Too high.")
         else:
-            print("⬆️ Low — try a larger number.")
+            print("📈 Too low.")
 
-        # proximity hint
+        # Show proximity hint
         diff = abs(guess_num - number)
-        if diff <= 3:
+        if diff <= VERY_CLOSE_THRESHOLD:
             print("🔥 Very close!")
-        elif diff <= 10:
-            print("🙂 Close — you're getting there.")
-        elif diff <= 20:
-            print("🧭 Not very close yet.")
+        elif diff <= CLOSE_THRESHOLD:
+            print("😊 Close.")
+        elif diff <= NOT_CLOSE_THRESHOLD:
+            print("😐 Not very close.")
         else:
-            print("❄️ Far off — try a different range.")
+            print("❄️ Far off.")
 
-    print("💥 Out of attempts — you lost this round.")
-    print(f"The number was {number}.")
-    if guess_history:
-        print("Your guesses:", ", ".join(map(str, guess_history)))
-    return False, attempts
+    if not won:
+        print("\n💀 Out of attempts.")
+        print(f"The number was {number}.")
+        if guess_history:
+            print("📜 Your guesses:", ", ".join(map(str, guess_history)))
+        print(f"❌ You used all {max_attempts} attempts.")
+    else:
+        print(f"🏆 You solved it in {attempts} guesses.")
 
-
-def play_round_with_guesses(guesses, number, max_attempts: int):
-    """Non-interactive helper useful for testing.
-
-    guesses: iterable of ints to use as guesses in order
-    number: target number (int)
-    returns: (won: bool, attempts: int)
-    """
-    attempts = 0
-    for g in guesses:
-        if attempts >= max_attempts:
-            break
-        if not isinstance(g, int):
-            continue
-        if not (1 <= g <= 100):
-            continue
-        attempts += 1
-        if g == number:
-            return True, attempts
-    return False, attempts
-
-
-def main():
-    print("🎮 Welcome to the Number Guessing Game! 🎮\n")
     while True:
-        max_attempts = choose_difficulty()
-        won, tries = play_round(max_attempts)
-
-        if won:
-            print(f"You solved it in {tries} guesses.")
-        else:
-            print(f"You used all {max_attempts} attempts.")
-
-        again = input("Play again? (y/n): ").strip().lower()
-        if again != "y":
-            print("👋 Thanks for playing — goodbye!")
+        again = input("\n🔄 Play again? (y/n): ").strip().lower()
+        if again in ['y', 'yes', 'n', 'no']:
             break
+        print("⚠️ Invalid choice. Please enter 'y' or 'n'.")
 
-
-if __name__ == "__main__":
-    main()
+    if again in ['n', 'no']:
+        print("👋 Goodbye.")
+        break

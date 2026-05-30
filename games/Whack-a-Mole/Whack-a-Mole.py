@@ -6,45 +6,28 @@ Type the number of the mole before it disappears!
 import random
 import time
 import os
-import threading
+import sys
 
+# Windows only for non-blocking input
+try:
+    import msvcrt
+    has_msvcrt = True
+except ImportError:
+    has_msvcrt = False
 
-# ── Config ────────────────────────────────────────────────────────────────────
 GRID_SIZE  = 9        # 3×3 grid
 MOLE       = "🐭"
 HOLE       = "🕳️ "
 HAMMER     = "🔨"
 
 LEVELS = {
-    1: {"name": "Easy",   "window": 2.5, "rounds": 10, "moles": 1},
-    2: {"name": "Medium", "window": 1.5, "rounds": 15, "moles": 2},
-    3: {"name": "Hard",   "window": 0.8, "rounds": 20, "moles": 3},
+    "1": {"name": "Easy",   "window": 2.5, "rounds": 10, "moles": 1},
+    "2": {"name": "Medium", "window": 1.5, "rounds": 15, "moles": 2},
+    "3": {"name": "Hard",   "window": 0.8, "rounds": 20, "moles": 3},
 }
 
-
-def clear():
+while True:
     os.system("cls" if os.name == "nt" else "clear")
-
-
-def draw_grid(active: set[int], hit: set[int]):
-    """Print 3×3 grid. active=mole positions, hit=just-whacked."""
-    print()
-    for row in range(3):
-        line = "  "
-        for col in range(3):
-            idx = row * 3 + col
-            if idx in hit:
-                line += f" {HAMMER}[{idx+1}] "
-            elif idx in active:
-                line += f" {MOLE}[{idx+1}] "
-            else:
-                line += f" {HOLE}[{idx+1}] "
-        print(line)
-    print()
-
-
-def choose_level() -> dict:
-    clear()
     print("╔══════════════════════════════╗")
     print("║   🔨  WHACK-A-MOLE  🐭       ║")
     print("╚══════════════════════════════╝\n")
@@ -52,81 +35,119 @@ def choose_level() -> dict:
     for k, v in LEVELS.items():
         print(f"  {k} → {v['name']:8s}  ({v['window']}s window, {v['moles']} mole(s), {v['rounds']} rounds)")
     print()
+
     while True:
-        try:
-            c = int(input("  Enter 1 / 2 / 3: ").strip())
-            if c in LEVELS:
-                return LEVELS[c]
-            print("  ⚠️  Enter 1, 2, or 3.")
-        except ValueError:
-            print("  ⚠️  Numbers only.")
+        level_choice = input("  Enter 1 / 2 / 3: ").strip()
+        if level_choice in LEVELS:
+            break
+        print("  ⚠️  Enter 1, 2, or 3.")
 
-
-def play():
-    level    = choose_level()
-    window   = level["window"]
-    rounds   = level["rounds"]
-    n_moles  = level["moles"]
+    level = LEVELS[level_choice]
+    window = level["window"]
+    rounds = level["rounds"]
+    n_moles = level["moles"]
 
     score = 0
     misses = 0
     reaction_times = []
 
-    clear()
+    os.system("cls" if os.name == "nt" else "clear")
     print(f"\n  🐭 {level['name']} mode — {rounds} rounds — {window}s per mole")
     print("  Type the number(s) and press Enter fast!\n")
     time.sleep(2)
 
-    for rnd in range(1, rounds + 1):
-        # Random mole positions (no duplicates)
+    rnd = 1
+    while rnd <= rounds:
         active = set(random.sample(range(GRID_SIZE), n_moles))
-        hit    = set()
+        hit = set()
 
-        clear()
+        os.system("cls" if os.name == "nt" else "clear")
         print(f"  Round {rnd}/{rounds}  |  Score: {score}  |  Misses: {misses}\n")
-        draw_grid(active, set())
+        
+        # Draw grid
+        print()
+        for row in range(3):
+            line = "  "
+            for col in range(3):
+                idx = row * 3 + col
+                if idx in hit:
+                    line += f" {HAMMER}[{idx+1}] "
+                elif idx in active:
+                    line += f" {MOLE}[{idx+1}] "
+                else:
+                    line += f" {HOLE}[{idx+1}] "
+            print(line)
+        print()
 
-        # ── Timed input using threading ───────────────────────────────────────
-        user_input = []
-        input_event = threading.Event()
+        print("  Whack! Enter number(s) e.g. '2' or '1 3': ", end="", flush=True)
 
-        def get_input():
-            try:
-                raw = input("  Whack! Enter number(s) e.g. '2' or '1 3': ").strip()
-                user_input.append(raw)
-            except EOFError:
-                pass
-            input_event.set()
-
-        t = threading.Thread(target=get_input, daemon=True)
+        user_input_str = ""
         start_ts = time.time()
-        t.start()
-        input_event.wait(timeout=window)
-        elapsed = time.time() - start_ts
+        elapsed = 0
+        timed_out = False
 
-        # ── Evaluate ──────────────────────────────────────────────────────────
-        if user_input:
+        if has_msvcrt:
+            while True:
+                elapsed = time.time() - start_ts
+                if elapsed > window:
+                    timed_out = True
+                    break
+                if msvcrt.kbhit():
+                    char = msvcrt.getwche()
+                    if char in ('\r', '\n'):
+                        print() # New line
+                        break
+                    elif char == '\b': # Backspace
+                        user_input_str = user_input_str[:-1]
+                        print(" \b", end="", flush=True) # visual backspace hack
+                    else:
+                        user_input_str += char
+                else:
+                    time.sleep(0.01)
+        else:
+            # Fallback if not Windows (though prompt says user is on Windows)
+            # Cannot do non-blocking easily without defs/threads or select.
+            # Just do blocking input and check time.
+            user_input_str = input()
+            elapsed = time.time() - start_ts
+            if elapsed > window:
+                timed_out = True
+
+        if not timed_out and user_input_str.strip():
             try:
-                chosen = set(int(x) - 1 for x in user_input[0].split())
+                chosen = set(int(x) - 1 for x in user_input_str.split())
             except ValueError:
                 chosen = set()
 
-            valid_hits = chosen & active        # correct moles hit
-            wrong_hits = chosen - active        # wrong holes hit
+            valid_hits = chosen & active
+            wrong_hits = chosen - active
 
             hit = valid_hits
             round_score = len(valid_hits) * 10
-            round_miss  = len(active - valid_hits) + len(wrong_hits)
+            round_miss = len(active - valid_hits) + len(wrong_hits)
 
-            if elapsed <= window:
-                reaction_times.append(elapsed)
+            reaction_times.append(elapsed)
 
-            score  += round_score
+            score += round_score
             misses += round_miss
 
-            clear()
+            os.system("cls" if os.name == "nt" else "clear")
             print(f"  Round {rnd}/{rounds}  |  Score: {score}  |  Misses: {misses}\n")
-            draw_grid(active, hit)
+            
+            # Draw grid
+            print()
+            for row in range(3):
+                line = "  "
+                for col in range(3):
+                    idx = row * 3 + col
+                    if idx in hit:
+                        line += f" {HAMMER}[{idx+1}] "
+                    elif idx in active:
+                        line += f" {MOLE}[{idx+1}] "
+                    else:
+                        line += f" {HOLE}[{idx+1}] "
+                print(line)
+            print()
 
             if valid_hits == active and not wrong_hits:
                 print(f"  ✅ Perfect hit! +{round_score}  ⚡ {elapsed:.2f}s")
@@ -135,28 +156,38 @@ def play():
             else:
                 print("  ❌ Missed!")
         else:
-            # Timed out
-            clear()
+            os.system("cls" if os.name == "nt" else "clear")
             print(f"  Round {rnd}/{rounds}  |  Score: {score}  |  Misses: {misses}\n")
-            draw_grid(active, set())
+            # Draw grid
+            print()
+            for row in range(3):
+                line = "  "
+                for col in range(3):
+                    idx = row * 3 + col
+                    if idx in hit:
+                        line += f" {HAMMER}[{idx+1}] "
+                    elif idx in active:
+                        line += f" {MOLE}[{idx+1}] "
+                    else:
+                        line += f" {HOLE}[{idx+1}] "
+                print(line)
+            print()
             print("  ⏰ Too slow!")
             misses += n_moles
 
         time.sleep(0.9)
-
-        # Gap between rounds
         gap = random.uniform(0.4, 1.0)
         time.sleep(gap)
+        rnd += 1
 
-    # ── Final screen ──────────────────────────────────────────────────────────
-    clear()
+    os.system("cls" if os.name == "nt" else "clear")
     print("\n╔══════════════════════════════════════╗")
     print("║         🏁  GAME OVER!               ║")
     print("╚══════════════════════════════════════╝\n")
     print(f"  🎯 Final Score : {score}")
     print(f"  ❌ Total Misses: {misses}")
     max_score = rounds * n_moles * 10
-    accuracy  = round((score / max_score) * 100) if max_score else 0
+    accuracy = round((score / max_score) * 100) if max_score else 0
     print(f"  📊 Accuracy    : {accuracy}%")
 
     if reaction_times:
@@ -172,15 +203,11 @@ def play():
     else:
         print("\n  🐭 The moles win this round...")
 
-
-def main():
     while True:
-        play()
-        print("\n  Play again? (y / n): ", end="")
-        if input().strip().lower() != "y":
-            print("\n  Thanks for playing! 🔨\n")
+        replay = input("\n  Play again? (y / n): ").strip().lower()
+        if replay in ['y', 'yes', 'n', 'no']:
             break
-
-
-if __name__ == "__main__":
-    main()
+        print("  ⚠️ Enter 'y' or 'n'.")
+    if replay in ['n', 'no']:
+        print("\n  Thanks for playing! 🔨\n")
+        break

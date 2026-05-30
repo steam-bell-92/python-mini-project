@@ -1,5 +1,4 @@
 function getSimonSaysHTML() {
-
     return `
 
     <div class="game-container ui-panel">
@@ -315,13 +314,7 @@ function getSimonSaysHTML() {
 }
 
 function initSimonSays() {
-
-    const actions = [
-        "Jump",
-        "Duck",
-        "Clap",
-        "Spin"
-    ];
+    const actions = ["Jump", "Duck", "Clap", "Spin"];
 
     let currentAction = "";
 
@@ -331,59 +324,39 @@ function initSimonSays() {
 
     let gameStarted = false;
 
+    // Added this state lock
+    let roundActive = false;
+
     let gameSpeed = 3000;
 
     let timeout;
 
-    const commandBox =
-        document.getElementById("commandBox");
+    const commandBox = document.getElementById("commandBox");
 
-    const scoreText =
-        document.getElementById("score");
+    const scoreText = document.getElementById("score");
 
-    const speedText =
-        document.getElementById("speed");
+    const speedText = document.getElementById("speed");
 
-    const message =
-        document.getElementById("message");
+    const message = document.getElementById("message");
 
-    const timerFill =
-        document.getElementById("timerFill");
+    const timerFill = document.getElementById("timerFill");
 
-    document
-        .getElementById("startBtn")
-        .addEventListener(
-            "click",
-            startGame
-        );
+    document.getElementById("startBtn").addEventListener("click", startGame);
 
     document
         .getElementById("restartBtn")
-        .addEventListener(
-            "click",
-            restartGame
-        );
+        .addEventListener("click", restartGame);
 
-    document
-        .querySelectorAll(".action-btn")
-        .forEach(btn=>{
+    document.querySelectorAll(".action-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            if (!gameStarted) return;
 
-            btn.addEventListener(
-                "click",
-                ()=>{
-
-                    if(!gameStarted) return;
-
-                    handlePlayerMove(
-                        btn.dataset.action
-                    );
-                }
-            );
+            handlePlayerMove(btn.dataset.action);
         });
+    });
 
-    function startGame(){
-
-        if(gameStarted) return;
+    function startGame() {
+        if (gameStarted) return;
 
         gameStarted = true;
 
@@ -396,14 +369,12 @@ function initSimonSays() {
         nextRound();
     }
 
-    function restartGame(){
-
+    function restartGame() {
         clearTimeout(timeout);
 
         gameStarted = false;
 
-        commandBox.textContent =
-            "Press Start";
+        commandBox.textContent = "Press Start";
 
         message.textContent = "";
 
@@ -414,141 +385,90 @@ function initSimonSays() {
         speedText.textContent = "3s";
     }
 
-    function nextRound(){
+    function nextRound() {
+        roundActive = true; // 🟢 UNLOCK: The new round is ready for input
 
         timerFill.style.transition = "none";
-
         timerFill.style.width = "100%";
 
-        setTimeout(()=>{
-
-            timerFill.style.transition =
-                `${gameSpeed}ms linear`;
-
+        setTimeout(() => {
+            timerFill.style.transition = `${gameSpeed}ms linear`;
             timerFill.style.width = "0%";
+        }, 50);
 
-        },50);
+        currentAction = actions[Math.floor(Math.random() * actions.length)];
+        simonSays = Math.random() > 0.4;
 
-        currentAction =
-            actions[
-                Math.floor(
-                    Math.random()*actions.length
-                )
-            ];
-
-        simonSays =
-            Math.random() > 0.4;
-
-        if(simonSays){
-
-            commandBox.textContent =
-                `Simon says ${currentAction}`;
-
-        }else{
-
-            commandBox.textContent =
-                currentAction;
+        if (simonSays) {
+            commandBox.textContent = `Simon says ${currentAction}`;
+        } else {
+            commandBox.textContent = currentAction;
         }
 
-        timeout = setTimeout(()=>{
+        timeout = setTimeout(() => {
+            if (simonSays) {
+                gameOver("⏰ Too Slow!");
+            } else {
+                roundActive = false; // Engage lock during transition
+                timerFill.style.transition = "none"; // Visually freeze the progress bar
 
-            if(simonSays){
-
-                gameOver(
-                    "⏰ Too Slow!"
-                );
-
-            }else{
-
-                message.textContent =
-                    "✅ Correct! You ignored it.";
-
+                message.textContent = "✅ Correct! You ignored it.";
                 score++;
-
                 updateUI();
 
-                if(gameSpeed > 1200){
-
+                if (gameSpeed > 1200) {
                     gameSpeed -= 120;
                 }
-
-                setTimeout(()=>{
-
+                setTimeout(() => {
                     nextRound();
-
-                },700);
+                }, 700);
             }
-
-        },gameSpeed);
+        }, gameSpeed);
     }
 
-    function handlePlayerMove(action){
+    function handlePlayerMove(action) {
+        if (!roundActive) return; // 🛑 HALT: Ignore clicks if the round is already over
+        roundActive = false; // Engage the lock immediately
 
         clearTimeout(timeout);
+        timerFill.style.transition = "none"; // Visually freeze the progress bar
 
-        if(
-            simonSays &&
-            action === currentAction
-        ){
-
+        if (simonSays && action === currentAction) {
             score++;
-
-            message.textContent =
-                "✅ Correct!";
-
-        }else if(
-            !simonSays
-        ){
-
-            gameOver(
-                "❌ Simon didn’t say!"
-            );
-
+            message.textContent = "✅ Correct!";
+        } else if (!simonSays) {
+            gameOver("❌ Simon didn’t say!");
             return;
-
-        }else{
-
-            gameOver(
-                "❌ Wrong Action!"
-            );
-
+        } else {
+            gameOver("❌ Wrong Action!");
             return;
         }
 
-        if(gameSpeed > 1200){
-
+        if (gameSpeed > 1200) {
             gameSpeed -= 120;
         }
 
         updateUI();
 
-        setTimeout(()=>{
-
+        setTimeout(() => {
             nextRound();
-
-        },700);
+        }, 700);
     }
 
-    function updateUI(){
+    function updateUI() {
+        scoreText.textContent = score;
 
-        scoreText.textContent =
-            score;
-
-        speedText.textContent =
-            `${(gameSpeed/1000).toFixed(1)}s`;
+        speedText.textContent = `${(gameSpeed / 1000).toFixed(1)}s`;
     }
 
-    function gameOver(text){
-
+    function gameOver(text) {
         gameStarted = false;
 
         clearTimeout(timeout);
 
-        message.textContent =
-            `${text} Final Score: ${score}`;
+        message.textContent = `${text} Final Score: ${score}`;
 
-        commandBox.textContent =
-            "💀 Game Over";
+        commandBox.textContent = "💀 Game Over";
 
         timerFill.style.width = "0%";
     }

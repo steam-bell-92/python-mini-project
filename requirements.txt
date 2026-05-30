@@ -1,13 +1,14 @@
-# Python 3.10+ required
-# No external packages required - all projects use Python standard library only
+# Game dependencies
+pygame
 
-# Optional packages for advanced visualization projects:
-# - numpy (used in Projectile-Motion-Game.py)
-# - matplotlib (used in Projectile-Motion-Game.py)
+# Math dependencies
+numpy
+matplotlib
+pillow
 
-# To install optional packages:
-# pip install numpy matplotlib
+# Test dependencies
+pytest>=9.0.3
 
-# Standard library modules used:
-# - random (for games with randomization)
-# - sys (for system operations in some projects)
+# Utilities dependencies
+nltk
+requests

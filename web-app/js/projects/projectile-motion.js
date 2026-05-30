@@ -10,7 +10,7 @@ function getProjectileMotionHTML() {
                     </div>
                     <div class="control-group">
                         <label for="projAngle">Launch Angle (°)</label>
-                        <input id="projAngle" type="number" min="1" max="89" value="45">
+                        <input id="projAngle" type="number" min="1" max="90" value="45">
                     </div>
                 </div>
 
@@ -121,7 +121,6 @@ function getProjectileMotionHTML() {
         </style>
     `;
 }
-
 function initProjectileMotion() {
     const g = 9.81;
     const canvas = document.getElementById('projectileCanvas');
@@ -168,17 +167,22 @@ function initProjectileMotion() {
         const marginBottom = 35;
         const marginTop = 20;
 
-        const xMax = Math.max(...x, 10) * 1.1;
-        const yMax = Math.max(...y, 10) * 1.1;
+        const maxValue = Math.max(
+            Math.max(...x, 10),
+            Math.max(...y, 10)
+        ) * 1.1;
+
+        const xMax = maxValue;
+        const yMax = maxValue;
 
         const usableWidth = width - marginLeft - 20;
         const usableHeight = height - marginTop - marginBottom;
 
-        // Compute a uniform scale (pixels per meter) so vertical and horizontal scaling is identical
-        const scale = Math.min(usableWidth / xMax, usableHeight / yMax);
+        const scaleX = usableWidth / xMax;
+        const scaleY = usableHeight / yMax;
 
-        const mapX = v => marginLeft + v * scale;
-        const mapY = v => height - marginBottom - v * scale;
+        const mapX = v => marginLeft + v * scaleX;
+        const mapY = v => height - marginBottom - v * scaleY;
 
         ctx.clearRect(0, 0, width, height);
 
@@ -196,8 +200,49 @@ function initProjectileMotion() {
 
         ctx.fillStyle = "#64748b";
         ctx.font = "12px Arial";
-        ctx.fillText("Height (m)", 8, marginTop + 12);
-        ctx.fillText("Distance (m)", width - 95, height - 10);
+
+        const xTicks = 5;
+        const yTicks = 5;
+
+        for (let t = 0; t <= xTicks; t++) {
+            const value = (xMax / xTicks) * t;
+            const xPos = marginLeft + value * scaleX;
+
+            ctx.beginPath();
+            ctx.moveTo(xPos, height - marginBottom);
+            ctx.lineTo(xPos, height - marginBottom + 6);
+            ctx.stroke();
+
+            ctx.fillText(
+                value.toFixed(0),
+                xPos - 10,
+                height - marginBottom + 20
+            );
+        }
+
+        for (let t = 0; t <= yTicks; t++) {
+            const value = (yMax / yTicks) * t;
+            const yPos = height - marginBottom - value * scaleY;
+
+            ctx.beginPath();
+            ctx.moveTo(marginLeft - 6, yPos);
+            ctx.lineTo(marginLeft, yPos);
+            ctx.stroke();
+
+            ctx.fillText(
+                value.toFixed(0),
+                marginLeft - 25,
+                yPos + 4
+            );
+        }
+
+        ctx.fillText("Distance (m)", width / 2 - 40, height);
+
+        ctx.save();
+        ctx.translate(15, height / 2 + 40);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText("Height (m)", 0, 0);
+        ctx.restore();
 
         if (x.length > 1) {
             ctx.strokeStyle = "#2563eb";
@@ -221,14 +266,33 @@ function initProjectileMotion() {
     }
 
     function simulate() {
-        const speed = Math.max(1, Number(speedInput.value) || 1);
-        const angle = Math.min(89, Math.max(1, Number(angleInput.value) || 45));
+        const speed = Number(speedInput.value);
+        const angle = Number(angleInput.value);
+
+        resultEl.style.color = "";
+        
+        if (isNaN(speed) || speed < 1 || speed > 200) {
+            resultEl.textContent = "❌ Error: Speed must be between 1 and 200 m/s.";
+            resultEl.style.color = "#ef4444";
+            return;
+        }
+
+        if (isNaN(angle) || angle < 1 || angle > 90) {
+            resultEl.textContent = "❌ Error: Angle must be between 1° and 90°.";
+            resultEl.style.color = "#ef4444";
+            return;
+        }
 
         const stats = projectileStats(speed, angle);
         const points = trajectoryPoints(speed, angle);
 
-        const xMax = Math.max(...points.x, 10) * 1.1;
-        const yMax = Math.max(...points.y, 10) * 1.1;
+        const maxValue = Math.max(
+            Math.max(...points.x, 10),
+            Math.max(...points.y, 10)
+        ) * 1.1;
+
+        const xMax = Math.max(maxValue, 10);
+        const yMax = Math.max(maxValue, 10);
 
         const marginLeft = 50;
         const marginBottom = 35;
@@ -240,11 +304,16 @@ function initProjectileMotion() {
         const usableWidth = width - marginLeft - 20;
         const usableHeight = height - marginTop - marginBottom;
 
-        
-        const scale = Math.min(usableWidth / xMax, usableHeight / yMax);
+        const scaleX = usableWidth / xMax;
+        const scaleY = usableHeight / yMax;
 
-        const mapX = v => marginLeft + v * scale;
-        const mapY = v => height - marginBottom - v * scale;
+        const mapX = v => marginLeft + v * scaleX;
+        const mapY = v => height - marginBottom - v * scaleY;
+
+        const maxY = Math.max(...points.y);
+        const peakIndex = points.y.indexOf(maxY);
+
+        let showPeakGuides = false;
 
         drawTrajectory(points.x, points.y);
 
@@ -271,6 +340,52 @@ function initProjectileMotion() {
             ctx.lineTo(width - 20, height - marginBottom);
             ctx.stroke();
 
+            ctx.fillStyle = "#64748b";
+            ctx.font = "12px Arial";
+
+            const xTicks = 5;
+            const yTicks = 5;
+
+            for (let t = 0; t <= xTicks; t++) {
+                const value = (xMax / xTicks) * t;
+                const xPos = marginLeft + value * scaleX;
+
+                ctx.beginPath();
+                ctx.moveTo(xPos, height - marginBottom);
+                ctx.lineTo(xPos, height - marginBottom + 6);
+                ctx.stroke();
+
+                ctx.fillText(
+                    value.toFixed(0),
+                    xPos - 10,
+                    height - marginBottom + 20
+                );
+            }
+
+            for (let t = 0; t <= yTicks; t++) {
+                const value = (yMax / yTicks) * t;
+                const yPos = height - marginBottom - value * scaleY;
+
+                ctx.beginPath();
+                ctx.moveTo(marginLeft - 6, yPos);
+                ctx.lineTo(marginLeft, yPos);
+                ctx.stroke();
+
+                ctx.fillText(
+                    value.toFixed(0),
+                    marginLeft - 25,
+                    yPos + 4
+                );
+            }
+
+            ctx.fillText("Distance (m)", width / 2 - 40, height);
+
+            ctx.save();
+            ctx.translate(15, height / 2 + 40);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText("Height (m)", 0, 0);
+            ctx.restore();
+
             ctx.strokeStyle = "#2563eb";
             ctx.lineWidth = 3;
             ctx.beginPath();
@@ -287,11 +402,53 @@ function initProjectileMotion() {
 
             if (i > 0) {
                 const last = i - 1;
+                const ballX = mapX(points.x[last]);
+                const ballY = mapY(points.y[last]);
 
                 ctx.fillStyle = "#ef4444";
                 ctx.beginPath();
-                ctx.arc(mapX(points.x[last]), mapY(points.y[last]), 6, 0, Math.PI * 2);
+                ctx.arc(ballX, ballY, 6, 0, Math.PI * 2);
                 ctx.fill();
+
+                if (last >= peakIndex) {
+                    showPeakGuides = true;
+                }
+
+                if (showPeakGuides) {
+                    const peakX = mapX(points.x[peakIndex]);
+                    const peakY = mapY(points.y[peakIndex]);
+
+                    ctx.setLineDash([5, 5]);
+                    ctx.strokeStyle = "#ef4444";
+                    ctx.lineWidth = 1.5;
+
+                    ctx.beginPath();
+                    ctx.moveTo(peakX, peakY);
+                    ctx.lineTo(peakX, height - marginBottom);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(marginLeft, peakY);
+                    ctx.lineTo(peakX, peakY);
+                    ctx.stroke();
+
+                    ctx.setLineDash([]);
+
+                    ctx.fillStyle = "#ef4444";
+                    ctx.font = "12px Arial";
+
+                    ctx.fillText(
+                        `Hmax: ${maxY.toFixed(2)} m`,
+                        peakX + 10,
+                        peakY - 10
+                    );
+
+                    ctx.fillText(
+                        `${points.x[peakIndex].toFixed(2)} m`,
+                        peakX - 20,
+                        height - marginBottom + 20
+                    );
+                }
             }
 
             i++;

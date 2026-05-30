@@ -506,6 +506,10 @@ function initRockPaperScissor() {
         stats.losses = 0;
         stats.currentStreak = 0;
         playerHistory = [];
+        stats.bestStreak = 0;
+        bestScore = 0;
+        storage.saveToStorage('rpsBestScore', 0);
+        storage.saveToStorage('rpsStats', stats);
         updateScore();
         updateStatsDisplay();
         updateTendencyDisplay();

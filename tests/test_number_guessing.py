@@ -1,36 +1,65 @@
 import unittest
-import importlib.util
 import os
+from unittest.mock import patch
+import io
 import sys
 
 class TestNumberGuessing(unittest.TestCase):
     def setUp(self):
-        # Load the module dynamically since it has hyphens in the name
-        module_name = "number_guessing"
-        file_path = os.path.join("games", "Number-Guessing-Game", "Number-Guessing-Game.py")
-        
-        spec = importlib.util.spec_from_file_location(module_name, file_path)
-        self.module = importlib.util.module_from_spec(spec)
-        sys.modules[module_name] = self.module
-        spec.loader.exec_module(self.module)
+        self.script_path = os.path.abspath(os.path.join(
+            os.path.dirname(__file__), "..",
+            "games", "Number-Guessing-Game", "Number-Guessing-Game.py"
+        ))
 
-    def test_play_round_with_guesses_win(self):
-        # Test winning exactly on the last attempt
-        won, attempts = self.module.play_round_with_guesses([10, 20, 50], number=50, max_attempts=3)
-        self.assertTrue(won)
-        self.assertEqual(attempts, 3)
+    @patch('builtins.input', side_effect=['1', '50', 'n'])
+    @patch('random.randint', return_value=50)
+    def test_game_win(self, mock_randint, mock_input):
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        try:
+            with open(self.script_path, 'r', encoding='utf-8') as f:
+                exec(f.read(), {'__name__': '__main__'})
+        except StopIteration:
+            pass
+        finally:
+            sys.stdout = sys.__stdout__
 
-    def test_play_round_with_guesses_lose(self):
-        # Test running out of attempts
-        won, attempts = self.module.play_round_with_guesses([10, 20, 30], number=50, max_attempts=3)
-        self.assertFalse(won)
-        self.assertEqual(attempts, 3)
+        output = captured_output.getvalue()
+        self.assertIn("Correct! You guessed the number.", output)
 
-    def test_play_round_with_guesses_win_early(self):
-        # Test winning before max attempts are reached
-        won, attempts = self.module.play_round_with_guesses([50, 60, 70], number=50, max_attempts=5)
-        self.assertTrue(won)
-        self.assertEqual(attempts, 1)
+    @patch('builtins.input', side_effect=['3', '1', '2', '3', '4', '5', 'n'])
+    @patch('random.randint', return_value=50) 
+    def test_game_lose(self, mock_randint, mock_input):
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        try:
+            with open(self.script_path, 'r', encoding='utf-8') as f:
+                exec(f.read(), {'__name__': '__main__'})
+        except StopIteration:
+            pass
+        finally:
+            sys.stdout = sys.__stdout__
+
+        output = captured_output.getvalue()
+        self.assertIn("Out of attempts.", output)
+
+    @patch('builtins.input', side_effect=['1', 'abc', '150', '50', 'n'])
+    @patch('random.randint', return_value=50)
+    def test_game_invalid_inputs(self, mock_randint, mock_input):
+        captured_output = io.StringIO()
+        sys.stdout = captured_output
+        try:
+            with open(self.script_path, 'r', encoding='utf-8') as f:
+                exec(f.read(), {'__name__': '__main__'})
+        except StopIteration:
+            pass
+        finally:
+            sys.stdout = sys.__stdout__
+
+        output = captured_output.getvalue()
+        self.assertIn("Invalid input.", output)
+        self.assertIn("Enter a number between 1 and 100.", output)
+        self.assertIn("Correct! You guessed the number.", output)
 
 if __name__ == "__main__":
     unittest.main()

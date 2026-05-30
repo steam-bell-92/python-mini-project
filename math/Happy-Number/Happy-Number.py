@@ -1,191 +1,134 @@
 import tkinter as tk
 
-# ---------------- HAPPY NUMBER LOGIC ---------------- #
+def is_happy_number(n: int) -> tuple[bool, list[int]]:
+    seen = set()
+    sequence = []
+    num = n
 
-print("🔢 Happy Number Checker 🔢")
-print("🎯 A happy number eventually reaches 1.\n")
+    while num != 1 and num not in seen:
+        seen.add(num)
+        sequence.append(num)
+        num = sum(int(digit) ** 2 for digit in str(num))
 
-N = int(input("➡️  Enter a number: "))
-
-seen = set()
-sequence = []
-
-num = N
-
-while num != 1 and num not in seen:
-    seen.add(num)
     sequence.append(num)
+    return num == 1, sequence
 
-    num = sum(int(digit) ** 2 for digit in str(num))
+def run_visualizer(n: int, is_happy: bool, sequence: list[int]) -> None:
+    # ---------------- TKINTER VISUALIZER ---------------- #
+    root = tk.Tk()
+    root.title("Happy Number Visualizer")
+    root.geometry("1000x600")
+    root.configure(bg="#f4f4f4")
 
-sequence.append(num)
+    # Frame
+    frame = tk.Frame(root, bg="#f4f4f4")
+    frame.pack(fill=tk.BOTH, expand=True)
 
-is_happy = (num == 1)
+    # Scrollbars
+    h_scroll = tk.Scrollbar(frame, orient=tk.HORIZONTAL)
+    h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
 
-if is_happy:
-    print(f"\n✅ {N} is a HAPPY number!")
-else:
-    print(f"\n❌ {N} is NOT a happy number!")
+    v_scroll = tk.Scrollbar(frame, orient=tk.VERTICAL)
+    v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
 
-print("➡️  Sequence:", " → ".join(map(str, sequence)))
+    # Canvas
+    canvas = tk.Canvas(
+        frame,
+        bg="white",
+        xscrollcommand=h_scroll.set,
+        yscrollcommand=v_scroll.set,
+        highlightthickness=2,
+        highlightbackground="#cccccc"
+    )
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+    h_scroll.config(command=canvas.xview)
+    v_scroll.config(command=canvas.yview)
 
-# ---------------- TKINTER VISUALIZER ---------------- #
+    # Mouse wheel scrolling callback
+    def mouse_scroll(event):
+        canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
 
-class HappyVisualizer:
+    canvas.bind_all("<MouseWheel>", mouse_scroll)
 
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Happy Number Visualizer")
-        self.root.geometry("1000x600")
-        self.root.configure(bg="#f4f4f4")
+    start_x = 100
+    y = 250
+    spacing = 180
 
-        # Frame
-        frame = tk.Frame(root, bg="#f4f4f4")
-        frame.pack(fill=tk.BOTH, expand=True)
+    for i, value in enumerate(sequence):
+        x = start_x + i * spacing
+        
+        # Colors
+        if value == 1:
+            color = "#00C853"
+        elif i == len(sequence) - 1 and not is_happy:
+            color = "#D50000"
+        else:
+            color = "#1976D2"
+            
+        # Circle
+        canvas.create_oval(x - 45, y - 45, x + 45, y + 45, fill=color, outline="")
+        
+        # Number
+        canvas.create_text(x, y, text=str(value), font=("Arial", 16, "bold"), fill="white")
+        
+        # Arrow
+        if i < len(sequence) - 1:
+            next_x = start_x + (i + 1) * spacing
+            canvas.create_line(x + 45, y, next_x - 45, y, arrow=tk.LAST, width=3, fill="#444")
 
-        # Scrollbars
-        self.h_scroll = tk.Scrollbar(
-            frame,
-            orient=tk.HORIZONTAL
-        )
-        self.h_scroll.pack(side=tk.BOTTOM, fill=tk.X)
+    # Result text
+    result = f"{n} is a HAPPY Number 🎉" if is_happy else f"{n} is NOT a Happy Number ❌"
+    canvas.create_text(
+        max(500, start_x + len(sequence) * spacing // 2),
+        420,
+        text=result,
+        font=("Arial", 22, "bold"),
+        fill="#222"
+    )
 
-        self.v_scroll = tk.Scrollbar(
-            frame,
-            orient=tk.VERTICAL
-        )
-        self.v_scroll.pack(side=tk.RIGHT, fill=tk.Y)
+    # Dynamic scroll region
+    canvas.config(scrollregion=canvas.bbox("all"))
 
-        # Canvas
-        self.canvas = tk.Canvas(
-            frame,
-            bg="white",
-            xscrollcommand=self.h_scroll.set,
-            yscrollcommand=self.v_scroll.set,
-            highlightthickness=2,
-            highlightbackground="#cccccc"
-        )
+    root.mainloop()
 
-        self.canvas.pack(
-            side=tk.LEFT,
-            fill=tk.BOTH,
-            expand=True
-        )
+def main() -> None:
+    print("=" * 50)
+    print("🔢 HAPPY NUMBER CHECKER & VISUALIZER 🔢")
+    print("=" * 50)
+    print("A happy number eventually reaches 1 when replaced by the sum of square of its digits.\n")
 
-        self.h_scroll.config(command=self.canvas.xview)
-        self.v_scroll.config(command=self.canvas.yview)
+    while True:
+        print("=" * 50)
+        try:
+            user_input = input("➡️  Enter a number: ").strip()
+            if not user_input:
+                print("❌ Error: Input cannot be empty.")
+                continue
+            n = int(user_input)
+            if n <= 0:
+                print("❌ Please enter a positive number!")
+                continue
+        except ValueError:
+            print("❌ Error: Please enter a valid positive integer.")
+            continue
 
-        # Mouse wheel scrolling
-        self.canvas.bind_all(
-            "<MouseWheel>",
-            self.mouse_scroll
-        )
+        is_happy, sequence = is_happy_number(n)
 
-    def mouse_scroll(self, event):
-        self.canvas.yview_scroll(
-            int(-1 * (event.delta / 120)),
-            "units"
-        )
+        if is_happy:
+            print(f"\n✅ {n} is a HAPPY number!")
+        else:
+            print(f"\n❌ {n} is NOT a happy number!")
 
-    def clear_canvas(self):
-        self.canvas.delete("all")
+        print("➡️  Sequence:", " → ".join(map(str, sequence)))
+        print("\n🖥️  Opening Visualizer window... Close the window to continue.")
 
-    def draw_arrow(self, x1, y1, x2, y2):
-        self.canvas.create_line(
-            x1,
-            y1,
-            x2,
-            y2,
-            arrow=tk.LAST,
-            width=3,
-            fill="#444"
-        )
+        run_visualizer(n, is_happy, sequence)
 
-    def visualize(self, number, sequence, is_happy):
+        again = input("\n🔄 Do you want to check another number? (y/n): ").strip().lower()
+        if again != 'y':
+            print("\n👋 Thanks for using Happy Number Checker! Goodbye!\n")
+            break
 
-        self.clear_canvas()
-
-        start_x = 100
-        y = 250
-        spacing = 180
-
-        for i, value in enumerate(sequence):
-
-            x = start_x + i * spacing
-
-            # Colors
-            if value == 1:
-                color = "#00C853"
-
-            elif i == len(sequence) - 1 and not is_happy:
-                color = "#D50000"
-
-            else:
-                color = "#1976D2"
-
-            # Circle
-            self.canvas.create_oval(
-                x - 45,
-                y - 45,
-                x + 45,
-                y + 45,
-                fill=color,
-                outline=""
-            )
-
-            # Number
-            self.canvas.create_text(
-                x,
-                y,
-                text=str(value),
-                font=("Arial", 16, "bold"),
-                fill="white"
-            )
-
-            # Arrow
-            if i < len(sequence) - 1:
-
-                next_x = start_x + (i + 1) * spacing
-
-                self.draw_arrow(
-                    x + 45,
-                    y,
-                    next_x - 45,
-                    y
-                )
-
-        # Result text
-        result = (
-            f"{number} is a HAPPY Number 🎉"
-            if is_happy
-            else f"{number} is NOT a Happy Number ❌"
-        )
-
-        self.canvas.create_text(
-            max(500, start_x + len(sequence) * spacing // 2),
-            420,
-            text=result,
-            font=("Arial", 22, "bold"),
-            fill="#222"
-        )
-
-        # Dynamic scroll region
-        self.canvas.config(
-            scrollregion=self.canvas.bbox("all")
-        )
-
-
-# ---------------- RUN APP ---------------- #
-
-root = tk.Tk()
-
-app = HappyVisualizer(root)
-
-app.visualize(
-    N,
-    sequence,
-    is_happy
-)
-
-root.mainloop()
+if __name__ == "__main__":
+    main()

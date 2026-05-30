@@ -62,6 +62,7 @@ function initWhackaMole() {
             score += 1;
             scoreEl.textContent = String(score);
             messageEl.textContent = 'Hit! 🔨';
+            if (window.AudioManager) AudioManager.play("mole_hit");
             button.textContent = '💥';
             button.classList.remove('active');
             
@@ -117,6 +118,7 @@ function initWhackaMole() {
             hole.classList.remove('active');
             hole.textContent = '🕳️';
         });
+        if (window.AudioManager) AudioManager.play("game_over");
         messageEl.textContent = finalMessage;
         startBtn.disabled = false;
     }

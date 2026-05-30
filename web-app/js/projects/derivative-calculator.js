@@ -3,7 +3,7 @@ function getDerivativeCalculatorHTML() {
         <div class="project-content">
             <h2>∂ Polynomial Derivative Calculator</h2>
             <div class="derivative-container">
-                <p class="derivative-help">Enter coefficients from highest power to constant. Example: <strong>3,0,-2,7</strong> for 3x^3 - 2x + 7.</p>
+<p class="derivative-help">Enter a polynomial equation (e.g. <strong>3x^3 - 2x + 7</strong>) or a comma-separated list of coefficients.</p>
 
                 <div class="control-group">
                     <label for="derivativeCoeffs">Coefficients</label>
@@ -104,31 +104,76 @@ function initDerivativeCalculator() {
         return Number(value.toFixed(6)).toString();
     }
 
-    function parseCoefficients(raw) {
-        const parts = raw
-            .split(',')
-            .map((item) => item.trim())
-            .filter((item) => item.length > 0);
-
-        if (parts.length === 0) {
-            return { error: 'Please enter at least one coefficient.' };
-        }
-
-        const coeffs = [];
-        for (const part of parts) {
-            const value = Number(part);
-            if (!Number.isFinite(value)) {
-                return { error: `Invalid coefficient: ${part}` };
-            }
-            coeffs.push(value);
-        }
-
-        while (coeffs.length > 1 && Math.abs(coeffs[0]) < 1e-12) {
-            coeffs.shift();
-        }
-
-        return { coeffs };
+function parseCoefficients(raw) {
+  if (raw.includes(',')) {
+    const parts = raw.split(',').map((item) => item.trim()).filter((item) => item.length > 0);
+    if (parts.length === 0) return { error: 'Please enter at least one coefficient.' };
+    
+    const coeffs = [];
+    for (const part of parts) {
+      const isFraction = part.includes('/');
+      const value = isFraction 
+        ? Number(part.split('/')[0]) / Number(part.split('/')[1])
+        : Number(part);
+        
+      if (!Number.isFinite(value)) return { error: `Invalid coefficient: ${part}` };
+      coeffs.push(value);
     }
+    while (coeffs.length > 1 && Math.abs(coeffs[0]) < 1e-12) coeffs.shift();
+    return { coeffs };
+  }
+
+  const cleanStr = raw.replace(/\s+/g, ''); 
+  if (!cleanStr) return { error: 'Please enter a valid polynomial.' };
+
+  const termRegex = /([+-]?\d*\.?\d*\*?x(?:\^[+-]?\d+)?|[+-]?\d+\.?\d*)/g;
+  const terms = cleanStr.match(termRegex);
+  
+  if (!terms) return { error: 'Could not parse the equation.' };
+
+  const termMap = {};
+  let maxDegree = 0;
+
+  for (let term of terms) {
+    if (!term || term === '+' || term === '-') continue;
+    
+    let coeff = 1;
+    let power = 0;
+
+    if (term.includes('x')) {
+      const parts = term.split('x');
+      let coeffStr = parts[0].replace('*', '');
+      
+      if (coeffStr === '+' || coeffStr === '') coeff = 1;
+      else if (coeffStr === '-') coeff = -1;
+      else coeff = Number(coeffStr);
+
+      if (parts[1] && parts[1].startsWith('^')) {
+        power = Number(parts[1].substring(1));
+      } else {
+        power = 1;
+      }
+    } else {
+      coeff = Number(term);
+      power = 0;
+    }
+
+    if (!Number.isFinite(coeff) || !Number.isFinite(power)) {
+      return { error: `Invalid term found: ${term}` };
+    }
+
+    termMap[power] = (termMap[power] || 0) + coeff;
+    if (power > maxDegree) maxDegree = power;
+  }
+
+  const coeffs = [];
+  for (let i = maxDegree; i >= 0; i--) {
+    coeffs.push(termMap[i] || 0);
+  }
+
+  while (coeffs.length > 1 && Math.abs(coeffs[0]) < 1e-12) coeffs.shift();
+  return { coeffs };
+}
 
     function derivativeCoeffs(coeffs) {
         const degree = coeffs.length - 1;

@@ -11,6 +11,12 @@
  *    A fresh worker is then spawned automatically so the user
  *    can run again without a page reload. Pyodide reloads (~8 MB).
  *
+ *  • The code editor is powered by CodeMirror 6 with:
+ *    – Python syntax highlighting (VS Code Dark+ colours)
+ *    – Line numbers, bracket matching, auto-indent
+ *    – Auto-close brackets, fold gutters, search
+ *    – Light-mode aware (switches theme automatically)
+ *
  *  • window.PYODIDE      – lightweight status object (ready / loading)
  *  • window.playgroundAPI – consumed by main.js for tab show/hide
  *
@@ -21,12 +27,10 @@
 
     /* ================================================================
        1.  LIGHTWEIGHT STATUS OBJECT
-       Kept on window so external scripts can check readiness.
-       The actual Pyodide instance now lives in the worker thread.
     ================================================================ */
     window.PYODIDE = {
-        ready  : false,   // true once the worker signals 'ready'
-        loading: false    // true while the worker is booting
+        ready  : false,
+        loading: false
     };
 
     /* ================================================================
@@ -113,8 +117,8 @@
 
     var playgroundSection = $id('playgroundSection');
     var runBtn            = $id('runCode');
-    var stopBtn           = $id('stopCode');        // ← NEW
-    var editor            = $id('pythonEditor');
+    var stopBtn           = $id('stopCode');
+    var editorMount       = $id('pythonEditor');   // div – CodeMirror mounts here
     var consoleEl         = $id('consoleOutput');
     var statusDot         = $id('statusDot');
     var statusText        = $id('statusText');
@@ -123,26 +127,404 @@
     var loadExampleBtn    = $id('loadExample');
 
     /* Guard – abort gracefully if playground HTML is absent */
-    if (!playgroundSection || !runBtn || !stopBtn || !editor || !consoleEl) {
+    if (!playgroundSection || !runBtn || !stopBtn || !editorMount || !consoleEl) {
         console.warn('[playground.js] Required DOM elements not found — playground disabled.');
         return;
     }
 
     /* ================================================================
-       5.  UI HELPER FUNCTIONS
+       5.  CODEMIRROR 6 EDITOR SETUP
     ================================================================ */
 
     /**
-     * Update the status badge.
-     * @param {'idle'|'loading'|'ready'|'error'} state
-     * @param {string} label
+     * Build a VS Code–style Dark theme for CodeMirror 6.
+     * Uses the same colour palette as VS Code's "Dark+" theme.
      */
+    function buildVSCodeTheme(CM) {
+        var EditorView = CM.EditorView;
+
+        /* Base editor chrome */
+        var vscodeDarkTheme = EditorView.theme({
+            '&': {
+                backgroundColor : 'transparent',
+                color           : '#d4d4d4',
+                height          : '100%',
+                fontSize        : '0.875rem',
+                fontFamily      : "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace"
+            },
+            '.cm-content': {
+                caretColor : '#aeafad',
+                padding    : '12px 0'
+            },
+            '.cm-cursor, .cm-dropCursor': {
+                borderLeftColor : '#aeafad',
+                borderLeftWidth : '2px'
+            },
+            '&.cm-focused .cm-cursor': {
+                borderLeftColor : '#aeafad'
+            },
+            '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection': {
+                backgroundColor : '#264f78'
+            },
+            '.cm-panels': {
+                backgroundColor : '#1e1e1e',
+                color           : '#d4d4d4'
+            },
+            '.cm-panels.cm-panels-top': {
+                borderBottom : '1px solid #454545'
+            },
+            '.cm-panels.cm-panels-bottom': {
+                borderTop : '1px solid #454545'
+            },
+            '.cm-searchMatch': {
+                backgroundColor : '#613315',
+                outline         : '1px solid #c6923a'
+            },
+            '.cm-searchMatch.cm-searchMatch-selected': {
+                backgroundColor : '#515c6a'
+            },
+            '.cm-activeLine': {
+                backgroundColor : 'rgba(255,255,255,0.04)'
+            },
+            '.cm-activeLineGutter': {
+                backgroundColor : 'rgba(255,255,255,0.04)',
+                color           : '#c6c6c6'
+            },
+            '.cm-selectionMatch': {
+                backgroundColor : '#72a1ff59'
+            },
+            '.cm-matchingBracket, .cm-nonmatchingBracket': {
+                backgroundColor : '#515a6b',
+                outline         : '1px solid #888'
+            },
+            '.cm-gutters': {
+                backgroundColor : 'rgba(18,22,36,0.6)',
+                color           : '#858585',
+                border          : 'none',
+                borderRight     : '1px solid rgba(255,255,255,0.06)'
+            },
+            '.cm-lineNumbers .cm-gutterElement': {
+                padding        : '0 8px 0 12px',
+                minWidth       : '36px',
+                fontSize       : '0.8rem',
+                letterSpacing  : '0.02em'
+            },
+            '.cm-foldPlaceholder': {
+                backgroundColor : 'transparent',
+                border          : '1px solid #454545',
+                color           : '#aaa'
+            },
+            '.cm-tooltip': {
+                border          : '1px solid #454545',
+                backgroundColor : '#252526',
+                color           : '#d4d4d4',
+                borderRadius    : '6px',
+                boxShadow       : '0 4px 16px rgba(0,0,0,0.5)',
+                fontSize        : '0.82rem'
+            },
+            '.cm-tooltip.cm-tooltip-autocomplete > ul > li[aria-selected]': {
+                backgroundColor : '#094771',
+                color           : '#d4d4d4'
+            },
+            '.cm-tooltip > ul > li': {
+                padding : '4px 8px'
+            },
+            '.cm-scroller': {
+                overflow    : 'auto',
+                lineHeight  : '1.7'
+            },
+        }, { dark: true });
+
+        /* Syntax token colours (VS Code Dark+ palette) */
+        var vscodeDarkHighlight = CM.syntaxHighlighting(
+            CM.defaultHighlightStyle.fallback
+                ? CM.defaultHighlightStyle
+                : (function () {
+                    // Build custom highlight spec
+                    var HighlightStyle = CM.syntaxHighlighting;
+                    return CM.defaultHighlightStyle;
+                }())
+        );
+
+        return [vscodeDarkTheme, vscodeDarkHighlight];
+    }
+
+    /**
+     * Build a VS Code Light theme for CodeMirror 6.
+     */
+    function buildVSCodeLightTheme(CM) {
+        var EditorView = CM.EditorView;
+
+        var vscodeLightTheme = EditorView.theme({
+            '&': {
+                backgroundColor : 'transparent',
+                color           : '#1e1e1e',
+                height          : '100%',
+                fontSize        : '0.875rem',
+                fontFamily      : "'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace"
+            },
+            '.cm-content': {
+                caretColor : '#1e1e1e',
+                padding    : '12px 0'
+            },
+            '.cm-cursor, .cm-dropCursor': {
+                borderLeftColor : '#1e1e1e',
+                borderLeftWidth : '2px'
+            },
+            '&.cm-focused .cm-selectionBackground, .cm-selectionBackground, ::selection': {
+                backgroundColor : '#add6ff'
+            },
+            '.cm-activeLine': {
+                backgroundColor : 'rgba(0,0,0,0.04)'
+            },
+            '.cm-activeLineGutter': {
+                backgroundColor : 'rgba(0,0,0,0.04)',
+                color           : '#333'
+            },
+            '.cm-gutters': {
+                backgroundColor : 'rgba(255,255,255,0.6)',
+                color           : '#a0a0a0',
+                border          : 'none',
+                borderRight     : '1px solid rgba(0,0,0,0.08)'
+            },
+            '.cm-lineNumbers .cm-gutterElement': {
+                padding        : '0 8px 0 12px',
+                minWidth       : '36px',
+                fontSize       : '0.8rem',
+                letterSpacing  : '0.02em'
+            },
+            '.cm-matchingBracket': {
+                backgroundColor : '#d6ecf0',
+                outline         : '1px solid #8ac'
+            },
+            '.cm-tooltip': {
+                border          : '1px solid #d4d4d4',
+                backgroundColor : '#f3f3f3',
+                color           : '#1e1e1e',
+                borderRadius    : '6px',
+                boxShadow       : '0 4px 16px rgba(0,0,0,0.12)',
+                fontSize        : '0.82rem'
+            },
+            '.cm-scroller': {
+                lineHeight : '1.7'
+            },
+        }, { dark: false });
+
+        return [vscodeLightTheme, CM.syntaxHighlighting(CM.defaultHighlightStyle)];
+    }
+
+    /* ── Colour-token overrides for Python (VS Code Dark+ palette) ── */
+    var PYTHON_TOKEN_CSS = `
+        /* Keywords: blue */
+        .cm-keyword  { color: #569cd6 !important; font-weight: 600; }
+        /* def / class names */
+        .cm-definitionKeyword { color: #569cd6 !important; font-weight: 600; }
+        /* Function names at definition */
+        .cm-definition.cm-variableName { color: #dcdcaa !important; }
+        /* Built-ins: cyan */
+        .cm-name     { color: #9cdcfe; }
+        /* Strings: orange */
+        .cm-string   { color: #ce9178 !important; }
+        /* String2 / template */
+        .cm-string2  { color: #ce9178 !important; }
+        /* Comments: green */
+        .cm-comment  { color: #6a9955 !important; font-style: italic; }
+        /* Numbers: light-green */
+        .cm-number   { color: #b5cea8 !important; }
+        /* Operators */
+        .cm-operator { color: #d4d4d4; }
+        /* Punctuation */
+        .cm-punctuation { color: #d4d4d4; }
+        /* Class names */
+        .cm-typeName, .cm-className { color: #4ec9b0 !important; }
+        /* Decorators */
+        .cm-meta { color: #c586c0 !important; }
+        /* Self / special variables */
+        .cm-self, .cm-variableName.cm-special { color: #569cd6; }
+        /* True / False / None */
+        .cm-atom { color: #569cd6 !important; }
+        /* Property access */
+        .cm-propertyName { color: #9cdcfe; }
+        /* f-string braces */
+        .cm-special { color: #dcdcaa; }
+        /* Light mode overrides */
+        [data-theme='light'] .cm-keyword  { color: #0000ff !important; }
+        [data-theme='light'] .cm-string   { color: #a31515 !important; }
+        [data-theme='light'] .cm-comment  { color: #008000 !important; }
+        [data-theme='light'] .cm-number   { color: #098658 !important; }
+        [data-theme='light'] .cm-name     { color: #001080; }
+        [data-theme='light'] .cm-atom     { color: #0000ff !important; }
+        [data-theme='light'] .cm-typeName,
+        [data-theme='light'] .cm-className { color: #267f99 !important; }
+        [data-theme='light'] .cm-meta { color: #af00db !important; }
+        [data-theme='light'] .cm-definition.cm-variableName { color: #795e26 !important; }
+    `;
+
+    /* Inject token CSS once */
+    (function injectTokenCSS() {
+        var style = document.createElement('style');
+        style.id = 'cm-python-tokens';
+        style.textContent = PYTHON_TOKEN_CSS;
+        document.head.appendChild(style);
+    }());
+
+    /* ── Create the CodeMirror editor instance ── */
+    var CM = window.CodeMirrorPython;
+
+    if (!CM) {
+        console.error('[playground.js] CodeMirrorPython global not found. Did cm-editor.js load?');
+        return;
+    }
+
+    var cmView = null;   // the live EditorView instance
+
+    function isDarkMode() {
+        return document.documentElement.getAttribute('data-theme') !== 'light';
+    }
+
+    function buildExtensions() {
+        var dark = isDarkMode();
+        var themeExt = dark ? buildVSCodeTheme(CM) : buildVSCodeLightTheme(CM);
+
+        return [
+            /* Line numbers + active-line gutter highlight */
+            CM.lineNumbers(),
+            CM.highlightActiveLineGutter(),
+
+            /* Special character rendering */
+            CM.highlightSpecialChars(),
+
+            /* Undo/redo history */
+            CM.history(),
+
+            /* Fold gutter (collapse code blocks) */
+            CM.foldGutter({
+                markerDOM: function(open) {
+                    var span = document.createElement('span');
+                    span.style.cursor = 'pointer';
+                    span.style.color  = '#858585';
+                    span.textContent  = open ? '⌄' : '›';
+                    return span;
+                }
+            }),
+
+            /* Draw cursor & selection */
+            CM.drawSelection(),
+            CM.dropCursor(),
+
+            /* Allow multiple selections */
+            CM.rectangularSelection(),
+            CM.crosshairCursor(),
+
+            /* Active line highlight */
+            CM.highlightActiveLine(),
+
+            /* Search panel */
+            CM.highlightSelectionMatches(),
+
+            /* Bracket matching & auto-close */
+            CM.bracketMatching(),
+            CM.closeBrackets(),
+
+            /* Auto-completion */
+            CM.autocompletion(),
+
+            /* Auto-indent on input */
+            CM.indentOnInput(),
+
+            /* Python language (syntax + indent rules) */
+            CM.python(),
+
+            /* Theme */
+            themeExt,
+
+            /* Key bindings */
+            CM.keymap.of([
+                /* Tab → indent (4 spaces for Python) */
+                CM.indentWithTab,
+                /* Close-bracket shortcuts */
+                ...CM.closeBracketsKeymap,
+                /* Default editing keys */
+                ...CM.defaultKeymap,
+                /* Undo/redo */
+                ...CM.historyKeymap,
+                /* Fold/unfold */
+                ...CM.foldKeymap,
+                /* Completion */
+                ...CM.completionKeymap,
+                /* Search */
+                ...CM.searchKeymap,
+                /* Ctrl/Cmd + Enter → Run Code */
+                {
+                    key     : 'Ctrl-Enter',
+                    mac     : 'Cmd-Enter',
+                    run     : function() { runCode(); return true; }
+                }
+            ]),
+
+            /* Update listener — keeps `editor.value` semantic alive */
+            CM.EditorView.updateListener.of(function() {})
+        ];
+    }
+
+    function createEditor(initialContent) {
+        var state = CM.EditorState.create({
+            doc        : initialContent || '',
+            extensions : buildExtensions()
+        });
+
+        cmView = new CM.EditorView({
+            state  : state,
+            parent : editorMount
+        });
+
+        return cmView;
+    }
+
+    /* ── Get / set code helpers (public editor API) ── */
+    function getCode() {
+        return cmView ? cmView.state.doc.toString() : '';
+    }
+
+    function setCode(code) {
+        if (!cmView) return;
+        cmView.dispatch({
+            changes: {
+                from    : 0,
+                to      : cmView.state.doc.length,
+                insert  : code
+            }
+        });
+    }
+
+    /* ── Re-create editor when theme changes ── */
+    function rebuildEditorTheme() {
+        if (!cmView) return;
+        var currentCode = getCode();
+        cmView.destroy();
+        cmView = null;
+        createEditor(currentCode);
+    }
+
+    /* Watch for data-theme attribute changes on <html> */
+    var themeObserver = new MutationObserver(function(mutations) {
+        mutations.forEach(function(m) {
+            if (m.type === 'attributes' && m.attributeName === 'data-theme') {
+                rebuildEditorTheme();
+            }
+        });
+    });
+    themeObserver.observe(document.documentElement, { attributes: true });
+
+    /* ================================================================
+       6.  UI HELPER FUNCTIONS
+    ================================================================ */
+
     function setStatus(state, label) {
         if (statusDot)  statusDot.className    = 'status-dot ' + state;
         if (statusText) statusText.textContent = label;
     }
 
-    /** Reset the console to its initial placeholder state. */
     function resetConsole() {
         consoleEl.innerHTML =
             '<span class="pg-placeholder">' +
@@ -150,11 +532,6 @@
             '</span>';
     }
 
-    /**
-     * Append a line to the console.
-     * @param {string} text
-     * @param {'out'|'err'|'info'} type
-     */
     function printLine(text, type) {
         var ph = consoleEl.querySelector('.pg-placeholder');
         if (ph) ph.remove();
@@ -175,41 +552,22 @@
         consoleEl.scrollTop = consoleEl.scrollHeight;
     }
 
-    /**
-     * Switch the toolbar between Run-mode and Running-mode.
-     * Run mode  : Run button enabled, Stop button disabled.
-     * Running   : Stop button enabled, Run button disabled.
-     * @param {boolean} running
-     */
     function setRunning(running) {
-        runBtn.disabled = running;
-
-        
-        stopBtn.disabled = !running;
+        runBtn.disabled      = running;
+        stopBtn.disabled     = !running;
         stopBtn.style.opacity = running ? '1' : '0.5';
-        stopBtn.style.cursor = running ? 'pointer' : 'not-allowed';
-        
-}
+        stopBtn.style.cursor  = running ? 'pointer' : 'not-allowed';
+    }
 
     /* ================================================================
-       6.  WEB WORKER MANAGEMENT
-       A new worker is created lazily on the first playground visit,
-       and re-created automatically after a stop.
+       7.  WEB WORKER MANAGEMENT
     ================================================================ */
+    var worker = null;
 
-    var worker = null;   // the current live worker (null if not yet started)
-
-    /**
-     * Spawn a fresh Pyodide worker.
-     * Safe to call multiple times — always replaces the old worker reference.
-     */
     function spawnWorker() {
-        /* Tear down any existing worker before creating a replacement */
         if (worker) {
             worker.onmessage = null;
             worker.onerror   = null;
-            /* Don't call terminate() here — spawnWorker() after a stop
-               is called AFTER terminate() already ran in stopExecution(). */
         }
 
         window.PYODIDE.ready   = false;
@@ -222,14 +580,13 @@
             'info'
         );
 
-        runBtn.disabled = true;   /* re-enabled once worker signals 'ready' */
+        runBtn.disabled = true;
 
         worker = new Worker(WORKER_SCRIPT);
 
         worker.onmessage = function (e) {
             switch (e.data.type) {
 
-                /* ── Pyodide finished loading in the worker ── */
                 case 'ready':
                     window.PYODIDE.ready   = true;
                     window.PYODIDE.loading = false;
@@ -241,14 +598,12 @@
                     runBtn.disabled = false;
                     break;
 
-                /* ── Pyodide failed to load ── */
                 case 'load-error':
                     window.PYODIDE.loading = false;
                     setStatus('error', 'Load failed \u2717');
                     printLine('\u274C Pyodide failed to load: ' + e.data.message, 'err');
                     break;
 
-                /* ── Python ran and finished cleanly ── */
                 case 'done':
                     if (e.data.stdout) printLine(e.data.stdout.trimEnd(), 'out');
                     if (e.data.stderr) printLine(e.data.stderr.trimEnd(), 'err');
@@ -256,7 +611,6 @@
                     setRunning(false);
                     break;
 
-                /* ── Python raised an exception ── */
                 case 'error':
                     printLine(e.data.message, 'err');
                     setRunning(false);
@@ -265,7 +619,6 @@
         };
 
         worker.onerror = function (err) {
-            /* Catches worker-level JS errors (not Python exceptions) */
             window.PYODIDE.loading = false;
             setStatus('error', 'Worker error \u2717');
             printLine('\u274C Worker error: ' + (err.message || String(err)), 'err');
@@ -273,13 +626,9 @@
         };
     }
 
-    /**
-     * Terminate the running worker and spin up a fresh one.
-     * Called by the Stop button.
-     */
     function stopExecution() {
         if (worker) {
-            worker.onmessage = null;   // silence any in-flight messages
+            worker.onmessage = null;
             worker.onerror   = null;
             worker.terminate();
             worker = null;
@@ -292,20 +641,14 @@
             'info'
         );
 
-        /*
-         * Small delay before spawning the replacement worker.
-         * Gives the browser time to fully clean up the terminated worker
-         * before we allocate a new one, avoiding occasional stalls.
-         */
         setTimeout(spawnWorker, 150);
     }
 
     /* ================================================================
-       7.  RUN CODE
+       8.  RUN CODE
     ================================================================ */
-
     function runCode() {
-        var code = editor.value;
+        var code = getCode();
         if (!code.trim()) {
             printLine('\u2139 Nothing to run \u2014 write some Python first!', 'info');
             return;
@@ -322,113 +665,64 @@
     }
 
     /* ================================================================
-       8.  PUBLIC API
-       Called by main.js when the user switches tabs.
+       9.  PUBLIC API
     ================================================================ */
-
     window.playgroundAPI = {
-        /**
-         * Show the playground and boot the worker on the first visit.
-         */
         activate: function () {
             playgroundSection.style.display = 'block';
+            /* Boot worker on first visit */
             if (!window.PYODIDE.ready && !window.PYODIDE.loading) {
                 spawnWorker();
             }
+            /* Ensure editor is sized correctly after display:block */
+            if (cmView) {
+                cmView.requestMeasure();
+            }
         },
 
-        /** Hide the playground section. */
         deactivate: function () {
             playgroundSection.style.display = 'none';
         }
     };
 
     /* ================================================================
-       9.  EVENT WIRING
+       10.  EVENT WIRING
     ================================================================ */
-
-    /* Run button */
     runBtn.addEventListener('click', runCode);
-
-    /* Stop button */
     stopBtn.addEventListener('click', stopExecution);
-    
 
-    /* Editor keyboard shortcuts */
-    editor.addEventListener('keydown', function (e) {
-
-        /* Ctrl/Cmd + Enter → run */
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-            e.preventDefault();
-            runCode();
-            return;
-        }
-
-        /* Enter → new line preserving indent, extra indent after colon */
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            var start       = editor.selectionStart;
-            var value       = editor.value;
-            var lineStart   = value.lastIndexOf('\n', start - 1) + 1;
-            var currentLine = value.substring(lineStart, start);
-            var indentMatch = currentLine.match(/^\s*/);
-            var indent      = indentMatch ? indentMatch[0] : '';
-            if (currentLine.trimEnd().endsWith(':')) {
-                indent += '    ';
-            }
-            var insertion = '\n' + indent;
-            editor.value =
-                value.substring(0, start) +
-                insertion +
-                value.substring(editor.selectionEnd);
-            editor.selectionStart = editor.selectionEnd = start + insertion.length;
-            return;
-        }
-
-        /* Tab → insert 4 spaces (no focus change) */
-        if (e.key === 'Tab') {
-            e.preventDefault();
-            var start  = editor.selectionStart;
-            var end    = editor.selectionEnd;
-            var spaces = '    ';
-            editor.value =
-                editor.value.substring(0, start) +
-                spaces +
-                editor.value.substring(end);
-            editor.selectionStart = editor.selectionEnd = start + spaces.length;
-        }
-    });
-
-    /* Clear console */
     if (clearConsoleBtn) {
         clearConsoleBtn.addEventListener('click', resetConsole);
     }
 
-    /* Clear editor */
     if (clearEditorBtn) {
         clearEditorBtn.addEventListener('click', function () {
-            editor.value = '';
-            editor.focus();
+            setCode('');
+            if (cmView) cmView.focus();
         });
     }
 
-    /* Cycle through built-in example snippets */
     if (loadExampleBtn) {
         loadExampleBtn.addEventListener('click', function () {
-            editor.value = EXAMPLES[exampleIdx % EXAMPLES.length];
+            setCode(EXAMPLES[exampleIdx % EXAMPLES.length]);
             exampleIdx++;
-            editor.focus();
+            if (cmView) cmView.focus();
         });
     }
 
     /* ================================================================
-       10.  BOOT  –  set initial state
+       11.  BOOT
     ================================================================ */
-
-    playgroundSection.style.display = 'none';   /* hidden until tab click */
-    runBtn.disabled                 = true;       /* enabled after worker ready */
+    playgroundSection.style.display = 'none';
+    runBtn.disabled                 = true;
     setRunning(false);
     resetConsole();
     setStatus('idle', 'Open the tab to load Python');
+
+    /* Initialise the CodeMirror editor with a welcoming snippet */
+    createEditor(
+        '# \uD83D\uDC0D Write your Python code here\u2026\n' +
+        'print("Hello, World!")'
+    );
 
 }());

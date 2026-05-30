@@ -1,163 +1,162 @@
+import math
+
 print("=" * 58)
-print("AP / GP / AGP / HP RECOGNIZER")
+print("📊 AP / GP / AGP / HP RECOGNIZER 📊")
 print("=" * 58)
-print("Enter at least 4 numbers separated by commas.")
-print("Example: 2, 4, 6, 8 or 3, 6, 12, 24")
+print("Enter at least 4 numbers separated by commas to recognize the progression.")
+print("Example: 2, 4, 6, 8 or 3, 6, 12, 24\n")
 
 EPS = 1e-9
 
+while True:
+    print("=" * 58)
+    print("Choose an option:")
+    print("1️⃣  Recognize sequence type")
+    print("2️⃣  Exit")
 
-def is_close(a, b, eps=EPS):
-    return abs(a - b) <= eps
+    choice = input("🎯 Enter your choice (1-2): ").strip()
 
+    if choice == "2":
+        print("\n👋 Thanks for using the recognizer. Keep practicing! ✨\n")
+        break
 
-def parse_sequence(raw):
-    parts = [item.strip() for item in raw.split(",") if item.strip()]
+    if choice != "1":
+        print("❌ Please choose 1 or 2.")
+        continue
+
+    user_input = input("\n📝 Enter sequence values separated by commas: ").strip()
+    if not user_input:
+        print("❌ Error: Input cannot be empty.")
+        continue
+
+    # Parse sequence
+    parts = [item.strip() for item in user_input.split(",") if item.strip()]
     if len(parts) < 4:
-        return None, "Please enter at least 4 values."
+        print("❌ Please enter at least 4 values.")
+        continue
 
     sequence = []
+    parse_error = False
     for part in parts:
         try:
             sequence.append(float(part))
         except ValueError:
-            return None, f"Invalid number: {part}"
+            print(f"❌ Invalid number: {part}")
+            parse_error = True
+            break
 
-    return sequence, ""
-
-
-def check_ap(sequence):
-    diff = sequence[1] - sequence[0]
-    for i in range(2, len(sequence)):
-        if not is_close(sequence[i] - sequence[i - 1], diff):
-            return False, None
-    return True, diff
-
-
-def check_gp(sequence):
-    if all(is_close(value, 0.0) for value in sequence):
-        return True, 0.0
-
-    if any(is_close(sequence[i - 1], 0.0) for i in range(1, len(sequence))):
-        return False, None
-
-    ratio = sequence[1] / sequence[0]
-    for i in range(2, len(sequence)):
-        if not is_close(sequence[i] / sequence[i - 1], ratio):
-            return False, None
-
-    return True, ratio
-
-
-def check_hp(sequence):
-    if any(is_close(value, 0.0) for value in sequence):
-        return False, None
-
-    reciprocal = [1 / value for value in sequence]
-    is_ap, reciprocal_diff = check_ap(reciprocal)
-    if not is_ap:
-        return False, None
-
-    return True, reciprocal_diff
-
-
-def agp_candidates(sequence):
-    s0, s1, s2 = sequence[0], sequence[1], sequence[2]
-
-    if is_close(s0, 0.0):
-        if is_close(s1, 0.0):
-            return []
-        return [s2 / (2 * s1)]
-
-    a = s0
-    b = -2 * s1
-    c = s2
-    disc = b * b - 4 * a * c
-
-    if disc < -EPS:
-        return []
-
-    if is_close(disc, 0.0):
-        return [-b / (2 * a)]
-
-    if disc < 0:
-        return []
-
-    sqrt_disc = disc ** 0.5
-    r1 = (-b + sqrt_disc) / (2 * a)
-    r2 = (-b - sqrt_disc) / (2 * a)
-
-    if is_close(r1, r2):
-        return [r1]
-
-    return [r1, r2]
-
-
-def check_agp(sequence):
-    for ratio in agp_candidates(sequence):
-        valid = True
-        for i in range(2, len(sequence)):
-            expected = 2 * ratio * sequence[i - 1] - (ratio * ratio) * sequence[i - 2]
-            if not is_close(sequence[i], expected, eps=1e-7):
-                valid = False
-                break
-        if valid:
-            return True, ratio
-
-    return False, None
-
-
-def format_number(value):
-    if is_close(value, round(value)):
-        return str(int(round(value)))
-    return f"{value:.6g}"
-
-
-while True:
-    print("\nChoose an option:")
-    print("1. Recognize sequence type")
-    print("2. Exit")
-
-    choice = input("Enter your choice (1-2): ").strip()
-
-    if choice == "2":
-        print("\nThanks for using the recognizer. Keep practicing! ✨")
-        break
-
-    if choice != "1":
-        print("Please choose 1 or 2.")
-        continue
-
-    user_input = input("\nEnter sequence values separated by commas: ")
-    sequence, error = parse_sequence(user_input)
-
-    if error:
-        print(f"❌ {error}")
+    if parse_error:
         continue
 
     matched_types = []
 
-    ap_ok, ap_diff = check_ap(sequence)
-    if ap_ok:
-        matched_types.append(f"AP (common difference d = {format_number(ap_diff)})")
+    # 1. Check AP (Arithmetic Progression)
+    is_ap = True
+    ap_diff = sequence[1] - sequence[0]
+    for i in range(2, len(sequence)):
+        if abs((sequence[i] - sequence[i - 1]) - ap_diff) > EPS:
+            is_ap = False
+            break
 
-    gp_ok, gp_ratio = check_gp(sequence)
-    if gp_ok:
-        matched_types.append(f"GP (common ratio r = {format_number(gp_ratio)})")
+    if is_ap:
+        # Format helper
+        val = ap_diff
+        ap_diff_str = str(int(round(val))) if abs(val - round(val)) < 1e-9 else f"{val:.6g}"
+        matched_types.append(f"AP (common difference d = {ap_diff_str})")
 
-    agp_ok, agp_ratio = check_agp(sequence)
-    if agp_ok:
-        matched_types.append(f"AGP (repetition ratio r = {format_number(agp_ratio)})")
+    # 2. Check GP (Geometric Progression)
+    is_gp = True
+    gp_ratio = 0.0
+    if all(abs(x) <= EPS for x in sequence):
+        gp_ratio = 0.0
+    elif any(abs(sequence[i - 1]) <= EPS for i in range(1, len(sequence))):
+        is_gp = False
+    else:
+        gp_ratio = sequence[1] / sequence[0]
+        for i in range(2, len(sequence)):
+            if abs((sequence[i] / sequence[i - 1]) - gp_ratio) > EPS:
+                is_gp = False
+                break
 
-    hp_ok, hp_diff = check_hp(sequence)
-    if hp_ok:
-        matched_types.append(
-            f"HP (reciprocal AP difference = {format_number(hp_diff)})"
-        )
+    if is_gp:
+        val = gp_ratio
+        gp_ratio_str = str(int(round(val))) if abs(val - round(val)) < 1e-9 else f"{val:.6g}"
+        matched_types.append(f"GP (common ratio r = {gp_ratio_str})")
 
-    print("\nResult")
+    # 3. Check HP (Harmonic Progression)
+    is_hp = True
+    hp_diff = 0.0
+    if any(abs(x) <= EPS for x in sequence):
+        is_hp = False
+    else:
+        reciprocal = [1.0 / x for x in sequence]
+        hp_diff = reciprocal[1] - reciprocal[0]
+        for i in range(2, len(reciprocal)):
+            if abs((reciprocal[i] - reciprocal[i - 1]) - hp_diff) > EPS:
+                is_hp = False
+                break
+
+    if is_hp:
+        val = hp_diff
+        hp_diff_str = str(int(round(val))) if abs(val - round(val)) < 1e-9 else f"{val:.6g}"
+        matched_types.append(f"HP (reciprocal AP difference = {hp_diff_str})")
+
+    # 4. Check AGP (Arithmetico-Geometric Progression)
+    is_agp = False
+    agp_ratio = 0.0
+    
+    # Generate AGP ratio candidates
+    s0, s1, s2 = sequence[0], sequence[1], sequence[2]
+    candidates = []
+    if abs(s0) <= EPS:
+        if abs(s1) > EPS:
+            candidates.append(s2 / (2 * s1))
+    else:
+        a = s0
+        b = -2 * s1
+        c = s2
+        disc = b * b - 4 * a * c
+        if disc >= -EPS:
+            if abs(disc) <= EPS:
+                candidates.append(-b / (2 * a))
+            else:
+                sqrt_disc = math.sqrt(disc)
+                candidates.append((-b + sqrt_disc) / (2 * a))
+                candidates.append((-b - sqrt_disc) / (2 * a))
+
+    for r in candidates:
+        if abs(r) <= EPS:
+            # If common ratio r = 0, all terms from index 1 onwards must be 0
+            if all(abs(x) <= EPS for x in sequence[1:]):
+                is_agp = True
+                agp_ratio = r
+                break
+            continue
+
+        valid = True
+        for i in range(2, len(sequence)):
+            expected = 2 * r * sequence[i - 1] - (r * r) * sequence[i - 2]
+            if abs(sequence[i] - expected) > 1e-7:
+                valid = False
+                break
+        if valid:
+            is_agp = True
+            agp_ratio = r
+            break
+
+    if is_agp:
+        val = agp_ratio
+        agp_ratio_str = str(int(round(val))) if abs(val - round(val)) < 1e-9 else f"{val:.6g}"
+        matched_types.append(f"AGP (repetition ratio r = {agp_ratio_str})")
+
+    # Display Results
+    print("\n💡 Result")
     print("-" * 58)
-    print("Sequence:", ", ".join(format_number(x) for x in sequence))
+    formatted_seq = []
+    for x in sequence:
+        f_str = str(int(round(x))) if abs(x - round(x)) < 1e-9 else f"{x:.6g}"
+        formatted_seq.append(f_str)
+    print("Sequence:", ", ".join(formatted_seq))
 
     if matched_types:
         print("✅ Recognized as:")

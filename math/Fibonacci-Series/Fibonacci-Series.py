@@ -1,44 +1,47 @@
 import turtle
 import math
 
+print("=" * 58)
+print("🌀 FIBONACCI SERIES GENERATOR & SPIRAL 🌀")
+print("=" * 58)
+print("Generate Fibonacci numbers and draw a beautiful spiral using turtle graphics.\n")
 
-def print_banner():
+# Screen initialized outside or inside loop
+screen_initialized = False
+
+while True:
     print("=" * 58)
-    print("FIBONACCI SERIES GENERATOR")
-    print("=" * 58)
-    print("Generate Fibonacci numbers and draw a spiral.\n")
+    try:
+        raw_value = input("🎯 Enter Fibonacci terms (5-12 recommended): ").strip()
+        if not raw_value:
+            print("❌ Error: Input cannot be empty.")
+            continue
+        term_count = int(raw_value)
+        if term_count <= 0:
+            print("❌ Please enter a positive number.")
+            continue
+    except ValueError:
+        print("❌ Invalid input. Please enter a whole number.")
+        continue
 
+    # Calculate Fibonacci series
+    if term_count == 1:
+        fib = [1]
+    else:
+        fib = [1, 1]
+        while len(fib) < term_count:
+            fib.append(fib[-1] + fib[-2])
 
-def fibonacci(n):
-    if n <= 0:
-        return []
-    if n == 1:
-        return [1]
-    fib = [1, 1]
-    while len(fib) < n:
-        fib.append(fib[-1] + fib[-2])
-    return fib
+    print(f"\n📊 Fibonacci Series ({term_count} terms): {fib}")
 
-
-def get_term_count():
-    while True:
-        raw_value = input("Enter Fibonacci terms (5-12 recommended): ").strip()
-        try:
-            term_count = int(raw_value)
-            if term_count <= 0:
-                print("Please enter a positive number.")
-                continue
-            return term_count
-        except ValueError:
-            print("Invalid input. Please enter a whole number.")
-
-def build_layout(fib):
+    # Build Layout
     squares = []
-
     min_x, max_x = 0, 0
     min_y, max_y = 0, 0
-
     cx, cy = 0, 0
+    
+    prev_x, prev_y, prev_size = 0, 0, 0
+    prev_max_x, prev_max_y = 0, 0
 
     for i in range(len(fib)):
         size = fib[i]
@@ -67,35 +70,68 @@ def build_layout(fib):
                 min_y = min(min_y, y)
 
         squares.append((x, y, size, direction))
-
         prev_x, prev_y, prev_size = x, y, size
         prev_max_x, prev_max_y = x + size, y + size
 
-    return squares, min_x, min_y, max_x, max_y
+    total_w = max_x - min_x
+    total_h = max_y - min_y
+    padding = 60
 
-def draw_grid(t, x, y, size):
-    t.penup()
-    t.goto(x, y)
-    t.setheading(0)
-    t.pencolor("#374151")
-    t.pensize(1)
+    scale = min((1300 - padding * 2) / total_w, (850 - padding * 2) / total_h)
 
-    t.pendown()
-    for _ in range(4):
-        total_drawn = 0
-        while total_drawn < size:
-            t.forward(min(3, size - total_drawn))
-            t.penup()
-            t.forward(min(2, size - (total_drawn + 3)))
-            t.pendown()
-            total_drawn += 5
-        t.left(90)
-    t.penup()
+    offset_x = -(min_x + total_w / 2) * scale
+    offset_y = -(min_y + total_h / 2) * scale
 
-def draw_smooth_spiral(t, squares, to_screen, scale):
-    t.pencolor("#2563eb")
-    t.pensize(3)
-    t.penup()
+    # Initialize or reset Turtle Graphics
+    if not screen_initialized:
+        screen = turtle.Screen()
+        screen.setup(1400, 900)
+        screen.bgcolor("black")
+        screen.title("Perfect Fibonacci Spiral")
+        screen.tracer(0)
+        
+        grid = turtle.Turtle()
+        grid.speed(0)
+        grid.hideturtle()
+
+        spiral = turtle.Turtle()
+        spiral.speed(0)
+        spiral.hideturtle()
+        
+        screen_initialized = True
+    else:
+        grid.clear()
+        spiral.clear()
+
+    # Draw grid
+    for sq in squares:
+        x, y, size, _ = sq
+        sx = x * scale + offset_x
+        sy = y * scale + offset_y
+        grid_size = size * scale
+
+        grid.penup()
+        grid.goto(sx, sy)
+        grid.setheading(0)
+        grid.pencolor("#374151")
+        grid.pensize(1)
+        grid.pendown()
+        
+        for _ in range(4):
+            total_drawn = 0
+            while total_drawn < grid_size:
+                grid.forward(min(3, grid_size - total_drawn))
+                grid.penup()
+                grid.forward(min(2, grid_size - (total_drawn + 3)))
+                grid.pendown()
+                total_drawn += 5
+            grid.left(90)
+        grid.penup()
+
+    # Draw spiral
+    spiral.pencolor("#2563eb")
+    spiral.pensize(3)
+    spiral.penup()
 
     for i, square in enumerate(squares):
         x, y, size, direction = square
@@ -114,61 +150,26 @@ def draw_smooth_spiral(t, squares, to_screen, scale):
             start_x, start_y = x, y + size
             start_heading = 270
 
-        sx, sy = to_screen(start_x, start_y)
+        sx = start_x * scale + offset_x
+        sy = start_y * scale + offset_y
 
         if i == 0:
-            t.goto(sx, sy)
+            spiral.goto(sx, sy)
 
-        t.setheading(start_heading)
-        t.pendown()
-        t.circle(scaled_size, 90)
-    t.penup()
-
-def fibonacci_spiral(n):
-    screen = turtle.Screen()
-    screen.setup(1400, 900)
-    screen.bgcolor("black")
-    screen.title("Perfect Fibonacci Spiral")
-    screen.tracer(0)
-
-    grid = turtle.Turtle()
-    grid.speed(0)
-    grid.hideturtle()
-
-    spiral = turtle.Turtle()
-    spiral.speed(0)
-    spiral.hideturtle()
-
-    fib = fibonacci(n)
-    squares, min_x, min_y, max_x, max_y = build_layout(fib)
-
-    total_w = max_x - min_x
-    total_h = max_y - min_y
-    padding = 60
-
-    scale = min((1300 - padding * 2) / total_w, (850 - padding * 2) / total_h)
-
-    offset_x = -(min_x + total_w / 2) * scale
-    offset_y = -(min_y + total_h / 2) * scale
-
-    def to_screen(x, y):
-        return (x * scale + offset_x, y * scale + offset_y)
-
-    for sq in squares:
-        x, y, size, _ = sq
-        sx, sy = to_screen(x, y)
-        draw_grid(grid, sx, sy, size * scale)
-
-    draw_smooth_spiral(spiral, squares, to_screen, scale)
-
+        spiral.setheading(start_heading)
+        spiral.pendown()
+        spiral.circle(scaled_size, 90)
+        
+    spiral.penup()
     screen.update()
-    screen.exitonclick()
+    
+    print("\n🖥️  Drawing completed in Turtle window.")
 
-
-def main():
-    print_banner()
-    terms = get_term_count()
-    fibonacci_spiral(terms)
-
-if __name__ == "__main__":
-    main()
+    again = input("\n🔄 Do you want to generate another Fibonacci spiral? (y/n): ").strip().lower()
+    if again != 'y':
+        print("\n👋 Thanks for using Fibonacci Generator! Goodbye!\n")
+        try:
+            screen.bye()
+        except:
+            pass
+        break
