@@ -32,6 +32,8 @@ class TestFibonacci(unittest.TestCase):
                 with patch("sys.stdout", new=stdout_buf):
                     try:
                         spec.loader.exec_module(module)
+                        if hasattr(module, "main"):
+                            module.main()
                     except SystemExit:
                         pass
                     except StopIteration:

@@ -1,4 +1,4 @@
-// Project Registry
+﻿// Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
 // ============================================
@@ -403,6 +403,7 @@ function getProjectHTML(projectName) {
         '2048-game': () => get2048GameHTML(),
         'productive-pet': () => getProductivePetHTML(),
         'color-palette': () => getColorPaletteHTML(),
+        'progress-tracker': () => getProgressTrackerHTML(),
         'resume-analyzer': () => getAIResumeAnalyzerHTML(),
         'caesar-cipher': () => getCaesarCipherHTML(),
     };
@@ -2591,6 +2592,7 @@ function initTowerOfHanoi() {
 
     let moveCount = 0;
     let isAnimating = false;
+    let stopSolving = false;
 
     const diskHeight = 25;
     const maxDiskWidth = 160;
@@ -2609,7 +2611,7 @@ function initTowerOfHanoi() {
     ];
 
     function initializeGame() {
-
+        stopSolving=true;
         const diskCount = parseInt(diskInput.value);
 
         towers = [[], [], []];
@@ -2706,8 +2708,9 @@ function initTowerOfHanoi() {
     }
 
     async function moveDisk(from, to) {
-
+        if (stopSolving) return;
         const disk = towers[from].pop();
+        if (disk === undefined) return;
         towers[to].push(disk);
         moveCount++;
         moveCountEl.textContent = moveCount;
@@ -2720,19 +2723,22 @@ function initTowerOfHanoi() {
     }
 
     async function solveHanoi(n, from, to, aux) {
+        if (stopSolving) return;
         if (n === 1) {
             await moveDisk(from, to);
             return;
         }
 
         await solveHanoi(n - 1, from, aux, to);
+         if (stopSolving) return;
         await moveDisk(from, to);
+         if (stopSolving) return;
         await solveHanoi(n - 1, aux, to, from);
     }
 
     async function solve() {
         if (isAnimating) return;
-
+        stopSolving = false;
         isAnimating = true;
 
         solveBtn.disabled = true;
@@ -2746,9 +2752,10 @@ function initTowerOfHanoi() {
             1
         );
 
-        isAnimating = false;
-
-        solveBtn.disabled = false;
+        if (!stopSolving) {
+            isAnimating = false;
+            solveBtn.disabled = false;
+        }
     }
 
     solveBtn.addEventListener('click', solve);
@@ -3408,3 +3415,14 @@ function initializeProject(projectName) {
 //    - init[ProjectName]()    : Sets up localized states, scopes, and event listeners.
 // ============================================================================
 
+// ============================================
+// PROGRESS TRACKER
+// ============================================
+// Loaded from js/projects/progress-tracker.js
+
+// ============================================
+// PROJECT INITIALIZER — called by main.js after modal opens
+// ============================================
+function initializeProject(name) {
+    if (name === 'progress-tracker') initProgressTracker();
+}

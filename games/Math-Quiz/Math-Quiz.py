@@ -9,6 +9,7 @@ import random
 import json
 import os
 import time
+
 try:
     import winsound
 except ImportError:
@@ -30,7 +31,7 @@ def play_sound(sound_type):
         return
     try:
         if sound_type == 'correct':
-            winsound.Beep(1000, 150) # Frequency, duration
+            winsound.Beep(1000, 150)
         elif sound_type == 'wrong':
             winsound.Beep(300, 300)
         elif sound_type == 'game_over':
@@ -83,11 +84,11 @@ def generate_question(difficulty):
         return f"What is {a} - {b}?", a - b
     elif q_type == 'mul':
         a, b = random.randint(2, 15), random.randint(2, 15)
-        return f"What is {a} × {b}?", a * b
+        return f"What is {a} x {b}?", a * b
     elif q_type == 'div':
         b = random.randint(2, 10)
         a = b * random.randint(2, 10)
-        return f"What is {a} ÷ {b}?", a // b
+        return f"What is {a} / {b}?", a // b
     elif q_type == 'negative':
         a = random.randint(-25, -1)
         b = random.randint(1, 30)
@@ -108,7 +109,7 @@ def generate_question(difficulty):
         a = random.randint(1, 20)
         b = random.randint(1, 20)
         c = random.randint(1, 5)
-        return f"What is {a} + {b} × {c}?", a + b * c
+        return f"What is {a} + {b} x {c}?", a + b * c
     elif q_type == 'prime':
         num = random.randint(10, 50)
         return f"Is {num} a prime number?", "Yes" if is_prime(num) else "No"
@@ -164,41 +165,55 @@ def create_gradient(canvas, width, height, color1, color2):
         canvas.create_line(0, i, width, i, fill=color, tags="gradient")
 
 class RoundedButton(tk.Canvas):
-    def __init__(self, parent, text, command=None, width=200, height=50, radius=20, bg="#334155", active_bg="#38bdf8", fg="white", active_fg="black", font=("Helvetica", 14, "bold"), **kwargs):
-        super().__init__(parent, width=width, height=height, bg=parent['bg'], highlightthickness=0, **kwargs)
+    def __init__(self, parent, text, command=None, width=200, height=50,
+                 radius=20, bg="#334155", active_bg="#38bdf8",
+                 fg="white", active_fg="black",
+                 font=("Helvetica", 14, "bold"), **kwargs):
+        super().__init__(parent, width=width, height=height,
+                         bg=parent['bg'], highlightthickness=0, **kwargs)
         self.command = command
         self.bg_color = bg
         self.active_bg = active_bg
         self.fg_color = fg
         self.active_fg = active_fg
-        
+
         self.rect = self.round_rectangle(0, 0, width, height, radius=radius, fill=bg)
-        self.text_item = self.create_text(width/2, height/2, text=text, fill=fg, font=font)
-        
+        self.text_item = self.create_text(width / 2, height / 2, text=text,
+                                          fill=fg, font=font)
+
         self.bind("<ButtonPress-1>", self.on_press)
         self.bind("<ButtonRelease-1>", self.on_release)
         self.bind("<Enter>", self.on_enter)
         self.bind("<Leave>", self.on_leave)
 
     def round_rectangle(self, x1, y1, x2, y2, radius=25, **kwargs):
-        points = [x1+radius, y1, x1+radius, y1, x2-radius, y1, x2-radius, y1, x2, y1, x2, y1+radius, x2, y1+radius, x2, y2-radius, x2, y2-radius, x2, y2, x2-radius, y2, x2-radius, y2, x1+radius, y2, x1+radius, y2, x1, y2, x1, y2-radius, x1, y2-radius, x1, y1+radius, x1, y1+radius, x1, y1]
+        points = [
+            x1+radius, y1, x1+radius, y1, x2-radius, y1, x2-radius, y1,
+            x2, y1, x2, y1+radius, x2, y1+radius, x2, y2-radius,
+            x2, y2-radius, x2, y2, x2-radius, y2, x2-radius, y2,
+            x1+radius, y2, x1+radius, y2, x1, y2, x1, y2-radius,
+            x1, y2-radius, x1, y1+radius, x1, y1+radius, x1, y1
+        ]
         return self.create_polygon(points, **kwargs, smooth=True)
 
     def on_press(self, event):
         self.itemconfig(self.rect, fill=self.active_bg)
+
     def on_release(self, event):
         self.itemconfig(self.rect, fill=self.active_bg)
         if self.command:
             self.command()
+
     def on_enter(self, event):
         self.itemconfig(self.rect, fill=self.active_bg)
         self.itemconfig(self.text_item, fill=self.active_fg)
         self.config(cursor="hand2")
+
     def on_leave(self, event):
         self.itemconfig(self.rect, fill=self.bg_color)
         self.itemconfig(self.text_item, fill=self.fg_color)
         self.config(cursor="")
-    
+
     def config_text(self, text):
         self.itemconfig(self.text_item, text=text)
 
@@ -212,18 +227,21 @@ class MathQuizGUI:
         self.root.title("🧠 Math Quiz Game")
         self.root.geometry("900x650")
         self.root.resizable(False, False)
-        
+
         # Background Canvas for Gradient
-        self.bg_canvas = tk.Canvas(self.root, width=900, height=650, highlightthickness=0)
+        self.bg_canvas = tk.Canvas(self.root, width=900, height=650,
+                                   highlightthickness=0)
         self.bg_canvas.place(x=0, y=0, relwidth=1, relheight=1)
         create_gradient(self.bg_canvas, 900, 650, "#0f172a", "#1e293b")
-        
+
         # Central Panel
-        self.main_panel = tk.Frame(self.root, bg="#1e293b", bd=0, highlightthickness=2, highlightbackground="#38bdf8")
-        self.main_panel.place(relx=0.5, rely=0.5, anchor="center", width=800, height=550)
+        self.main_panel = tk.Frame(self.root, bg="#1e293b", bd=0,
+                                   highlightthickness=2,
+                                   highlightbackground="#38bdf8")
+        self.main_panel.place(relx=0.5, rely=0.5, anchor="center",
+                              width=800, height=550)
 
         self.scores = load_scores()
-
         self.create_home_screen()
 
     def clear_panel(self):
@@ -237,42 +255,59 @@ class MathQuizGUI:
         self.root.bind("<Escape>", self.handle_escape)
         
 
-        title = tk.Label(self.main_panel, text="🧠 MATH QUIZ", font=("Helvetica", 36, "bold"), fg="white", bg="#1e293b")
+        title = tk.Label(self.main_panel, text="🧠 MATH QUIZ",
+                         font=("Helvetica", 36, "bold"),
+                         fg="white", bg="#1e293b")
         title.pack(pady=(40, 10))
-        
-        stats_text = f"🏆 High Score: {self.scores.get('highest_score', 0)}   🔥 Best Streak: {self.scores.get('longest_streak', 0)}"
-        stats_label = tk.Label(self.main_panel, text=stats_text, font=("Helvetica", 14), fg="#fbbf24", bg="#1e293b")
+
+        stats_text = (f"🏆 High Score: {self.scores.get('highest_score', 0)}"
+                      f"   🔥 Best Streak: {self.scores.get('longest_streak', 0)}")
+        stats_label = tk.Label(self.main_panel, text=stats_text,
+                               font=("Helvetica", 14),
+                               fg="#fbbf24", bg="#1e293b")
         stats_label.pack(pady=(0, 20))
 
-        subtitle = tk.Label(self.main_panel, text="Choose Your Difficulty", font=("Helvetica", 16), fg="#cbd5e1", bg="#1e293b")
+        subtitle = tk.Label(self.main_panel, text="Choose Your Difficulty",
+                            font=("Helvetica", 16),
+                            fg="#cbd5e1", bg="#1e293b")
         subtitle.pack(pady=10)
 
         diff_frame = tk.Frame(self.main_panel, bg="#1e293b")
         diff_frame.pack(pady=20)
 
-        difficulties = [("🟢 Easy", 1), ("🟡 Medium", 2), ("🔴 Hard", 3), ("♾ Endless", 4)]
+        difficulties = [("🟢 Easy", 1), ("🟡 Medium", 2),
+                        ("🔴 Hard", 3), ("♾ Endless", 4)]
         self.selected_difficulty = 1
-
         self.diff_buttons = []
+
         for text, level in difficulties:
-            btn = RoundedButton(diff_frame, text=text, width=160, height=45, bg="#334155", font=("Helvetica", 12, "bold"),
+            btn = RoundedButton(diff_frame, text=text, width=160, height=45,
+                                bg="#334155", font=("Helvetica", 12, "bold"),
                                 command=lambda l=level: self.set_difficulty(l))
             btn.pack(side="left", padx=10)
             self.diff_buttons.append((btn, level))
 
-        self.mode_label = tk.Label(self.main_panel, text="Selected: 🟢 Easy", font=("Helvetica", 16, "bold"), fg="#38bdf8", bg="#1e293b")
+        self.mode_label = tk.Label(self.main_panel, text="Selected: 🟢 Easy",
+                                   font=("Helvetica", 16, "bold"),
+                                   fg="#38bdf8", bg="#1e293b")
         self.mode_label.pack(pady=30)
 
-        start_btn = RoundedButton(self.main_panel, text="▶ START GAME", width=250, height=60, bg="#38bdf8", fg="black", active_bg="#0284c7", active_fg="white", font=("Helvetica", 18, "bold"), command=self.start_game)
+        start_btn = RoundedButton(self.main_panel, text="▶ START GAME",
+                                  width=250, height=60,
+                                  bg="#38bdf8", fg="black",
+                                  active_bg="#0284c7", active_fg="white",
+                                  font=("Helvetica", 18, "bold"),
+                                  command=self.start_game)
         start_btn.pack(pady=10)
-        
-        self.set_difficulty(1) # default highlight
+
+        self.set_difficulty(1)
 
     def set_difficulty(self, level):
         self.selected_difficulty = level
-        labels = {1: "🟢 Easy", 2: "🟡 Medium", 3: "🔴 Hard", 4: "♾ Endless"}
+        labels = {1: "🟢 Easy", 2: "🟡 Medium",
+                  3: "🔴 Hard", 4: "♾ Endless"}
         self.mode_label.config(text=f"Selected: {labels[level]}")
-        
+
         for btn, lvl in self.diff_buttons:
             if lvl == level:
                 btn.itemconfig(btn.rect, fill="#38bdf8")
@@ -290,16 +325,13 @@ class MathQuizGUI:
         self.score = 0
         self.streak = 0
         self.current_best_streak = 0
-        self.game_active = True
-        self.game_paused = False
-        
-        # Analytics
+
         self.question_count = 0
         self.correct_count = 0
         self.fastest_time = float('inf')
         self.hardest_question_time = 0
         self.hardest_question = "None"
-        
+
         if self.selected_difficulty == 4:
             self.difficulty = 1
         else:
@@ -315,13 +347,19 @@ class MathQuizGUI:
         top_frame.pack(fill="x", padx=20, pady=20)
         top_frame.pack_propagate(False)
 
-        self.score_label = tk.Label(top_frame, text="⭐ Score: 0", font=("Helvetica", 14, "bold"), fg="white", bg="#0f172a")
+        self.score_label = tk.Label(top_frame, text="⭐ Score: 0",
+                                    font=("Helvetica", 14, "bold"),
+                                    fg="white", bg="#0f172a")
         self.score_label.pack(side="left", padx=15)
 
-        self.streak_label = tk.Label(top_frame, text="🔥 Streak: 0", font=("Helvetica", 14, "bold"), fg="white", bg="#0f172a")
+        self.streak_label = tk.Label(top_frame, text="🔥 Streak: 0",
+                                     font=("Helvetica", 14, "bold"),
+                                     fg="white", bg="#0f172a")
         self.streak_label.pack(side="left", padx=15)
 
-        self.lives_label = tk.Label(top_frame, text="❤️❤️❤️", font=("Helvetica", 16), fg="white", bg="#0f172a")
+        self.lives_label = tk.Label(top_frame, text="❤️❤️❤️",
+                                    font=("Helvetica", 16),
+                                    fg="white", bg="#0f172a")
         self.lives_label.pack(side="right", padx=15)
         pause_btn = RoundedButton(
             top_frame,
@@ -337,22 +375,67 @@ class MathQuizGUI:
         self.root.bind("<Escape>", self.handle_escape)
 
         # Question Card
-        self.q_card = tk.Frame(self.main_panel, bg="#334155", bd=0, highlightthickness=1, highlightbackground="#475569")
+        self.q_card = tk.Frame(self.main_panel, bg="#334155", bd=0,
+                               highlightthickness=1,
+                               highlightbackground="#475569")
         self.q_card.pack(pady=20, padx=40, fill="x", ipady=20)
 
-        self.question_label = tk.Label(self.q_card, text="Question", font=("Helvetica", 26, "bold"), fg="white", bg="#334155", wraplength=600, justify="center")
+        self.question_label = tk.Label(self.q_card, text="Question",
+                                       font=("Helvetica", 26, "bold"),
+                                       fg="white", bg="#334155",
+                                       wraplength=600, justify="center")
         self.question_label.pack()
 
         self.options_frame = tk.Frame(self.main_panel, bg="#1e293b")
         self.options_frame.pack(pady=10)
 
-        self.option_buttons = []
-        for i in range(4):
-            btn = RoundedButton(self.options_frame, text="Option", width=300, height=55, bg="#0f172a", active_bg="#38bdf8", font=("Helvetica", 16))
-            btn.grid(row=i // 2, column=i % 2, padx=15, pady=15)
-            self.option_buttons.append(btn)
+        # ── A B C D Option Buttons ──────────────────────
+        LABELS = ["A", "B", "C", "D"]
+        CIRCLE_COLORS = ["#6366f1", "#ec4899", "#f59e0b", "#10b981"]
 
-        self.feedback_label = tk.Label(self.main_panel, text="", font=("Helvetica", 18, "bold"), fg="white", bg="#1e293b")
+        self.option_buttons = []
+        self.option_cells = []
+
+        for i in range(4):
+            # Outer cell frame
+            cell = tk.Frame(self.options_frame, bg="#1e293b")
+            cell.grid(row=i // 2, column=i % 2, padx=12, pady=10)
+
+            # Inner frame to hold circle + button side by side
+            inner = tk.Frame(cell, bg="#0f172a",
+                             highlightthickness=1,
+                             highlightbackground="#334155")
+            inner.pack()
+
+            # Circle label with A / B / C / D
+            circle_lbl = tk.Label(inner,
+                                  text=LABELS[i],
+                                  font=("Helvetica", 13, "bold"),
+                                  fg=CIRCLE_COLORS[i],
+                                  bg="#0f172a",
+                                  width=3,
+                                  relief="ridge",
+                                  bd=2,
+                                  padx=4,
+                                  pady=8)
+            circle_lbl.pack(side="left")
+
+            # Answer button
+            btn = RoundedButton(inner, text="Option",
+                                width=240, height=50,
+                                bg="#0f172a",
+                                active_bg="#38bdf8",
+                                active_fg="black",
+                                font=("Helvetica", 15, "bold"))
+            btn.pack(side="left")
+
+            self.option_buttons.append(btn)
+            self.option_cells.append(cell)
+        # ────────────────────────────────────────────────
+
+        self.feedback_label = tk.Label(self.main_panel, text="",
+                                       font=("Helvetica", 18, "bold"),
+                                       fg="white", bg="#1e293b")
         self.feedback_label.pack(pady=20)
 
     def update_status(self):
@@ -447,26 +530,27 @@ class MathQuizGUI:
         question, correct = generate_question(self.difficulty)
         self.correct_answer = correct
         self.current_question_text = question
-        
+
         options = generate_options(correct)
         self.question_label.config(text=f"Q{self.question_count}. {question}")
 
         for btn, option in zip(self.option_buttons, options):
             btn.config_text(str(option))
-            # Need to re-bind command to capture current option
             btn.command = lambda opt=option: self.check_answer(opt)
+            # Reset button color on new question
+            btn.itemconfig(btn.rect, fill="#0f172a")
+            btn.itemconfig(btn.text_item, fill="white")
+            btn.bg_color = "#0f172a"
+            btn.fg_color = "white"
 
         self.feedback_label.config(text="")
-        
-        # Start timer for analytics
         self.question_start_time = time.time()
 
     def check_answer(self, selected):
         if self.game_paused:
             return
         time_taken = time.time() - self.question_start_time
-        
-        # Disable buttons temporarily
+
         for btn in self.option_buttons:
             btn.command = None
 
@@ -476,7 +560,7 @@ class MathQuizGUI:
             self.score += 10
             self.streak += 1
             self.current_best_streak = max(self.current_best_streak, self.streak)
-            
+
             if time_taken < self.fastest_time:
                 self.fastest_time = time_taken
             if time_taken > self.hardest_question_time:
@@ -488,12 +572,15 @@ class MathQuizGUI:
                 self.score += 5
                 bonus = " 🎉 Bonus +5"
 
-            self.feedback_label.config(text=f"✅ Correct!{bonus}", fg="#22c55e")
+            self.feedback_label.config(
+                text=f"✅ Correct!{bonus}", fg="#22c55e")
         else:
             play_sound('wrong')
             self.lives -= 1
             self.streak = 0
-            self.feedback_label.config(text=f"❌ Wrong! Correct Answer: {self.correct_answer}", fg="#ef4444")
+            self.feedback_label.config(
+                text=f"❌ Wrong! Correct Answer: {self.correct_answer}",
+                fg="#ef4444")
 
         self.update_status()
 
@@ -567,44 +654,66 @@ class MathQuizGUI:
 
     def game_over(self):
         self.clear_panel()
-        
+
         save_scores(self.score, self.current_best_streak)
         self.scores = load_scores()
 
-        accuracy = (self.correct_count / self.question_count) * 100 if self.question_count > 0 else 0
+        accuracy = ((self.correct_count / self.question_count) * 100
+                    if self.question_count > 0 else 0)
         grade = self.get_grade(accuracy)
-        fastest_str = f"{self.fastest_time:.1f}s" if self.fastest_time != float('inf') else "N/A"
+        fastest_str = (f"{self.fastest_time:.1f}s"
+                       if self.fastest_time != float('inf') else "N/A")
 
-        title = tk.Label(self.main_panel, text="💀 GAME OVER", font=("Helvetica", 32, "bold"), fg="#ef4444", bg="#1e293b")
+        title = tk.Label(self.main_panel, text="💀 GAME OVER",
+                         font=("Helvetica", 32, "bold"),
+                         fg="#ef4444", bg="#1e293b")
         title.pack(pady=(30, 20))
-        
-        stats_frame = tk.Frame(self.main_panel, bg="#334155", bd=0, highlightthickness=1, highlightbackground="#475569")
+
+        stats_frame = tk.Frame(self.main_panel, bg="#334155", bd=0,
+                               highlightthickness=1,
+                               highlightbackground="#475569")
         stats_frame.pack(fill="x", padx=60, ipady=15)
-        
+
         stats = [
-            ("⭐ Final Score", f"{self.score}"),
-            ("🎯 Accuracy", f"{accuracy:.1f}%"),
-            ("🔥 Best Streak", f"{self.current_best_streak}"),
+            ("⭐ Final Score",    f"{self.score}"),
+            ("🎯 Accuracy",       f"{accuracy:.1f}%"),
+            ("🔥 Best Streak",    f"{self.current_best_streak}"),
             ("⚡ Fastest Answer", fastest_str),
-            ("📊 Grade", grade)
+            ("📊 Grade",          grade),
         ]
-        
-        for i, (lbl, val) in enumerate(stats):
+
+        for lbl, val in stats:
             f = tk.Frame(stats_frame, bg="#334155")
             f.pack(fill="x", padx=40, pady=5)
-            tk.Label(f, text=lbl, font=("Helvetica", 14), fg="#cbd5e1", bg="#334155").pack(side="left")
-            tk.Label(f, text=val, font=("Helvetica", 14, "bold"), fg="white", bg="#334155").pack(side="right")
-            
-        hardest_lbl = tk.Label(self.main_panel, text=f"🧠 Hardest Q: {self.hardest_question}", font=("Helvetica", 12, "italic"), fg="#94a3b8", bg="#1e293b")
+            tk.Label(f, text=lbl, font=("Helvetica", 14),
+                     fg="#cbd5e1", bg="#334155").pack(side="left")
+            tk.Label(f, text=val, font=("Helvetica", 14, "bold"),
+                     fg="white", bg="#334155").pack(side="right")
+
+        hardest_lbl = tk.Label(
+            self.main_panel,
+            text=f"🧠 Hardest Q: {self.hardest_question}",
+            font=("Helvetica", 12, "italic"),
+            fg="#94a3b8", bg="#1e293b")
         hardest_lbl.pack(pady=15)
 
         btn_frame = tk.Frame(self.main_panel, bg="#1e293b")
         btn_frame.pack(pady=20)
 
-        play_again_btn = RoundedButton(btn_frame, text="🔄 Play Again", width=180, height=50, bg="#10b981", active_bg="#059669", font=("Helvetica", 14, "bold"), command=self.create_home_screen)
+        play_again_btn = RoundedButton(
+            btn_frame, text="🔄 Play Again",
+            width=180, height=50,
+            bg="#10b981", active_bg="#059669",
+            font=("Helvetica", 14, "bold"),
+            command=self.create_home_screen)
         play_again_btn.pack(side="left", padx=10)
 
-        quit_btn = RoundedButton(btn_frame, text="❌ Quit", width=180, height=50, bg="#ef4444", active_bg="#b91c1c", font=("Helvetica", 14, "bold"), command=self.root.destroy)
+        quit_btn = RoundedButton(
+            btn_frame, text="❌ Quit",
+            width=180, height=50,
+            bg="#ef4444", active_bg="#b91c1c",
+            font=("Helvetica", 14, "bold"),
+            command=self.root.destroy)
         quit_btn.pack(side="left", padx=10)
 
 

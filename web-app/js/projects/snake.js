@@ -269,6 +269,7 @@ function gameEngine() {
         direction = { x: 0, y: 0 };
         document.getElementById('final-score').innerHTML = score;
         document.getElementById("game-over-overlay").classList.remove("hidden");
+        if (window.AudioManager) AudioManager.play("snake_die");
         
         // 🚨 CRITICAL FIX: Only play the sound ONCE right when impact happens
         if (!isGameOver) {

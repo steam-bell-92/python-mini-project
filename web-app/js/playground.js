@@ -36,6 +36,8 @@
     /* ================================================================
        2.  CONSTANTS
     ================================================================ */
+    var EXECUTION_TIMEOUT_MS = 5000;  // 5 seconds timeout
+    var currentTimeoutId = null;
     var WORKER_SCRIPT = 'js/playground-worker.js';
 
     /* ================================================================
@@ -605,6 +607,10 @@
                     break;
 
                 case 'done':
+                    if (currentTimeoutId) {
+                        clearTimeout(currentTimeoutId);
+                        currentTimeoutId = null;
+                    }
                     if (e.data.stdout) printLine(e.data.stdout.trimEnd(), 'out');
                     if (e.data.stderr) printLine(e.data.stderr.trimEnd(), 'err');
                     if (!e.data.stdout && !e.data.stderr) printLine('(no output)', 'info');
@@ -612,6 +618,10 @@
                     break;
 
                 case 'error':
+                    if (currentTimeoutId) {
+                        clearTimeout(currentTimeoutId);
+                        currentTimeoutId = null;
+                    }
                     printLine(e.data.message, 'err');
                     setRunning(false);
                     break;
@@ -661,6 +671,17 @@
 
         setRunning(true);
         printLine('>>> Running\u2026', 'info');
+
+        if (currentTimeoutId) {
+            clearTimeout(currentTimeoutId);
+            currentTimeoutId = null;
+        }
+    
+        currentTimeoutId = setTimeout(function() {
+            printLine('⏱️ Execution timeout (5s) - possible infinite loop. Stopping...', 'info');
+            stopExecution();
+        }, EXECUTION_TIMEOUT_MS);
+
         worker.postMessage({ type: 'run', code: code });
     }
 
