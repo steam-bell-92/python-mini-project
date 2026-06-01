@@ -112,22 +112,41 @@ function getMathQuizHTML() {
                 margin-bottom: 1.5rem;
             }
 
-            .quiz-option-btn {
-                padding: 1rem;
-                font-size: 1.3rem;
-                font-weight: bold;
-                border: 2px solid var(--border-color);
-                border-radius: 12px;
-                background: var(--surface-color);
-                color: var(--text-color);
-                cursor: pointer;
-                transition: var(--transition);
-            }
+            
+              .quiz-option-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 18px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--surface-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    width: 100%;
+}
 
-            .quiz-option-btn:hover {
-                border-color: var(--primary-color);
-                transform: scale(1.03);
-            }
+.quiz-option-btn:hover {
+    border-color: var(--primary-color);
+    transform: scale(1.02);
+}
+
+.option-circle {
+    min-width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+    border: 2.5px solid;
+}
 
             .quiz-option-btn.correct {
                 background: var(--success-color);
@@ -441,13 +460,30 @@ function initMathQuiz() {
         msgEl.textContent = '';
         total += 10;
 
-        options.forEach((opt, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'quiz-option-btn';
-            btn.textContent = opt;
-            btn.addEventListener('click', () => handleAnswer(i, correctIdx, correct, opt));
-            optWrap.appendChild(btn);
-        });
+       const LABELS = ['A', 'B', 'C', 'D'];
+const COLORS = ['#6366f1', '#ec4899', '#f59e0b', '#10b981'];
+
+options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option-btn';
+
+    // Circle with A/B/C/D
+    const circle = document.createElement('span');
+    circle.className = 'option-circle';
+    circle.textContent = LABELS[i];
+    circle.style.color = COLORS[i];
+    circle.style.borderColor = COLORS[i];
+    circle.style.background = COLORS[i] + '22';
+
+    // Option text
+    const text = document.createElement('span');
+    text.textContent = opt;
+
+    btn.appendChild(circle);
+    btn.appendChild(text);
+    btn.addEventListener('click', () => handleAnswer(i, correctIdx, correct, opt));
+    optWrap.appendChild(btn);
+});
 
         updateHUD();
         startTimer();

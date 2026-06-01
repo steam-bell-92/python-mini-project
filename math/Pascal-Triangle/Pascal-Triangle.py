@@ -1,3 +1,13 @@
+import sys
+import os
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+from utils.validation import get_int, get_choice
+
 def generate_pascal_triangle(n: int) -> list[list[int]]:
     if n <= 0:
         return []
@@ -17,7 +27,10 @@ def main() -> None:
     print("Each number is the sum of the two numbers above it\n")
 
     try:
-        n = int(input("➡️  Enter the number of rows to generate: "))
+        n = get_int(
+            prompt="➡️  Enter the number of rows to generate: ",
+            error_invalid="❌ Invalid input! Please enter a valid number."
+        )
         
         if n <= 0:
             print("❌ Please enter a positive number!")
@@ -28,7 +41,11 @@ def main() -> None:
             print("1️⃣  Whole Pascal's Triangle")
             print("2️⃣  Specific Row")
             
-            choice = input("\n🎯 Enter your choice (1/2): ")
+            choice = get_choice(
+                prompt="\n🎯 Enter your choice (1/2): ",
+                choices=["1", "2"],
+                error_invalid="❌ Invalid choice!"
+            )
             
             if choice == '1':
                 max_width = len(' '.join(map(str, triangle[-1])))
@@ -39,26 +56,22 @@ def main() -> None:
                     print(f"Row {i+1}: {row_str.center(max_width)}")
             
             elif choice == '2':
-                try:
-                    row_num = int(input(f"\n📍 Enter row number (1 to {n}): "))
-                except ValueError:
-                    print("⚠️ Oops! That doesn't look like a valid number. Please try again.")
-                    row_num = None
+                row_num = get_int(
+                    prompt=f"\n📍 Enter row number (1 to {n}): ",
+                    error_invalid="⚠️ Oops! That doesn't look like a valid number. Please try again."
+                )
 
-                if row_num is not None and 1 <= row_num <= len(triangle):
+                if 1 <= row_num <= len(triangle):
                     print(f"\n📍 Row {row_num} of Pascal's Triangle:")
                     print(f"   {triangle[row_num-1]}")
                     print(f"\n📊 Elements: {' → '.join(map(str, triangle[row_num-1]))}")
-                elif row_num is not None:
-                    print(f"\n❌ Row {row_num} doesn't exist in the generated triangle!")
-
                 else:
-                    print("❌ Invalid choice!")
+                    print(f"\n❌ Row {row_num} doesn't exist in the generated triangle!")
             
             print(f"\n💡 Total rows generated: {n}")
 
-    except ValueError:
-        print("❌ Invalid input! Please enter a valid number.")
+    except (KeyboardInterrupt, SystemExit):
+        print("\n👋 Goodbye!")
 
 if __name__ == "__main__":
     main()

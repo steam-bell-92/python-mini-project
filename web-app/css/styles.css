@@ -537,6 +537,75 @@ body.sidebar-active .sidebar-dock {
   border-color: var(--border-accent);
 }
 
+/* ── Desktop Toggles and Layout Adjustments ────────────────── */
+
+.collapse-sidebar-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease;
+}
+
+.collapse-sidebar-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--border-accent);
+  transform: translateY(-1px);
+}
+
+.sidebar-dock.collapsed {
+  width: 84px !important;
+  min-width: 84px !important;
+  overflow: hidden;
+}
+
+.sidebar-dock.collapsed .sidebar-label,
+.sidebar-dock.collapsed .sidebar-menu-title,
+.sidebar-dock.collapsed .logo-tagline,
+.sidebar-dock.collapsed .sidebar-search {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sidebar-dock.collapsed .logo-mini {
+  opacity: 0;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-dock.collapsed .sidebar-tab {
+  justify-content: center;
+  padding: 14px 0;
+}
+
+.sidebar-dock.collapsed .sidebar-icon {
+  margin-right: 0 !important;
+}
+
+.sidebar-dock.collapsed .sidebar-controls {
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 /* ── Floating Hero Zone Controls ───────────────────────────── */
 
 .hero-controls {
@@ -611,7 +680,10 @@ body.sidebar-active .hero-controls {
   #playgroundSection,
   .footer {
     padding-left: 312px !important;
-    transition: padding-left var(--duration-slow) var(--ease-out-expo);
+    transition: 
+      padding-left 520ms var(--ease-out-expo),
+      padding-right 520ms var(--ease-out-expo),
+      margin 520ms var(--ease-out-expo);;
   }
 }
 
@@ -2070,6 +2142,39 @@ body.sidebar-active .hero-controls {
   gap: 16px;
 }
 
+/* ── Desktop Sidebar-Aware Project Layout ───────────────────── */
+@media (min-width: 1100px) {
+  .projects-section {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding-right: 24px !important;
+  }
+
+  .projects-section > .container {
+    max-width: none !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  body.sidebar-active:not(.sidebar-collapsed) .projects-section {
+    padding-left: 312px !important;
+  }
+
+  body.sidebar-collapsed .projects-section {
+    padding-left: 128px !important;
+  }
+
+  body.sidebar-collapsed .projects-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 20px;
+  }
+
+  body:not(.sidebar-collapsed) .projects-grid {
+    gap: 24px;
+  }
+}
+
 /* Project Card */
 .project-card {
   position: relative;
@@ -2081,10 +2186,10 @@ body.sidebar-active .hero-controls {
   border: 1px solid var(--border);
   cursor: pointer;
   transition:
-    transform var(--duration-base) var(--ease-out-expo),
-    border-color var(--duration-fast) ease,
-    box-shadow var(--duration-base) ease,
-    background var(--duration-fast) ease;
+      transform 360ms var(--ease-out-expo),
+      border-color var(--duration-fast) ease,
+      box-shadow 360ms ease,
+      background var(--duration-fast) ease;
   overflow: hidden;
   -webkit-user-select: none;
   user-select: none;
@@ -3124,6 +3229,10 @@ body.sidebar-active .hero-controls {
   color: var(--accent);
 }
 
+.footer-links a:active {
+  transform: scale(0.96);
+}
+
 .footer-bottom {
   display: flex;
   flex-direction: column;
@@ -3163,6 +3272,15 @@ body.sidebar-active .hero-controls {
 .footer {
   overflow: hidden;
   position: relative;
+
+  /* opacity: 0;
+  transform: translateY(40px); */
+  transition:opacity 0.8s ease,transform 0.8s ease;
+}
+
+.footer.footer-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .footer::before {
@@ -3223,16 +3341,61 @@ body.sidebar-active .hero-controls {
   content: none;
 }
 
+.footer-social-icons a::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+
+  background: linear-gradient(
+    90deg,
+    #9fddb5,
+    #06b6d4,
+    #f6c58d,
+    #9fddb5
+  );
+
+  background-size: 300% 300%;
+
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.footer-social-icons a:hover::after {
+  opacity: 1;
+  /* animation: borderFlow 3s linear infinite; */
+  animation: socialRipple 0.8s ease-out;
+
+}
+
 .footer-social-icons a > * {
-  position: static;           /* reset z-index stacking */
+  position: relative;           /* reset z-index stacking */
+  border: 1px solid transparent;
+  transition: transform 0.2s ease;
+}
+
+.footer-social-icons a:active {
+  transform: scale(0.9);
 }
 
 .footer-social-icons a:hover {
   background: var(--accent-soft, rgba(34,197,94,.12));
   border-color: var(--border-accent, rgba(34,197,94,.2));
   color: var(--accent, #22c55e);
-  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.18);
+  transform: translateY(-3px) scale(1.08) rotate(5deg);
 }
 
 /* Arcade light */
@@ -3320,10 +3483,12 @@ body.sidebar-active .hero-controls {
   opacity: 0;
   transform: scaleX(0.4);
   transform-origin: left;
-  transition:
-    opacity   0.3s ease,
-    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition:opacity   0.3s ease,transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   z-index: 0;
+  background-size: 300% 300%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
 }
 
 /* Gradient underline slides in from left */
@@ -3356,7 +3521,10 @@ body.sidebar-active .hero-controls {
   background-clip: text;
   padding-left: 10px;
   transform: translateX(3px);
-  box-shadow: none;
+  box-shadow:
+    0 0 10px rgba(34, 197, 94, 0.4),
+    0 0 20px rgba(6, 182, 212, 0.35),
+    0 0 30px rgba(245, 158, 11, 0.25);
 }
 
 .footer-links a:hover::before {
@@ -3365,7 +3533,21 @@ body.sidebar-active .hero-controls {
 }
 
 .footer-links a:hover::after {
-  transform: scaleX(1);
+  opacity: 1;
+  animation: gradientSpin 3s linear infinite;
+  width: 100%;
+}
+
+.footer-links a:active {
+  transform: scale(0.96);
+  opacity: 0.8;
+}
+
+.footer-links a:focus-visible,
+.footer-social-icons a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 /* ── FIX: icons inside hovered links must stay visible ──────────── */

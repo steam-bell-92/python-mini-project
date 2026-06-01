@@ -1,4 +1,13 @@
+import sys
+import os
 import tkinter as tk
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+from utils.validation import get_int
 
 def is_happy_number(n: int) -> tuple[bool, list[int]]:
     seen = set()
@@ -15,10 +24,14 @@ def is_happy_number(n: int) -> tuple[bool, list[int]]:
 
 def run_visualizer(n: int, is_happy: bool, sequence: list[int]) -> None:
     # ---------------- TKINTER VISUALIZER ---------------- #
-    root = tk.Tk()
-    root.title("Happy Number Visualizer")
-    root.geometry("1000x600")
-    root.configure(bg="#f4f4f4")
+    try:
+        root = tk.Tk()
+        root.title("Happy Number Visualizer")
+        root.geometry("1000x600")
+        root.configure(bg="#f4f4f4")
+    except Exception:
+        # Tkinter not available/supported (e.g. headless CI environments)
+        return
 
     # Frame
     frame = tk.Frame(root, bg="#f4f4f4")
@@ -100,17 +113,13 @@ def main() -> None:
 
     while True:
         print("=" * 50)
-        try:
-            user_input = input("➡️  Enter a number: ").strip()
-            if not user_input:
-                print("❌ Error: Input cannot be empty.")
-                continue
-            n = int(user_input)
-            if n <= 0:
-                print("❌ Please enter a positive number!")
-                continue
-        except ValueError:
-            print("❌ Error: Please enter a valid positive integer.")
+        n = get_int(
+            prompt="➡️  Enter a number: ",
+            error_empty="❌ Error: Input cannot be empty.",
+            error_invalid="❌ Error: Please enter a valid positive integer."
+        )
+        if n <= 0:
+            print("❌ Please enter a positive number!")
             continue
 
         is_happy, sequence = is_happy_number(n)

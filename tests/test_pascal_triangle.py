@@ -74,12 +74,12 @@ class TestPascalTriangle(unittest.TestCase):
     @patch('builtins.input')
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_main_flow_specific_row_value_error(self, mock_stdout, mock_input):
-        # Inputs: n=5, choice='2', row_num='abc'
-        mock_input.side_effect = ["5", "2", "abc"]
+        # Inputs: n=5, choice='2', row_num='abc', then 3
+        mock_input.side_effect = ["5", "2", "abc", "3"]
         main()
         output = mock_stdout.getvalue()
         self.assertIn("Oops! That doesn't look like a valid number. Please try again.", output)
-        self.assertIn("Invalid choice!", output)
+        self.assertIn("[1, 2, 1]", output)
 
     @patch('builtins.input')
     @patch('sys.stdout', new_callable=io.StringIO)
@@ -93,11 +93,12 @@ class TestPascalTriangle(unittest.TestCase):
     @patch('builtins.input')
     @patch('sys.stdout', new_callable=io.StringIO)
     def test_main_flow_value_error_n(self, mock_stdout, mock_input):
-        # Inputs: n='abc'
-        mock_input.side_effect = ["abc"]
+        # Inputs: n='abc', then 5, then choice 1
+        mock_input.side_effect = ["abc", "5", "1"]
         main()
         output = mock_stdout.getvalue()
         self.assertIn("Invalid input! Please enter a valid number.", output)
+        self.assertIn("Row 5:", output)
 
 if __name__ == '__main__':
     unittest.main()

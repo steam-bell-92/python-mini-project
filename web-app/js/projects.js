@@ -1,4 +1,4 @@
-// Project Registry
+﻿// Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
 // ============================================
@@ -2592,6 +2592,7 @@ function initTowerOfHanoi() {
 
     let moveCount = 0;
     let isAnimating = false;
+    let stopSolving = false;
 
     const diskHeight = 25;
     const maxDiskWidth = 160;
@@ -2610,7 +2611,7 @@ function initTowerOfHanoi() {
     ];
 
     function initializeGame() {
-
+        stopSolving=true;
         const diskCount = parseInt(diskInput.value);
 
         towers = [[], [], []];
@@ -2707,8 +2708,9 @@ function initTowerOfHanoi() {
     }
 
     async function moveDisk(from, to) {
-
+        if (stopSolving) return;
         const disk = towers[from].pop();
+        if (disk === undefined) return;
         towers[to].push(disk);
         moveCount++;
         moveCountEl.textContent = moveCount;
@@ -2721,19 +2723,22 @@ function initTowerOfHanoi() {
     }
 
     async function solveHanoi(n, from, to, aux) {
+        if (stopSolving) return;
         if (n === 1) {
             await moveDisk(from, to);
             return;
         }
 
         await solveHanoi(n - 1, from, aux, to);
+         if (stopSolving) return;
         await moveDisk(from, to);
+         if (stopSolving) return;
         await solveHanoi(n - 1, aux, to, from);
     }
 
     async function solve() {
         if (isAnimating) return;
-
+        stopSolving = false;
         isAnimating = true;
 
         solveBtn.disabled = true;
@@ -2747,9 +2752,10 @@ function initTowerOfHanoi() {
             1
         );
 
-        isAnimating = false;
-
-        solveBtn.disabled = false;
+        if (!stopSolving) {
+            isAnimating = false;
+            solveBtn.disabled = false;
+        }
     }
 
     solveBtn.addEventListener('click', solve);

@@ -1,3 +1,13 @@
+import sys
+import os
+
+# Add project root to sys.path
+if "__file__" in globals():
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
+else:
+    sys.path.append(os.path.abspath(os.getcwd()))
+from utils.validation import get_choice, get_int_list
+
 def bubble_sort(arr: list[int], reverse: bool = False) -> list[int]:
     """Sorts a list of integers using the Bubble Sort algorithm.
     
@@ -38,38 +48,32 @@ def main() -> None:
 
     while True:
         print("=" * 50)
-        try:
-            user_input = input("➡️  Enter numbers to sort separated by spaces (e.g., 64 34 25): ").strip()
-            if not user_input:
-                print("❌ Error: Input cannot be empty!")
-                continue
+        
+        arr = get_int_list(
+            prompt="➡️  Enter numbers to sort separated by spaces (e.g., 64 34 25): ",
+            error_empty="❌ Error: Input cannot be empty!",
+            error_invalid="❌ Error: Please enter valid integers only."
+        )
+        
+        print("\nChoose sorting order:")
+        print("1️⃣  Ascending")
+        print("2️⃣  Descending")
+        
+        order_choice = get_choice(
+            prompt="🎯 Enter your choice (1 or 2): ",
+            choices=["1", "2"],
+            error_invalid="❌ Invalid sorting choice! Please select 1 or 2."
+        )
 
-            # Convert string input into list of integers
-            arr = [int(x) for x in user_input.split()]
-            
-            print("\nChoose sorting order:")
-            print("1️⃣  Ascending")
-            print("2️⃣  Descending")
-            
-            order_choice = input("🎯 Enter your choice (1 or 2): ").strip()
-            
-            if order_choice not in ("1", "2"):
-                print("❌ Invalid sorting choice! Please select 1 or 2.")
-                continue
+        reverse = (order_choice == "2")
+        
+        sorted_arr = bubble_sort(arr, reverse)
 
-            reverse = (order_choice == "2")
-            
-            sorted_arr = bubble_sort(arr, reverse)
-
-            print(f"\n📊 Original list: {arr}")
-            if reverse:
-                print(f"✅ Sorted list (Descending): {sorted_arr}")
-            else:
-                print(f"✅ Sorted list (Ascending): {sorted_arr}")
-
-        except ValueError:
-            print("❌ Error: Please enter valid integers only.")
-            continue
+        print(f"\n📊 Original list: {arr}")
+        if reverse:
+            print(f"✅ Sorted list (Descending): {sorted_arr}")
+        else:
+            print(f"✅ Sorted list (Ascending): {sorted_arr}")
 
         again = input("\n🔄 Do you want to sort another list? (y/n): ").strip().lower()
         if again != 'y':

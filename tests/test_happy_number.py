@@ -73,5 +73,13 @@ class TestHappyNumber(unittest.TestCase):
         self.assertIn("Sequence: 4 → 16 → 37 → 58 → 89 → 145 → 42 → 20 → 4", output)
         mock_visualizer.assert_called_once_with(4, False, [4, 16, 37, 58, 89, 145, 42, 20, 4])
 
+    @patch('tkinter.Tk')
+    @patch('tkinter.Frame')
+    @patch('tkinter.Scrollbar')
+    @patch('tkinter.Canvas')
+    def test_run_visualizer(self, mock_canvas, mock_scrollbar, mock_frame, mock_tk):
+        happy_number_module.run_visualizer(19, True, [19, 82, 68, 100, 1])
+        mock_tk.assert_called_once()
+
 if __name__ == '__main__':
     unittest.main()
