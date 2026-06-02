@@ -3345,7 +3345,7 @@ function getProductivePetHTML() {
 
 
 function initializeProject(projectName) {
-
+    console.log('initializeProject called for:', projectName);
     const initializers = {
         'tic-tac-toe': 'initTicTacToe',
         'rock-paper-scissor': 'initRockPaperScissor',

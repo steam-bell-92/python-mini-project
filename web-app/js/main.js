@@ -28,14 +28,6 @@ function escapeHtml(str) {
   return d.innerHTML;
 }
 
-function safeRun(fn) {
-  try {
-    fn();
-  } catch (e) {
-    console.error("Project initialization error:", e);
-  }
-}
-
 // ============================================
 // INFO MODAL FUNCTIONS
 // ============================================
@@ -80,7 +72,6 @@ function setupModalInfoButton(projectName) {
     var infoBtn = document.getElementById('modalInfoBtn');
     if (!infoBtn) return;
     
-    // Remove old listener by cloning
     var newBtn = infoBtn.cloneNode(true);
     infoBtn.parentNode.replaceChild(newBtn, infoBtn);
     
@@ -140,14 +131,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var projectCards = [];
   var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
 
-  /* ── Helper: setMainInert ─────────────────────────────────── */
   function setMainInert(isInert) {
     var main = document.getElementById('main-content');
     if (!main) return;
     if (isInert) main.setAttribute('inert', ''); else main.removeAttribute('inert');
   }
 
-  /* ── Theme Toggle ─────────────────────────────────────────── */
   function updateThemeToggleAria(isLight) {
     if (!themeToggle) return;
     themeToggle.setAttribute('aria-label', isLight ? 'Switch to dark mode' : 'Switch to light mode');
@@ -157,11 +146,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var savedTheme = localStorage.getItem('theme') || 'dark';
     html.setAttribute('data-theme', savedTheme);
     syncThemeColor(savedTheme);
-    // Prefer showing a sun icon when the site is dark (site's main theme).
-    // Show sun for dark theme, moon for light theme so reload displays sun by default.
-    themeToggle.innerHTML = savedTheme === 'dark'
-      ? '<i class="fas fa-sun"></i>'
-      : '<i class="fas fa-moon"></i>';
+    themeToggle.innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     updateThemeToggleAria(savedTheme === 'light');
 
     themeToggle.addEventListener('click', function () {
@@ -170,20 +155,14 @@ document.addEventListener('DOMContentLoaded', function () {
       html.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
       syncThemeColor(next);
-      // After toggling, show sun when the new theme is dark, moon when it's light.
-      themeToggle.innerHTML = next === 'dark'
-        ? '<i class="fas fa-sun"></i>'
-        : '<i class="fas fa-moon"></i>';
+      themeToggle.innerHTML = next === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
       updateThemeToggleAria(next === 'light');
     });
   }
 
-  /* ── Sound Toggle ─────────────────────────────────────────── */
   if (soundToggle && window.audioController) {
     function updateSoundIcon() {
-      soundToggle.innerHTML = window.audioController.isMuted
-        ? '<i class="fas fa-volume-mute"></i>'
-        : '<i class="fas fa-volume-up"></i>';
+      soundToggle.innerHTML = window.audioController.isMuted ? '<i class="fas fa-volume-mute"></i>' : '<i class="fas fa-volume-up"></i>';
     }
     updateSoundIcon();
     soundToggle.addEventListener('click', function () {
@@ -202,7 +181,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Hero Controls Mirror Toggles ─────────────────────────── */
   var heroSoundToggle = document.getElementById('heroSoundToggle');
   var heroThemeToggle = document.getElementById('heroThemeToggle');
 
@@ -210,37 +188,19 @@ document.addEventListener('DOMContentLoaded', function () {
     if (heroSoundToggle && soundToggle) {
       var realSoundIcon = soundToggle.querySelector('i');
       var heroSoundIcon = heroSoundToggle.querySelector('i');
-      if (realSoundIcon && heroSoundIcon) {
-        heroSoundIcon.className = realSoundIcon.className;
-      }
+      if (realSoundIcon && heroSoundIcon) heroSoundIcon.className = realSoundIcon.className;
     }
     if (heroThemeToggle && themeToggle) {
       var realThemeIcon = themeToggle.querySelector('i');
       var heroThemeIcon = heroThemeToggle.querySelector('i');
-      if (realThemeIcon && heroThemeIcon) {
-        heroThemeIcon.className = realThemeIcon.className;
-      }
+      if (realThemeIcon && heroThemeIcon) heroThemeIcon.className = realThemeIcon.className;
     }
   }
 
-  if (heroSoundToggle && soundToggle) {
-    heroSoundToggle.addEventListener('click', function () {
-      soundToggle.click();
-      setTimeout(syncHeroControlsIcons, 50);
-    });
-  }
-
-  if (heroThemeToggle && themeToggle) {
-    heroThemeToggle.addEventListener('click', function () {
-      themeToggle.click();
-      setTimeout(syncHeroControlsIcons, 50);
-    });
-  }
-
-  // Initial sync on load
+  if (heroSoundToggle && soundToggle) heroSoundToggle.addEventListener('click', function () { soundToggle.click(); setTimeout(syncHeroControlsIcons, 50); });
+  if (heroThemeToggle && themeToggle) heroThemeToggle.addEventListener('click', function () { themeToggle.click(); setTimeout(syncHeroControlsIcons, 50); });
   setTimeout(syncHeroControlsIcons, 100);
 
-  /* ── Mobile Sidebar Toggle ──────────────────────────────── */
   var mobileSidebarToggle = document.getElementById('mobileSidebarToggle');
   var mainSidebar = document.getElementById('mainSidebar');
   if (mobileSidebarToggle && mainSidebar) {
@@ -250,11 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
       var icon = mobileSidebarToggle.querySelector('i');
       if (icon) icon.className = active ? 'fas fa-times' : 'fas fa-bars';
     });
-
     document.addEventListener('click', function (e) {
-      if (mainSidebar && mobileSidebarToggle &&
-          !mainSidebar.contains(e.target) && e.target !== mobileSidebarToggle &&
-          mainSidebar.classList.contains('open')) {
+      if (mainSidebar && mobileSidebarToggle && !mainSidebar.contains(e.target) && e.target !== mobileSidebarToggle && mainSidebar.classList.contains('open')) {
         mainSidebar.classList.remove('open');
         mobileSidebarToggle.setAttribute('aria-expanded', 'false');
         var icon = mobileSidebarToggle.querySelector('i');
@@ -263,33 +220,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-    /* ── Desktop Sidebar Toggle ──────────────────────────────── */
   var desktopSidebarToggle = document.getElementById("sidebarCollapseBtn");
   if (desktopSidebarToggle && mainSidebar) {
     desktopSidebarToggle.addEventListener("click", function () {
       var collapsed = mainSidebar.classList.toggle("collapsed");
       document.body.classList.toggle("sidebar-collapsed", collapsed);
-
       var icon = desktopSidebarToggle.querySelector("i");
-      if (icon) {
-        icon.className = collapsed ? "fas fa-chevron-right" : "fas fa-chevron-left";
-      }
+      if (icon) icon.className = collapsed ? "fas fa-chevron-right" : "fas fa-chevron-left";
     });
   }
 
   if (backToTopButton) {
-    var toggleBackToTop = function () {
-      backToTopButton.classList.toggle('visible', window.scrollY > 300);
-    };
+    var toggleBackToTop = function () { backToTopButton.classList.toggle('visible', window.scrollY > 300); };
     window.addEventListener('scroll', toggleBackToTop, { passive: true });
     toggleBackToTop();
-
-    backToTopButton.addEventListener('click', function () {
-      window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-    });
+    backToTopButton.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' }); });
   }
 
-  /* ── Cursor Glow ──────────────────────────────────────────── */
   if (cursorGlow && !prefersReducedMotion() && html.getAttribute('data-theme') !== 'light') {
     var glowTimeout;
     document.addEventListener('pointermove', function (e) {
@@ -299,58 +246,36 @@ document.addEventListener('DOMContentLoaded', function () {
       clearTimeout(glowTimeout);
       glowTimeout = setTimeout(function () { cursorGlow.style.opacity = '0'; }, 3000);
     });
-    document.addEventListener('pointerleave', function () {
-      cursorGlow.style.opacity = '0';
-    });
+    document.addEventListener('pointerleave', function () { cursorGlow.style.opacity = '0'; });
   }
 
-  /* ── Gather Project Cards ─────────────────────────────────── */
   var projectsGrid = document.querySelector('.projects-grid');
   var projectsTemplate = document.getElementById('projectsTemplate');
   if (projectsGrid && projectsGrid.children.length === 0 && projectsTemplate && projectsTemplate.content) {
-    Array.from(projectsTemplate.content.querySelectorAll('.project-card')).forEach(function (card) {
-      projectsGrid.appendChild(card.cloneNode(true));
-    });
+    Array.from(projectsTemplate.content.querySelectorAll('.project-card')).forEach(function (card) { projectsGrid.appendChild(card.cloneNode(true)); });
   }
 
-  projectCards = projectsGrid
-    ? Array.from(projectsGrid.querySelectorAll('.project-card'))
-    : Array.from(document.querySelectorAll('.project-card'));
-
+  projectCards = projectsGrid ? Array.from(projectsGrid.querySelectorAll('.project-card')) : Array.from(document.querySelectorAll('.project-card'));
   projectCards.sort(function (a, b) {
     var titleA = (a.querySelector('h3') || {}).textContent || '';
     var titleB = (b.querySelector('h3') || {}).textContent || '';
     return titleA.localeCompare(titleB, undefined, { sensitivity: 'base', numeric: true });
   });
+  if (projectsGrid) projectCards.forEach(function (card) { projectsGrid.appendChild(card); });
 
-  if (projectsGrid) {
-    projectCards.forEach(function (card) {
-      projectsGrid.appendChild(card);
-    });
-  }
-
-  /* ── Hero Stats ───────────────────────────────────────────── */
   var totalCount = projectCards.length;
   var gameCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'games'; }).length;
   var mathCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'math'; }).length;
   var utilityCount = projectCards.filter(function (c) { return c.getAttribute('data-category') === 'utilities'; }).length;
-
   if (heroProjectCount) heroProjectCount.textContent = String(totalCount);
   if (heroGameCount) heroGameCount.textContent = String(gameCount);
   if (heroMathCount) heroMathCount.textContent = String(mathCount);
   if (heroUtilityCount) heroUtilityCount.textContent = String(utilityCount);
   if (projectCountBadge) projectCountBadge.textContent = String(totalCount) + ' projects';
 
-  /* ── Explore Button ───────────────────────────────────────── */
-  if (exploreBtn) {
-    exploreBtn.addEventListener('click', function () {
-      if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  }
+  if (exploreBtn) exploreBtn.addEventListener('click', function () { if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 
-  /* ── Category Filtering ───────────────────────────────────── */
   var sidebarTabs = document.querySelectorAll('.sidebar-tab');
-  var sidebarBadge = null;
 
   function applyCategoryFilter(category) {
     if (category === 'playground') return;
@@ -363,21 +288,15 @@ document.addEventListener('DOMContentLoaded', function () {
       var cardCat = card.getAttribute('data-category');
       var projectName = card.getAttribute('data-project');
       var isFav = favorites.includes(projectName);
-      if (category === 'all' ||
-          (category === 'favorites' && isFav) ||
-          (category !== 'favorites' && cardCat === category)) {
+      if (category === 'all' || (category === 'favorites' && isFav) || (category !== 'favorites' && cardCat === category)) {
         card.style.display = '';
         visibleCount++;
       } else {
         card.style.display = 'none';
       }
     });
-    if (emptyState) {
-      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-    }
-    if (projectCountBadge) {
-      projectCountBadge.textContent = String(visibleCount) + ' projects';
-    }
+    if (emptyState) emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+    if (projectCountBadge) projectCountBadge.textContent = String(visibleCount) + ' projects';
   }
 
   function syncSidebarTabs(category) {
@@ -398,14 +317,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  /* ── Playground Section Toggle ────────────────────────────── */
   function showProjectsSection() {
     playgroundActive = false;
     if (playgroundSection) playgroundSection.style.display = 'none';
     if (projectsSection) projectsSection.style.display = '';
-    if (window.playgroundAPI && typeof window.playgroundAPI.deactivate === 'function') {
-      window.playgroundAPI.deactivate();
-    }
+    if (window.playgroundAPI && typeof window.playgroundAPI.deactivate === 'function') window.playgroundAPI.deactivate();
   }
 
   function showPlaygroundSection() {
@@ -414,76 +330,37 @@ document.addEventListener('DOMContentLoaded', function () {
     if (projectsSection) projectsSection.style.display = 'none';
     if (playgroundSection) {
       playgroundSection.style.display = '';
-      if (window.playgroundAPI && typeof window.playgroundAPI.activate === 'function') {
-        window.playgroundAPI.activate();
-      }
+      if (window.playgroundAPI && typeof window.playgroundAPI.activate === 'function') window.playgroundAPI.activate();
     }
   }
 
-  /* ── Sidebar Tabs ─────────────────────────────────────────── */
   sidebarTabs.forEach(function (st) {
     st.addEventListener('click', function () {
       var category = st.getAttribute('data-category');
-      
       var pageCategory = document.body.getAttribute('data-page');
       if (pageCategory) {
-        // We are on a subpage (games, math, or utilities)
         if (category === pageCategory) {
           var grid = document.getElementById('projectsGrid');
           if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
           return;
         }
       }
-    });    
+    });
     st.addEventListener("click", function () {
       var category = st.getAttribute("data-category");
-
       var pageCategory = document.body.getAttribute("data-page");
-      // FIX #1: Only redirect when on a subpage AND the clicked category
-      // is different from the current page. Without this guard, every click
-      // on the homepage (or any page with data-page set) triggered a redirect
-      // instead of filtering the grid in place.
       if (pageCategory && category !== pageCategory) {
-        var pageMap = {
-          'all': 'index.html',
-          'games': 'games.html',
-          'math': 'math.html',
-          'utilities': 'utilities.html',
-          'favorites': 'index.html?category=favorites',
-          'playground': 'index.html?category=playground'
-        };
+        var pageMap = { 'all': 'index.html', 'games': 'games.html', 'math': 'math.html', 'utilities': 'utilities.html', 'favorites': 'index.html?category=favorites', 'playground': 'index.html?category=playground' };
         window.location.href = pageMap[category] || 'index.html';
         return;
       }
-
-      // If we're already on the matching subpage, just scroll to the grid
       if (pageCategory && category === pageCategory) {
         var grid = document.getElementById("projectsGrid");
         if (grid) grid.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }
-
       syncSidebarTabs(category);
       syncStickyTabs(category);
-
-      if (category === 'playground') {
-        showPlaygroundSection();
-        if (playgroundSection) playgroundSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        showProjectsSection();
-        applyCategoryFilter(category);
-        if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      });
-  });
-
-  /* ── Sticky Tabs ──────────────────────────────────────────── */
-  stickyTabs.forEach(function (st) {
-    st.addEventListener('click', function () {
-      var category = st.getAttribute('data-sticky-category');
-      syncStickyTabs(category);
-      syncSidebarTabs(category);
-
       if (category === 'playground') {
         showPlaygroundSection();
         if (playgroundSection) playgroundSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -495,53 +372,49 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  /* ── Sticky Filter Bar Visibility ─────────────────────────── */
+  stickyTabs.forEach(function (st) {
+    st.addEventListener('click', function () {
+      var category = st.getAttribute('data-sticky-category');
+      syncStickyTabs(category);
+      syncSidebarTabs(category);
+      if (category === 'playground') {
+        showPlaygroundSection();
+        if (playgroundSection) playgroundSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        showProjectsSection();
+        applyCategoryFilter(category);
+        if (projectsSection) projectsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
   if (stickyFilterBar && heroSection) {
     var heroObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        stickyFilterBar.classList.toggle('visible', !entry.isIntersecting);
-      });
+      entries.forEach(function (entry) { stickyFilterBar.classList.toggle('visible', !entry.isIntersecting); });
     }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
     heroObserver.observe(heroSection);
-
     window.addEventListener('scroll', function () {
       var navH = navbar ? navbar.getBoundingClientRect().height : 72;
       stickyFilterBar.style.top = (navH + 16) + 'px';
     }, { passive: true });
   }
 
-  /* ── Random Project ───────────────────────────────────────── */
   function openRandomProject(trigger) {
     var visible = projectCards.filter(function (c) { return c.style.display !== 'none'; });
     var pool = visible.length ? visible : projectCards;
     var pick = pool[Math.floor(Math.random() * pool.length)];
     var name = pick.getAttribute('data-project');
-    if (name && typeof openProjectSafe === 'function') {
-      openProjectSafe(name, trigger);
-    }
+    if (name && typeof openProjectSafe === 'function') openProjectSafe(name, trigger);
   }
 
-  if (randomProjectBtn) {
-    randomProjectBtn.addEventListener('click', function () { openRandomProject(randomProjectBtn); });
-  }
-  if (randomProjectBtnSidebar) {
-    randomProjectBtnSidebar.addEventListener('click', function () { openRandomProject(randomProjectBtnSidebar); });
-  }
+  if (randomProjectBtn) randomProjectBtn.addEventListener('click', function () { openRandomProject(randomProjectBtn); });
+  if (randomProjectBtnSidebar) randomProjectBtnSidebar.addEventListener('click', function () { openRandomProject(randomProjectBtnSidebar); });
 
-  /* ── Init sidebar ─────────────────────────────────────────── */
   var pageCategory = document.body.getAttribute('data-page');
-  if (sidebarTabs.length) {
-    if (pageCategory) {
-      syncSidebarTabs(pageCategory);
-    } else {
-      syncSidebarTabs('all');
-    }
-  }
+  if (sidebarTabs.length) syncSidebarTabs(pageCategory || 'all');
   if (stickyTabs.length) syncStickyTabs('all');
 
-  /* ── Sidebar Active Scroll Observer ───────────────────────── */
   if (!pageCategory && projectsSection) {
-    // On homepage, observe projectsSection to toggle sidebar-active class
     var sidebarActiveObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         var isVisible = entry.isIntersecting || entry.boundingClientRect.top < 200;
@@ -550,11 +423,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.05 });
     sidebarActiveObserver.observe(projectsSection);
   } else if (pageCategory) {
-    // On subpages, always ensure sidebar is active
     document.body.classList.add('sidebar-active');
   }
 
-  /* ── Search Kbd Hint on Sidebar Activation ─────────────────── */
   var searchKbdHint = document.getElementById('searchKbdHint');
   var kbdHintTimer;
 
@@ -562,39 +433,21 @@ document.addEventListener('DOMContentLoaded', function () {
     if (!searchKbdHint) return;
     clearTimeout(kbdHintTimer);
     searchKbdHint.classList.add('visible');
-    kbdHintTimer = setTimeout(function () {
-      searchKbdHint.classList.remove('visible');
-    }, 3000); // auto-dismiss after 3s
+    kbdHintTimer = setTimeout(function () { searchKbdHint.classList.remove('visible'); }, 3000);
   }
 
-  // Watch for sidebar-active class being added to body
   var bodyClassObserver = new MutationObserver(function (mutations) {
     mutations.forEach(function (mutation) {
       if (mutation.attributeName === 'class') {
         var isActive = document.body.classList.contains('sidebar-active');
-        if (isActive) {
-          showKbdHint();
-        } else {
-          clearTimeout(kbdHintTimer);
-          if (searchKbdHint) searchKbdHint.classList.remove('visible');
-        }
+        if (isActive) showKbdHint();
+        else { clearTimeout(kbdHintTimer); if (searchKbdHint) searchKbdHint.classList.remove('visible'); }
       }
     });
   });
-
   bodyClassObserver.observe(document.body, { attributes: true });
+  if (searchInput) searchInput.addEventListener('focus', function () { clearTimeout(kbdHintTimer); if (searchKbdHint) searchKbdHint.classList.remove('visible'); });
 
-  // Hide hint when user focuses the search input
-  if (searchInput) {
-    searchInput.addEventListener('focus', function () {
-      clearTimeout(kbdHintTimer);
-      if (searchKbdHint) searchKbdHint.classList.remove('visible');
-    });
-  }
-
-  /* ═══════════════════════════════════════════════════════════════
-     SEARCH
-     ═══════════════════════════════════════════════════════════════ */
   function getMatchingProjects(query) {
     if (!query) return [];
     var matches = [];
@@ -604,15 +457,9 @@ document.addEventListener('DOMContentLoaded', function () {
       var desc = (card.querySelector('p') || {}).textContent || '';
       var tags = (card.getAttribute('data-tags') || '').toLowerCase();
       var q = query.toLowerCase();
-
       var catMatch = currentCategory === 'all' || category === currentCategory;
-      var searchMatch = title.toLowerCase().includes(q) ||
-                        desc.toLowerCase().includes(q) ||
-                        tags.includes(q);
-
-      if (catMatch && searchMatch) {
-        matches.push({ card: card, title: title, tags: tags, category: category });
-      }
+      var searchMatch = title.toLowerCase().includes(q) || desc.toLowerCase().includes(q) || tags.includes(q);
+      if (catMatch && searchMatch) matches.push({ card: card, title: title, tags: tags, category: category });
     });
     return matches;
   }
@@ -630,27 +477,21 @@ document.addEventListener('DOMContentLoaded', function () {
         mark.style.padding = '0 2px';
         mark.textContent = part;
         container.appendChild(mark);
-      } else if (part) {
-        container.appendChild(document.createTextNode(part));
-      }
+      } else if (part) container.appendChild(document.createTextNode(part));
     });
   }
 
-  function closeDropdown() {
-    if (searchDropdown) searchDropdown.classList.remove('active');
-  }
+  function closeDropdown() { if (searchDropdown) searchDropdown.classList.remove('active'); }
 
   function renderRecentSearches() {
     if (noResultsMessage) noResultsMessage.style.display = 'none';
     if (!recentSearchesSection) return;
-
     if (recentSearches.length === 0) {
       recentSearchesSection.style.display = 'none';
       if (tipsSection) tipsSection.style.display = 'block';
       if (resultsSection) resultsSection.style.display = 'none';
       return;
     }
-
     if (recentSearchesList) {
       recentSearchesList.innerHTML = '';
       recentSearches.slice(0, 5).forEach(function (search) {
@@ -658,42 +499,33 @@ document.addEventListener('DOMContentLoaded', function () {
         item.className = 'dropdown-recent-item';
         var text = document.createElement('div');
         text.className = 'dropdown-recent-text';
-
         var clock = document.createElement('i');
         clock.className = 'fas fa-history';
         clock.style.opacity = '0.5';
         clock.style.fontSize = '0.8rem';
-
         var label = document.createElement('span');
         label.textContent = search;
-
         text.append(clock, label);
-
         var removeBtn = document.createElement('button');
         removeBtn.className = 'dropdown-recent-remove';
         removeBtn.setAttribute('aria-label', 'Remove search');
         removeBtn.innerHTML = '<i class="fas fa-times"></i>';
-
         item.append(text, removeBtn);
-
         label.addEventListener('click', function () {
           if (searchInput) searchInput.value = search;
           currentSearchQuery = search;
           performSearch();
           closeDropdown();
         });
-
         removeBtn.addEventListener('click', function (e) {
           e.stopPropagation();
           recentSearches = recentSearches.filter(function (s) { return s !== search; });
           localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
           renderRecentSearches();
         });
-
         recentSearchesList.appendChild(item);
       });
     }
-
     recentSearchesSection.style.display = 'block';
     if (resultsSection) resultsSection.style.display = 'none';
     if (tipsSection) tipsSection.style.display = 'block';
@@ -702,9 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function renderSuggestions(query) {
     if (searchLoader) searchLoader.style.display = 'none';
     if (!query) { renderRecentSearches(); return; }
-
     var matches = getMatchingProjects(query);
-
     if (matches.length === 0) {
       if (resultsSection) resultsSection.style.display = 'none';
       if (recentSearchesSection) recentSearchesSection.style.display = 'none';
@@ -712,15 +542,12 @@ document.addEventListener('DOMContentLoaded', function () {
       if (noResultsMessage) noResultsMessage.style.display = 'block';
       return;
     }
-
     if (noResultsMessage) noResultsMessage.style.display = 'none';
-
     if (resultsList) {
       resultsList.innerHTML = '';
       matches.slice(0, 8).forEach(function (project, index) {
         var item = document.createElement('div');
         item.className = 'dropdown-item' + (index === selectedSuggestionIndex ? ' selected' : '');
-
         var iconBox = document.createElement('div');
         iconBox.className = 'dropdown-item-icon';
         var banner = project.card.querySelector('.card-banner');
@@ -730,25 +557,18 @@ document.addEventListener('DOMContentLoaded', function () {
           img.alt = '';
           iconBox.appendChild(img);
         }
-
         var titleBox = document.createElement('div');
         titleBox.className = 'dropdown-item-text';
         highlightText(titleBox, project.title, query);
-
         var tag = document.createElement('span');
         tag.className = 'dropdown-item-tag';
         tag.textContent = project.category;
-
         item.append(iconBox, titleBox, tag);
         item.addEventListener('click', function () { selectSuggestion(project.title); });
-        item.addEventListener('mouseenter', function () {
-          selectedSuggestionIndex = index;
-          updateSuggestionHighlight();
-        });
+        item.addEventListener('mouseenter', function () { selectedSuggestionIndex = index; updateSuggestionHighlight(); });
         resultsList.appendChild(item);
       });
     }
-
     if (resultsSection) resultsSection.style.display = 'block';
     if (recentSearchesSection) recentSearchesSection.style.display = 'none';
     if (tipsSection) tipsSection.style.display = 'none';
@@ -758,9 +578,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function updateSuggestionHighlight() {
     if (!resultsList) return;
     var items = resultsList.querySelectorAll('.dropdown-item');
-    items.forEach(function (item, i) {
-      item.classList.toggle('selected', i === selectedSuggestionIndex);
-    });
+    items.forEach(function (item, i) { item.classList.toggle('selected', i === selectedSuggestionIndex); });
   }
 
   function selectSuggestion(title) {
@@ -769,122 +587,116 @@ document.addEventListener('DOMContentLoaded', function () {
     currentSearchQuery = title.toLowerCase();
     performSearch();
     closeDropdown();
-    if (projectsSection) {
-      projectsSection.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
-    }
+    if (projectsSection) projectsSection.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
   }
 
   function performSearch() {
     var query = currentSearchQuery;
     if (!query) {
-      applyCategoryFilter(currentCategory);
-      if (emptyStateHint) emptyStateHint.textContent = 'Try adjusting your search or category filter.';
-      return;
+        applyCategoryFilter(currentCategory);
+        if (emptyStateHint) emptyStateHint.textContent = 'Try adjusting your search or category filter.';
+        return;
     }
-
+    
+    // Get fresh DOM cards every time
+    var domCards = document.querySelectorAll('.project-card');
+    
     if (currentCategory !== 'all') {
-      currentCategory = 'all';
-      syncSidebarTabs('all');
-      syncStickyTabs('all');
+        currentCategory = 'all';
+        syncSidebarTabs('all');
+        syncStickyTabs('all');
     }
-
+    
     recentSearches = recentSearches.filter(function (s) { return s !== query; });
     recentSearches.unshift(query);
     recentSearches = recentSearches.slice(0, 10);
     localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
-
+    
     var visibleCount = 0;
     var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    projectCards.forEach(function (card) {
-      var category = card.getAttribute('data-category');
-      var title = (card.querySelector('h3') || {}).textContent || '';
-      var desc = (card.querySelector('p') || {}).textContent || '';
-      var tags = (card.getAttribute('data-tags') || '').toLowerCase();
-      var projectName = card.getAttribute('data-project');
-      var isFav = favorites.includes(projectName);
-
-      var catMatch = (currentCategory === 'all') ||
-                     (currentCategory === 'favorites' && isFav) ||
-                     (currentCategory !== 'favorites' && category === currentCategory);
-      var searchMatch = title.toLowerCase().includes(query) ||
-                        desc.toLowerCase().includes(query) ||
-                        tags.includes(query);
-
-      if (catMatch && searchMatch) {
-        card.style.display = '';
-        visibleCount++;
-      } else {
-        card.style.display = 'none';
-      }
+    
+    domCards.forEach(function (card) {
+        var category = card.getAttribute('data-category');
+        var title = (card.querySelector('h3') || {}).textContent || '';
+        var desc = (card.querySelector('p') || {}).textContent || '';
+        var tags = (card.getAttribute('data-tags') || '').toLowerCase();
+        var projectName = card.getAttribute('data-project');
+        var isFav = favorites.includes(projectName);
+        
+        var catMatch = (currentCategory === 'all') || (currentCategory === 'favorites' && isFav) || (currentCategory !== 'favorites' && category === currentCategory);
+        var searchMatch = title.toLowerCase().includes(query) || desc.toLowerCase().includes(query) || tags.includes(query);
+        
+        if (catMatch && searchMatch) {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
     });
-
+    
     if (emptyState) {
-      emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-      if (visibleCount === 0 && emptyStateHint) {
-        emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
-      }
+        emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+        if (visibleCount === 0 && emptyStateHint) {
+            emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
+        }
     }
     if (projectCountBadge) projectCountBadge.textContent = String(visibleCount) + ' projects';
   }
 
   if (searchInput) {
-    var debouncedSearch = debounce(function (query) {
-      renderSuggestions(query);
-    }, 200);
-
-    searchInput.addEventListener('input', function (e) {
-      var query = e.target.value.trim().toLowerCase();
-      currentSearchQuery = query;
-      if (searchLoader) searchLoader.style.display = query ? 'block' : 'none';
-      debouncedSearch(query);
-      performSearch();
+    searchInput.addEventListener('input', function(e) {
+        const query = e.target.value.trim().toLowerCase();
+        const cards = document.querySelectorAll('.project-card');
+        let visibleCount = 0;
+        
+        cards.forEach(card => {
+            const title = card.querySelector('h3')?.textContent?.toLowerCase() || '';
+            const desc = card.querySelector('p')?.textContent?.toLowerCase() || '';
+            const tags = card.getAttribute('data-tags')?.toLowerCase() || '';
+            
+            if (title.includes(query) || desc.includes(query) || tags.includes(query) || query === '') {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+        
+        if (projectCountBadge) projectCountBadge.textContent = visibleCount + ' projects';
+        
+        if (emptyState) {
+            emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+            if (visibleCount === 0 && emptyStateHint) {
+                emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
+            }
+        }
     });
-
+    
     searchInput.addEventListener('focus', function () {
-      if (searchDropdown) searchDropdown.classList.add('active');
-      if (!currentSearchQuery) renderRecentSearches();
+        if (searchDropdown) searchDropdown.classList.add('active');
+        if (!currentSearchQuery) renderRecentSearches();
     });
-
+    
     searchInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') { closeDropdown(); searchInput.blur(); }
+        if (e.key === 'Escape') { closeDropdown(); searchInput.blur(); }
     });
   }
-
   document.addEventListener('click', function (e) {
-    if (searchDropdown && searchInput &&
-        !searchDropdown.contains(e.target) && e.target !== searchInput) {
-      closeDropdown();
-    }
+    if (searchDropdown && searchInput && !searchDropdown.contains(e.target) && e.target !== searchInput) closeDropdown();
   });
-
-  document.addEventListener('keydown', function (e) {
-    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-      e.preventDefault();
-      if (searchInput) searchInput.focus();
-    }
-  });
-
+  document.addEventListener('keydown', function (e) { if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); if (searchInput) searchInput.focus(); } });
   renderRecentSearches();
-})
-  /* ═══════════════════════════════════════════════════════════════
-      MODAL
-    ═══════════════════════════════════════════════════════════════ */
+
+  // ============================================
+  // MODAL FUNCTIONS
+  // ============================================
+
   function getFocusableElements(root) {
     var sel = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
     return Array.from(root.querySelectorAll(sel)).filter(function (el) {
       return !el.closest('[aria-hidden="true"]') && !el.classList.contains('visually-hidden');
     });
   }
-  var sel =
-    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-  return Array.from(root.querySelectorAll(sel)).filter(function (el) {
-    return (
-      !el.closest('[aria-hidden="true"]') &&
-      !el.classList.contains("visually-hidden")
-    );
-  });
-
 
   function trapFocus(modalEl) {
     var handler = function (e) {
@@ -919,51 +731,13 @@ document.addEventListener('DOMContentLoaded', function () {
       } else {
         modalBody.innerHTML = '<div style="padding:1rem;color:var(--text-secondary)">Project content unavailable.</div>';
       }
-      if (typeof initializeProject === 'function') initializeProject(name);
+      if (typeof initializeProject === 'function') initializeProject(name);if (typeof initializeProject === 'function') {
+        console.log('Calling initializeProject for:', name);
+        initializeProject(name);
+      } else {
+        console.warn('initializeProject is not a function');
+      }
       setupModalInfoButton(name);
-      
-      // Inject info button next to the title (works for all projects)
-var projectContent = modalBody.querySelector('.project-content');
-if (projectContent) {
-    // Try to find the title element (could be h2, or other heading)
-    var firstHeading = projectContent.querySelector('h2, h3, .resume-analyzer-copy h2, .pet-title');
-    
-    if (!firstHeading) {
-        // If no heading found, look for any element with a title-like class
-        firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
-    }
-    
-    if (firstHeading && !projectContent.querySelector('.inline-info-btn')) {
-        // Create info button
-        var infoBtn = document.createElement('button');
-        infoBtn.className = 'inline-info-btn';
-        infoBtn.innerHTML = 'ⓘ';
-        infoBtn.setAttribute('aria-label', 'How to use this project');
-        
-        // Style the button
-        infoBtn.style.marginLeft = '12px';
-        infoBtn.style.background = 'none';
-        infoBtn.style.border = 'none';
-        infoBtn.style.fontSize = '1.3rem';
-        infoBtn.style.cursor = 'pointer';
-        infoBtn.style.color = 'var(--accent)';
-        infoBtn.style.verticalAlign = 'middle';
-        
-        infoBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (typeof getProjectInstructions === 'function') {
-                var info = getProjectInstructions(name);
-                showInfoModal(info.title, info.steps);
-            }
-        });
-        
-        // Make heading display inline if it's a block element
-        if (firstHeading.style.display !== 'inline-block') {
-            firstHeading.style.display = 'inline-block';
-        }
-        firstHeading.appendChild(infoBtn);
-    }
-}
     });
 
     removeTrap = trapFocus(modal);
@@ -972,7 +746,7 @@ if (projectContent) {
     if (firstFocusable && typeof firstFocusable.focus === 'function') {
       firstFocusable.focus({ preventScroll: true });
     }
-}
+  }
 
   function closeProjectSafe() {
     if (!modal || !modal.classList.contains('active')) return;
@@ -982,54 +756,26 @@ if (projectContent) {
     document.body.style.overflow = '';
     setMainInert(false);
     if (removeTrap) { removeTrap(); removeTrap = null; }
-    if (modalBody) {
-      modalBody.innerHTML = '';
-    }
-    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-      lastFocusedElement.focus({ preventScroll: true });
-    }
+    if (modalBody) modalBody.innerHTML = '';
+    if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') lastFocusedElement.focus({ preventScroll: true });
     lastFocusedElement = null;
   }
 
   if (modalClose) modalClose.addEventListener('click', closeProjectSafe);
-  if (modal) {
-    modal.addEventListener('click', function (e) {
-      if (e.target === modal) closeProjectSafe();
-    });
-  }
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') closeProjectSafe();
-  });
+  if (modal) modal.addEventListener('click', function (e) { if (e.target === modal) closeProjectSafe(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeProjectSafe(); });
 
-  /* ── Expose for inline use ────────────────────────────────── */
   window.openProjectSafe = openProjectSafe;
   window.closeProjectSafe = closeProjectSafe;
 
-  // FIX #3: Removed the duplicate delegated document click listener for
-  // ".btn-play" that used to live here. It conflicted with the per-card
-  // listeners wired below: the direct listener called stopPropagation(),
-  // which silently ate the event before the delegated one could fire,
-  // so neither handler reliably opened the modal. The per-card listeners
-  // below are sufficient and correct on their own.
-
-  /* ═══════════════════════════════════════════════════════════════
-     WIRE PROJECT CARDS
-     ═══════════════════════════════════════════════════════════════ */
   projectCards.forEach(function (card) {
     var name = card.getAttribute('data-project');
-
-    /* ── Favorite Button ──────────────────────────────────── */
     var favBtn = document.createElement('button');
     favBtn.className = 'btn-favorite';
     favBtn.setAttribute('aria-label', 'Toggle favorite');
     favBtn.innerHTML = '<i class="far fa-star"></i>';
-
     var favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-    if (favorites.includes(name)) {
-      favBtn.classList.add('active');
-      favBtn.innerHTML = '<i class="fas fa-star"></i>';
-    }
-
+    if (favorites.includes(name)) { favBtn.classList.add('active'); favBtn.innerHTML = '<i class="fas fa-star"></i>'; }
     favBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       var favs = JSON.parse(localStorage.getItem('favorites') || '[]');
@@ -1042,52 +788,32 @@ if (projectContent) {
         favs.splice(idx, 1);
         favBtn.classList.remove('active');
         favBtn.innerHTML = '<i class="far fa-star"></i>';
-        if (currentCategory === 'favorites') {
-          card.style.display = 'none';
-        }
+        if (currentCategory === 'favorites') card.style.display = 'none';
       }
       localStorage.setItem('favorites', JSON.stringify(favs));
     });
-
     var cardActions = card.querySelector('.card-actions');
     if (cardActions) cardActions.appendChild(favBtn);
-
-    /* ── Share Button ─────────────────────────────────────── */
     var shareBtn = document.createElement('button');
     shareBtn.className = 'btn-share';
     shareBtn.setAttribute('aria-label', 'Share ' + name);
     shareBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>';
     shareBtn.title = 'Copy shareable link';
-
     shareBtn.addEventListener('click', function (e) {
       e.stopPropagation();
       var url = window.location.origin + window.location.pathname + '?project=' + encodeURIComponent(name);
-      navigator.clipboard.writeText(url).then(function () {
-        showToast('Link copied!');
-      }).catch(function () {
-        showToast('Copy this: ' + url);
-      });
+      navigator.clipboard.writeText(url).then(function () { showToast('Link copied!'); }).catch(function () { showToast('Copy this: ' + url); });
     });
-
     if (cardActions) cardActions.appendChild(shareBtn);
-
-    /* ── Play Button ──────────────────────────────────────── */
     var playBtns = card.querySelectorAll('.btn-play');
     playBtns.forEach(function (play) {
       play.setAttribute('aria-label', 'Open ' + name);
-      play.addEventListener('click', function (e) {
-        e.stopPropagation();
-        openProjectSafe(name, play);
-      });
+      play.addEventListener('click', function (e) { e.stopPropagation(); openProjectSafe(name, play); });
     });
-
-    /* ── Card Click ───────────────────────────────────────── */
     card.addEventListener('click', function (e) {
       if (e.target.closest('.btn-play') || e.target.closest('.btn-favorite') || e.target.closest('.btn-share')) return;
       openProjectSafe(name, card);
     });
-
-    /* ── Card Mouse Tracking for Border Glow ──────────────── */
     if (!prefersReducedMotion()) {
       card.addEventListener('mousemove', function (e) {
         var rect = card.getBoundingClientRect();
@@ -1099,7 +825,6 @@ if (projectContent) {
     }
   });
 
-  /* ── Toast ─────────────────────────────────────────────────── */
   function showToast(message) {
     var existing = document.getElementById('shareToast');
     if (existing) existing.remove();
@@ -1108,27 +833,19 @@ if (projectContent) {
     toast.className = 'share-toast';
     toast.textContent = message;
     document.body.appendChild(toast);
-    requestAnimationFrame(function () {
-      toast.classList.add('share-toast--visible');
-    });
+    requestAnimationFrame(function () { toast.classList.add('share-toast--visible'); });
     setTimeout(function () {
       toast.classList.remove('share-toast--visible');
       setTimeout(function () { toast.remove(); }, 300);
     }, 2500);
   }
 
-  /* ── URL params auto-open ──────────────────────────────────── */
   (function () {
     var params = new URLSearchParams(window.location.search);
     var projectParam = params.get('project');
     if (projectParam) {
       var match = projectCards.find(function (c) { return c.getAttribute('data-project') === projectParam; });
-      if (match) {
-        setTimeout(function () {
-          openProjectSafe(projectParam, match);
-          match.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 300);
-      }
+      if (match) setTimeout(function () { openProjectSafe(projectParam, match); match.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
     }
     var catParam = params.get('category');
     var valid = ['all', 'games', 'math', 'utilities', 'playground', 'favorites'];
@@ -1138,289 +855,56 @@ if (projectContent) {
     }
   })();
 
-  /* ═══════════════════════════════════════════════════════════════
-     TIMELINE SCROLL REVEAL
-     ═══════════════════════════════════════════════════════════════ */
   var timelineItems = document.querySelectorAll('.timeline-item[data-reveal]');
-  var timelineFill = document.getElementById('timelineFill');
-  var timelineSection = document.getElementById('timelineSection');
-
   if (timelineItems.length && !prefersReducedMotion()) {
     var timelineObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-        }
-      });
+      entries.forEach(function (entry) { if (entry.isIntersecting) entry.target.classList.add('visible'); });
     }, { threshold: 0.25, rootMargin: '0px 0px -50px 0px' });
-
-    timelineItems.forEach(function (item) {
-      timelineObserver.observe(item);
-    });
-
-    /* ── Serpentine SVG Winding Timeline Path ─────────────────── */
-    var svgNamespace = 'http://www.w3.org/2000/svg';
-    
-    function getElementOffset(el, parent) {
-      var top = 0;
-      var left = 0;
-      var curr = el;
-      while (curr && curr !== parent) {
-        top += curr.offsetTop || 0;
-        left += curr.offsetLeft || 0;
-        curr = curr.offsetParent;
-      }
-      return { top: top, left: left };
-    }
-
-    function rebuildTimelineSvg() {
-      var container = document.querySelector('.timeline-container');
-      if (!container) return;
-      var dots = document.querySelectorAll('.timeline-dot');
-      if (dots.length < 2) return;
-
-      var containerWidth = container.offsetWidth;
-      var containerHeight = container.offsetHeight;
-
-      var svg = document.getElementById('timelineSvg');
-      if (!svg) {
-        svg = document.createElementNS(svgNamespace, 'svg');
-        svg.id = 'timelineSvg';
-        svg.setAttribute('class', 'timeline-svg');
-        
-        var defs = document.createElementNS(svgNamespace, 'defs');
-        var grad = document.createElementNS(svgNamespace, 'linearGradient');
-        grad.id = 'timelineGrad';
-        grad.setAttribute('x1', '0%');
-        grad.setAttribute('y1', '0%');
-        grad.setAttribute('x2', '0%');
-        grad.setAttribute('y2', '100%');
-
-        var stop1 = document.createElementNS(svgNamespace, 'stop');
-        stop1.setAttribute('offset', '0%');
-        stop1.setAttribute('stop-color', 'var(--accent)');
-
-        var stop2 = document.createElementNS(svgNamespace, 'stop');
-        stop2.setAttribute('offset', '100%');
-        stop2.setAttribute('stop-color', '#06b6d4');
-
-        grad.appendChild(stop1);
-        grad.appendChild(stop2);
-        defs.appendChild(grad);
-
-        // Define a dynamic layout mask path for progress crawling
-        var mask = document.createElementNS(svgNamespace, 'mask');
-        mask.id = 'timelineMask';
-
-        var maskPath = document.createElementNS(svgNamespace, 'path');
-        maskPath.id = 'timelineMaskPath';
-        maskPath.setAttribute('fill', 'none');
-        maskPath.setAttribute('stroke', '#ffffff');
-        maskPath.setAttribute('stroke-width', '24'); // Wide enough to fully cover glowing dots
-        maskPath.setAttribute('stroke-linecap', 'round');
-
-        mask.appendChild(maskPath);
-        defs.appendChild(mask);
-        svg.appendChild(defs);
-
-        var track = document.createElementNS(svgNamespace, 'path');
-        track.id = 'timelineSvgTrack';
-        track.setAttribute('class', 'timeline-svg-track');
-        track.setAttribute('fill', 'none');
-
-        var fill = document.createElementNS(svgNamespace, 'path');
-        fill.id = 'timelineSvgFill';
-        fill.setAttribute('class', 'timeline-svg-fill');
-        fill.setAttribute('fill', 'none');
-        fill.setAttribute('stroke', 'var(--accent)');
-        fill.setAttribute('mask', 'url(#timelineMask)');
-
-        svg.appendChild(track);
-        svg.appendChild(fill);
-
-        var grid = document.querySelector('.timeline-grid');
-        container.insertBefore(svg, grid);
-      }
-
-      // Determine layout stable coordinate points for all timeline dots
-      var coords = [];
-      dots.forEach(function (dot) {
-        var offset = getElementOffset(dot, container);
-        var x = offset.left + dot.offsetWidth / 2;
-        var y = offset.top + dot.offsetHeight / 2;
-        coords.push({ x: x, y: y });
-      });
-
-      // Create the winding path
-      var d = "";
-      var startX = containerWidth / 2;
-      d += "M " + startX + " 0";
-      d += " L " + coords[0].x + " " + coords[0].y;
-
-      // Calculate a sweep width that is perfectly responsive
-      // e.g. 16% of container width, capped at 180px for desktop beauty
-      var W = Math.min(180, containerWidth * 0.16);
-
-      for (var i = 0; i < coords.length - 1; i++) {
-        var pStart = coords[i];
-        var pEnd = coords[i + 1];
-        var H = pEnd.y - pStart.y;
-        var dy = H * 0.35; // Symmetrical control point height
-        
-        // Even segments (0, 2, 4...) snake to the right, odd segments to the left
-        var dx = (i % 2 === 0) ? W : -W;
-
-        var cp1x = pStart.x + dx;
-        var cp1y = pStart.y + dy;
-        var cp2x = pEnd.x + dx;
-        var cp2y = pEnd.y - dy;
-
-        d += " C " + cp1x + " " + cp1y + ", " + cp2x + " " + cp2y + ", " + pEnd.x + " " + pEnd.y;
-      }
-
-      // Straight exit to the bottom
-      d += " L " + coords[coords.length - 1].x + " " + containerHeight;
-
-      var trackPath = document.getElementById('timelineSvgTrack');
-      var fillPath = document.getElementById('timelineSvgFill');
-      var maskPath = document.getElementById('timelineMaskPath');
-      if (trackPath && fillPath && maskPath) {
-        trackPath.setAttribute('d', d);
-        fillPath.setAttribute('d', d);
-        maskPath.setAttribute('d', d);
-
-        var totalLength = maskPath.getTotalLength();
-        maskPath.style.strokeDasharray = totalLength;
-        maskPath.dataset.totalLength = totalLength;
-        
-        // Trigger scroll progress sync immediately
-        updateTimelineFill();
-      }
-    }
-
-    /* ── Timeline Fill Progress ───────────────────────────── */
-    function updateTimelineFill() {
-      if (!timelineSection) return;
-      var container = document.querySelector('.timeline-container');
-      if (!container) return;
-
-      var containerRect = container.getBoundingClientRect();
-      var viewportCenterY = window.innerHeight / 2;
-
-      // Calculate relative vertical scroll position of the viewport center relative to the container
-      var relativeY = viewportCenterY - containerRect.top;
-      var offset = Math.max(0, Math.min(1, relativeY / containerRect.height));
-
-      /* ── Dynamic SVG path mask scroll synchronization ──────── */
-      var maskPath = document.getElementById('timelineMaskPath');
-      if (maskPath && maskPath.dataset.totalLength) {
-        var totalLength = parseFloat(maskPath.dataset.totalLength);
-        var dashoffset = totalLength - (offset * totalLength);
-        maskPath.style.strokeDashoffset = Math.max(0, Math.min(totalLength, dashoffset));
-      }
-
-      /* ── Activate item based on viewport center crossing timeline dots ── */
-      var activeIdx = -1;
-      var dots = document.querySelectorAll('.timeline-dot');
-      
-      dots.forEach(function (dot, i) {
-        var dotRect = dot.getBoundingClientRect();
-        var dotCenterY = dotRect.top + dotRect.height / 2;
-        
-        // A dot is crossed/passed if its vertical center in the viewport is <= the viewport center
-        if (dotCenterY <= viewportCenterY) {
-          activeIdx = i;
-        }
-      });
-
-      timelineItems.forEach(function (item, i) {
-        item.classList.toggle('active', i === activeIdx);
-      });
-    }
-
-    // Initialize SVG path layout recalculations on page render & resize
-    rebuildTimelineSvg();
-    window.addEventListener('resize', debounce(rebuildTimelineSvg, 150));
-    window.addEventListener('scroll', updateTimelineFill, { passive: true });
+    timelineItems.forEach(function (item) { timelineObserver.observe(item); });
   } else if (timelineItems.length) {
     timelineItems.forEach(function (item) { item.classList.add('visible'); });
   }
 
-  /* ── Reveal on Scroll (general) ────────────────────────────── */
   var revealItems = document.querySelectorAll('.reveal-on-scroll');
   if (revealItems.length && !prefersReducedMotion()) {
     var revealObserver = new IntersectionObserver(function (entries, obs) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-visible');
-        obs.unobserve(entry.target);
-      });
+      entries.forEach(function (entry) { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); obs.unobserve(entry.target); } });
     }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
     revealItems.forEach(function (item) { revealObserver.observe(item); });
   } else {
     revealItems.forEach(function (item) { item.classList.add('is-visible'); });
   }
 
-  /* ── Footer category links ────────────────────────────────── */
-  document.querySelectorAll('.footer-cat-link').forEach(function (a) {
-    a.addEventListener('click', function (e) {
-      e.preventDefault();
-      var cat = a.getAttribute('data-cat');
-      var tab = document.querySelector('.sidebar-tab[data-category="' + cat + '"]');
-    });
-  });  
-
-  // FIX #2: Footer links call tab.click() which triggers the sidebar tab
-  // handler. That handler now correctly filters in place on the homepage
-  // (fix #1), so footer links automatically work once fix #1 is applied.
-  // No additional changes needed here beyond the comment for clarity.
-  
-  document.querySelectorAll(".footer-cat-link").forEach(function (link) {
+  document.querySelectorAll('.footer-cat-link').forEach(function (link) {
     link.addEventListener("click", function (e) {
       e.preventDefault();
-
       var cat = link.getAttribute("data-cat");
-      var tab = document.querySelector(
-        '.sidebar-tab[data-category="' + cat + '"]'
-      );
+      var tab = document.querySelector('.sidebar-tab[data-category="' + cat + '"]');
       if (tab) tab.click();
     });
   });
 
-/* ── Scroll Progress Bar ───────────────────────────── */
-
-var progressBar = document.getElementById("scrollProgressBar");
-
-if (progressBar) {
-  let ticking = false;
-
-  function updateScrollProgress() {
-    var scrollTop =
-      window.scrollY || document.documentElement.scrollTop;
-
-    var docHeight =
-      document.documentElement.scrollHeight -
-      document.documentElement.clientHeight;
-
-    var progress = docHeight
-      ? (scrollTop / docHeight) * 100
-      : 0;
-
-    progressBar.style.width = progress + "%";
-
-    ticking = false;
-  }
-
-  window.addEventListener(
-    "scroll",
-    function () {
+  var progressBar = document.getElementById("scrollProgressBar");
+  if (progressBar) {
+    var ticking = false;
+    function updateScrollProgress() {
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
+      var docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var progress = docHeight ? (scrollTop / docHeight) * 100 : 0;
+      progressBar.style.width = progress + "%";
+      ticking = false;
+    }
+    window.addEventListener("scroll", function () {
       if (!ticking) {
         requestAnimationFrame(updateScrollProgress);
         ticking = true;
       }
-    },
-    { passive: true }
-  );
-
-  updateScrollProgress();
-}
+    }, { passive: true });
+    updateScrollProgress();
+  }
+  window.performSearch = performSearch;
+  window.renderSuggestions = renderSuggestions;
+  window.applyCategoryFilter = applyCategoryFilter;
+  window.currentCategory = currentCategory;
+  window.projectCards = projectCards;
+});
