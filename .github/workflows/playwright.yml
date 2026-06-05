@@ -1,0 +1,47 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install dependencies
+      run: |
+        cd web-app
+        npm ci
+
+    - name: Install Playwright Browsers
+      run: |
+        cd web-app
+        npx playwright install --with-deps
+
+    - name: Run Playwright tests
+      run: |
+        cd web-app
+        npx playwright test
+
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: playwright-report
+        path: web-app/playwright-report/
+        retention-days: 30

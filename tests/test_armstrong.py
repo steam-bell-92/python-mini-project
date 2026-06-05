@@ -1,48 +1,54 @@
 import unittest
-import subprocess
+from unittest.mock import patch
+import io
 import os
+import importlib.util
+
+# Absolute path to Armstrong-Number.py
+file_path = os.path.join(
+    os.path.dirname(__file__), "..",
+    "math", "Armstrong-Number", "Armstrong-Number.py"
+)
+file_path = os.path.abspath(file_path)
+
+# Load module dynamically from file path
+spec = importlib.util.spec_from_file_location("armstrong_number", file_path)
+armstrong_module = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(armstrong_module)
+
+is_armstrong_number = armstrong_module.is_armstrong_number
+main = armstrong_module.main
 
 class TestArmstrongNumber(unittest.TestCase):
-    def setUp(self):
-        self.script_path = os.path.join(
-            os.path.dirname(__file__), "..",
-            "math", "Armstrong-Number", "Armstrong-Number.py"
-        )
-        self.script_path = os.path.abspath(self.script_path)
+    def test_is_armstrong_number(self):
+        self.assertTrue(is_armstrong_number(153))
+        self.assertTrue(is_armstrong_number(370))
+        self.assertFalse(is_armstrong_number(154))
+        self.assertFalse(is_armstrong_number(-5))
 
-    def run_script(self, inputs):
-        # Join inputs with newline and add 'n' at the end to quit the program
-        input_data = "\n".join(inputs + ["n"]) + "\n"
-        env = os.environ.copy()
-        env["PYTHONIOENCODING"] = "utf-8"
-        
-        result = subprocess.run(
-            ["python", self.script_path],
-            input=input_data,
-            text=True,
-            capture_output=True,
-            encoding='utf-8',
-            env=env
-        )
-        return result.stdout
-
-    def test_armstrong_number(self):
-        output = self.run_script(["153"])
+    @patch('builtins.input')
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_main_flow_armstrong(self, mock_stdout, mock_input):
+        mock_input.side_effect = ["153", "n"]
+        main()
+        output = mock_stdout.getvalue()
         self.assertIn("153 is an Armstrong Number!", output)
 
-    def test_non_armstrong_number(self):
-        output = self.run_script(["154"])
+    @patch('builtins.input')
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_main_flow_non_armstrong(self, mock_stdout, mock_input):
+        mock_input.side_effect = ["154", "n"]
+        main()
+        output = mock_stdout.getvalue()
         self.assertIn("154 is NOT an Armstrong Number.", output)
 
-    def test_negative_number(self):
-        # Entering -5 first (fails), then 153 to exit cleanly
-        output = self.run_script(["-5", "153"])
+    @patch('builtins.input')
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_main_flow_invalid_and_negative(self, mock_stdout, mock_input):
+        mock_input.side_effect = ["-5", "abc", "153", "n"]
+        main()
+        output = mock_stdout.getvalue()
         self.assertIn("Please enter a positive number!", output)
-        self.assertIn("153 is an Armstrong Number!", output)
-
-    def test_invalid_input(self):
-        # Entering "abc" (fails), then 153 to exit cleanly
-        output = self.run_script(["abc", "153"])
         self.assertIn("Oops! That doesn't look like a valid integer.", output)
         self.assertIn("153 is an Armstrong Number!", output)
 

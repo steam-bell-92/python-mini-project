@@ -7,7 +7,6 @@ const AudioManager = (() => {
     if (_ctx.state === 'suspended') _ctx.resume();
     return _ctx;
   }
-
   function enabled() {
     const v = localStorage.getItem('soundEnabled');
     return v === null ? true : v === 'true';

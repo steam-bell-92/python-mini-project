@@ -89,6 +89,8 @@ def move():
     """update object positions"""
     global score, high_score, game_over
     
+    # CRITICAL FIX: If game_over was set to False by reset_game(), but this 
+    # was called by an old lingering timer loop, we must stop it from duplicating.
     if game_over:
         return
 
@@ -121,12 +123,15 @@ def move():
     for ball in balls:
         if abs(ball - bird) < 15:
             game_over = True
-
             draw(False)
             return
 
     draw(True)
-    ontimer(move, 50)
+    
+    # Double-check right before scheduling the next frame.
+    # If a reset happened during this execution block, abort scheduling.
+    if not game_over:
+        ontimer(move, 50)
 
 setup(420, 420, 370, 0)
 bgcolor('#0f172a')
@@ -136,5 +141,3 @@ tracer(False)
 onscreenclick(tap)
 move()
 done()
-
-

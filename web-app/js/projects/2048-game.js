@@ -243,7 +243,7 @@ function init2048Game() {
     }
 
     function drawBoard() {
-        gridContainer.innerHTML = "";
+        gridContainer.textContent = "";
         board.forEach(row => {
             row.forEach(cell => {
                 const tile = document.createElement("div");

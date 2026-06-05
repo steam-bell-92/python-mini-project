@@ -1,98 +1,134 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta id="themeColorMeta" name="theme-color" content="#0f172a" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required.">
-    <meta name="color-scheme" content="dark light">
-    <meta id="themeColorMeta" name="theme-color" content="#0f172a">
-    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://steam-bell-92.github.io/python-mini-project/games.html">
-    <meta property="og:title" content="Python Mini Games - Interactive Web Edition">
-    <meta property="og:description" content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required.">
-    <meta property="og:site_name" content="py.mini() lab">
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://steam-bell-92.github.io/python-mini-project/games.html"
+    />
+    <meta
+      property="og:title"
+      content="Python Mini Games - Interactive Web Edition"
+    />
+    <meta
+      property="og:description"
+      content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required."
+    />
+    <meta property="og:site_name" content="py.mini() lab" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://steam-bell-92.github.io/python-mini-project/games.html">
-    <meta name="twitter:title" content="Python Mini Games - Interactive Web Edition">
-    <meta name="twitter:description" content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required.">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://steam-bell-92.github.io/python-mini-project/games.html"
+    />
+    <meta
+      name="twitter:title"
+      content="Python Mini Games - Interactive Web Edition"
+    />
+    <meta
+      name="twitter:description"
+      content="Play beginner-friendly Python games in your browser. Arcade games, puzzles, strategy, and memory challenges with sleek dark/light mode UI. Zero installation required."
+    />
     <!-- Canonical Link -->
-    <link rel="canonical" href="https://steam-bell-92.github.io/python-mini-project/games.html">
+    <link
+      rel="canonical"
+      href="https://steam-bell-92.github.io/python-mini-project/games.html"
+    />
 
     <title>Python Mini Games - Interactive Web Edition</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemPage",
-      "name": "Interactive Python Games",
-      "description": "Play beginner-friendly Python arcade games, puzzles, and memory challenges in the browser.",
-      "url": "https://steam-bell-92.github.io/python-mini-project/games.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "py.mini() lab"
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemPage",
+        "name": "Interactive Python Games",
+        "description": "Play beginner-friendly Python arcade games, puzzles, and memory challenges in the browser.",
+        "url": "https://steam-bell-92.github.io/python-mini-project/games.html",
+        "publisher": {
+          "@type": "Organization",
+          "name": "py.mini() lab"
+        }
       }
-    }
     </script>
 
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        /* ── Page background ── */
-        body[data-page="games"] {
-            background-image: url('assets/games-bg.webp');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-        }
+      /* ── Page background ── */
+      body[data-page="games"] {
+        background-image: url("assets/games-bg.webp");
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
 
-        /* Overlay so cards stay readable */
-        body[data-page="games"]::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(10, 4, 30, 0.72);
-            z-index: 0;
-            pointer-events: none;
-        }
+      /* Overlay so cards stay readable */
+      body[data-page="games"]::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 4, 30, 0.72);
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        body[data-page="games"] .navbar,
-        body[data-page="games"] main,
-        body[data-page="games"] .footer {
-            position: relative;
-            z-index: 1;
-        }
+      body[data-page="games"] .navbar,
+      body[data-page="games"] main,
+      body[data-page="games"] .footer {
+        position: relative;
+        z-index: 1;
+      }
 
-        /* Light mode overlay */
-        [data-theme="light"] body[data-page="games"]::before {
-            background: rgba(237, 233, 254, 0.80);
-        }
+      /* Light mode overlay */
+      [data-theme="light"] body[data-page="games"]::before {
+        background: rgba(237, 233, 254, 0.8);
+      }
 
-        /* Active tab highlight for this page */
-        .tab[data-category="games"] {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
+      /* Active tab highlight for this page */
+      .tab[data-category="games"] {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
     </style>
-</head>
+  </head>
 
-<body data-page="games" class="sidebar-active">
+  <body data-page="games" class="sidebar-active">
     <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
 
     <!-- Mobile Sidebar Toggle -->
-    <button type="button" class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
+    <button
+      type="button"
+      class="mobile-sidebar-toggle"
+      id="mobileSidebarToggle"
+      aria-label="Toggle sidebar menu"
+      aria-expanded="false"
+    >
       <i class="fas fa-bars"></i>
     </button>
 
     <!-- ── PRIMARY SIDEBAR DOCK ──────────────────────────────────── -->
-    <aside class="sidebar-dock" id="mainSidebar" aria-label="Primary Navigation">
+    <aside
+      class="sidebar-dock"
+      id="mainSidebar"
+      aria-label="Primary Navigation"
+    >
       <div class="sidebar-brand">
         <a class="logo-wrap" href="index.html">
           <div class="logo-top-row">
@@ -107,29 +143,55 @@
       </div>
 
       <div class="sidebar-search">
-        <div class="search-box" style="position:relative">
+        <div class="search-box" style="position: relative">
           <i class="fas fa-search"></i>
-          <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"/>
+          <input
+            aria-label="Search projects"
+            id="searchInput"
+            placeholder="Search projects or tags..."
+            type="text"
+          />
           <div class="search-dropdown" id="searchDropdown">
             <div class="dropdown-content" id="searchDropdownContent">
-              <div class="search-loader" id="searchLoader" style="display:none"><div class="spinner"></div></div>
+              <div
+                class="search-loader"
+                id="searchLoader"
+                style="display: none"
+              >
+                <div class="spinner"></div>
+              </div>
               <div class="recent-searches-section" id="recentSearchesSection">
                 <div class="dropdown-section-title">Recent</div>
                 <div class="dropdown-list" id="recentSearchesList"></div>
               </div>
-              <div class="results-section" id="resultsSection" style="display:none">
+              <div
+                class="results-section"
+                id="resultsSection"
+                style="display: none"
+              >
                 <div class="dropdown-section-title">Projects</div>
                 <div class="dropdown-list" id="resultsList"></div>
               </div>
               <div class="tips-section" id="tipsSection">
                 <p><strong>Search tips</strong></p>
                 <ul>
-                  <li>Type a project name — <code>snake</code>, <code>quiz</code></li>
-                  <li>Filter by tag — <code>game</code>, <code>math</code>, <code>utility</code></li>
+                  <li>
+                    Type a project name — <code>snake</code>, <code>quiz</code>
+                  </li>
+                  <li>
+                    Filter by tag — <code>game</code>, <code>math</code>,
+                    <code>utility</code>
+                  </li>
                   <li>Press <code>Ctrl+K</code> to focus search</li>
                 </ul>
               </div>
-              <div class="no-results-message" id="noResultsMessage" style="display:none">No projects found. Try a different keyword.</div>
+              <div
+                class="no-results-message"
+                id="noResultsMessage"
+                style="display: none"
+              >
+                No projects found. Try a different keyword.
+              </div>
             </div>
           </div>
         </div>
@@ -137,28 +199,70 @@
 
       <div class="sidebar-menu-wrapper">
         <div class="sidebar-menu-title">Categories</div>
-        <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
-          <button aria-selected="false" class="sidebar-tab" data-category="all" role="tab" tabindex="-1">
+        <nav
+          class="sidebar-menu"
+          role="tablist"
+          aria-label="Filter by category"
+        >
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="all"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
             <span class="sidebar-label">All Projects</span>
           </button>
-          <button aria-selected="true" class="sidebar-tab active" data-category="games" role="tab" tabindex="0">
-            <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg></span>
+          <button
+            aria-selected="true"
+            class="sidebar-tab active"
+            data-category="games"
+            role="tab"
+            tabindex="0"
+          >
+            <span class="sidebar-icon"
+              ><svg data-lucide="gamepad-2"></svg
+            ></span>
             <span class="sidebar-label">Games Arcade</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="math"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
             <span class="sidebar-label">Math Visuals</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="utilities"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
             <span class="sidebar-label">Utilities Lab</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="favorites"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
             <span class="sidebar-label">My Favorites</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="playground"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
             <span class="sidebar-label">Playground</span>
           </button>
@@ -167,10 +271,20 @@
 
       <div class="sidebar-footer">
         <div class="sidebar-controls">
-          <button aria-label="Mute sounds" class="sound-toggle" id="soundToggle" type="button">
+          <button
+            aria-label="Mute sounds"
+            class="sound-toggle"
+            id="soundToggle"
+            type="button"
+          >
             <i class="fas fa-volume-up"></i>
           </button>
-          <button aria-label="Switch theme" class="theme-toggle" id="themeToggle" type="button">
+          <button
+            aria-label="Switch theme"
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+          >
             <i class="fas fa-moon"></i>
           </button>
         </div>
@@ -178,156 +292,385 @@
     </aside>
 
     <main id="main-content" tabindex="-1">
+      <!-- Page Title Section -->
+      <section
+        class="page-title-section"
+        style="text-align: center; padding: 2rem 0 1rem 0"
+      >
+        <div class="container">
+          <h1
+            style="
+              font-size: 2.5rem;
+              font-family: &quot;Space Grotesk&quot;, sans-serif;
+              background: linear-gradient(135deg, #10b981, #6366f1);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              margin: 0;
+            "
+          >
+            Interactive Python Games
+          </h1>
+          <p
+            style="
+              color: var(--text-secondary);
+              margin-top: 0.5rem;
+              font-size: 1.1rem;
+              opacity: 0.85;
+            "
+          >
+            Play beginner-friendly Python game projects in your browser—arcade
+            games, puzzles, and more.
+          </p>
+        </div>
+      </section>
 
-        <!-- Page Title Section -->
-        <section class="page-title-section" style="text-align: center; padding: 2rem 0 1rem 0;">
-            <div class="container">
-                <h1 style="font-size: 2.5rem; font-family: 'Space Grotesk', sans-serif; background: linear-gradient(135deg, #10b981, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Interactive Python Games</h1>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.85;">Play beginner-friendly Python game projects in your browser—arcade games, puzzles, and more.</p>
+      <!-- Projects Grid — Games only -->
+      <section class="projects-section" aria-label="Game Projects">
+        <div class="container">
+          <div class="projects-grid" id="projectsGrid">
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="2048-game"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/2048-game.webp"
+                alt="2048 Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>2048 Game</h3>
+              <p>Combine tiles and reach 2048!</p>
             </div>
-        </section>
 
-        <!-- Projects Grid — Games only -->
-        <section class="projects-section" aria-label="Game Projects">
-            <div class="container">
-                <div class="projects-grid" id="projectsGrid">
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="coin-flip"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/coin-flip.webp"
+                alt="Coin Flip"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
 
-                    <div class="project-card" data-category="games" data-project="2048-game"><img class="card-banner" src="assets/banners/2048-game.webp" alt="2048 Game" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>2048 Game</h3>
-                        <p>Combine tiles and reach 2048!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="coin-flip"><img class="card-banner" src="assets/banners/coin-flip.webp" alt="Coin Flip" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Coin Flip</h3>
-                        <p>Heads or tails with spinning animation!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="dice-rolling"><img class="card-banner" src="assets/banners/dice-rolling.webp" alt="Dice Rolling" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Dice Rolling</h3>
-                        <p>Roll the dice with 3D animation!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="dots-boxes"><img class="card-banner" src="assets/banners/dots-boxes.webp" alt="Dots &amp; Boxes AI" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Dots &amp; Boxes AI</h3>
-                        <p>Challenge friends or AI in this strategy game!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="emoji-memory"><img class="card-banner" src="assets/banners/emoji-memory.webp" alt="Emoji Memory Game" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Emoji Memory Game</h3>
-                        <p>Test your memory with matching emojis!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="flames"><img class="card-banner" src="assets/banners/flames.webp" alt="FLAMES Game" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>FLAMES Game</h3>
-                        <p>Discover your relationship status!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="flappy-game"><img class="card-banner" src="assets/banners/flappy-game.webp" alt="Flappy Game" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Flappy Game</h3>
-                        <p>Dodge the incoming balls and survive!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="hangman"><img class="card-banner" src="assets/banners/hangman.webp" alt="Hangman" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Hangman</h3>
-                        <p>Classic word-guessing game!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="math-quiz"><img class="card-banner" src="assets/banners/math-quiz.webp" alt="Math Quiz" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Math Quiz</h3>
-                        <p>MCQ quiz with lives, streaks & difficulty levels!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="number-guessing"><img class="card-banner" src="assets/banners/number-guessing.webp" alt="Number Guessing" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Number Guessing</h3>
-                        <p>Guess the secret number!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="password-forge"><img class="card-banner" src="assets/banners/password-forge.webp" alt="Password Forge" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Password Forge</h3>
-                        <p>Survive evolving firewall password rules!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="rock-paper-scissor"><img class="card-banner" src="assets/banners/rock-paper-scissor.webp" alt="Rock Paper Scissors" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Rock Paper Scissors</h3>
-                        <p>Battle against the computer!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="snake-game"><img class="card-banner" src="assets/banners/snake-game.webp" alt="Snake Game" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Snake Game</h3>
-                        <p>Classic snake game!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="whack-a-mole"><img class="card-banner" src="assets/banners/whack-a-mole.webp" alt="Whack-a-Mole" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Whack-a-Mole</h3>
-                        <p>Hit the moles before they disappear!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="games" data-project="word-scramble"><img class="card-banner" src="assets/banners/word-scramble.webp" alt="Word Scramble" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Word Scramble</h3>
-                        <p>Unscramble words before attempts run out!</p>
-                        
-                    </div>
-
-                </div><!-- /projects-grid -->
+              <h3>Coin Flip</h3>
+              <p>Heads or tails with spinning animation!</p>
             </div>
-        </section>
 
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="dice-rolling"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/dice-rolling.webp"
+                alt="Dice Rolling"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Dice Rolling</h3>
+              <p>Roll the dice with 3D animation!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="dots-boxes"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/dots-boxes.webp"
+                alt="Dots &amp; Boxes AI"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Dots &amp; Boxes AI</h3>
+              <p>Challenge friends or AI in this strategy game!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="emoji-memory"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/emoji-memory.webp"
+                alt="Emoji Memory Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Emoji Memory Game</h3>
+              <p>Test your memory with matching emojis!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="flames"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/flames.webp"
+                alt="FLAMES Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>FLAMES Game</h3>
+              <p>Discover your relationship status!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="flappy-game"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/flappy-game.webp"
+                alt="Flappy Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Flappy Game</h3>
+              <p>Dodge the incoming balls and survive!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="hangman"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/hangman.webp"
+                alt="Hangman"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Hangman</h3>
+              <p>Classic word-guessing game!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="math-quiz"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/math-quiz.webp"
+                alt="Math Quiz"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Math Quiz</h3>
+              <p>MCQ quiz with lives, streaks & difficulty levels!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="number-guessing"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/number-guessing.webp"
+                alt="Number Guessing"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Number Guessing</h3>
+              <p>Guess the secret number!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="password-forge"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/password-forge.webp"
+                alt="Password Forge"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Password Forge</h3>
+              <p>Survive evolving firewall password rules!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="rock-paper-scissor"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/rock-paper-scissor.webp"
+                alt="Rock Paper Scissors"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Rock Paper Scissors</h3>
+              <p>Battle against the computer!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="snake-game"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/snake-game.webp"
+                alt="Snake Game"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Snake Game</h3>
+              <p>Classic snake game!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="whack-a-mole"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/whack-a-mole.webp"
+                alt="Whack-a-Mole"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Whack-a-Mole</h3>
+              <p>Hit the moles before they disappear!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="games"
+              data-project="word-scramble"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/word-scramble.webp"
+                alt="Word Scramble"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Word Scramble</h3>
+              <p>Unscramble words before attempts run out!</p>
+            </div>
+          </div>
+          <!-- /projects-grid -->
+        </div>
+      </section>
     </main>
 
     <!-- Project Modal -->
-    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
-         aria-labelledby="modalDialogTitle" aria-hidden="true">
-        <div class="modal-content">
-            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
-            <button type="button" class="modal-close" id="modalClose"
-                    aria-label="Close project dialog">&times;</button>
-            <div id="modalBody"></div>
-        </div>
+    <div
+      class="modal"
+      id="projectModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalDialogTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content">
+        <h2
+          id="modalDialogTitle"
+          class="modal-dialog-title visually-hidden"
+          tabindex="-1"
+        >
+          Interactive project
+        </h2>
+        <button
+          type="button"
+          class="modal-close"
+          id="modalClose"
+          aria-label="Close project dialog"
+        >
+          &times;
+        </button>
+        <div id="modalBody"></div>
+      </div>
     </div>
 
-    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
-        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    <button
+      type="button"
+      class="back-to-top"
+      id="backToTop"
+      aria-label="Back to top"
+      title="Back to top"
+    >
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <footer class="footer">
-        <div class="container">
-            <p>Made with ❤️ for Python learners everywhere</p>
-            <p>
-                <a href="https://github.com/steam-bell-92/python-mini-project"
-                   target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
-                </a>
-            </p>
-        </div>
+      <div class="container">
+        <p>Made with ❤️ for Python learners everywhere</p>
+        <p>
+          <a
+            href="https://github.com/steam-bell-92/python-mini-project"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+          </a>
+        </p>
+      </div>
     </footer>
 
     <script defer src="js/audio.js"></script>
@@ -337,24 +680,24 @@
     <script defer src="js/projects/number-guessing.js"></script>
     <script defer src="js/projects/hangman.js"></script>
     <script defer src="js/projects/flames.js"></script>
-    <script defer src="js/projects/dots-boxes.js"></script> 
-    <script defer src="js/projects/password-forge.js"></script> 
-    <script defer src="js/projects/snake.js"></script> 
+    <script defer src="js/projects/dots-boxes.js"></script>
+    <script defer src="js/projects/password-forge.js"></script>
+    <script defer src="js/projects/snake.js"></script>
     <script defer src="js/projects/emoji-memory-game.js"></script>
     <script defer src="js/projects/whack-a-mole.js"></script>
-    <script defer src="js/projects/2048-game.js"></script>        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    <script defer src="js/projects/2048-game.js"></script>
+    <script defer src="js/projects/fibonacci.js"></script>
+    <script defer src="js/projects/pascal-triangle.js"></script>
+    <script defer src="js/projects/calculator.js"></script>
+    <script defer src="js/projects/collatz.js"></script>
+    <script defer src="js/projects/armstrong.js"></script>
+    <script defer src="js/projects/prime-analyzer.js"></script>
+    <script defer src="js/projects/projectile-motion.js"></script>
+    <script defer src="js/projects/progression-recognizer.js"></script>
+    <script defer src="js/projects/coordinate-polar-transform.js"></script>
+    <script defer src="js/projects/derivative-calculator.js"></script>
+    <script defer src="js/projects/morse-code.js"></script>
+    <script defer src="js/projects/tower-of-hanoi.js"></script>
     <script defer src="js/projects/math-quiz.js"></script>
     <script defer src="js/projects/simon-says.js"></script>
     <script defer src="js/projects/flappy-game.js"></script>
@@ -362,16 +705,16 @@
     <script defer src="js/projects/2048-game.js"></script>
     <script defer src="js/projects/dots-boxes.js"></script>
     <script defer src="js/projects/emoji-memory-game.js"></script>
-    
+    <script defer src="js/projects/number-converter.js"></script>
     <script defer src="js/projects/password-forge.js"></script>
-    
+    <script defer src="js/projects/typing-speed-tester.js"></script>
     <script defer src="js/projects/whack-a-mole.js"></script>
     <script defer src="js/projects/word-scramble.js"></script>
     <script defer src="js/projects/snake.js"></script>
     <script defer src="js/projects/spot-the-difference.js"></script>
     <script defer src="js/projects.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="js/main.js"></script>
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script defer type="module" src="js/main.js"></script>
     <script>lucide.createIcons();</script>
 
 </body>

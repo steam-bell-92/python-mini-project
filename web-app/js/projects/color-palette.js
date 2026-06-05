@@ -698,7 +698,7 @@ function initColorPalette() {
         if (!palette) return;
 
         const swatchContainer = document.getElementById('cpSwatches');
-        swatchContainer.innerHTML = '';
+        swatchContainer.textContent = '';
 
         palette.colors.forEach(color => {
             const swatch = document.createElement('div');

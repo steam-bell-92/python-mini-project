@@ -376,12 +376,12 @@ function initWordScramble() {
     }
 
     function setMessage(text, state) {
-        messageEl.innerHTML = text;
+        messageEl.textContent = text;
         messageEl.className = state ? `game-message ${state}` : 'game-message';
     }
 
     function renderWord(scrambled) {
-        wordEl.innerHTML = '';
+        wordEl.textContent = '';
         scrambled.toUpperCase().split('').forEach((letter, index) => {
             const tile = document.createElement('span');
             tile.className = 'scramble-tile';

@@ -209,7 +209,7 @@ function initPrimeAnalyzer() {
     function generatePrimes() {
         const limit = parseInt(generateLimit.value) || 100;
         buildSieve(limit);
-        primesDisplay.innerHTML = '';
+        primesDisplay.textContent = '';
         
         const primes = [];
         for (let i = 2; i <= limit; i++) {
@@ -225,7 +225,7 @@ function initPrimeAnalyzer() {
         });
         
         if (primes.length === 0) {
-            primesDisplay.innerHTML = '<p style="color: var(--text-secondary);">No primes found in range</p>';
+            primesDisplay.textContent = '<p style="color: var(--text-secondary);">No primes found in range</p>';
         }
     }
     
@@ -233,7 +233,7 @@ function initPrimeAnalyzer() {
         const start = parseInt(rangeStart.value) || 1;
         const end = parseInt(rangeEnd.value) || 50;
         buildSieve(end);
-        rangeDisplay.innerHTML = '';
+        rangeDisplay.textContent = '';
         
         const primes = [];
         for (let i = Math.max(2, start); i <= end; i++) {
@@ -249,7 +249,7 @@ function initPrimeAnalyzer() {
         });
         
         if (primes.length === 0) {
-            rangeDisplay.innerHTML = '<p style="color: var(--text-secondary);">No primes found in range</p>';
+            rangeDisplay.textContent = '<p style="color: var(--text-secondary);">No primes found in range</p>';
         }
     }
     

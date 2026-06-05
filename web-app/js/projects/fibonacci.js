@@ -84,7 +84,7 @@ function initFibonacci() {
 
         // Validation
         if (value === '' || isNaN(n) || n <= 0) {
-            display.innerHTML = `
+            display.textContent = `
                 <p class="fib-error">
                     Please enter a number greater than 0
                 </p>
@@ -93,7 +93,7 @@ function initFibonacci() {
             return;
         }
 
-        display.innerHTML = '';
+        display.textContent = '';
     
         let fib = [0, 1];
         for (let i = 2; i < n; i++) {

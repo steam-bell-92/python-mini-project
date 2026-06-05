@@ -1,99 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser."
+    />
+    <meta name="color-scheme" content="dark light" />
+    <meta id="themeColorMeta" name="theme-color" content="#0f172a" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser.">
-    <meta name="color-scheme" content="dark light">
-    <meta id="themeColorMeta" name="theme-color" content="#0f172a">
-    
     <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://steam-bell-92.github.io/python-mini-project/math.html">
-    <meta property="og:title" content="Python Math Visualizations & Calculators - Interactive Web Edition">
-    <meta property="og:description" content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser.">
-    <meta property="og:site_name" content="py.mini() lab">
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://steam-bell-92.github.io/python-mini-project/math.html"
+    />
+    <meta
+      property="og:title"
+      content="Python Math Visualizations & Calculators - Interactive Web Edition"
+    />
+    <meta
+      property="og:description"
+      content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser."
+    />
+    <meta property="og:site_name" content="py.mini() lab" />
 
     <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://steam-bell-92.github.io/python-mini-project/math.html">
-    <meta name="twitter:title" content="Python Math Visualizations & Calculators - Interactive Web Edition">
-    <meta name="twitter:description" content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser.">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:url"
+      content="https://steam-bell-92.github.io/python-mini-project/math.html"
+    />
+    <meta
+      name="twitter:title"
+      content="Python Math Visualizations & Calculators - Interactive Web Edition"
+    />
+    <meta
+      name="twitter:description"
+      content="Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser."
+    />
     <!-- Canonical Link -->
-    <link rel="canonical" href="https://steam-bell-92.github.io/python-mini-project/math.html">
+    <link
+      rel="canonical"
+      href="https://steam-bell-92.github.io/python-mini-project/math.html"
+    />
 
-    <title>Python Math Visualizations & Calculators - Interactive Web Edition</title>
-    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-    
+    <title>
+      Python Math Visualizations & Calculators - Interactive Web Edition
+    </title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
     <!-- Structured Data (JSON-LD) -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "ItemPage",
-      "name": "Interactive Python Math Visualizations & Calculators",
-      "description": "Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser.",
-      "url": "https://steam-bell-92.github.io/python-mini-project/math.html",
-      "publisher": {
-        "@type": "Organization",
-        "name": "py.mini() lab"
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemPage",
+        "name": "Interactive Python Math Visualizations & Calculators",
+        "description": "Explore interactive Python math projects: Pascal's triangle, Fibonacci spirals, projectile motion, calculus derivative solver, and number theory analyzers in the browser.",
+        "url": "https://steam-bell-92.github.io/python-mini-project/math.html",
+        "publisher": {
+          "@type": "Organization",
+          "name": "py.mini() lab"
+        }
       }
-    }
     </script>
 
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <style>
-        /* ── Page background ── */
-        body[data-page="math"] {
-            background-image: url('assets/math-bg.webp');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-        }
+      /* ── Page background ── */
+      body[data-page="math"] {
+        background-image: url("assets/math-bg.webp");
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+      }
 
-        /* Overlay so cards stay readable */
-        body[data-page="math"]::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 20, 40, 0.75);
-            z-index: 0;
-            pointer-events: none;
-        }
+      /* Overlay so cards stay readable */
+      body[data-page="math"]::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(2, 20, 40, 0.75);
+        z-index: 0;
+        pointer-events: none;
+      }
 
-        body[data-page="math"] .navbar,
-        body[data-page="math"] main,
-        body[data-page="math"] .footer {
-            position: relative;
-            z-index: 1;
-        }
+      body[data-page="math"] .navbar,
+      body[data-page="math"] main,
+      body[data-page="math"] .footer {
+        position: relative;
+        z-index: 1;
+      }
 
-        /* Light mode overlay */
-        [data-theme="light"] body[data-page="math"]::before {
-            background: rgba(224, 242, 254, 0.80);
-        }
+      /* Light mode overlay */
+      [data-theme="light"] body[data-page="math"]::before {
+        background: rgba(224, 242, 254, 0.8);
+      }
 
-        /* Active tab highlight for this page */
-        .tab[data-category="math"],
-        a.tab.active {
-            background: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white;
-        }
+      /* Active tab highlight for this page */
+      .tab[data-category="math"],
+      a.tab.active {
+        background: var(--primary-color);
+        border-color: var(--primary-color);
+        color: white;
+      }
     </style>
-</head>
+  </head>
 
-<body data-page="math" class="sidebar-active">
+  <body data-page="math" class="sidebar-active">
     <a href="#main-content" class="skip-link">🚀 Skip to main content</a>
 
     <!-- Mobile Sidebar Toggle -->
-    <button type="button" class="mobile-sidebar-toggle" id="mobileSidebarToggle" aria-label="Toggle sidebar menu" aria-expanded="false">
+    <button
+      type="button"
+      class="mobile-sidebar-toggle"
+      id="mobileSidebarToggle"
+      aria-label="Toggle sidebar menu"
+      aria-expanded="false"
+    >
       <i class="fas fa-bars"></i>
     </button>
 
     <!-- ── PRIMARY SIDEBAR DOCK ──────────────────────────────────── -->
-    <aside class="sidebar-dock" id="mainSidebar" aria-label="Primary Navigation">
+    <aside
+      class="sidebar-dock"
+      id="mainSidebar"
+      aria-label="Primary Navigation"
+    >
       <div class="sidebar-brand">
         <a class="logo-wrap" href="index.html">
           <div class="logo-top-row">
@@ -108,29 +146,55 @@
       </div>
 
       <div class="sidebar-search">
-        <div class="search-box" style="position:relative">
+        <div class="search-box" style="position: relative">
           <i class="fas fa-search"></i>
-          <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"/>
+          <input
+            aria-label="Search projects"
+            id="searchInput"
+            placeholder="Search projects or tags..."
+            type="text"
+          />
           <div class="search-dropdown" id="searchDropdown">
             <div class="dropdown-content" id="searchDropdownContent">
-              <div class="search-loader" id="searchLoader" style="display:none"><div class="spinner"></div></div>
+              <div
+                class="search-loader"
+                id="searchLoader"
+                style="display: none"
+              >
+                <div class="spinner"></div>
+              </div>
               <div class="recent-searches-section" id="recentSearchesSection">
                 <div class="dropdown-section-title">Recent</div>
                 <div class="dropdown-list" id="recentSearchesList"></div>
               </div>
-              <div class="results-section" id="resultsSection" style="display:none">
+              <div
+                class="results-section"
+                id="resultsSection"
+                style="display: none"
+              >
                 <div class="dropdown-section-title">Projects</div>
                 <div class="dropdown-list" id="resultsList"></div>
               </div>
               <div class="tips-section" id="tipsSection">
                 <p><strong>Search tips</strong></p>
                 <ul>
-                  <li>Type a project name — <code>snake</code>, <code>quiz</code></li>
-                  <li>Filter by tag — <code>game</code>, <code>math</code>, <code>utility</code></li>
+                  <li>
+                    Type a project name — <code>snake</code>, <code>quiz</code>
+                  </li>
+                  <li>
+                    Filter by tag — <code>game</code>, <code>math</code>,
+                    <code>utility</code>
+                  </li>
                   <li>Press <code>Ctrl+K</code> to focus search</li>
                 </ul>
               </div>
-              <div class="no-results-message" id="noResultsMessage" style="display:none">No projects found. Try a different keyword.</div>
+              <div
+                class="no-results-message"
+                id="noResultsMessage"
+                style="display: none"
+              >
+                No projects found. Try a different keyword.
+              </div>
             </div>
           </div>
         </div>
@@ -138,28 +202,70 @@
 
       <div class="sidebar-menu-wrapper">
         <div class="sidebar-menu-title">Categories</div>
-        <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
-          <button aria-selected="false" class="sidebar-tab" data-category="all" role="tab" tabindex="-1">
+        <nav
+          class="sidebar-menu"
+          role="tablist"
+          aria-label="Filter by category"
+        >
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="all"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
             <span class="sidebar-label">All Projects</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
-            <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg></span>
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="games"
+            role="tab"
+            tabindex="-1"
+          >
+            <span class="sidebar-icon"
+              ><svg data-lucide="gamepad-2"></svg
+            ></span>
             <span class="sidebar-label">Games Arcade</span>
           </button>
-          <button aria-selected="true" class="sidebar-tab active" data-category="math" role="tab" tabindex="0">
+          <button
+            aria-selected="true"
+            class="sidebar-tab active"
+            data-category="math"
+            role="tab"
+            tabindex="0"
+          >
             <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
             <span class="sidebar-label">Math Visuals</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="utilities"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
             <span class="sidebar-label">Utilities Lab</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="favorites"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
             <span class="sidebar-label">My Favorites</span>
           </button>
-          <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
+          <button
+            aria-selected="false"
+            class="sidebar-tab"
+            data-category="playground"
+            role="tab"
+            tabindex="-1"
+          >
             <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
             <span class="sidebar-label">Playground</span>
           </button>
@@ -168,10 +274,20 @@
 
       <div class="sidebar-footer">
         <div class="sidebar-controls">
-          <button aria-label="Mute sounds" class="sound-toggle" id="soundToggle" type="button">
+          <button
+            aria-label="Mute sounds"
+            class="sound-toggle"
+            id="soundToggle"
+            type="button"
+          >
             <i class="fas fa-volume-up"></i>
           </button>
-          <button aria-label="Switch theme" class="theme-toggle" id="themeToggle" type="button">
+          <button
+            aria-label="Switch theme"
+            class="theme-toggle"
+            id="themeToggle"
+            type="button"
+          >
             <i class="fas fa-moon"></i>
           </button>
         </div>
@@ -179,121 +295,290 @@
     </aside>
 
     <main id="main-content" tabindex="-1">
+      <!-- Page Title Section -->
+      <section
+        class="page-title-section"
+        style="text-align: center; padding: 2rem 0 1rem 0"
+      >
+        <div class="container">
+          <h1
+            style="
+              font-size: 2.5rem;
+              font-family: &quot;Space Grotesk&quot;, sans-serif;
+              background: linear-gradient(135deg, #10b981, #6366f1);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              margin: 0;
+            "
+          >
+            Interactive Python Math Visualizations
+          </h1>
+          <p
+            style="
+              color: var(--text-secondary);
+              margin-top: 0.5rem;
+              font-size: 1.1rem;
+              opacity: 0.85;
+            "
+          >
+            Explore beginner-friendly Python math projects in your
+            browser—visualizations, calculators, and more.
+          </p>
+        </div>
+      </section>
 
-        <!-- Page Title Section -->
-        <section class="page-title-section" style="text-align: center; padding: 2rem 0 1rem 0;">
-            <div class="container">
-                <h1 style="font-size: 2.5rem; font-family: 'Space Grotesk', sans-serif; background: linear-gradient(135deg, #10b981, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin: 0;">Interactive Python Math Visualizations</h1>
-                <p style="color: var(--text-secondary); margin-top: 0.5rem; font-size: 1.1rem; opacity: 0.85;">Explore beginner-friendly Python math projects in your browser—visualizations, calculators, and more.</p>
+      <!-- Projects Grid — Math only -->
+      <section class="projects-section" aria-label="Math Projects">
+        <div class="container">
+          <div class="projects-grid" id="projectsGrid">
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="progression-recognizer"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/progression-recognizer.webp"
+                alt="AP/GP/AGP/HP Recognizer"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>AP/GP/AGP/HP Recognizer</h3>
+              <p>Identify progression types from any sequence.</p>
             </div>
-        </section>
 
-        <!-- Projects Grid — Math only -->
-        <section class="projects-section" aria-label="Math Projects">
-            <div class="container">
-                <div class="projects-grid" id="projectsGrid">
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="armstrong"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/armstrong.webp"
+                alt="Armstrong Numbers"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
 
-                    <div class="project-card" data-category="math" data-project="progression-recognizer"><img class="card-banner" src="assets/banners/progression-recognizer.webp" alt="AP/GP/AGP/HP Recognizer" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>AP/GP/AGP/HP Recognizer</h3>
-                        <p>Identify progression types from any sequence.</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="armstrong"><img class="card-banner" src="assets/banners/armstrong.webp" alt="Armstrong Numbers" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Armstrong Numbers</h3>
-                        <p>Check special number properties!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="calculator"><img class="card-banner" src="assets/banners/calculator.webp" alt="Calculator" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Calculator</h3>
-                        <p>Your mathematical companion!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="collatz"><img class="card-banner" src="assets/banners/collatz.webp" alt="Collatz Conjecture" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Collatz Conjecture</h3>
-                        <p>Explore the 3n+1 problem!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="coordinate-polar-transform"><img class="card-banner" src="assets/banners/coordinate-polar-transform.webp" alt="Coordinate to Polar" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Coordinate to Polar</h3>
-                        <p>Transform Cartesian (x, y) into polar (r, theta).</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="derivative-calculator"><img class="card-banner" src="assets/banners/derivative-calculator.webp" alt="Derivative Calculator" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Derivative Calculator</h3>
-                        <p>Compute 1st/nth polynomial derivatives and evaluate them.</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="fibonacci"><img class="card-banner" src="assets/banners/fibonacci.webp" alt="Fibonacci Series" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Fibonacci Series</h3>
-                        <p>Generate Fibonacci sequences!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="pascal-triangle"><img class="card-banner" src="assets/banners/pascal-triangle.webp" alt="Pascal's Triangle" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Pascal's Triangle</h3>
-                        <p>Beautiful hexagon visualization!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="prime-analyzer"><img class="card-banner" src="assets/banners/prime-analyzer.webp" alt="Prime Analyzer" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Prime Analyzer</h3>
-                        <p>All-in-one prime number toolkit!</p>
-                        
-                    </div>
-
-                    <div class="project-card" data-category="math" data-project="projectile-motion"><img class="card-banner" src="assets/banners/projectile-motion.webp" alt="Projectile Motion" loading="lazy"><div class="card-actions"><button class="btn-play">Try It</button></div>
-                        
-                        <h3>Projectile Motion</h3>
-                        <p>Calculate TOF, Hmax, and Range with physics!</p>
-                        
-                    </div>
-
-                </div><!-- /projects-grid -->
+              <h3>Armstrong Numbers</h3>
+              <p>Check special number properties!</p>
             </div>
-        </section>
 
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="calculator"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/calculator.webp"
+                alt="Calculator"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Calculator</h3>
+              <p>Your mathematical companion!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="collatz"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/collatz.webp"
+                alt="Collatz Conjecture"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Collatz Conjecture</h3>
+              <p>Explore the 3n+1 problem!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="coordinate-polar-transform"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/coordinate-polar-transform.webp"
+                alt="Coordinate to Polar"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Coordinate to Polar</h3>
+              <p>Transform Cartesian (x, y) into polar (r, theta).</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="derivative-calculator"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/derivative-calculator.webp"
+                alt="Derivative Calculator"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Derivative Calculator</h3>
+              <p>Compute 1st/nth polynomial derivatives and evaluate them.</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="fibonacci"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/fibonacci.webp"
+                alt="Fibonacci Series"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Fibonacci Series</h3>
+              <p>Generate Fibonacci sequences!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="pascal-triangle"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/pascal-triangle.webp"
+                alt="Pascal's Triangle"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Pascal's Triangle</h3>
+              <p>Beautiful hexagon visualization!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="prime-analyzer"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/prime-analyzer.webp"
+                alt="Prime Analyzer"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Prime Analyzer</h3>
+              <p>All-in-one prime number toolkit!</p>
+            </div>
+
+            <div
+              class="project-card"
+              data-category="math"
+              data-project="projectile-motion"
+            >
+              <img
+                class="card-banner"
+                src="assets/banners/projectile-motion.webp"
+                alt="Projectile Motion"
+                loading="lazy"
+              / loading="lazy">
+              <div class="card-actions">
+                <button class="btn-play">Try It</button>
+              </div>
+
+              <h3>Projectile Motion</h3>
+              <p>Calculate TOF, Hmax, and Range with physics!</p>
+            </div>
+          </div>
+          <!-- /projects-grid -->
+        </div>
+      </section>
     </main>
 
     <!-- Project Modal -->
-    <div class="modal" id="projectModal" role="dialog" aria-modal="true"
-         aria-labelledby="modalDialogTitle" aria-hidden="true">
-        <div class="modal-content">
-            <h2 id="modalDialogTitle" class="modal-dialog-title visually-hidden" tabindex="-1">Interactive project</h2>
-            <button type="button" class="modal-close" id="modalClose"
-                    aria-label="Close project dialog">&times;</button>
-            <div id="modalBody"></div>
-        </div>
+    <div
+      class="modal"
+      id="projectModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalDialogTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-content">
+        <h2
+          id="modalDialogTitle"
+          class="modal-dialog-title visually-hidden"
+          tabindex="-1"
+        >
+          Interactive project
+        </h2>
+        <button
+          type="button"
+          class="modal-close"
+          id="modalClose"
+          aria-label="Close project dialog"
+        >
+          &times;
+        </button>
+        <div id="modalBody"></div>
+      </div>
     </div>
 
-    <button type="button" class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
-        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    <button
+      type="button"
+      class="back-to-top"
+      id="backToTop"
+      aria-label="Back to top"
+      title="Back to top"
+    >
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <footer class="footer">
-        <div class="container">
-            <p>Made with ❤️ for Python learners everywhere</p>
-            <p>
-                <a href="https://github.com/steam-bell-92/python-mini-project"
-                   target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
-                </a>
-            </p>
-        </div>
+      <div class="container">
+        <p>Made with ❤️ for Python learners everywhere</p>
+        <p>
+          <a
+            href="https://github.com/steam-bell-92/python-mini-project"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+          </a>
+        </p>
+      </div>
     </footer>
 
     <script defer src="js/audio.js"></script>
@@ -318,8 +603,8 @@
     <script defer src="js/projects/math-quiz.js"></script>
     <script defer src="js/projects/simon-says.js"></script>
     <script defer src="js/projects.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script defer src="js/main.js"></script>
+    <script defer src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <script defer type="module" src="js/main.js"></script>
     <script>lucide.createIcons();</script>
 
 </body>

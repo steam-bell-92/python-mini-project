@@ -14,8 +14,7 @@ except ImportError:
 
 class SnakeGame:
     def __init__(self):
-        # Game state
-        self.paused = False
+        self.game_state = "IDLE"
         self.delay = SLEEP_TIME
         self.level = 1
 
@@ -32,6 +31,13 @@ class SnakeGame:
         self.snake = Snake()
         self.food = Food()
         self.scoreboard = Scoreboard()
+
+        # Dedicated message text engine (matches the working Snake-game.py pattern)
+        self.game_text = turtle.Turtle()
+        self.game_text.hideturtle()
+        self.game_text.color("white")
+        self.game_text.penup()
+        self.game_text.goto(0, 0)
 
         # Sound setup
         self.pygame_installed = pygame_installed
@@ -50,7 +56,7 @@ class SnakeGame:
         self.screen.onkeypress(self.snake.move_down, "Down")
         self.screen.onkeypress(self.snake.move_left, "Left")
         self.screen.onkeypress(self.snake.move_right, "Right")
-        self.screen.onkeypress(self.toggle_pause, "p")   # Pause key
+        self.screen.onkeypress(self.handle_spacebar, "space")
 
     def _draw_borders(self):
         box = turtle.Turtle()
@@ -64,77 +70,96 @@ class SnakeGame:
             box.forward(600)
             box.right(90)
 
-    # Countdown before game starts
     def countdown(self):
         for text in ["3", "2", "1", "GO!"]:
-            self.scoreboard.show_message(text)
+            self.game_text.clear()
+            self.game_text.write(text, align="center", font=("Arial", 30, "bold"))
             self.screen.update()
             time.sleep(1)
+        self.game_text.clear()
 
-        self.scoreboard.update_display()
+    def handle_spacebar(self):
+        if self.game_state == "IDLE":
+            self.countdown()
+            self.game_state = "PLAYING"
+            # Schedule the first tick after spacebar is pressed
+            self.screen.ontimer(self.tick, int(self.delay * 1000))
+            
+        elif self.game_state == "PLAYING":
+            self.game_state = "PAUSED"
+            self.game_text.clear()
+            self.game_text.write("PAUSED", align="center", font=("Arial", 24, "bold"))
+            # Don't schedule next tick; game is paused
+            
+        elif self.game_state == "PAUSED":
+            self.game_state = "PLAYING"
+            self.game_text.clear()
+            # Resume ticking when unpaused
+            self.screen.ontimer(self.tick, int(self.delay * 1000))
+            
+        elif self.game_state == "GAME_OVER":
+            self.snake.reset()
+            self.scoreboard.reset()
+            self.delay = SLEEP_TIME
+            self.level = 1
+            self.countdown()
+            self.game_state = "PLAYING"
+            # Schedule the first tick after restart
+            self.screen.ontimer(self.tick, int(self.delay * 1000))
 
-    # Pause toggle
-    def toggle_pause(self):
-        self.paused = not self.paused
+    def tick(self):
+        """Single game tick - called via ontimer() to avoid busy-waiting."""
+        # Only process game logic if game is actively playing
+        if self.game_state != "PLAYING":
+            return
 
-        if self.paused:
-            self.scoreboard.show_message("PAUSED")
-        else:
-            self.scoreboard.update_display()
+        self.screen.update()
+
+        # Boundary collision
+        if self.snake.check_boundary_collision():
+            if self.pygame_installed:
+                self.gameover_sound.play()
+            self.game_text.write("GAME OVER - Press SPACE to Restart", align="center", font=("Arial", 20, "bold"))
+            self.game_state = "GAME_OVER"
+            return
+
+        # Food collision
+        if self.snake.head.distance(self.food.item) < COLLISION_DISTANCE:
+            self.food.reposition(self.snake)
+            self.snake.add_part()
+            self.scoreboard.increase()
+            if self.pygame_installed:
+                self.eat_sound.play()
+
+            if self.scoreboard.score % 5 == 0:
+                self.level += 1
+                self.delay -= 0.01
+                self.game_text.clear()
+                self.game_text.write(f"LEVEL {self.level}", align="center", font=("Arial", 24, "bold"))
+                self.screen.update()
+                time.sleep(0.5)
+                self.game_text.clear()
+
+        # Move snake
+        self.snake.move()
+
+        # Self collision
+        if self.snake.check_self_collision():
+            if self.pygame_installed:
+                self.gameover_sound.play()
+            self.game_text.write("GAME OVER - Press SPACE to Restart", align="center", font=("Arial", 20, "bold"))
+            self.game_state = "GAME_OVER"
+            return
+
+        # Schedule next tick
+        self.screen.ontimer(self.tick, int(self.delay * 1000))
 
     def run(self):
-        self.countdown()  # Start countdown
-
-        while True:
-            self.screen.update()
-
-            # Pause check
-            if self.paused:
-                continue
-
-            # Boundary collision
-            if self.snake.check_boundary_collision():
-                if self.pygame_installed:
-                    self.gameover_sound.play()
-                self.snake.reset()
-                self.scoreboard.reset()
-                self.delay = SLEEP_TIME
-                self.level = 1
-
-            # Food collision
-            if self.snake.head.distance(self.food.item) < COLLISION_DISTANCE:
-                self.food.reposition(self.snake)
-                self.snake.add_part()
-
-                self.scoreboard.increase()
-                if self.pygame_installed:
-                    self.eat_sound.play()
-
-                # Level system
-                if self.scoreboard.score % 5 == 0:
-                    self.level += 1
-                    self.delay -= 0.01
-
-                    # Optional level message
-                    self.scoreboard.show_message(f"LEVEL {self.level}")
-                    self.screen.update()
-                    time.sleep(0.5)
-                    self.scoreboard.update_display()
-
-            # Move snake
-            self.snake.move()
-
-            # Self collision
-            if self.snake.check_self_collision():
-                if self.pygame_installed:
-                    self.gameover_sound.play()
-                self.snake.reset()
-                self.scoreboard.reset()
-                self.delay = SLEEP_TIME
-                self.level = 1
-
-            # Game speed
-            time.sleep(self.delay)
+        """Main entry point - display startup message and enter event loop."""
+        self.game_text.write("Press SPACEBAR to Start", align="center", font=("Arial", 24, "bold"))
+        self.screen.update()
+        # Turtle event loop keeps ontimer() callbacks running
+        self.screen.mainloop()
 
 
 if __name__ == "__main__":

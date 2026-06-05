@@ -392,7 +392,7 @@ function initDiceRolling() {
     }
 
     function renderDice(count) {
-        diceDisplay.innerHTML = '';
+        diceDisplay.textContent = '';
         spins = {};
         for (let i = 1; i <= count; i++) {
             diceDisplay.insertAdjacentHTML('beforeend', createDiceHTML(`dice${i}`));

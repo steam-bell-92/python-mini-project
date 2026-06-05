@@ -1,6 +1,7 @@
 import unittest
 import subprocess
 import os
+import sys
 
 class TestBinarySearch(unittest.TestCase):
     def setUp(self):
@@ -17,7 +18,7 @@ class TestBinarySearch(unittest.TestCase):
         env["PYTHONIOENCODING"] = "utf-8"
         
         result = subprocess.run(
-            ["python", self.script_path],
+            [sys.executable, self.script_path],
             input=input_data,
             text=True,
             capture_output=True,

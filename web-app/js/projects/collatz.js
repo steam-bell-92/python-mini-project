@@ -151,8 +151,8 @@ function initCollatz() {
         let number = parseInt(numberInput.value);
         
         if (!number || number < 1) {
-            sequenceDiv.innerHTML = '<p style="color: var(--danger-color);">⚠️ Please enter a positive integer!</p>';
-            statsDiv.innerHTML = '';
+            sequenceDiv.textContent = '<p style="color: var(--danger-color);">⚠️ Please enter a positive integer!</p>';
+            statsDiv.innerHTML  = '';
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             return;
         }
@@ -177,7 +177,7 @@ function initCollatz() {
         const maxNum = Math.max(...sequence);
         const statusText = reachedOne ? 'Reached 1 ✅' : `Not reached in ${maxSteps} steps ❌`;
         
-        statsDiv.innerHTML = `
+            statsDiv.innerHTML = `
             <div class="stat-box">
                 <div class="stat-label">Starting Number</div>
                 <div class="stat-value">${originalNumber}</div>
@@ -196,9 +196,9 @@ function initCollatz() {
             </div>
         `;
         
-        sequenceDiv.innerHTML = reachedOne
-            ? '<p style="margin-bottom: 1rem; color: var(--success-color); font-weight: 600;">✅ This number reaches 1.</p>'
-            : `<p style="margin-bottom: 1rem; color: var(--warning-color); font-weight: 600;">⚠️ Could not confirm reach to 1 within ${maxSteps} steps.</p>`;
+        sequenceDiv.innerHTML = reachedOne 
+        ? '<p style="margin-bottom: 1rem; color: var(--success-color); font-weight: 600;">✅ This number reaches 1.</p>' 
+        : '<p style="margin-bottom: 1rem; color: var(--warning-color); font-weight: 600;">⚠️ Could not confirm reach to 1 within 20000 steps.</p>';
         sequence.forEach((num, index) => {
             const numEl = document.createElement('span');
             numEl.className = 'sequence-number';

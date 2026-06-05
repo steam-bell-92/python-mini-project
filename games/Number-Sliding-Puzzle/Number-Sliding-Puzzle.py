@@ -1,4 +1,11 @@
+import sys
+import os
+
+# Point Python to the root directory so it can find the utils folder
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from utils.validation import get_int, get_yes_no
 import random
+
 
 print("🧩 Emoji Sliding Puzzle Game 🧩")
 
@@ -37,14 +44,7 @@ while True:
             print("\n🎉 Congratulations! You solved the puzzle!")
             break
             
-        try:
-            choice_str = input("\n🎯 Enter number to move: ").strip()
-            if not choice_str:
-                continue
-            choice = int(choice_str)
-        except ValueError:
-            print("❌ Please enter a valid number!")
-            continue
+        choice = get_int("\n🎯 Enter number to move: ", min_value=1, max_value=8)
 
         empty_row = 0
         empty_col = 0
@@ -75,10 +75,6 @@ while True:
 
     print("\n👋 Thanks for playing Emoji Sliding Puzzle!\n")
     
-    while True:
-        replay = input("🔄 Play again? (y/n): ").strip().lower()
-        if replay in ['y', 'yes', 'n', 'no']:
-            break
-        print("⚠️ Invalid input. Enter 'y' or 'n'.")
-    if replay in ['n', 'no']:
+    # get_yes_no loops automatically and returns True for 'y' and False for 'n'
+    if not get_yes_no("\n🔄 Play again? (y/n): "):
         break

@@ -5,23 +5,24 @@ import os
 emojis = ["🍎", "🚗", "⚽", "🐍", "🎧", "🔥", "🌈", "🚀"]
 HIGH_SCORE_FILE = "highscore.txt"
 
+# Load or initialize high score ONCE at the start of the program
+if not os.path.exists(HIGH_SCORE_FILE):
+    try:
+        with open(HIGH_SCORE_FILE, "w") as file:
+            file.write("0")
+    except Exception:
+        pass
+
+high_score = 0
+try:
+    with open(HIGH_SCORE_FILE, "r") as file:
+        high_score = int(file.read().strip() or "0")
+except Exception:
+    high_score = 0
+
+# Main Game Loop
 while True:
     print("\n🎮 Welcome to Emoji Memory Game!")
-
-    if not os.path.exists(HIGH_SCORE_FILE):
-        try:
-            with open(HIGH_SCORE_FILE, "w") as file:
-                file.write("0")
-        except Exception:
-            pass
-
-    high_score = 0
-    try:
-        with open(HIGH_SCORE_FILE, "r") as file:
-            high_score = int(file.read().strip() or "0")
-    except Exception:
-        high_score = 0
-
     print(f"🏅 High Score: {high_score}\n")
 
     print("🎯 Select Difficulty")
@@ -50,6 +51,7 @@ while True:
     score = 0
     level = 1
 
+    # Gameplay Loop
     while True:
         sequence = random.choices(emojis, k=level + 2)
 
@@ -78,11 +80,13 @@ while True:
             print("Correct sequence was:", " ".join(sequence))
             break
 
+    # Game Over Processing
     print("\n🎯 Game Over!")
     print(f"🏆 Final Score: {score}")
 
     if score > high_score:
         print("🔥 NEW HIGH SCORE!")
+        high_score = score  # Update local memory variable
         try:
             with open(HIGH_SCORE_FILE, "w") as file:
                 file.write(str(score))
@@ -91,12 +95,18 @@ while True:
     else:
         print(f"🏅 High Score remains: {high_score}")
 
+    # Replay Loop Fix
+    play_again = False
     while True:
         replay = input("\nPlay again? (y/n): ").strip().lower()
-        if replay in ['y', 'yes', 'n', 'no']:
+        if replay in ['y', 'yes']:
+            play_again = True
+            break
+        elif replay in ['n', 'no']:
+            play_again = False
             break
         print("⚠️ Invalid input. Please enter 'y' or 'n'.")
 
-    if replay in ['n', 'no']:
+    if not play_again:
         print("👋 Thanks for playing!")
-        break
+        break  # Safely breaks the main outer loop and exits the game

@@ -287,7 +287,7 @@ function initAIResumeAnalyzer() {
         document.getElementById('atsStrength').textContent        = strength;
 
         const kwList = document.getElementById('resumeKeywordsList');
-        kwList.innerHTML = '';
+        kwList.textContent = '';
 
         const displaySkills = [
             ...foundSkills.map(s => ({ name: s, pct: Math.min(70 + Math.random() * 30 | 0, 100), found: true })),
@@ -296,10 +296,10 @@ function initAIResumeAnalyzer() {
         ].slice(0, 6);
 
         if (displaySkills.length === 0) {
-            kwList.innerHTML = '<p style="color:var(--text-secondary);font-size:0.9rem;">No matching keywords detected. Try a .txt version of your resume.</p>';
+            kwList.textContent = '<p style="color:var(--text-secondary);font-size:0.9rem;">No matching keywords detected. Try a .txt version of your resume.</p>';
         } else {
             displaySkills.forEach(({ name, pct, found }) => {
-                kwList.innerHTML += `
+                kwList.textContent += `
                     <div class="resume-keyword-item">
                         <span style="${found ? '' : 'color:var(--text-secondary);opacity:0.6;'}">${capitalise(name)}${found ? '' : ' ❌'}</span>
                         <div class="resume-bar">
@@ -310,11 +310,11 @@ function initAIResumeAnalyzer() {
         }
 
         const suggestionsEl = document.getElementById('resumeSuggestions');
-        suggestionsEl.innerHTML = '';
+        suggestionsEl.textContent = '';
 
         const suggestions = buildSuggestions({ foundSkills, missingSkills, eduFound, expFound, projFound });
         suggestions.forEach(s => {
-            suggestionsEl.innerHTML += `
+            suggestionsEl.textContent += `
                 <div class="resume-suggestion">
                     <i class="fa-solid ${s.ok ? 'fa-check' : 'fa-triangle-exclamation'}" style="color:${s.ok ? 'var(--accent)' : 'var(--warning-color,#f59e0b)'}; margin-top:0.2rem;"></i>
                     <p style="margin:0;">${s.text}</p>

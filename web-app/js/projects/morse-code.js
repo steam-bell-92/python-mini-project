@@ -201,8 +201,8 @@ function initMorseCode() {
             inputLabel.textContent = 'Enter Text:';
             textInput.placeholder = 'Type your message here...';
             textInput.value = '';
-            morseOutput.innerHTML = '<p class="placeholder">Your translation will appear here...</p>';
-            translateBtn.innerHTML = '📻 Translate to Morse';
+            morseOutput.textContent = '<p class="placeholder">Your translation will appear here...</p>';
+            translateBtn.textContent = '📻 Translate to Morse';
         }
     });
 
@@ -211,8 +211,8 @@ function initMorseCode() {
             inputLabel.textContent = 'Enter Morse Code:';
             textInput.placeholder = "Type morse code (separate letters with space, words with double spaces)...";
             textInput.value = '';
-            morseOutput.innerHTML = '<p class="placeholder">Your translation will appear here...</p>';
-            translateBtn.innerHTML = '📝 Translate to Text';
+            morseOutput.textContent = '<p class="placeholder">Your translation will appear here...</p>';
+            translateBtn.textContent = '📝 Translate to Text';
         }
     });
     
@@ -231,11 +231,11 @@ function initMorseCode() {
     function translate() {
         const text = textInput.value.toUpperCase();
         if (!text.trim()) {
-            morseOutput.innerHTML = '<p class="placeholder">Please enter something to translate!</p>';
+            morseOutput.textContent = '<p class="placeholder">Please enter something to translate!</p>';
             return;
         }
         
-        morseOutput.innerHTML = '';
+        morseOutput.textContent = '';
         
         if (modeMorseToText.checked) {
             // Morse to Text

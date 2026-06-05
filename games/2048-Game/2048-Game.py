@@ -7,6 +7,7 @@ CELL_SIZE = 100
 CELL_PADDING = 10
 BACKGROUND_COLOR = "#92877d"
 EMPTY_CELL_COLOR = "#9e948a"
+TOTAL_MOVES = 100
 
 TILE_COLORS = {
     2: "#eee4da",
@@ -45,6 +46,7 @@ class Game2048:
         self.root = root
         self.root.title("2048 Game")
         self.root.resizable(False, False)
+        self.moves_left = TOTAL_MOVES
 
         self.score = 0
         self.high_score = self.load_high_score()
@@ -59,6 +61,12 @@ class Game2048:
         )
         self.score_label.grid(pady=10)
 
+        self.total_moves_label = tk.Label(
+            root,
+            text=f"Moves left: {self.moves_left}",
+            font=("Arial", 16, "bold")
+        )
+        self.total_moves_label.grid(pady=10)
         self.restart_button = tk.Button(
             root,
             text="Restart Game",
@@ -137,6 +145,7 @@ class Game2048:
     def start_new_game(self):
         self.board = [[0] * GRID_SIZE for _ in range(GRID_SIZE)]
         self.score = 0
+        self.moves_left = TOTAL_MOVES
 
         self.add_new_tile()
         self.add_new_tile()
@@ -175,6 +184,8 @@ class Game2048:
         self.score_label.configure(
             text=f"Score: {self.score}    High Score: {self.high_score}"
         )
+        self.total_moves_label.configure(
+            text=f"Moves left: {self.moves_left}")
 
         self.root.update_idletasks()
 
@@ -268,9 +279,12 @@ class Game2048:
 
         else:
             return
+        
+        
 
         if moved:
             self.add_new_tile()
+            self.moves_left -=1
 
             if self.score > self.high_score:
                 self.high_score = self.score
@@ -281,6 +295,8 @@ class Game2048:
         # FIXED BUG:
         # Game over is now checked even when no movement happens
         if self.check_game_over():
+            self.game_over()
+        if self.moves_left<=0:
             self.game_over()
 
     def game_over(self):

@@ -429,17 +429,18 @@ def generate_banner(name, category, filename):
     
     # Save Image
     os.makedirs(os.path.dirname(filename), exist_ok=True)
-    final_img.save(filename, \"WEBP\", quality=90)
+    final_img.save(filename, "JPEG", quality=90)
     print(f"Generated HD banner: {filename}")
 
 # Project category directory mappings
+
 projects = [
     # GAMES
     ("2048 Game", "games", "2048-game.webp"),
     ("Coin Flip", "games", "coin-flip.webp"),
     ("Dice Rolling", "games", "dice-rolling.webp"),
     ("Dots & Boxes AI", "games", "dots-boxes.webp"),
-    ("Emoji Memory Game", "games", "emoji-memory.webp"),
+    ("Emoji Memory Game", "games", "emoji-memory-game.webp"),  # FIXED filename
     ("FLAMES Game", "games", "flames.webp"),
     ("Flappy Game", "games", "flappy-game.webp"),
     ("Hangman", "games", "hangman.webp"),
@@ -447,10 +448,15 @@ projects = [
     ("Number Guessing", "games", "number-guessing.webp"),
     ("Password Forge", "games", "password-forge.webp"),
     ("Rock Paper Scissors", "games", "rock-paper-scissor.webp"),
-    ("Snake Game", "games", "snake-game.webp"),
+    ("Snake Game", "games", "snake.webp"),
     ("Whack-a-Mole", "games", "whack-a-mole.webp"),
     ("Word Scramble", "games", "word-scramble.webp"),
     ("Blackjack 21", "games", "blackjack21.webp"),
+    ("Simon Says", "games", "simon-says.webp"),
+    ("Tic Tac Toe", "games", "tic-tac-toe.webp"),
+    ("Spot the Difference", "games", "spot-the-difference.webp"),
+    ("Productive Pet", "utilities", "productive-pet.webp"),
+    ("Progress Tracker", "utilities", "progress-tracker.webp"),
 
     # MATH
     ("AP/GP/AGP/HP Recognizer", "math", "progression-recognizer.webp"),
@@ -463,6 +469,9 @@ projects = [
     ("Pascal's Triangle", "math", "pascal-triangle.webp"),
     ("Prime Analyzer", "math", "prime-analyzer.webp"),
     ("Projectile Motion", "math", "projectile-motion.webp"),
+    ("Binary Search", "math", "binary-search.webp"),
+    ("Bubble Sort", "math", "bubble-sort.webp"),
+    ("Tower of Hanoi", "math", "tower-of-hanoi.webp"),
 
     # UTILITIES
     ("Morse Code", "utilities", "morse-code.webp"),
@@ -472,7 +481,6 @@ projects = [
     ("Color Palette Suggestor", "utilities", "color-palette.webp"),
     ("AI Resume Analyzer", "utilities", "resume-analyzer.webp"),
     ("Caesar Cipher", "utilities", "caesar-cipher.webp"),
-    ("Simon Says", "games", "simon-says.webp"),
 ]
 
 # Run generation

@@ -1,0 +1,23 @@
+<svg width="100%" viewBox="0 0 680 340" role="img" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="spotGrad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="680" height="340" fill="url(#spotGrad)"/>
+  <rect x="70" y="62" width="228" height="216" rx="18" fill="#1f2937" stroke="#334155"/>
+  <rect x="382" y="62" width="228" height="216" rx="18" fill="#1f2937" stroke="#334155"/>
+  <circle cx="170" cy="126" r="36" fill="#38bdf8" opacity="0.95"/>
+  <circle cx="482" cy="126" r="36" fill="#38bdf8" opacity="0.95"/>
+  <rect x="132" y="184" width="76" height="22" rx="11" fill="#a78bfa"/>
+  <rect x="444" y="184" width="76" height="22" rx="11" fill="#a78bfa"/>
+  <circle cx="196" cy="106" r="9" fill="#f8fafc"/>
+  <circle cx="508" cy="106" r="9" fill="#f8fafc"/>
+  <circle cx="480" cy="150" r="8" fill="#f8fafc"/>
+  <circle cx="186" cy="150" r="8" fill="#f8fafc"/>
+  <text x="340" y="34" text-anchor="middle" fill="#f8fafc" font-size="28" font-weight="700" font-family="Arial, Helvetica, sans-serif">Spot the Difference</text>
+  <text x="340" y="308" text-anchor="middle" fill="#cbd5e1" font-size="15" font-family="monospace">compare, scan, click the change</text>
+  <circle cx="340" cy="152" r="42" fill="#f59e0b" opacity="0.14"/>
+  <path d="M330 152 l10 -18 l10 18 l18 10 l-18 10 l-10 18 l-10 -18 l-18 -10 z" fill="#f59e0b" opacity="0.9"/>
+</svg>

@@ -327,10 +327,20 @@ function initCalculator() {
     function safeEval(expr) {
         try {
             if (!expr) return "";
-            let result = Function('"use strict"; return (' + format(expr) + ')')();
-            if (result === undefined) return "";
-            if (isNaN(result)) return "Error";
-            return String(result);
+            const sanitized = sanitize(normalize(expr));
+            if (!sanitized) return "0";
+            const result = evaluateExpression(sanitized);
+            if (result === undefined || isNaN(result) || !isFinite(result)) {
+                return "Error";
+            }
+            if (Number.isInteger(result)) {
+                return String(result);
+            }
+            const strVal = String(result);
+            if (strVal.includes('.') && strVal.split('.')[1].length > 10) {
+                return String(Number(result.toFixed(10)));
+            }
+            return strVal;
         } catch {
             return "Error";
         }
@@ -463,6 +473,31 @@ function initCalculator() {
     function clearIfFinished() {
         if (expression === "Error" || expression === "NaN" || expression === "Infinity" || expression === "-Infinity") {
             expression = "";
+        }
+    }
+
+    function clearExpression() {
+        expression = "";
+        update();
+    }
+
+    function deleteLast() {
+        clearIfError();
+        if (expression) {
+            expression = expression.slice(0, -1);
+        }
+        update();
+    }
+
+    function evaluateCurrent() {
+        if (!expression || expression === "Error") return;
+        try {
+            const result = safeEval(expression);
+            expression = result;
+            update();
+        } catch {
+            expression = "Error";
+            update();
         }
     }
 

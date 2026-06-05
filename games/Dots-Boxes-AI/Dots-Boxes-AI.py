@@ -10,6 +10,31 @@ CYAN = "\033[96m"
 MAGENTA = "\033[95m"
 BOLD = "\033[1m"
 
+
+def get_affected_boxes(direction, row, col, size):
+    affected = []
+    if direction == 'h':
+        if row > 0:
+            affected.append((row - 1, col))
+        if row < size:
+            affected.append((row, col))
+    else:
+        if col > 0:
+            affected.append((row, col - 1))
+        if col < size:
+            affected.append((row, col))
+    return affected
+
+
+def is_completed_box(r, c, horizontal_lines, vertical_lines):
+    return (
+        horizontal_lines[r][c]
+        and horizontal_lines[r + 1][c]
+        and vertical_lines[r][c]
+        and vertical_lines[r][c + 1]
+    )
+
+
 while True:
     print(BOLD + CYAN)
     print("=" * 70)
@@ -136,18 +161,14 @@ while True:
             
             # Check boxes
             completed = False
-            for r in range(size):
-                for c in range(size):
-                    if boxes[r][c] == ' ':
-                        top = horizontal_lines[r][c]
-                        bottom = horizontal_lines[r + 1][c]
-                        left = vertical_lines[r][c]
-                        right = vertical_lines[r][c + 1]
-                        if top and bottom and left and right:
-                            boxes[r][c] = symbol
-                            completed = True
-                            if symbol == 'P': player_score += 1
-                            else: computer_score += 1
+            for r, c in get_affected_boxes(direction, row, col, size):
+                if boxes[r][c] == ' ' and is_completed_box(r, c, horizontal_lines, vertical_lines):
+                    boxes[r][c] = symbol
+                    completed = True
+                    if symbol == 'P':
+                        player_score += 1
+                    else:
+                        computer_score += 1
 
             if not completed:
                 current_player = 2 if current_player == 1 else 1
@@ -178,17 +199,10 @@ while True:
                     else: vertical_lines[r][c] = True
                     
                     completes = False
-                    for r_b in range(size):
-                        for c_b in range(size):
-                            sides = 0
-                            if horizontal_lines[r_b][c_b]: sides += 1
-                            if horizontal_lines[r_b + 1][c_b]: sides += 1
-                            if vertical_lines[r_b][c_b]: sides += 1
-                            if vertical_lines[r_b][c_b + 1]: sides += 1
-                            if sides == 4:
-                                completes = True
-                                break
-                        if completes: break
+                    for r_b, c_b in get_affected_boxes(d, r, c, size):
+                        if is_completed_box(r_b, c_b, horizontal_lines, vertical_lines):
+                            completes = True
+                            break
                     
                     if d == 'h': horizontal_lines[r][c] = False
                     else: vertical_lines[r][c] = False
@@ -265,18 +279,14 @@ while True:
             if direction == 'h': horizontal_lines[row][col] = True
             else: vertical_lines[row][col] = True
 
+            # Check boxes for AI
             completed = False
-            for r in range(size):
-                for c in range(size):
-                    if boxes[r][c] == ' ':
-                        top = horizontal_lines[r][c]
-                        bottom = horizontal_lines[r + 1][c]
-                        left = vertical_lines[r][c]
-                        right = vertical_lines[r][c + 1]
-                        if top and bottom and left and right:
-                            boxes[r][c] = 'A'
-                            completed = True
-                            computer_score += 1
+            for r, c in get_affected_boxes(direction, row, col, size):
+                if boxes[r][c] == ' ' and is_completed_box(r, c, horizontal_lines, vertical_lines):
+                    boxes[r][c] = 'A'
+                    completed = True
+                    computer_score += 1
+
             if not completed:
                 current_player = 1
 

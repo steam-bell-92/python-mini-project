@@ -173,8 +173,8 @@
 
   /* ── Cleanup on page unload ──────────────────────────────── */
   window.addEventListener('beforeunload', function () {
-    if (mesh1) mesh1.destroy();
-    if (mesh2) mesh2.destroy();
+    if (mesh1 && typeof mesh1.destroy === 'function') mesh1.destroy();
+    if (mesh2 && typeof mesh2.destroy === 'function') mesh2.destroy();
     themeObserver.disconnect();
   });
 

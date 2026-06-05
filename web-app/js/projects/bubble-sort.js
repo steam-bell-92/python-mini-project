@@ -207,6 +207,24 @@ function getBubbleSortHTML() {
                 height: 14px;
                 border-radius: 3px;
             }
+
+            .bar {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: flex-end !important;
+                border-radius: 6px 6px 0 0 !important;
+                background: linear-gradient(180deg, #667eea, #764ba2) !important;
+                position: relative !important;
+                transition: all 0.2s ease !important;
+            }
+
+            .bar-label {
+                color: white !important;
+                font-size: 0.8rem !important;
+                font-weight: bold !important;
+                margin-bottom: 6px !important;
+            }
         </style>
     `;
 }
@@ -251,8 +269,8 @@ function initBubbleSort() {
         const arr = Array.from({ length: 8 }, () => Math.floor(Math.random() * 90) + 10);
         input.value = arr.join(' ');
         renderBars(arr);
-        resultDiv.innerHTML = '';
-        statsDiv.innerHTML = '';
+        resultDiv.textContent = '';
+        statsDiv.textContent = '';
     });
 
     function sleep(ms) {
@@ -260,22 +278,40 @@ function initBubbleSort() {
     }
 
     function renderBars(arr, comparing = [], swapping = [], sorted = []) {
-        const maxVal = Math.max(...arr);
-        barsDiv.innerHTML = arr.map((val, i) => {
-            const heightPct = Math.max(15, (val / maxVal) * 180);
-            let cls = 'bar';
-            if (swapping.includes(i)) cls += ' swapping';
-            else if (comparing.includes(i)) cls += ' comparing';
-            else if (sorted.includes(i)) cls += ' sorted';
-            return `<div class="${cls}" style="height:${heightPct}px">
-                        <span class="bar-label">${val}</span>
-                    </div>`;
-        }).join('');
+        if (!barsDiv) return;
+    
+        const maxVal = Math.max(...arr, 1);
+        barsDiv.innerHTML = '';
+    
+        arr.forEach((val, i) => {
+            const heightPct = Math.max(25, (val / maxVal) * 180);
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = heightPct + 'px';
+            bar.style.width = '50px';
+        
+            if (swapping.includes(i)) {
+                bar.classList.add('swapping');
+            } else if (comparing.includes(i)) {
+                bar.classList.add('comparing');
+            } else if (sorted.includes(i)) {
+                bar.classList.add('sorted');
+            }
+        
+            const label = document.createElement('span');
+            label.className = 'bar-label';
+            label.textContent = val;
+            bar.appendChild(label);
+        
+            barsDiv.appendChild(bar);
+        });
 
-        statsDiv.innerHTML = `
-            <div class="stat-item">🔍 Comparisons: <span>${comparisons}</span></div>
-            <div class="stat-item">🔄 Swaps: <span>${swaps}</span></div>
-        `;
+        if (statsDiv) {
+            statsDiv.innerHTML = `
+                <div class="stat-item">🔍 Comparisons: <span>${comparisons}</span></div>
+                <div class="stat-item">🔄 Swaps: <span>${swaps}</span></div>
+            `;
+        }
     }
 
     async function bubbleSortVisualize(arr) {
@@ -318,18 +354,18 @@ function initBubbleSort() {
 
         const raw = input.value.trim();
         if (!raw) {
-            resultDiv.innerHTML = `<p style="color:var(--danger-color)">⚠️ Please enter numbers!</p>`;
+            resultDiv.textContent = `<p style="color:var(--danger-color)">⚠️ Please enter numbers!</p>`;
             return;
         }
 
         const arr = raw.split(/\s+/).map(Number);
         if (arr.some(isNaN)) {
-            resultDiv.innerHTML = `<p style="color:var(--danger-color)">⚠️ Please enter valid integers only!</p>`;
+            resultDiv.textContent = `<p style="color:var(--danger-color)">⚠️ Please enter valid integers only!</p>`;
             return;
         }
 
         if (arr.length < 2) {
-            resultDiv.innerHTML = `<p style="color:var(--danger-color)">⚠️ Enter at least 2 numbers!</p>`;
+            resultDiv.textContent = `<p style="color:var(--danger-color)">⚠️ Enter at least 2 numbers!</p>`;
             return;
         }
 
@@ -337,12 +373,12 @@ function initBubbleSort() {
         comparisons = 0;
         swaps = 0;
         startBtn.disabled = true;
-        resultDiv.innerHTML = `<p style="color:var(--text-secondary)">⏳ Sorting...</p>`;
+        resultDiv.textContent = `<p style="color:var(--text-secondary)">⏳ Sorting...</p>`;
 
         renderBars([...arr]);
         const sorted = await bubbleSortVisualize([...arr]);
 
-        resultDiv.innerHTML = `
+        resultDiv.textContent = `
             <p style="color:var(--success-color); font-weight:700; font-size:1.2rem">
                 ✅ Sorted: [ ${sorted.join(', ')} ]
             </p>

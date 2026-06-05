@@ -1,0 +1,35 @@
+<svg width="100%" viewBox="0 0 680 340" role="img" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .ban-bg{fill:#0f172a}.ban-grid{stroke:#1e293b;stroke-width:0.5;fill:none}.ban-bar-bg{fill:#334155}.ban-bar-g{fill:#4ade80}.ban-label{font-family:monospace;fill:#94a3b8;font-size:11px}.ban-sub{font-family:monospace;fill:#64748b;font-size:11px}.ban-done{fill:#4ade80;font-family:monospace;font-size:11px}.ban-pend{fill:#334155;font-family:monospace;font-size:11px}.ban-num{fill:#4ade80;font-size:28px;font-weight:700}.ban-numl{font-family:monospace;fill:#64748b;font-size:10px}.ban-trophy-body{fill:none;stroke:#facc15;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+  <rect width="680" height="340" class="ban-bg"/>
+  <g class="ban-grid"><line x1="0" y1="60" x2="680" y2="60"/><line x1="0" y1="120" x2="680" y2="120"/><line x1="0" y1="180" x2="680" y2="180"/><line x1="0" y1="240" x2="680" y2="240"/><line x1="0" y1="300" x2="680" y2="300"/><line x1="80" y1="0" x2="80" y2="340"/><line x1="200" y1="0" x2="200" y2="340"/><line x1="320" y1="0" x2="320" y2="340"/><line x1="440" y1="0" x2="440" y2="340"/><line x1="560" y1="0" x2="560" y2="340"/></g>
+  <rect x="40" y="40" width="180" height="260" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <text x="130" y="115" class="ban-num" text-anchor="middle">12</text>
+  <text x="130" y="134" class="ban-numl" text-anchor="middle">/ 18 done</text>
+  <rect x="60" y="148" width="140" height="8" rx="4" class="ban-bar-bg"/>
+  <rect x="60" y="148" width="93" height="8" rx="4" class="ban-bar-g"/>
+  <text x="130" y="176" class="ban-sub" text-anchor="middle">66% complete</text>
+  <rect x="58" y="192" width="164" height="28" rx="6" fill="#1e293b"/><text x="72" y="211" class="ban-done">Games 5/6</text>
+  <rect x="58" y="226" width="164" height="28" rx="6" fill="#1e293b"/><text x="72" y="245" class="ban-done">Math 6/10</text>
+  <rect x="58" y="260" width="164" height="28" rx="6" fill="#1e293b"/><text x="72" y="279" class="ban-done">Utils 1/2</text>
+  <rect x="238" y="40" width="220" height="260" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <text x="258" y="70" class="ban-label">recent activity</text>
+  <rect x="252" y="82" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="86" width="14" height="14" rx="3" fill="#4ade80"/><text x="278" y="97" class="ban-done">Coin Flip</text>
+  <rect x="252" y="110" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="114" width="14" height="14" rx="3" fill="#4ade80"/><text x="278" y="125" class="ban-done">Calculator</text>
+  <rect x="252" y="138" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="142" width="14" height="14" rx="3" fill="#4ade80"/><text x="278" y="153" class="ban-done">Hangman</text>
+  <rect x="252" y="166" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="170" width="14" height="14" rx="3" fill="#1e3a2a" stroke="#4ade80" stroke-width="1"/><text x="278" y="181" class="ban-label">Fibonacci...</text>
+  <rect x="252" y="194" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="198" width="14" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/><text x="278" y="209" class="ban-pend">Prime Analyzer</text>
+  <rect x="252" y="222" width="192" height="22" rx="5" fill="#1e293b"/><rect x="256" y="226" width="14" height="14" rx="3" fill="#1e293b" stroke="#334155" stroke-width="1"/><text x="278" y="237" class="ban-pend">Tower of Hanoi</text>
+  <rect x="476" y="40" width="164" height="260" rx="12" fill="#111827" stroke="#1e293b" stroke-width="1"/>
+  <g transform="translate(558,108)"><path d="M-22 -30 L-22 10 Q-22 30 0 30 Q22 30 22 10 L22 -30 Z" class="ban-trophy-body"/><path d="M-22 -20 Q-38 -20 -38 -5 Q-38 10 -22 10" class="ban-trophy-body"/><path d="M22 -20 Q38 -20 38 -5 Q38 10 22 10" class="ban-trophy-body"/><path d="M-10 30 L-10 46 M10 30 L10 46" class="ban-trophy-body"/><path d="M-20 46 L20 46" class="ban-trophy-body"/><path d="M0 -10 L4 2 L16 2 L7 9 L10 21 L0 14 L-10 21 L-7 9 L-16 2 L-4 2 Z" fill="#facc15" opacity="0.85"/></g>
+  <text x="558" y="182" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700">Progress</text>
+  <text x="558" y="200" text-anchor="middle" fill="#f1f5f9" font-size="14" font-weight="700">Tracker</text>
+  <text x="558" y="222" class="ban-sub" text-anchor="middle">track your</text>
+  <text x="558" y="236" class="ban-sub" text-anchor="middle">learning journey</text>
+  <rect x="500" y="252" width="116" height="26" rx="13" fill="#1e3a2a" stroke="#4ade80" stroke-width="1"/>
+  <text x="558" y="270" class="ban-done" text-anchor="middle">milestone unlocked</text>
+  <rect x="40" y="312" width="600" height="8" rx="4" fill="#334155"/>
+  <rect x="40" y="312" width="400" height="8" rx="4" fill="#4ade80"/>
+  <text x="640" y="321" class="ban-label" text-anchor="end">66%</text>
+</svg>

@@ -1,15 +1,31 @@
 import turtle
 import random
 import time
-# ================= SOUND =================
+
+# ================= SOUND SYSTEM =================
+pygame_installed = False
+eat_sound = None
+gameover_sound = None
+
 try:
     import pygame
     pygame.mixer.init()
-    eat_sound = pygame.mixer.Sound("sounds/eat.wav")
-    gameover_sound = pygame.mixer.Sound("sounds/gameover.wav")
-    pygame_installed = True
+    
+    # Try loading default wav files
+    try:
+        eat_sound = pygame.mixer.Sound("sounds/eat.wav")
+        gameover_sound = pygame.mixer.Sound("sounds/gameover.wav")
+        pygame_installed = True
+    except Exception:
+        # Fallback to alternate mp3 file naming schemes
+        try:
+            eat_sound = pygame.mixer.Sound("sounds/Apple_Eating.mp3")
+            gameover_sound = pygame.mixer.Sound("sounds/Game_over.mp3")
+            pygame_installed = True
+        except Exception:
+            print("⚠️ Warning: Sound files not found in 'sounds/' folder. Game will run silently.")
+            pygame_installed = False
 except ImportError:
-    pygame_installed = False
     print("⚠️ Warning: pygame module not found. Game will run without sound effects.")
 
 
@@ -109,12 +125,13 @@ def generate_food():
 
 generate_food()
 
-# ================= SCORE =================
+# ================= STATE VARIABLES =================
 
 score = 0
 high_score = 0
 level = 1
 speed = 0.05
+game_state = "IDLE" 
 
 score_text = turtle.Turtle()
 score_text.hideturtle()
@@ -132,23 +149,7 @@ def update_score():
 
 update_score()
 
-# ================= PAUSE =================
-
-paused = False
-
-def toggle_pause():
-    global paused
-    paused = not paused
-
-    game_text.clear()
-
-    if paused:
-        game_text.write("PAUSED", align="center", font=("Arial", 24, "bold"))
-
-screen.listen()
-screen.onkeypress(toggle_pause, "p")
-
-# ================= COUNTDOWN =================
+# ================= CONTROL INFRASTRUCTURE =================
 
 def countdown():
     for text in ["3", "2", "1", "GO!"]:
@@ -158,24 +159,54 @@ def countdown():
         time.sleep(1)
     game_text.clear()
 
-countdown()
+def handle_spacebar():
+    global game_state, score, level, speed
+    
+    if game_state == "IDLE":
+        countdown()
+        game_state = "PLAYING"
+        
+    elif game_state == "PLAYING":
+        game_state = "PAUSED"
+        game_text.clear()
+        game_text.write("PAUSED", align="center", font=("Arial", 24, "bold"))
+        
+    elif game_state == "PAUSED":
+        game_state = "PLAYING"
+        game_text.clear()
+        
+    elif game_state == "GAME_OVER":
+        head.goto(0, 0)
+        head.direction = "stop"
+        for p in parts:
+            p.goto(1000, 1000)
+        parts.clear()
+        
+        score = 0
+        level = 1
+        speed = 0.05
+        
+        update_score()
+        countdown()
+        game_state = "PLAYING"
 
-# ================= CONTROLS =================
+screen.listen()
+screen.onkeypress(handle_spacebar, "space")
 
 def move_up():
-    if head.direction != "down":
+    if head.direction != "down" and game_state == "PLAYING":
         head.direction = "up"
 
 def move_down():
-    if head.direction != "up":
+    if head.direction != "up" and game_state == "PLAYING":
         head.direction = "down"
 
 def move_left():
-    if head.direction != "right":
+    if head.direction != "right" and game_state == "PLAYING":
         head.direction = "left"
 
 def move_right():
-    if head.direction != "left":
+    if head.direction != "left" and game_state == "PLAYING":
         head.direction = "right"
 
 screen.onkeypress(move_up, "Up")
@@ -183,7 +214,7 @@ screen.onkeypress(move_down, "Down")
 screen.onkeypress(move_left, "Left")
 screen.onkeypress(move_right, "Right")
 
-# ================= MOVE =================
+# ================= MOVE PHYSICS =================
 
 def move():
     if head.direction == "up":
@@ -195,36 +226,15 @@ def move():
     elif head.direction == "right":
         head.setx(head.xcor() + GRID_SIZE)
 
-# ================= RESET =================
-
-def reset_game():
-    global score, level, speed
-
-    if pygame_installed:
-        gameover_sound.play()
-
-    time.sleep(1)
-
-    head.goto(0, 0)
-    head.direction = "stop"
-
-    for p in parts:
-        p.goto(1000, 1000)
-    parts.clear()
-
-    score = 0
-    level = 1
-    speed = 0.05
-
-    update_score()
-
 # ================= MAIN LOOP =================
 
-while True:
+game_text.write("Press SPACEBAR to Start", align="center", font=("Arial", 24, "bold"))
 
+while True:
     screen.update()
 
-    if paused:
+    if game_state in ["IDLE", "PAUSED", "GAME_OVER"]:
+        time.sleep(0.1)
         continue
 
     # Border collision
@@ -234,12 +244,15 @@ while True:
         head.ycor() > BORDER_LIMIT or
         head.ycor() < -BORDER_LIMIT
     ):
-        reset_game()
+        if pygame_installed and gameover_sound:
+            gameover_sound.play()
+        game_text.write("GAME OVER - Press SPACE to Restart", align="center", font=("Arial", 20, "bold"))
+        game_state = "GAME_OVER"
+        continue
 
     # Food collision
     if head.distance(food) < GRID_SIZE:
-
-        if pygame_installed:
+        if pygame_installed and eat_sound:
             eat_sound.play()
 
         score += current_food["points"]
@@ -247,11 +260,9 @@ while True:
         if score > high_score:
             high_score = score
 
-        # LEVEL SYSTEM
         if score % 5 == 0:
             level += 1
             speed -= 0.005
-
             game_text.clear()
             game_text.write(f"LEVEL {level}", align="center", font=("Arial", 24, "bold"))
             screen.update()
@@ -264,9 +275,7 @@ while True:
         new_part.shape("circle")
         new_part.color("#66FF99")
         new_part.penup()
-
         parts.append(new_part)
-
         update_score()
 
     # Move body
@@ -283,6 +292,13 @@ while True:
     # Self collision
     for p in parts:
         if p.distance(head) < 12:
-            reset_game()
+            if pygame_installed and gameover_sound:
+                gameover_sound.play()
+            game_text.write("GAME OVER - Press SPACE to Restart", align="center", font=("Arial", 20, "bold"))
+            game_state = "GAME_OVER"
+            break
+
+    if game_state == "GAME_OVER":
+        continue
 
     time.sleep(speed)
