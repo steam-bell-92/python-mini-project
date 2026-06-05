@@ -96,7 +96,8 @@ def launch_project(projects):
             path = projects[idx]["path"]
             if os.path.exists(path):
                 print(f"\n  🚀  Launching: {path}\n")
-                subprocess.run([sys.executable, path])
+                abs_path = os.path.abspath(path)
+                subprocess.run([sys.executable, os.path.basename(abs_path)], cwd=os.path.dirname(abs_path))
             else:
                 print(f"\n  ⚠️  File not found: {path}")
                 print("     Make sure you're running this from the repo root.")

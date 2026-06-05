@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var backToTopNode = document.getElementById("backToTop");
     var infoModalNode = document.getElementById("infoModalOverlay");
     var projectModalNode = document.getElementById("projectModal");
-    var sidebarDockNode = document.getElementById("mainSidebar");
+    var sidebarDockNode = document.getElementById("sidebar");
     var mobileToggleNode = document.getElementById("mobileSidebarToggle");
     var heroControlsNode = document.querySelector(".hero-controls");
     var fragment = document.createDocumentFragment();
@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   var html = document.documentElement;
   var backToTopButton = document.getElementById("backToTop");
-  var searchInput = document.querySelector(".sidebar-dock #searchInput");
+  var searchInput = document.querySelector(".sidebar #searchInput");
   var navSearchInput = document.getElementById("navSearchInput");
   var searchDropdown = document.getElementById("searchDropdown");
   var searchLoader = document.getElementById("searchLoader");
@@ -304,7 +304,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ── Mobile Sidebar Toggle ──────────────────────────────── */
   var mobileSidebarToggle = document.getElementById("mobileSidebarToggle");
-  var mainSidebar = document.getElementById("mainSidebar");
+  var mainSidebar = document.getElementById("sidebar");
   if (mobileSidebarToggle && mainSidebar) {
     mobileSidebarToggle.addEventListener("click", function () {
       var active = mainSidebar.classList.toggle("open");
@@ -444,7 +444,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /* ── Category Filtering ───────────────────────────────────── */
-  var sidebarTabs = document.querySelectorAll(".sidebar-dock .sidebar-tab");
+  var sidebarTabs = document.querySelectorAll(".sidebar .sidebar-tab");
   var sidebarBadge = null;
 
   function applyCategoryFilter(category) {
