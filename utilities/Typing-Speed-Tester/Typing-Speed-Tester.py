@@ -2,6 +2,12 @@ import time
 import random
 import urllib.request
 import json
+import sys
+import os
+
+# Add root directory to sys.path to import utils package
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from utils import save_score, get_top_scores
 
 # Local fallback sentences
 fallback_sentences = [
@@ -102,6 +108,20 @@ while True:
         print("👍 Good Attempt!")
     else:
         print("💡 Keep Practicing!")
+
+    # Save and display high scores
+    name = input("\n  Enter your name for the high scores board: ").strip()
+    if name:
+        save_score("Typing-Speed-Tester", name, int(wpm))
+    
+    print("\n🏆 ===== HIGH SCORES BOARD =====")
+    top_scores = get_top_scores("Typing-Speed-Tester", 5)
+    if top_scores:
+        for idx, (p_name, p_score, p_time) in enumerate(top_scores):
+            print(f"  {idx+1}. {p_name:15s} : {p_score:4d} WPM  ({p_time})")
+    else:
+        print("  No high scores yet!")
+    print("================================")
         
     again = input("\n🔄 Do you want to test again? (y/n): ").strip().lower()
     if again != 'y':
