@@ -192,6 +192,8 @@ For specific test file:
 pytest tests/test_armstrong.py -v
 ```
 
+For detailed testing guidelines and code quality standards, see [TESTING_GUIDELINES.md](TESTING_GUIDELINES.md)
+
 ### Development Workflow
 
 #### Creating a New Project
