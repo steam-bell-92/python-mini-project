@@ -42,6 +42,7 @@
 
 - [🎯 Repo Introduction](#-repo-introduction)
 - [🌐 Live Demo](#-live-demo)
+- [🚀 Getting Started](#-getting-started)
 - [📂 Repo Structure](#-repo-structure)
 - [🧩 What's Inside](#-whats-inside)
 - [🌐 Web App Catalog](#-web-app-catalog)
@@ -61,6 +62,102 @@ This repository is a collection of small Python games and utility projects built
 ## 🌐 Live Demo
 
 Try the web app here: https://python-mini-project-lovat.vercel.app/
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Python 3.10 or higher
+- pip (Python package manager)
+- Git (for cloning the repository)
+
+### Installation
+
+#### 1. Clone the Repository
+
+```bash
+git clone https://github.com/steam-bell-92/python-mini-project.git
+cd python-mini-project
+```
+
+#### 2. Create a Virtual Environment (Recommended)
+
+**On Windows:**
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+**On macOS/Linux:**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+#### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Running Projects
+
+#### Running a Single Project
+
+Navigate to the project directory and run:
+
+```bash
+python project_name.py
+```
+
+Example:
+```bash
+cd games/Snake-Game
+python snake_game.py
+```
+
+#### Running All Tests
+
+```bash
+pytest
+```
+
+Or run specific test:
+```bash
+pytest tests/test_armstrong.py -v
+```
+
+#### Running the Web App
+
+```bash
+cd web-app
+# If you have Node.js installed
+npm install
+npm start
+```
+
+Or visit the live demo: https://python-mini-project-lovat.vercel.app/
+
+### Project Locations
+
+- Games: `games/` directory
+- Math projects: `math/` directory
+- Utilities: `utilities/` directory
+- Tests: `tests/` directory
+- Web app: `web-app/` directory
+
+### Troubleshooting
+
+**ModuleNotFoundError: No module named...**
+- Ensure dependencies are installed: `pip install -r requirements.txt`
+- Verify virtual environment is activated
+
+**Python command not found**
+- Use `python3` instead of `python` on macOS/Linux
+- Ensure Python 3.10+ is installed: `python --version`
+
+**Permission denied when running scripts**
+- On macOS/Linux, make the script executable: `chmod +x script.py`
 
 ## 📂 Repo Structure
 
