@@ -186,6 +186,20 @@ This is some body text with **bold styling** and `inline code`.
             self.assertTrue(os.path.exists(output_file))
             self.assertGreater(os.path.getsize(output_file), 0)
 
+    def test_empty_markdown_file(self):
+        """Verify conversion of an empty Markdown file creates a valid PDF."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            input_file = os.path.join(tmpdir, "empty.md")
+            output_file = os.path.join(tmpdir, "empty.pdf")
+
+            with open(input_file, "w", encoding="utf-8") as f:
+                f.write("")
+
+            convert_markdown_to_pdf(input_file, output_file, "Classic")
+
+            self.assertTrue(os.path.exists(output_file))
+            self.assertGreater(os.path.getsize(output_file), 0)
+
 
 if __name__ == "__main__":
     unittest.main()
