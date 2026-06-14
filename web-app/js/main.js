@@ -747,10 +747,11 @@ document.addEventListener("DOMContentLoaded", function () {
       var q = query.toLowerCase();
 
       var catMatch = currentCategory === "all" || category === currentCategory;
-      var searchMatch =
-        title.toLowerCase().includes(q) ||
-        desc.toLowerCase().includes(q) ||
-        tags.includes(q);
+      
+      // FIX FOR ISSUE #1032: Strict Title Matching
+      // Removed description and hidden tag fuzzy-matching to prevent irrelevant 
+      // projects (like FLAMES Game) from appearing for unrelated queries.
+      var searchMatch = title.toLowerCase().includes(q);
 
       if (catMatch && searchMatch) {
         matches.push({
