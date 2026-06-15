@@ -602,5 +602,22 @@
       "accuracy"
     ],
     "path": "utilities/Typing-Speed-Tester/Typing-Speed-Tester.py"
-  }
+  },
+  {
+  "name": "Space Adventure CLI",
+  "emoji": "🚀",
+  "category": "games",
+  "difficulty": "beginner",
+  "description": "A space exploration adventure game where players explore planets, find treasures, and survive alien encounters.",
+  "keywords": [
+    "space",
+    "adventure",
+    "planet",
+    "alien",
+    "treasure",
+    "exploration",
+    "game"
+  ],
+  "path": "games/Space-Adventure-CLI/Space-Adventure-CLI.py"
+}
 ]
