@@ -1,28 +1,28 @@
-import random, time, enchant
+import random
+import time
+import enchant
 import data
+
+MAX_BOT_ATTEMPTS = 1000
+
 
 def WordCheck(word):
     d = enchant.Dict('en_US')
-    if d.check(word):
-        return True
-    else:
-        return False
-    
+    return d.check(word)
+
+
 def botTurn(letter, used_words):
-    import data
-    word = None
-    try:
-        while True:
-            computer = (data.words[letter])[random.randint(0, len(data.words[letter]) - 1)]
-            if computer not in used_words:
-                word = computer
-                break
-    except:
-        pass
-    return word
+    if letter not in data.words:
+        return None
+
+    available = [w for w in data.words[letter] if w not in used_words]
+    if not available:
+        return None
+
+    return random.choice(available)
+
 
 def Main():
-    # Welcome message and instructions
     print("🎮 Welcome to Word Building! 🎮")
     print('''🪙 bot(computer) will start with a word, you will give a word that starts with the last letter of bot's word, 
 and bot will have to give a word that starts with the last letter of your word. 
@@ -34,9 +34,7 @@ The game will continue until one of you can't think of a word or gives an invali
     used_words = set()
     win = False
 
-    # Game loop
     while True:
-        # User input and validation
         user_word = input("Your word: ")
         if (bot_word is not None) and (user_word[0].lower() != bot_word[-1].lower()):
             print("\nInvalid word! Your word must start with the last letter of bot's word.")
@@ -51,13 +49,11 @@ The game will continue until one of you can't think of a word or gives an invali
             win = False
             break
         used_words.add(user_word)
-        
-        # Add user's word to the data if it's not already there
-        if user_word not in data.words[user_word[0]]:
+
+        if user_word not in data.words.get(user_word[0], []):
             data.DataAdding(user_word)
         time.sleep(1)
 
-        # Bot's turn
         bot_word = botTurn(user_word[-1].lower(), used_words)
         if bot_word is None:
             print("\nBot can't think of a word!")
@@ -66,12 +62,11 @@ The game will continue until one of you can't think of a word or gives an invali
         used_words.add(bot_word)
         print(f"Bot's word: {bot_word}")
 
-
-    # End of game message
     if win:
         print("\nCongratulations! You win! 🎉")
     else:
         print("\nGame over! Bot wins! 🤖")
+
 
 if __name__ == "__main__":
     Main()
