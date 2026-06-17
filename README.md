@@ -284,6 +284,7 @@ The browser app currently exposes 39 projects:
 ### Utilities
 
 - AI Resume Analyzer
+- Budget Tracker
 - Color Palette Suggestor
 - Morse Code
 - Number Converter
@@ -299,7 +300,6 @@ These standalone Python project files do not have a browser counterpart yet and 
 - [math/Happy-Number/Happy-Number.py](math/Happy-Number/Happy-Number.py)
 - [math/Matrix-Calculator/Matrix-Calculator.py](math/Matrix-Calculator/Matrix-Calculator.py)
 - [math/Quadratic-Solver/Quadratic-Solver.py](math/Quadratic-Solver/Quadratic-Solver.py)
-- [utilities/Budget-Tracker/budget_tracker.py](utilities/Budget-Tracker/budget_tracker.py)
 - [utilities/Caesar-Cipher/Caesar-Cipher.py](utilities/Caesar-Cipher/Caesar-Cipher.py)
 - [utilities/Fake-News-Headline-Generator/Fake-News-Headline-Generator.py](utilities/Fake-News-Headline-Generator/Fake-News-Headline-Generator.py)
 

@@ -1596,6 +1596,26 @@ function getProjectHTML(projectName) {
 
 const projectInstructions = {
   // GAMES
+  "war-card-game": {
+    title: "⚔️ How to Play War Card Game",
+    steps: [
+      "Enter names or check the option to play against the CPU.",
+      "Each player starts with a deck of 26 cards.",
+      "Click 'Draw / Battle' to draw the top card from both decks.",
+      "The player with the higher card rank wins the round and gets a point.",
+      "Ace is the highest, 2 is the lowest.",
+      "Play continues until all cards are drawn. The player with the most points wins!"
+    ]
+  },
+  "number-sliding-puzzle": {
+    title: "🧩 How to Play Number Sliding Puzzle",
+    steps: [
+      "Use arrow keys (← ↑ → ↓) or click/tap on tiles next to the empty space to slide them.",
+      "Arrange the numbers in ascending order from 1 to 8, with the blank space at the bottom right.",
+      "A moves counter keeps track of your steps.",
+      "Click the Reset button to restart the game."
+    ]
+  },
   "2048-game": {
     title: "🎮 How to Play 2048",
     steps: [
@@ -1862,6 +1882,16 @@ const projectInstructions = {
       "Choose a mood",
       "Click 'Generate Palette'",
       "Click any color to copy its hex code"
+    ]
+  },
+  "budget-tracker": {
+    title: "💰 How to Use Budget Tracker",
+    steps: [
+      "Select the transaction type (Income or Expense) from the dropdown.",
+      "Enter a category, description (optional), and positive amount value.",
+      "Click 'Add Transaction' to log it in your dashboard.",
+      "Analyze spending behavior through dynamic category-wise progress bars.",
+      "Clear individual records using the delete action or wipe out all history securely."
     ]
   },
   "morse-code": {
@@ -3158,6 +3188,10 @@ function initializeProject(projectName) {
     "color-palette": "initColorPalette",
     "math-quiz": "initMathQuiz",
     "resume-analyzer": "initResumeAnalyzer",
+    "caesar-cipher": "initCaesarCipher",
+    "war-card-game": "initWarCardGame",
+    "number-sliding-puzzle": "initNumberSlidingPuzzle",
+    "budget-tracker": "initBudgetTracker"
     "caesar-cipher": "initCaesarCipher"
   };
 

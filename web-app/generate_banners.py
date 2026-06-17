@@ -573,6 +573,7 @@ projects = [
     ("AI Resume Analyzer", "utilities", "resume-analyzer.webp"),
     ("Caesar Cipher", "utilities", "caesar-cipher.webp"),
     ("Unit Converter", "utilities", "unit-converter.webp"),
+    ("Budget Tracker", "utilities", "budget-tracker.webp"),
 ]
 
 # Run generation
