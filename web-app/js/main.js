@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════
-   main.js — App wiring for Premium Python Projects Gallery
+  main.js — App wiring for Premium Python Projects Gallery
    ═══════════════════════════════════════════════════════════════ */
 
 import { updateProjectVisibility } from "./modules/utils.js";
@@ -911,10 +911,18 @@ document.addEventListener("DOMContentLoaded", function () {
         var iconBox = document.createElement("div");
         iconBox.className = "dropdown-item-icon";
         var banner = project.card.querySelector(".card-banner");
+        projectCards.forEach(function(card) {
+        var banner = card.querySelector(".card-banner");
+        var title = card.querySelector("h3");
+
+        if (banner && title) {
+            banner.alt = title.textContent.trim() + " project preview";
+        }
+        });
         if (banner) {
           var img = document.createElement("img");
           img.src = banner.src;
-          img.alt = "";
+          img.alt = project.title + " project preview";
           iconBox.appendChild(img);
         }
 
