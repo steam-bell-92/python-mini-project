@@ -1,25 +1,20 @@
-import random, time, enchant
+import random
+import time
+import enchant
 import data
 
 def WordCheck(word):
     d = enchant.Dict('en_US')
-    if d.check(word):
-        return True
-    else:
-        return False
-    
+    return d.check(word)
+
+
 def botTurn(letter, used_words):
-    import data
-    word = None
-    try:
-        while True:
-            computer = (data.words[letter])[random.randint(0, len(data.words[letter]) - 1)]
-            if computer not in used_words:
-                word = computer
-                break
-    except:
-        pass
-    return word
+    if letter not in data.words:
+        return None
+    available = [w for w in data.words[letter] if w not in used_words]
+    if not available:
+        return None
+    return random.choice(available)
 
 def Main():
     # Welcome message and instructions
