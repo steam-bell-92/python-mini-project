@@ -1,18 +1,26 @@
-import pickle
+import json
+import os
+
+DATA_FILE = os.path.join(os.path.dirname(__file__), 'words.json')
+
 
 def DataAdding(word):
-    file = open('words.bat', 'rb')
-    words = pickle.load(file)
+    if not os.path.exists(DATA_FILE):
+        words = {}
+    else:
+        with open(DATA_FILE, 'r', encoding='utf-8') as file:
+            words = json.load(file)
+
     a = words[word[0]]
     a.append(word)
-    b = word[0]
-    words[b] = a
-    file.close()
-    
-    file = open('words.bat', 'wb')
-    pickle.dump(words, file)
-    file.close()
+    words[word[0]] = a
 
-file = open('words.bat', 'rb')
-words = pickle.load(file)
-file.close()
+    with open(DATA_FILE, 'w', encoding='utf-8') as file:
+        json.dump(words, file, indent=2)
+
+
+if os.path.exists(DATA_FILE):
+    with open(DATA_FILE, 'r', encoding='utf-8') as file:
+        words = json.load(file)
+else:
+    words = {}
