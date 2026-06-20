@@ -29,6 +29,8 @@ function getProjectHTML(projectName) {
         'reverse-hangman': () => getReverseHangmanHTML,
         'snake-game': getSnakeGameHTML(),
         'bubble-sort': getBubbleSortHTML(),
+        'quick-sort': getQuickSortHTML(),
+        'fourier-series': getFourierSeriesHTML()
         'fourier-series': getFourierSeriesHTML(),
         'pathfinding-visualizer': getPathfindingVisualizerHTML()
     };
@@ -1849,6 +1851,15 @@ const projectInstructions = {
       "Watch the sorting visualization"
     ]
   },
+  "quick-sort": {
+  title: "⚡ How Quick Sort Works",
+  steps: [
+    "Enter an array of numbers",
+    "A pivot element is chosen",
+    "Smaller elements go left, larger go right",
+    "Process repeats until fully sorted"
+  ]
+},
   "tower-of-hanoi": {
     title: "🗼 How to Solve Tower of Hanoi",
     steps: [
@@ -3180,6 +3191,7 @@ function initializeProject(projectName) {
     fibonacci: "initFibonacci",
     "binary-search": "initBinarySearch",
     "bubble-sort": "initBubbleSort",
+    "quick-sort": "initQuickSort",
     "progression-recognizer": "initProgressionRecognizer",
     "pascal-triangle": "initPascalTriangle",
     armstrong: "initArmstrong",

@@ -660,6 +660,7 @@ projects = [
     ("Projectile Motion", "math", "projectile-motion.webp"),
     ("Binary Search", "math", "binary-search.webp"),
     ("Bubble Sort", "math", "bubble-sort.webp"),
+    ("Quick Sort", "math", "quick-sort.webp"),
     ("Tower of Hanoi", "math", "tower-of-hanoi.webp"),
     ("Matrix Calculator", "math", "matrix-calculator.webp"),
     ("Fourier Series", "math", "fourier-series.webp"),

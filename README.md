@@ -240,7 +240,7 @@ deactivate
 
 ## 🌐 Web App Catalog
 
-The browser app currently exposes 39 projects:
+The browser app currently exposes 40 projects:
 
 ### Games
 
@@ -271,6 +271,7 @@ The browser app currently exposes 39 projects:
 - Armstrong Numbers
 - Binary Search
 - Bubble Sort
+- Quick Sort
 - Calculator
 - Collatz Conjecture
 - Coordinate to Polar
