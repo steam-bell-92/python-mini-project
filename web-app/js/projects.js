@@ -22,10 +22,10 @@ function getProjectHTML(projectName) {
         'morse-code': getMorseCodeHTML(),
         'tower-of-hanoi': getTowerOfHanoiHTML(),
         'nqueens' : getNQueensHTML(),
-        'matrix-calculator': () => getMatrixCalculatorHTML(),
+        'matrix-calculator': getMatrixCalculatorHTML(),
         'unit-converter': getUnitConverterHTML(),
         'resume-analyzer': getResumeAnalyzerHTML(),
-        'reverse-hangman': () => getReverseHangmanHTML,
+        'reverse-hangman': getReverseHangmanHTML(),
         'snake-game': getSnakeGameHTML(),
         'bubble-sort': getBubbleSortHTML(),
         'fourier-series': getFourierSeriesHTML()
