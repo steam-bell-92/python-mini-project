@@ -168,5 +168,59 @@ class TestValidationHelpers(unittest.TestCase):
         self.assertEqual(get_float_list("Enter list: "), [4.4, 5.5, 6.6])
         self.assertIn("Error: Please enter valid numbers only.", mock_stdout.getvalue())
 
+    @patch('builtins.input', side_effect=["x", "a"])
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_get_choice_custom_error(self, mock_stdout, mock_input):
+        self.assertEqual(
+            get_choice(
+                "Enter choice: ",
+                ["a", "b"],
+                error_invalid="Custom error"
+            ),
+            "a"
+        )
+        self.assertIn("Custom error", mock_stdout.getvalue())
+    
+    @patch('builtins.input', side_effect=["", "y"])
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_get_yes_no_empty_then_valid(self, mock_stdout, mock_input):
+        self.assertTrue(get_yes_no("Enter: "))
+        self.assertIn(
+            "Input cannot be empty",
+            mock_stdout.getvalue()
+        )
+
+    @patch('builtins.input', side_effect=["", "1 2 3"])
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_get_int_list_empty_then_valid(self, mock_stdout, mock_input):
+        self.assertEqual(get_int_list("Enter list: "), [1, 2, 3])
+        self.assertIn(
+            "Error: Input cannot be empty.",
+            mock_stdout.getvalue()
+        )
+
+    @patch('builtins.input', side_effect=["", "1.1 2.2"])
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_get_float_list_empty_then_valid(self, mock_stdout, mock_input):
+        self.assertEqual(get_float_list("Enter list: "), [1.1, 2.2])
+        self.assertIn(
+            "Error: Input cannot be empty.",
+            mock_stdout.getvalue()
+        )
+
+    @patch('builtins.input', side_effect=["   ", "hello"])
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_get_non_empty_string_whitespace(self, mock_stdout, mock_input):
+        self.assertEqual(
+            get_non_empty_string("Enter str: "),
+            "hello"
+        )
+        self.assertIn(
+            "Error: Input cannot be empty.",
+            mock_stdout.getvalue()
+        )
+
+    
+
 if __name__ == '__main__':
     unittest.main()
