@@ -186,6 +186,8 @@ function showConfirm(message, onConfirm, onCancel) {
   document.addEventListener('keydown', keyHandler);
 }
 
+window.showConfirm = showConfirm;
+
 var currentProjectName = "";
 
 function setupModalInfoButton(projectName) {
@@ -208,7 +210,11 @@ function setupModalInfoButton(projectName) {
 /* ── DOMContentLoaded ──────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", function () {
   // Initially hide sidebar - will be shown by IntersectionObserver
+  var pageCategory = document.body.getAttribute("data-page");
   document.body.classList.remove("sidebar-active");
+  if (pageCategory && window.innerWidth >= 1100) {
+    document.body.classList.add("sidebar-active");
+  }
   function repairLegacyHomeLayoutNow() {
     var legacyHost = document.querySelector(".hero-code-snippets")
       ? document.querySelector(".hero-code-snippets").closest(".hero-section")
@@ -353,11 +359,41 @@ document.addEventListener("DOMContentLoaded", function () {
 
   /* ── Mobile Sidebar Close ──────────────────────────────── */
   var mainSidebar = document.getElementById("mainSidebar");
+  var mobileSidebarToggle = document.getElementById("mobileSidebarToggle");
+  if (mobileSidebarToggle && mainSidebar) {
+    mobileSidebarToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var active = mainSidebar.classList.toggle("open");
+      document.body.classList.toggle("sidebar-active", active);
+      mobileSidebarToggle.setAttribute("aria-expanded", active);
+      var icon = mobileSidebarToggle.querySelector("i");
+      if (icon) icon.className = active ? "fas fa-times" : "fas fa-bars";
+    });
+
+    document.addEventListener("click", function (e) {
+      if (
+        mainSidebar &&
+        mobileSidebarToggle &&
+        !mainSidebar.contains(e.target) &&
+        !mobileSidebarToggle.contains(e.target) &&
+        mainSidebar.classList.contains("open")
+      ) {
+        closeMobileSidebar();
+      }
+    });
+  }
+
   var sidebarMobileClose = document.getElementById("sidebarMobileClose");
   var sidebarBackdrop = document.getElementById("sidebarBackdrop");
 
   function closeMobileSidebar() {
     document.body.classList.remove("sidebar-active");
+    if (mainSidebar) mainSidebar.classList.remove("open");
+    if (mobileSidebarToggle) {
+      mobileSidebarToggle.setAttribute("aria-expanded", "false");
+      var icon = mobileSidebarToggle.querySelector("i");
+      if (icon) icon.className = "fas fa-bars";
+    }
   }
 
   if (sidebarMobileClose) {
@@ -390,6 +426,24 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+
+  /* ── Mobile Sidebar Toggle ────────────────────────────────── */
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener("click", function (e) {
+      e.stopPropagation();
+      document.body.classList.toggle("sidebar-active");
+    });
+  }
+
+  document.addEventListener("click", function (e) {
+    if (window.innerWidth < 1100) {
+      var isClickInsideSidebar = mainSidebar && mainSidebar.contains(e.target);
+      var isClickOnToggle = mobileMenuToggle && mobileMenuToggle.contains(e.target);
+      if (!isClickInsideSidebar && !isClickOnToggle && document.body.classList.contains("sidebar-active")) {
+        document.body.classList.remove("sidebar-active");
+      }
+    }
+  });
 
   if (backToTopButton) {
     var toggleBackToTop = function () {
@@ -572,6 +626,17 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ── Sidebar Tabs ─────────────────────────────────────────── */
   sidebarTabs.forEach(function (st) {
     st.addEventListener("click", function () {
+      if (window.innerWidth < 1100) {
+        document.body.classList.remove("sidebar-active");
+        if (mainSidebar) mainSidebar.classList.remove("open");
+        if (mobileSidebarToggle) {
+          mobileSidebarToggle.setAttribute("aria-expanded", "false");
+          var icon = mobileSidebarToggle.querySelector("i");
+          if (icon) icon.className = "fas fa-bars";
+        }
+      }
+    });
+    st.addEventListener("click", function () {
       var category = st.getAttribute("data-category");
 
       var pageCategory = document.body.getAttribute("data-page");
@@ -716,14 +781,17 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ── Sidebar Active Scroll Observer ───────────────────────── */
   if (!pageCategory && projectsSection) {
     console.log('Setting up sidebar observer');
-
+ 
     const checkAndToggleSidebar = () => {
+      if (window.innerWidth < 1100) {
+        return;
+      }
       const rect = projectsSection.getBoundingClientRect();
       // Show sidebar when projects section is in view AND we're scrolled past hero
       const heroSection = document.querySelector('.hero-section');
       const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
       const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
-
+ 
       document.body.classList.toggle("sidebar-active", showSidebar);
       console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY);
 
@@ -738,7 +806,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
     };
-
+ 
     window.addEventListener('scroll', checkAndToggleSidebar);
     checkAndToggleSidebar();
   }
@@ -1248,6 +1316,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function closeProjectSafe() {
     if (!modal) return;
+    if (!modal.classList.contains("active")) return;
 
     modal.classList.remove("active");
     modal.setAttribute("aria-hidden", "true");

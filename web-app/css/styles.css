@@ -1935,12 +1935,14 @@ body.sidebar-active .sidebar-dock {
   }
 
   body.sidebar-active:not(.sidebar-collapsed) .hero-section,
-  body.sidebar-active:not(.sidebar-collapsed) .hero-timeline-section {
+  body.sidebar-active:not(.sidebar-collapsed) .hero-timeline-section,
+  body.sidebar-active:not(.sidebar-collapsed) .playground-section {
     padding-left: 296px !important;
   }
 
   body.sidebar-collapsed .hero-section,
-  body.sidebar-collapsed .hero-timeline-section {
+  body.sidebar-collapsed .hero-timeline-section,
+  body.sidebar-collapsed .playground-section {
     padding-left: 128px !important;
   }
 

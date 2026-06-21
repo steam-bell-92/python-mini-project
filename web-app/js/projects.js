@@ -23,14 +23,14 @@ function getProjectHTML(projectName) {
         'tower-of-hanoi': getTowerOfHanoiHTML(),
         'nqueens' : getNQueensHTML(),
         'matrix-calculator': () => getMatrixCalculatorHTML(),
-        'sudoku-game': getSudokuGameHTML()
+        'sudoku-game': getSudokuGameHTML(),
         'unit-converter': getUnitConverterHTML(),
         'resume-analyzer': getResumeAnalyzerHTML(),
         'reverse-hangman': () => getReverseHangmanHTML,
+        'budget-tracker': getBudgetTrackerHTML(),
         'snake-game': getSnakeGameHTML(),
         'bubble-sort': getBubbleSortHTML(),
         'quick-sort': getQuickSortHTML(),
-        'fourier-series': getFourierSeriesHTML()
         'fourier-series': getFourierSeriesHTML(),
         'pathfinding-visualizer': getPathfindingVisualizerHTML()
     };
@@ -60,12 +60,11 @@ function initializeProject(projectName) {
         'tower-of-hanoi': initTowerOfHanoi,
         'nqueens' : initNQueens,
         'matrix-calculator': initMatrixCalculator,
-        'sudoku-game': initSudokuGame
-        'nqueens' : initNQueens(),
-        'matrix-calculator': initMatrixCalculator,
-        'unit-converter':initUnitConverter,
-        'resume-analyzer':initResumeAnalyzer,
+        'sudoku-game': initSudokuGame,
+        'unit-converter': initUnitConverter,
+        'resume-analyzer': initResumeAnalyzer,
         'reverse-hangman': initReverseHangman,
+        'budget-tracker': initBudgetTracker,
         'fourier-series': initFourierSeries,
         'pathfinding-visualizer': initPathfindingVisualizer
     };
@@ -1570,6 +1569,15 @@ function getFlamesHTML() {
             }
         </style>
     `;
+}
+function toPascalCase(str) {
+  if (str === "nqueens") return "NQueens";
+  return str
+    .split("-")
+    .map(function (word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join("");
 }
 
 function toPascalCase(str) {
@@ -3217,13 +3225,12 @@ function initializeProject(projectName) {
     "math-quiz": "initMathQuiz",
     "resume-analyzer": "initAIResumeAnalyzer",
     "caesar-cipher": "initCaesarCipher",
-    "sudoku-game": "initSudokuGame"
+    "sudoku-game": "initSudokuGame",
     "resume-analyzer": "initResumeAnalyzer",
     "caesar-cipher": "initCaesarCipher",
     "war-card-game": "initWarCardGame",
     "number-sliding-puzzle": "initNumberSlidingPuzzle",
     "budget-tracker": "initBudgetTracker",
-    "caesar-cipher": "initCaesarCipher",
     "fourier-series": "initFourierSeries",
     "pathfinding-visualizer": "initPathfindingVisualizer"
   };

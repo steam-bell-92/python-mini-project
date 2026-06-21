@@ -348,66 +348,68 @@
         id="stickyFilterBar"
         aria-label="Project category filters"
       >
-        <button
-          aria-selected="true"
-          class="sticky-tab active"
-          data-sticky-category="all"
-          role="tab"
-          tabindex="0"
-          type="button"
-        >
-          All
-        </button>
-        <button
-          aria-selected="false"
-          class="sticky-tab"
-          data-sticky-category="games"
-          role="tab"
-          tabindex="-1"
-          type="button"
-        >
-          Games
-        </button>
-        <button
-          aria-selected="false"
-          class="sticky-tab"
-          data-sticky-category="math"
-          role="tab"
-          tabindex="-1"
-          type="button"
-        >
-          Math
-        </button>
-        <button
-          aria-selected="false"
-          class="sticky-tab"
-          data-sticky-category="utilities"
-          role="tab"
-          tabindex="-1"
-          type="button"
-        >
-          Utilities
-        </button>
-        <button
-          aria-selected="false"
-          class="sticky-tab"
-          data-sticky-category="favorites"
-          role="tab"
-          tabindex="-1"
-          type="button"
-        >
-          Favorites
-        </button>
-        <button
-          aria-selected="false"
-          class="sticky-tab"
-          data-sticky-category="playground"
-          role="tab"
-          tabindex="-1"
-          type="button"
-        >
-          Playground
-        </button>
+        <div class="sticky-filter-inner">
+          <button
+            aria-selected="true"
+            class="sticky-tab active"
+            data-sticky-category="all"
+            role="tab"
+            tabindex="0"
+            type="button"
+          >
+            All
+          </button>
+          <button
+            aria-selected="false"
+            class="sticky-tab"
+            data-sticky-category="games"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Games
+          </button>
+          <button
+            aria-selected="false"
+            class="sticky-tab"
+            data-sticky-category="math"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Math
+          </button>
+          <button
+            aria-selected="false"
+            class="sticky-tab"
+            data-sticky-category="utilities"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Utilities
+          </button>
+          <button
+            aria-selected="false"
+            class="sticky-tab"
+            data-sticky-category="favorites"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Favorites
+          </button>
+          <button
+            aria-selected="false"
+            class="sticky-tab"
+            data-sticky-category="playground"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Playground
+          </button>
+        </div>
       </div>
 
       <!-- Timeline Section -->
@@ -883,7 +885,7 @@
     <script defer src="js/projects/resume-analyzer.js"></script>
     <script src="js/projects/caesar-cipher.js"></script>
     <script src="js/projects/matrix-calculator.js"></script>
-    <script src="js/projects/reverse-hangman.js"></script>
+    <script defer src="js/projects/reverse-hangman.js"></script>
     <script defer src="js/projects/unit-converter.js"></script>
     <script defer src="js/projects/fourier-series.js"></script>
     <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
@@ -1255,6 +1257,13 @@
             desc: "Converts values between different units",
             tags: "utility,tool",
           },
+          {
+            project: "budget-tracker",
+            title: "Budget Tracker",
+            category: "utilities",
+            desc: "Track your income and expenses with visual breakdowns",
+            tags: "utility,finance,tracker,money",
+          },
         ];
 
         projectsGrid.innerHTML = "";
@@ -1455,7 +1464,6 @@
     </script>
 
 
-    
     <script>
       // FIX 1: Add missing toPascalCase function
       if (typeof window.toPascalCase !== 'function') {
