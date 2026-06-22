@@ -37,15 +37,23 @@ def main() -> None:
             
         elif choice in ["E", "ENCRYPT", "D", "DECRYPT"]:
             message = input("📝 Enter your message: ")
-            
+
+            if not message.strip():
+                print("❌ Error: Message cannot be empty.\n")
+                continue
+
+            non_alpha = sum(1 for c in message if not (c.isascii() and c.isalpha()))
+            if non_alpha > 0:
+                print(f"⚠️  Warning: {non_alpha} non-alphabetic character(s) will be left unchanged.\n")
+
             try:
                 shift = int(input("🔑 Enter the shift key (whole number): "))
             except ValueError:
                 print("❌ Error: Shift key must be a valid whole number.\n")
                 continue
-                
+
             result = caesar_cipher(message, shift, choice)
-            
+
             print("\n✨ Resulting Message:")
             print(f"👉 {result}\n")
             
