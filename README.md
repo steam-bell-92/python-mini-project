@@ -1186,12 +1186,17 @@ These standalone Python project files do not have a browser counterpart yet and 
   </tr>
   <tr>
     <td align="center" width="120">
+      <a href="https://github.com/yughpatel">
+        <img src="https://github.com/yughpatel.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="yughpatel" /><br />
+        <sub><b>@yughpatel</b></sub>
+      </a>
+    </td>
+    <td align="center" width="120">
       <a href="https://github.com/yuvraj-k-singh">
         <img src="https://github.com/yuvraj-k-singh.png?size=100" width="100" height="100" style="border-radius:50%; border:2px solid #555;" alt="yuvraj-k-singh" /><br />
         <sub><b>@yuvraj-k-singh</b></sub>
       </a>
     </td>
-    <td width="120"></td>
     <td width="120"></td>
     <td width="120"></td>
     <td width="120"></td>
