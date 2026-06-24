@@ -668,5 +668,85 @@
       "search"
     ],
     "path": "utilities/TSP-Visualizer/TSP-Visualizer.py"
+  },
+  {
+    "name": "2048 Game",
+    "emoji": "🔢",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Combine tiles and reach 2048!",
+    "keywords": [
+      "2048",
+      "game",
+      "puzzle",
+      "numbers",
+      "tiles",
+      "merge"
+    ],
+    "path": "games/2048-Game/2048-Game.py"
+  },
+  {
+    "name": "Flappy Game",
+    "emoji": "🐦",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Flappy bird style game",
+    "keywords": [
+      "flappy",
+      "bird",
+      "game",
+      "arcade",
+      "wings",
+      "pipes"
+    ],
+    "path": "games/Flappy-Game/Flappy-Game.py"
+  },
+  {
+    "name": "Math Quiz",
+    "emoji": "🧮",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "Test your math skills",
+    "keywords": [
+      "math",
+      "quiz",
+      "game",
+      "arithmetic",
+      "test",
+      "skills"
+    ],
+    "path": "games/Math-Quiz/Math-Quiz.py"
+  },
+  {
+    "name": "Tic Tac Toe",
+    "emoji": "❌",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Classic X vs O game",
+    "keywords": [
+      "tic",
+      "tac",
+      "toe",
+      "game",
+      "strategy",
+      "two-player"
+    ],
+    "path": "games/Tic-Tac-Toe/Tic-Tac-Toe.py"
+  },
+  {
+    "name": "Spot the Difference",
+    "emoji": "🔍",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Find differences between images",
+    "keywords": [
+      "spot",
+      "difference",
+      "game",
+      "puzzle",
+      "visual",
+      "images"
+    ],
+    "path": "games/Spot-the-Difference/Spot-the-Difference.py"
   }
 ]
