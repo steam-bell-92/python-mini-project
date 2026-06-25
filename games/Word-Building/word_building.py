@@ -15,8 +15,8 @@ def botTurn(letter, used_words):
         available = [w for w in data.words.get(letter, []) if w not in used_words]
         if available:
             word = random.choice(available)
-    except:
-        pass
+    except (AttributeError, KeyError) as e:
+        print(f"⚠️ Warning: Bot encountered a dictionary matching issue: {e}")
     return word
 
 def Main():
