@@ -100,6 +100,80 @@ var selectedSuggestionIndex = -1;
 var projectCards = [];
 var recentSearches = JSON.parse(localStorage.getItem("recentSearches") || "[]");
 
+// ============================================
+// INFO MODAL FUNCTIONS - FIXED
+// ============================================
+
+function showInfoModal(title, steps) {
+  var overlay = document.getElementById("infoModalOverlay");
+  var titleEl = document.getElementById("infoModalTitle");
+  var listEl = document.getElementById("infoModalList");
+  var closeBtn = document.getElementById("infoModalClose");
+  var gotItBtn = document.getElementById("infoModalGotIt");
+
+  if (!overlay || !titleEl || !listEl) return;
+
+  titleEl.textContent = title;
+  listEl.innerHTML = "";
+  steps.forEach(function (step) {
+    const li = document.createElement("li");
+    li.textContent = step;
+    listEl.appendChild(li);
+  });
+
+  // Show modal
+  overlay.style.display = 'flex';
+  overlay.style.visibility = 'visible';
+  overlay.style.opacity = '1';
+  overlay.classList.add("active");
+  overlay.setAttribute('aria-hidden', 'false');
+
+  function closeModal() {
+    overlay.style.display = 'none';
+    overlay.style.visibility = 'hidden';
+    overlay.style.opacity = '0';
+    overlay.classList.remove("active");
+    overlay.setAttribute('aria-hidden', 'true');
+    // Clean up event listeners
+    if (closeBtn) closeBtn.removeEventListener("click", closeModal);
+    if (gotItBtn) gotItBtn.removeEventListener("click", closeModal);
+    overlay.removeEventListener("click", overlayClick);
+    document.removeEventListener("keydown", escapeHandler);
+  }
+
+  function overlayClick(e) {
+    if (e.target === overlay) closeModal();
+  }
+
+  function escapeHandler(e) {
+    if (e.key === 'Escape') closeModal();
+  }
+
+  // Add event listeners
+  if (closeBtn) {
+    // Remove old listeners by cloning
+    const newClose = closeBtn.cloneNode(true);
+    closeBtn.parentNode.replaceChild(newClose, closeBtn);
+    newClose.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModal();
+    });
+  }
+
+  if (gotItBtn) {
+    const newGotIt = gotItBtn.cloneNode(true);
+    gotItBtn.parentNode.replaceChild(newGotIt, gotItBtn);
+    newGotIt.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      closeModal();
+    });
+  }
+
+  overlay.addEventListener("click", overlayClick);
+  document.addEventListener("keydown", escapeHandler);
+}
 
 // Themed confirmation modal (in-page) helper
 function showConfirm(message, onConfirm, onCancel) {
