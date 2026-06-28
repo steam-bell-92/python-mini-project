@@ -1,17 +1,15 @@
 <!doctype html>
 <html lang="en" data-theme="dark">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta
-      content="Play 18+ beginner-friendly Python mini projects in your browser—games, math tools, and utilities with a modern dark/light UI."
-      name="description"
-    />
-    <meta content="dark light" name="color-scheme" />
-    <meta content="#0c0f1a" id="themeColorMeta" name="theme-color" />
-<meta
-  http-equiv="Content-Security-Policy"
-  content="
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta
+    content="Play 18+ beginner-friendly Python mini projects in your browser—games, math tools, and utilities with a modern dark/light UI."
+    name="description" />
+  <meta content="dark light" name="color-scheme" />
+  <meta content="#0c0f1a" id="themeColorMeta" name="theme-color" />
+  <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
     script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net https://unpkg.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
@@ -20,1331 +18,1037 @@
     connect-src 'self' https://pyodide-cdn2.iodide.io;
     base-uri 'self';
     form-action 'self';
-  "
->
-    <meta content="Python Mini Projects — Web Edition" property="og:title" />
-    <meta
-      content="Interactive games, math visualizations, and utilities—no install required."
-      property="og:description"
-    />
-    <meta content="website" property="og:type" />
-    <meta
-      content="https://github.com/steam-bell-92/python-mini-project"
-      property="og:url"
-    />
-    <meta content="summary" name="twitter:card" />
-    <meta content="Python Mini Projects — Web Edition" name="twitter:title" />
-    <meta
-      content="Interactive games, math visualizations, and utilities in the browser."
-      name="twitter:description"
-    />
-    <title>Python Mini Projects — Interactive Web Edition</title>
-    <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
-    <link href="css/styles.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  </head>
-  <body class="sidebar-active">
-    <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
-      <i class="fas fa-moon" aria-hidden="true"></i>
-    </button>
-    <!-- Scroll Progress Bar -->
-    <div id="scrollProgressContainer" aria-label="Page scroll progress">
-      <div id="scrollProgressBar"></div>
-    </div>
-    
-    <a class="skip-link" href="#main-content">Skip to main content</a>
+  ">
+  <meta content="Python Mini Projects — Web Edition" property="og:title" />
+  <meta content="Interactive games, math visualizations, and utilities—no install required."
+    property="og:description" />
+  <meta content="website" property="og:type" />
+  <meta content="https://github.com/steam-bell-92/python-mini-project" property="og:url" />
+  <meta content="summary" name="twitter:card" />
+  <meta content="Python Mini Projects — Web Edition" name="twitter:title" />
+  <meta content="Interactive games, math visualizations, and utilities in the browser." name="twitter:description" />
+  <title>Python Mini Projects — Interactive Web Edition</title>
+  <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
+  <link href="css/styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
 
-    <!-- Cursor Glow -->
-    <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
+<body class="sidebar-active">
+  <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
+    <i class="fas fa-moon" aria-hidden="true"></i>
+  </button>
+  <!-- Scroll Progress Bar -->
+  <div id="scrollProgressContainer" aria-label="Page scroll progress">
+    <div id="scrollProgressBar"></div>
+  </div>
 
-    <!-- Navigation -->
-    <nav aria-label="Primary" class="navbar" id="mainNavbar">
-      <div class="nav-island">
-        <div class="navbar-brand">
-          <a class="logo-wrap" href="#">
-            <img
-              alt="PyMini Logo"
-              class="navbar-logo"
-              src="assets/favicon.svg"
-            / loading="lazy">
-            <div class="logo-text">
-              <span class="logo-py">py</span>
-              <span class="logo-mini">.mini</span>
-              <span class="logo-parens">()</span>
-            </div>
-            <span class="logo-tagline">games, math &amp; terminal toys</span>
-          </a>
-        </div>
-        <div class="search-box">
-          <i class="fas fa-search"></i>
-          <input
-            aria-label="Search projects"
-            id="navSearchInput"
-            placeholder="Search projects or games..."
-            type="text"
-          />
-        </div>
-        <button
-          type="button"
-          class="mobile-menu-toggle"
-          id="mobileMenuToggle"
-          aria-label="Toggle sidebar"
-          aria-expanded="true"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-        <div class="nav-controls" id="navControls">
-          <button aria-label="Mute sounds" class="sound-toggle" type="button">
-            <i class="fas fa-volume-up"></i>
-          </button>
-          <button aria-label="Switch theme" class="theme-toggle" type="button">
-            <i class="fas fa-moon"></i>
-          </button>
-        </div>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <!-- Cursor Glow -->
+  <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Navigation -->
+  <nav aria-label="Primary" class="navbar" id="mainNavbar">
+    <div class="nav-island">
+      <div class="navbar-brand">
+        <a class="logo-wrap" href="#">
+          <img alt="PyMini Logo" class="navbar-logo" src="assets/favicon.svg" / loading="lazy">
+          <div class="logo-text">
+            <span class="logo-py">py</span>
+            <span class="logo-mini">.mini</span>
+            <span class="logo-parens">()</span>
+          </div>
+          <span class="logo-tagline">games, math &amp; terminal toys</span>
+        </a>
       </div>
-    </nav>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input aria-label="Search projects" id="navSearchInput" placeholder="Search projects or games..." type="text" />
+      </div>
+      <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
+        aria-expanded="true">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-controls" id="navControls">
+        <button aria-label="Mute sounds" class="sound-toggle" type="button">
+          <i class="fas fa-volume-up"></i>
+        </button>
+        <button aria-label="Switch theme" class="theme-toggle" type="button">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
 
-    <aside class="sidebar-dock" id="mainSidebar">
-      <button
-  class="sidebar-mobile-close"
-  id="sidebarMobileClose"
-  aria-label="Close sidebar"
-  type="button"
->
-  <i class="fas fa-times" aria-hidden="true"></i>
-</button>
-      <div class="sidebar-search">
-        <div class="search-box" style="position: relative">
-          <i class="fas fa-search" aria-hidden="true"></i>
-          <input
-            aria-label="Search projects"
-            id="searchInput"
-            placeholder="Search projects or tags..."
-            type="text"
-            role="combobox"
-            aria-autocomplete="list"
-            aria-controls="resultsList"
-            aria-expanded="false"
-          />
-          <div class="search-dropdown" id="searchDropdown" aria-live="polite">
-            <div class="dropdown-content" id="searchDropdownContent">
-              <div
-                class="search-loader"
-                id="searchLoader"
-                style="display: none"
-              >
-                <div class="spinner"></div>
+  <aside class="sidebar-dock" id="mainSidebar">
+    <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close sidebar" type="button">
+      <i class="fas fa-times" aria-hidden="true"></i>
+    </button>
+    <div class="sidebar-search">
+      <div class="search-box" style="position: relative">
+        <i class="fas fa-search" aria-hidden="true"></i>
+        <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"
+          role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false" />
+        <div class="search-dropdown" id="searchDropdown" aria-live="polite">
+          <div class="dropdown-content" id="searchDropdownContent">
+            <div class="search-loader" id="searchLoader" style="display: none">
+              <div class="spinner"></div>
+            </div>
+            <div class="recent-searches-section" id="recentSearchesSection">
+              <div class="dropdown-section-title">
+                <span>Recent</span>
+                <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
+                  All</button>
               </div>
-              <div class="recent-searches-section" id="recentSearchesSection">
-                <div class="dropdown-section-title">
-                  <span>Recent</span>
-                  <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear All</button>
-                </div>
-                <div class="dropdown-list" id="recentSearchesList"></div>
-              </div>
-              <div
-                class="results-section"
-                id="resultsSection"
-                style="display: none"
-              >
-                <div class="dropdown-section-title">Projects</div>
-                <div
-                  class="dropdown-list"
-                  id="resultsList"
-                  role="listbox"
-                ></div>
-              </div>
-              <div class="tips-section" id="tipsSection">
-                <p><strong>Search tips</strong></p>
-                <ul>
-                  <li>
-                    Type a project name — <code>snake</code>, <code>quiz</code>
-                  </li>
-                  <li>
-                    Filter by tag — <code>game</code>, <code>math</code>,
-                    <code>utility</code>
-                  </li>
-                </ul>
-              </div>
-              <div
-                class="no-results-message"
-                id="noResultsMessage"
-                style="display: none"
-              >
-                No projects found. Try a different keyword.
-              </div>
+              <div class="dropdown-list" id="recentSearchesList"></div>
+            </div>
+            <div class="results-section" id="resultsSection" style="display: none">
+              <div class="dropdown-section-title">Projects</div>
+              <div class="dropdown-list" id="resultsList" role="listbox"></div>
+            </div>
+            <div class="tips-section" id="tipsSection">
+              <p><strong>Search tips</strong></p>
+              <ul>
+                <li>
+                  Type a project name — <code>snake</code>, <code>quiz</code>
+                </li>
+                <li>
+                  Filter by tag — <code>game</code>, <code>math</code>,
+                  <code>utility</code>
+                </li>
+              </ul>
+            </div>
+            <div class="no-results-message" id="noResultsMessage" style="display: none">
+              No projects found. Try a different keyword.
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="sidebar-menu-wrapper">
-        <div class="sidebar-menu-title">Categories</div>
-        <nav
-          class="sidebar-menu"
-          role="tablist"
-          aria-label="Filter by category"
-        >
-          <button
-            aria-selected="true"
-            class="sidebar-tab active"
-            data-category="all"
-            role="tab"
-            tabindex="0"
-          >
-            <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
-            <span class="sidebar-label">All Projects</span>
-          </button>
-          <button
-            aria-selected="false"
-            class="sidebar-tab"
-            data-category="games"
-            role="tab"
-            tabindex="-1"
-          >
-            <span class="sidebar-icon"
-              ><svg data-lucide="gamepad-2"></svg>
-            </span>
-            <span class="sidebar-label">Games Arcade</span>
-          </button>
-          <button
-            aria-selected="false"
-            class="sidebar-tab"
-            data-category="math"
-            role="tab"
-            tabindex="-1"
-          >
-            <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-            <span class="sidebar-label">Maths Lab</span>
-          </button>
-          <button
-            aria-selected="false"
-            class="sidebar-tab"
-            data-category="utilities"
-            role="tab"
-            tabindex="-1"
-          >
-            <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
-            <span class="sidebar-label">Utilities Lab</span>
-          </button>
-          <button
-            aria-selected="false"
-            class="sidebar-tab"
-            data-category="favorites"
-            role="tab"
-            tabindex="-1"
-          >
-            <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
-            <span class="sidebar-label">My Favorites</span>
-          </button>
-          <button
-            aria-selected="false"
-            class="sidebar-tab"
-            data-category="playground"
-            role="tab"
-            tabindex="-1"
-          >
-            <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
-            <span class="sidebar-label">Playground</span>
-          </button>
-        </nav>
-      </div>
+    <div class="sidebar-menu-wrapper">
+      <div class="sidebar-menu-title">Categories</div>
+      <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
+        <button aria-selected="true" class="sidebar-tab active" data-category="all" role="tab" tabindex="0">
+          <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
+          <span class="sidebar-label">All Projects</span>
+        </button>
+        <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
+          <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg>
+          </span>
+          <span class="sidebar-label">Games Arcade</span>
+        </button>
+        <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
+          <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
+          <span class="sidebar-label">Maths Lab</span>
+        </button>
+        <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
+          <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
+          <span class="sidebar-label">Utilities Lab</span>
+        </button>
+        <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
+          <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
+          <span class="sidebar-label">My Favorites</span>
+        </button>
+        <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
+          <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
+          <span class="sidebar-label">Playground</span>
+        </button>
+      </nav>
+    </div>
 
-      <div class="sidebar-footer">
-        <div class="sidebar-controls">
-          <div class="sidebar-main-controls">
-            <button
-            aria-label="Mute sound"
-            class="sound-toggle"
-            id="sidebarSoundToggle"
-            type="button"
-            >
+    <div class="sidebar-footer">
+      <div class="sidebar-controls">
+        <div class="sidebar-main-controls">
+          <button aria-label="Mute sound" class="sound-toggle" id="sidebarSoundToggle" type="button">
             <i class="fas fa-volume-up" aria-hidden="true"></i>
           </button>
-          <button
-          aria-label="Switch to light mode"
-          class="theme-toggle"
-          id="sidebarThemeToggle"
-          type="button"
-          >
-          <i class="fas fa-sun" aria-hidden="true"></i>
+          <button aria-label="Switch to light mode" class="theme-toggle" id="sidebarThemeToggle" type="button">
+            <i class="fas fa-sun" aria-hidden="true"></i>
+          </button>
+        </div>
+        <button aria-label="Toggle Sidebar" class="collapse-sidebar-btn" id="sidebarCollapseBtn" type="button">
+          <i class="fas fa-chevron-left"></i>
         </button>
       </div>
-          <button
-            aria-label="Toggle Sidebar"
-            class="collapse-sidebar-btn"
-            id="sidebarCollapseBtn"
-            type="button"
-          >
-            <i class="fas fa-chevron-left"></i>
+    </div>
+  </aside>
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <main id="main-content" tabindex="-1">
+    <!-- Hero Section -->
+    <section class="hero-section" aria-label="Welcome">
+      <canvas aria-hidden="true" id="boardCanvas"></canvas>
+      <div class="hero-background" aria-hidden="true"></div>
+      <div aria-hidden="true" class="hero-orb hero-orb-one"></div>
+      <div aria-hidden="true" class="hero-orb hero-orb-two"></div>
+      <div aria-hidden="true" class="hero-orb hero-orb-three"></div>
+
+      <div class="hero-shell">
+        <div class="hero-logo-header">
+          <div class="hero-logo-text">
+            <span class="hero-logo-py">py</span><span class="hero-logo-mini">.mini</span><span
+              class="hero-logo-parens">()</span>
+          </div>
+        </div>
+
+        <div class="hero-badge-row">
+          <span class="hero-kicker">
+            <span class="hero-kicker-dot"></span>
+            Python Arcade
+          </span>
+          <span class="hero-status">
+            <span class="hero-status-dot"></span>
+            System Status: Nominal
+          </span>
+        </div>
+
+        <div class="hero-title-wrapper">
+          <h1 class="hero-title">
+            <span class="hero-title-line">Build tiny Python</span>
+            <span class="hero-title-line hero-title-accent">projects &amp; play</span>
+          </h1>
+        </div>
+
+        <p class="hero-subtitle">
+          Jump into browser-ready games, math experiments, and utility labs —
+          each one ready in your browser, no install required.
+        </p>
+
+        <div class="hero-cta-row">
+          <button class="btn-primary-hero" id="exploreBtn">
+            <i class="fas fa-rocket" aria-hidden="true"></i>
+            Explore Projects
           </button>
+          <button class="btn-secondary-hero" id="randomProjectBtn">
+            <i class="fas fa-shuffle" aria-hidden="true"></i>
+            Surprise Me
+          </button>
+          <a class="btn-contribution-hero" id="contributionBtn"
+            href="https://github.com/steam-bell-92/python-mini-project/blob/main/CONTRIBUTING.md" target="_blank"
+            rel="noopener noreferrer">
+            <i class="fas fa-code-branch" aria-hidden="true"></i>
+            Open Contribution
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <span><strong id="heroProjectCount">0</strong> total projects</span>
+          <span><strong id="heroGameCount">0</strong> games</span>
+          <span><strong id="heroMathCount">0</strong> maths</span>
+          <span><strong id="heroUtilityCount">0</strong> utilities</span>
         </div>
       </div>
-    </aside>
-    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    </section>
 
-    <main id="main-content" tabindex="-1">
-      <!-- Hero Section -->
-      <section class="hero-section" aria-label="Welcome">
-        <canvas aria-hidden="true" id="boardCanvas"></canvas>
-        <div class="hero-background" aria-hidden="true"></div>
-        <div aria-hidden="true" class="hero-orb hero-orb-one"></div>
-        <div aria-hidden="true" class="hero-orb hero-orb-two"></div>
-        <div aria-hidden="true" class="hero-orb hero-orb-three"></div>
-
-        <div class="hero-shell">
-          <div class="hero-logo-header">
-            <div class="hero-logo-text">
-              <span class="hero-logo-py">py</span
-              ><span class="hero-logo-mini">.mini</span
-              ><span class="hero-logo-parens">()</span>
-            </div>
-          </div>
-
-          <div class="hero-badge-row">
-            <span class="hero-kicker">
-              <span class="hero-kicker-dot"></span>
-              Python Arcade
-            </span>
-            <span class="hero-status">
-              <span class="hero-status-dot"></span>
-              System Status: Nominal
-            </span>
-          </div>
-
-          <div class="hero-title-wrapper">
-            <h1 class="hero-title">
-              <span class="hero-title-line">Build tiny Python</span>
-              <span class="hero-title-line hero-title-accent"
-                >projects &amp; play</span
-              >
-            </h1>
-          </div>
-
-          <p class="hero-subtitle">
-            Jump into browser-ready games, math experiments, and utility labs —
-            each one ready in your browser, no install required.
-          </p>
-
-          <div class="hero-cta-row">
-            <button class="btn-primary-hero" id="exploreBtn">
-              <i class="fas fa-rocket" aria-hidden="true"></i>
-              Explore Projects
-            </button>
-            <button class="btn-secondary-hero" id="randomProjectBtn">
-              <i class="fas fa-shuffle" aria-hidden="true"></i>
-              Surprise Me
-            </button>
-            <a
-              class="btn-contribution-hero"
-              id="contributionBtn"
-              href="https://github.com/steam-bell-92/python-mini-project/blob/main/CONTRIBUTING.md"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i class="fas fa-code-branch" aria-hidden="true"></i>
-              Open Contribution
-            </a>
-          </div>
-
-          <div class="hero-meta">
-            <span><strong id="heroProjectCount">0</strong> total projects</span>
-            <span><strong id="heroGameCount">0</strong> games</span>
-            <span><strong id="heroMathCount">0</strong> maths</span>
-            <span><strong id="heroUtilityCount">0</strong> utilities</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Sticky Filter Bar -->
-      <div
-        class="sticky-filter-bar visible"
-        id="stickyFilterBar"
-        aria-label="Project category filters"
-      >
-        <div class="sticky-filter-inner">
-          <button
-            aria-selected="true"
-            class="sticky-tab active"
-            data-sticky-category="all"
-            role="tab"
-            tabindex="0"
-            type="button"
-          >
-            All
-          </button>
-          <button
-            aria-selected="false"
-            class="sticky-tab"
-            data-sticky-category="games"
-            role="tab"
-            tabindex="-1"
-            type="button"
-          >
-            Games
-          </button>
-          <button
-            aria-selected="false"
-            class="sticky-tab"
-            data-sticky-category="math"
-            role="tab"
-            tabindex="-1"
-            type="button"
-          >
-            Math
-          </button>
-          <button
-            aria-selected="false"
-            class="sticky-tab"
-            data-sticky-category="utilities"
-            role="tab"
-            tabindex="-1"
-            type="button"
-          >
-            Utilities
-          </button>
-          <button
-            aria-selected="false"
-            class="sticky-tab"
-            data-sticky-category="favorites"
-            role="tab"
-            tabindex="-1"
-            type="button"
-          >
-            Favorites
-          </button>
-          <button
-            aria-selected="false"
-            class="sticky-tab"
-            data-sticky-category="playground"
-            role="tab"
-            tabindex="-1"
-            type="button"
-          >
-            Playground
-          </button>
-        </div>
-      </div>
-
-      <!-- Timeline Section -->
-      <section class="hero-timeline-section" id="timelineSection">
-        <div class="timeline-background" aria-hidden="true"></div>
-        <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
-        <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
-        <div class="timeline-container">
-          <div class="timeline-route-badge">TRACK-ROUTE</div>
-          <div class="timeline-grid">
-            <div class="timeline-item" data-reveal>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="house"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">01</span>
-                  <h3 class="timeline-title">Welcome</h3>
-                  <p class="timeline-desc">
-                    Jump into a tiny Python arcade built for curious beginners
-                  </p>
-                </div>
-              </div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div></div>
-            </div>
-            <div class="timeline-item" data-reveal>
-              <div></div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="compass"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">02</span>
-                  <h3 class="timeline-title">Explore</h3>
-                  <p class="timeline-desc">
-                    Browse games, math puzzles &amp; utilities — each one ready
-                    in your browser
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-item" data-reveal>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="play"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">03</span>
-                  <h3 class="timeline-title">Play</h3>
-                  <p class="timeline-desc">
-                    Launch any project instantly, experiment with code, and
-                    share your wins
-                  </p>
-                </div>
-              </div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div></div>
-            </div>
-            <div class="timeline-item" data-reveal>
-              <div></div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="book-open"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">04</span>
-                  <h3 class="timeline-title">Learn</h3>
-                  <p class="timeline-desc">
-                    Pick up Python concepts as you play — loops, logic, data
-                    &amp; more
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="timeline-item" data-reveal>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="hammer"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">05</span>
-                  <h3 class="timeline-title">Build</h3>
-                  <p class="timeline-desc">
-                    Create your own mini projects and share them with the
-                    community
-                  </p>
-                </div>
-              </div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div></div>
-            </div>
-            <div class="timeline-item" data-reveal>
-              <div></div>
-              <div class="timeline-node"><div class="timeline-dot"></div></div>
-              <div class="timeline-content">
-                <span class="timeline-icon" data-lucide="share-2"></span>
-                <div class="timeline-text">
-                  <span class="timeline-step">06</span>
-                  <h3 class="timeline-title">Share</h3>
-                  <p class="timeline-desc">
-                    Show off your work, get feedback, and keep growing as a dev
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Recently Viewed Section -->
-      <section class="projects-section" id="recentlyViewedSection">
-        <div class="container">
-          <div class="section-header">
-            <h2 class="section-heading">
-              Recently Viewed
-            </h2>
-          </div>
-          <div class="projects-grid" id="recentlyViewedGrid"></div>
-        </div>
-      </section>
-
-      <!-- Projects Section -->
-      <section class="projects-section" id="projectsSection">
-        <div class="container">
-          <div class="section-header">
-            <h2 class="section-heading">
-              Projects <span id="projectCountBadge"></span>
-            </h2>
-            <button
-              class="btn-random-project"
-              id="randomProjectBtnSidebar"
-              type="button"
-            >
-              <i class="fas fa-shuffle" aria-hidden="true"></i>
-              Surprise Me
-            </button>
-          </div>
-          <div class="projects-grid" id="projectsGrid"></div>
-          <div id="emptyState" class="empty-state" style="display: none">
-            <p>No Projects right now :)</p>
-            <p class="empty-state-hint">
-              Try adjusting your search or category filter.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Playground Section -->
-      <section
-        aria-label="Python Playground"
-        class="playground-section"
-        id="playgroundSection"
-        style="display: none"
-      >
-        <div class="container">
-          <div class="playground-header">
-            <div class="playground-title-row">
-              <h2 class="playground-title">🐍 Python Playground</h2>
-              <div
-                aria-label="Pyodide status"
-                aria-live="polite"
-                class="playground-status"
-                id="playgroundStatus"
-              >
-                <span class="status-dot" id="statusDot"></span>
-                <span id="statusText">Open tab to load Python</span>
-              </div>
-            </div>
-            <p class="playground-subtitle">
-              Write and run real Python code in your browser — powered by
-              <a
-                href="https://pyodide.org"
-                rel="noopener noreferrer"
-                target="_blank"
-                >Pyodide</a
-              >. No install, no backend.
-            </p>
-            <p class="playground-hint">
-              <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs code &nbsp;·&nbsp;
-              <kbd>Tab</kbd> inserts 4 spaces
-            </p>
-          </div>
-          <div class="playground-body">
-            <div class="editor-panel">
-              <div class="panel-header">
-                <span
-                  ><i aria-hidden="true" class="fas fa-code"></i> Code
-                  Editor</span
-                >
-                <div class="editor-actions">
-                  <button
-                    class="btn-panel-action"
-                    id="loadExample"
-                    title="Load a sample snippet"
-                    type="button"
-                  >
-                    <i aria-hidden="true" class="fas fa-lightbulb"></i> Example
-                  </button>
-                  <button
-                    class="btn-panel-action"
-                    id="copyEditorCode"
-                    title="Copy editor code to clipboard"
-                    type="button"
-                    aria-label="Copy code to clipboard"
-                  >
-                    <i aria-hidden="true" class="fas fa-copy"></i> Copy
-                  </button>
-                  <button
-                    class="btn-panel-action"
-                    id="clearEditor"
-                    title="Clear the editor"
-                    type="button"
-                  >
-                    <i aria-hidden="true" class="fas fa-trash-alt"></i> Clear
-                  </button>
-                </div>
-              </div>
-              <div
-                id="pythonEditor"
-                aria-label="Python code editor"
-                role="textbox"
-                aria-multiline="true"
-              ></div>
-            </div>
-
-            <div class="console-panel">
-              <div class="panel-header">
-                <span
-                  ><i aria-hidden="true" class="fas fa-terminal"></i> Output
-                  Console</span
-                >
-                <button
-                  class="btn-panel-action"
-                  id="clearConsole"
-                  title="Clear the console"
-                  type="button"
-                >
-                  <i aria-hidden="true" class="fas fa-times-circle"></i> Clear
-                </button>
-              </div>
-              <pre
-                aria-label="Console output"
-                aria-live="polite"
-                class="console-output"
-                id="consoleOutput"
-              ></pre>
-            </div>
-          </div>
-
-          <div class="playground-controls">
-            <button
-              aria-label="Run Python code"
-              class="btn-run"
-              disabled
-              id="runCode"
-              type="button"
-            >
-              <i aria-hidden="true" class="fas fa-play"></i> Run Code
-            </button>
-            <button
-              aria-label="Stop execution"
-              class="btn-stop"
-              disabled
-              id="stopCode"
-              type="button"
-            >
-              <i aria-hidden="true" class="fas fa-stop"></i> Stop
-            </button>
-            <select
-              id="draftSelector"
-              class="draft-selector"
-              aria-label="Select draft">
-              <option value="">Select Draft</option>
-            </select>
-
-            <button
-              id="saveDraft"
-              class="btn-panel-action"
-              type="button">
-              Save Draft
-            </button>
-
-            <button
-              id="loadDraft"
-              class="btn-panel-action"
-              type="button">
-              Load Draft
-            </button>
-
-            <button
-              id="deleteDraft"
-              class="btn-panel-action"
-              type="button">
-              Delete Draft
-            </button>
-          </div>
-          <div id="draftStatus" class="draft-status">
-            No draft loaded
-          </div>
-        </div>
-        </section>
-    </main>
-
-    <!-- Project Modal -->
-    <div
-      aria-hidden="true"
-      aria-labelledby="modalDialogTitle"
-      aria-modal="true"
-      class="modal"
-      id="projectModal"
-      role="dialog"
-    >
-      <div class="modal-content">
-        <div class="modal-header">
-          <button
-            aria-label="Close project dialog"
-            class="modal-close"
-            id="modalClose"
-            type="button"
-          >
-            &times;
-          </button>
-        </div>
-        <div id="modalBody"></div>
+    <!-- Sticky Filter Bar -->
+    <div class="sticky-filter-bar visible" id="stickyFilterBar" aria-label="Project category filters">
+      <div class="sticky-filter-inner">
+        <button aria-selected="true" class="sticky-tab active" data-sticky-category="all" role="tab" tabindex="0"
+          type="button">
+          All
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="games" role="tab" tabindex="-1"
+          type="button">
+          Games
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="math" role="tab" tabindex="-1"
+          type="button">
+          Math
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="utilities" role="tab" tabindex="-1"
+          type="button">
+          Utilities
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="favorites" role="tab" tabindex="-1"
+          type="button">
+          Favorites
+        </button>
+        <button aria-selected="false" class="sticky-tab" data-sticky-category="playground" role="tab" tabindex="-1"
+          type="button">
+          Playground
+        </button>
       </div>
     </div>
 
-    <!-- Back to Top -->
-    <button
-      aria-label="Back to top"
-      class="back-to-top"
-      id="backToTop"
-      title="Back to top"
-      type="button"
-    >
-      <i class="fas fa-arrow-up" aria-hidden="true"></i>
-    </button>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h2>🎮 Python Mini Projects</h2>
-                    <p>Learn Python the Fun Way! Interactive games, math visualizations, and utilities built directly in
-                        your browser.</p>
-                    <div class="footer-social-icons">
-                        <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
-                            rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="https://x.com/AnujKulkarni040"  class="twitter" aria-label="X (formerly Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
-                        <a href="https://www.linkedin.com/in/anuj-chandrakant-kulkarni" class="linkedin"  aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
-                        <a href="https://www.instagram.com/obscura.nuj"  class="instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-links">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#main-content"
-                                onclick="document.querySelector('[data-category=\'games\']').click()">Games</a></li>
-                        <li><a href="#main-content"
-                                onclick="document.querySelector('[data-category=\'math\']').click()">Math</a></li>
-                        <li><a href="#main-content"
-                                onclick="document.querySelector('[data-category=\'utilities\']').click()">Utilities</a></li>
-                        <li><a href="#main-content"
-                                onclick="document.querySelector('[data-category=\'favorites\']').click()">⭐
-                                Favorites</a></li>
-                        <li><a href="#main-content"
-                                onclick="document.querySelector('[data-category=\'playground\']').click()">🐍
-                                Playground</a></li>
-                    </ul>
-                </div>
-                <div class="footer-links">
-                    <h3>Resources</h3>
-                    <ul>
-                        <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
-                                    class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
-                        <li><a
-                                href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
-                                    class="fas fa-code-branch" aria-hidden="true"></i>
-                                Contribute</a></li>
-                        <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i
-                                    class="fas fa-bug" aria-hidden="true"></i> Report a Bug</a></li>
-                        <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
-                                    class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-newsletter">
-                    <h3>Stay Updated</h3>
-                    <p>Get notified about new projects and features!</p>
-                    <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-                        <input type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
-                        <button type="submit" aria-label="Subscribe">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </form>
-                </div>
+    <!-- Timeline Section -->
+    <section class="hero-timeline-section" id="timelineSection">
+      <div class="timeline-background" aria-hidden="true"></div>
+      <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
+      <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
+      <div class="timeline-container">
+        <div class="timeline-route-badge">TRACK-ROUTE</div>
+        <div class="timeline-grid">
+          <div class="timeline-item" data-reveal>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="house"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">01</span>
+                <h3 class="timeline-title">Welcome</h3>
+                <p class="timeline-desc">
+                  Jump into a tiny Python arcade built for curious beginners
+                </p>
+              </div>
             </div>
-            <div class="footer-bottom">
-                <div class="footer-bottom-links">
-                    <a href="#">Privacy Policy</a>
-                    <span class="separator">•</span>
-                    <a href="#">Terms of Service</a>
-                </div>
-                <p>Made with ❤️ for Python learners everywhere &copy; 2026</p>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div></div>
+          </div>
+          <div class="timeline-item" data-reveal>
+            <div></div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="compass"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">02</span>
+                <h3 class="timeline-title">Explore</h3>
+                <p class="timeline-desc">
+                  Browse games, math puzzles &amp; utilities — each one ready
+                  in your browser
+                </p>
+              </div>
             </div>
           </div>
-          <div class="footer-links">
-            <h3>Projects</h3>
-            <ul>
-              <li>
-                <a href="#" class="footer-cat-link" data-cat="games">Games</a>
-              </li>
-              <li>
-                <a href="#" class="footer-cat-link" data-cat="math">Math</a>
-              </li>
-              <li>
-                <a href="#" class="footer-cat-link" data-cat="utilities"
-                  >Utilities</a
-                >
-              </li>
-              <li>
-                <a href="#" class="footer-cat-link" data-cat="favorites"
-                  >Favorites</a
-                >
-              </li>
-              <li>
-                <a href="#" class="footer-cat-link" data-cat="playground"
-                  >Playground</a
-                >
-              </li>
-            </ul>
+          <div class="timeline-item" data-reveal>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="play"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">03</span>
+                <h3 class="timeline-title">Play</h3>
+                <p class="timeline-desc">
+                  Launch any project instantly, experiment with code, and
+                  share your wins
+                </p>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div></div>
           </div>
-          <div class="footer-links">
-            <h3>Resources</h3>
-            <ul>
-              <li>
-                <a
-                  href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"
-                  ><i class="fas fa-book"></i> Documentation</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/steam-bell-92/python-mini-project/blob/main/CONTRIBUTING.md"
-                  ><i class="fas fa-code-branch"></i> Contribute</a
-                >
-              </li>
-              <li>
-                <a
-                  href="https://github.com/steam-bell-92/python-mini-project/issues/new"
-                  ><i class="fas fa-bug"></i> Report a Bug</a
-                >
-              </li>
-            </ul>
+          <div class="timeline-item" data-reveal>
+            <div></div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="book-open"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">04</span>
+                <h3 class="timeline-title">Learn</h3>
+                <p class="timeline-desc">
+                  Pick up Python concepts as you play — loops, logic, data
+                  &amp; more
+                </p>
+              </div>
+            </div>
           </div>
-          <div class="footer-links">
-            <h3>Legal</h3>
-            <ul>
-              <li><a href="./privacy-policy.html">Privacy Policy</a></li>
-              <li><a href="./terms-condition.html">Terms of Service</a></li>
-            </ul>
+          <div class="timeline-item" data-reveal>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="hammer"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">05</span>
+                <h3 class="timeline-title">Build</h3>
+                <p class="timeline-desc">
+                  Create your own mini projects and share them with the
+                  community
+                </p>
+              </div>
+            </div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div></div>
           </div>
-        </div>
-        <div class="footer-bottom">
-          <p>Made with &hearts; for Python learners everywhere &copy; 2026</p>
+          <div class="timeline-item" data-reveal>
+            <div></div>
+            <div class="timeline-node">
+              <div class="timeline-dot"></div>
+            </div>
+            <div class="timeline-content">
+              <span class="timeline-icon" data-lucide="share-2"></span>
+              <div class="timeline-text">
+                <span class="timeline-step">06</span>
+                <h3 class="timeline-title">Share</h3>
+                <p class="timeline-desc">
+                  Show off your work, get feedback, and keep growing as a dev
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </footer>
+    </section>
 
-    <!-- Scripts -->
-    <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
-    <script defer src="js/audio.js"></script>
-    <script defer src="js/audioManager.js"></script>
+    <!-- Recently Viewed Section -->
+    <section class="projects-section" id="recentlyViewedSection">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading">
+            Recently Viewed
+          </h2>
+        </div>
+        <div class="projects-grid" id="recentlyViewedGrid"></div>
+      </div>
+    </section>
 
-    <!-- ALL PROJECT SCRIPTS -->
-    <script defer src="js/projects/rock-paper-scissor.js"></script>
-    <script defer src="js/projects/dice-rolling.js"></script>
-    <script defer src="js/projects/coin-flip.js"></script>
-    <script defer src="js/projects/progress-tracker.js"></script>
-    <script defer src="js/projects/number-guessing.js"></script>
-    <script defer src="js/projects/binary-search.js"></script>
-    <script defer src="js/projects/sorting-visualizer.js"></script>
-    <script defer src="js/projects/quick-sort.js"></script>
-    <script defer src="js/projects/merge-sort.js"></script>
-    <script defer src="js/projects/hangman.js"></script>
-    <script defer src="js/projects/flames.js"></script>
-    <script defer src="js/projects/fibonacci.js"></script>
-    <script defer src="js/projects/pascal-triangle.js"></script>
-    <script defer src="js/projects/calculator.js?v=2"></script>
-    <script defer src="js/projects/collatz.js"></script>
-    <script defer src="js/projects/armstrong.js"></script>
-    <script defer src="js/projects/prime-analyzer.js"></script>
-    <script defer src="js/projects/projectile-motion.js"></script>
-    <script defer src="js/projects/progression-recognizer.js"></script>
-    <script defer src="js/projects/coordinate-polar-transform.js"></script>
-    <script defer src="js/projects/derivative-calculator.js"></script>
-    <script defer src="js/projects/morse-code.js"></script>
-    <script defer src="js/projects/tower-of-hanoi.js"></script>
-    <script defer src="js/projects/math-quiz.js"></script>
-    <script defer src="js/projects/simon-says.js"></script>
-    <script defer src="js/projects/flappy-game.js"></script>
-    <script defer src="js/projects/tic-tac-toe.js"></script>
-    <script defer src="js/projects/2048-game.js"></script>
-    <script defer src="js/projects/dots-boxes.js"></script>
-    <script defer src="js/projects/emoji-memory-game.js"></script>
-    <script defer src="js/projects/number-converter.js"></script>
-    <script defer src="js/projects/password-forge.js"></script>
-    <script defer src="js/projects/typing-speed-tester.js"></script>
-    <script defer src="js/projects/productive-pet.js"></script>
-    <script defer src="js/projects/whack-a-mole.js"></script>
-    <script defer src="js/projects/word-scramble.js"></script>
-    <script defer src="js/projects/snake.js"></script>
-    <script defer src="js/projects/spot-the-difference.js"></script>
-    <script defer src="js/projects/sudoku-game.js"></script>
-    <script defer src="js/projects/color-palette.js"></script>
-    <script defer src="js/projects/resume-analyzer.js"></script>
-    <script src="js/projects/caesar-cipher.js"></script>
-    <script src="js/projects/matrix-calculator.js"></script>
-    <script defer src="js/projects/reverse-hangman.js"></script>
-    <script defer src="js/projects/unit-converter.js"></script>
-    <script defer src="js/projects/fourier-series.js"></script>
-    <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
-    <script defer src="js/projects/tsp-visualizer.js"></script>
-    <script defer src="js/projects.js?v=3"></script>
-    <script defer src="js/cm-editor.js"></script>
-    <script defer src="js/playground.js"></script>
-    <script defer type="module" src="js/main.js?v=2"></script>
-    <script defer src="js/hero-canvas.js"></script>
-    <script defer src="js/projects/war-card-game.js"></script>
-    <script defer src="js/projects/number-sliding-puzzle.js"></script>
-    <script defer src="js/projects/budget-tracker.js"></script>
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') lucide.createIcons();
-      });
-    </script>
+    <!-- Projects Section -->
+    <section class="projects-section" id="projectsSection">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading">
+            Projects <span id="projectCountBadge"></span>
+          </h2>
+          <button class="btn-random-project" id="randomProjectBtnSidebar" type="button">
+            <i class="fas fa-shuffle" aria-hidden="true"></i>
+            Surprise Me
+          </button>
+        </div>
+        <div class="projects-grid" id="projectsGrid"></div>
+        <div id="emptyState" class="empty-state" style="display: none">
+          <p>No Projects right now :)</p>
+          <p class="empty-state-hint">
+            Try adjusting your search or category filter.
+          </p>
+        </div>
+      </div>
+    </section>
 
-    <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
-    <script>
-      (function () {
-        const projectsGrid = document.getElementById("projectsGrid");
-        if (!projectsGrid) return;
+    <!-- Playground Section -->
+    <section aria-label="Python Playground" class="playground-section" id="playgroundSection" style="display: none">
+      <div class="container">
+        <div class="playground-header">
+          <div class="playground-title-row">
+            <h2 class="playground-title">🐍 Python Playground</h2>
+            <div aria-label="Pyodide status" aria-live="polite" class="playground-status" id="playgroundStatus">
+              <span class="status-dot" id="statusDot"></span>
+              <span id="statusText">Open tab to load Python</span>
+            </div>
+          </div>
+          <p class="playground-subtitle">
+            Write and run real Python code in your browser — powered by
+            <a href="https://pyodide.org" rel="noopener noreferrer" target="_blank">Pyodide</a>. No install, no backend.
+          </p>
+          <p class="playground-hint">
+            <kbd>Ctrl</kbd>+<kbd>Enter</kbd> runs code &nbsp;·&nbsp;
+            <kbd>Tab</kbd> inserts 4 spaces
+          </p>
+        </div>
+        <div class="playground-body">
+          <div class="editor-panel">
+            <div class="panel-header">
+              <span><i aria-hidden="true" class="fas fa-code"></i> Code
+                Editor</span>
+              <div class="editor-actions">
+                <button class="btn-panel-action" id="loadExample" title="Load a sample snippet" type="button">
+                  <i aria-hidden="true" class="fas fa-lightbulb"></i> Example
+                </button>
+                <button class="btn-panel-action" id="copyEditorCode" title="Copy editor code to clipboard" type="button"
+                  aria-label="Copy code to clipboard">
+                  <i aria-hidden="true" class="fas fa-copy"></i> Copy
+                </button>
+                <button class="btn-panel-action" id="clearEditor" title="Clear the editor" type="button">
+                  <i aria-hidden="true" class="fas fa-trash-alt"></i> Clear
+                </button>
+              </div>
+            </div>
+            <div id="pythonEditor" aria-label="Python code editor" role="textbox" aria-multiline="true"></div>
+          </div>
 
-        // ALL projects from your js/projects/ folder
-        const projectsData = [
-          // GAMES (20+)
-          {
-            project: "number-sliding-puzzle",
-            title: "Number Sliding Puzzle",
-            category: "games",
-            desc: "Arrange tiles in order by sliding them into empty space",
-            tags: "game,puzzle,sliding,numbers",
-          },
-          {
-            project: "2048-game",
-            title: "2048 Game",
-            category: "games",
-            desc: "Combine tiles and reach 2048!",
-            tags: "game,puzzle,2048",
-          },
-          {
-            project: "rock-paper-scissor",
-            title: "Rock Paper Scissor",
-            category: "games",
-            desc: "Classic hand game against AI",
-            tags: "game,rock,paper",
-          },
-          {
-            project: "dice-rolling",
-            title: "Dice Rolling",
-            category: "games",
-            desc: "Roll virtual dice",
-            tags: "game,dice",
-          },
-          {
-            project: "coin-flip",
-            title: "Coin Flip",
-            category: "games",
-            desc: "Flip a coin for decisions",
-            tags: "game,coin",
-          },
-          {
-            project: "number-guessing",
-            title: "Number Guessing",
-            category: "games",
-            desc: "Guess the secret number",
-            tags: "game,numbers",
-          },
-          {
-            project: "hangman",
-            title: "Hangman",
-            category: "games",
-            desc: "Classic word guessing game",
-            tags: "game,words",
-          },
-          {
-            project: "word-scramble",
-            title: "Word Scramble",
-            category: "games",
-            desc: "Unscramble letters to find words",
-            tags: "game,words",
-          },
-          {
-            project: "tic-tac-toe",
-            title: "Tic Tac Toe",
-            category: "games",
-            desc: "Classic X vs O game",
-            tags: "game,strategy",
-          },
-          {
-            project: "snake",
-            title: "Snake Game",
-            category: "games",
-            desc: "Classic snake eating game",
-            tags: "game,arcade",
-          },
-          {
-            project: "flappy-game",
-            title: "Flappy Game",
-            category: "games",
-            desc: "Flappy bird style game",
-            tags: "game,arcade",
-          },
-          {
-            project: "simon-says",
-            title: "Simon Says",
-            category: "games",
-            desc: "Memory pattern game",
-            tags: "game,memory",
-          },
-          {
-            project: "whack-a-mole",
-            title: "Whack a Mole",
-            category: "games",
-            desc: "Hit the moles as they pop up",
-            tags: "game,arcade",
-          },
-          {
-            project: "dots-boxes",
-            title: "Dots and Boxes",
-            category: "games",
-            desc: "Connect dots to complete boxes",
-            tags: "game,strategy",
-          },
-          {
-            project: "emoji-memory-game",
-            title: "Emoji Memory",
-            category: "games",
-            desc: "Match pairs of emojis",
-            tags: "game,memory",
-          },
-          {
-            project: "spot-the-difference",
-            title: "Spot the Difference",
-            category: "games",
-            desc: "Find differences between images",
-            tags: "game,puzzle",
-          },
-          {
-            project: "flames",
-            title: "FLAMES Game",
-            category: "games",
-            desc: "Friendship relationship calculator",
-            tags: "game,relationship",
-          },
-          {
-            project: "sudoku-game",
-            title: "Sudoku Solver & Game",
-            category: "games",
-            desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
-            tags: "game,puzzle,backtracking,solver",
-            project: "war-card-game",
-            title: "War Card Game",
-            category: "games",
-            desc: "A classic two-player card game based on comparing rank values",
-            tags: "game,cards,multiplayer,war",
-          },
+          <div class="console-panel">
+            <div class="panel-header">
+              <span><i aria-hidden="true" class="fas fa-terminal"></i> Output
+                Console</span>
+              <button class="btn-panel-action" id="clearConsole" title="Clear the console" type="button">
+                <i aria-hidden="true" class="fas fa-times-circle"></i> Clear
+              </button>
+            </div>
+            <pre aria-label="Console output" aria-live="polite" class="console-output" id="consoleOutput"></pre>
+          </div>
+        </div>
 
-          // MATH (15+)
-          {
-            project: "binary-search",
-            title: "Binary Search",
-            category: "math",
-            desc: "Visualize binary search algorithm",
-            tags: "math,algorithm",
-          },
-          {
-            project: "sorting-visualizer",
-            title: "Sorting Visualizer",
-            category: "math",
-            desc: "Visualize multi-algorithm sorting (Bubble, Selection, Insertion, Quick)",
-            tags: "math,algorithm,sorting",
-          },
-          {
-            project: "quick-sort",
-            title: "Quick Sort",
-            category: "math",
-            desc: "Visualize quick sort algorithm with pivot partitioning",
-            tags: "math,algorithm",
-          },
-          {
-            project: "merge-sort",
-            title: "Merge Sort",
-            category: "math",
-            desc: "Visualize merge sort algorithm with divide-and-conquer approach",
-            tags: "math,algorithm",
-          },
-          {
-            project: "fibonacci",
-            title: "Fibonacci",
-            category: "math",
-            desc: "Generate Fibonacci sequence",
-            tags: "math,numbers",
-          },
-          {
-            project: "pascal-triangle",
-            title: "Pascal Triangle",
-            category: "math",
-            desc: "Generate Pascal's triangle",
-            tags: "math,numbers",
-          },
-          {
-            project: "armstrong",
-            title: "Armstrong Number",
-            category: "math",
-            desc: "Check Armstrong numbers",
-            tags: "math,numbers",
-          },
-          {
-            project: "collatz",
-            title: "Collatz Conjecture",
-            category: "math",
-            desc: "3n+1 sequence analyzer",
-            tags: "math,numbers",
-          },
-          {
-            project: "prime-analyzer",
-            title: "Prime Analyzer",
-            category: "math",
-            desc: "Prime number checker",
-            tags: "math,numbers",
-          },
-          {
-            project: "projectile-motion",
-            title: "Projectile Motion",
-            category: "math",
-            desc: "Physics projectile calculator",
-            tags: "math,physics",
-          },
-          {
-            project: "progression-recognizer",
-            title: "Progression Recognizer",
-            category: "math",
-            desc: "Recognize sequences",
-            tags: "math,sequences",
-          },
-          {
-            project: "matrix-calculator",
-            title: "Matrix Calculator",
-            category: "math",
-            desc: "Add, subtract, multiply, transpose, determinant, rank, inverse",
-            tags: "math,matrix,algebra,calculator",
-          },
-          {
-            project: "reverse-hangman",
-            title: "Reverse Hangman",
-            category: "games",
-            desc: "Computer tries to guess your secret word using AI logic",
-            tags: "game,hangman,ai,word,guessing",
-          },
-          {
-            project: "coordinate-polar-transform",
-            title: "Coordinate Transform",
-            category: "math",
-            desc: "Convert between coordinate systems",
-            tags: "math,coordinates",
-          },
-          {
-            project: "derivative-calculator",
-            title: "Derivative Calculator",
-            category: "math",
-            desc: "Calculate derivatives",
-            tags: "math,calculus",
-          },
-          {
-            project: "tower-of-hanoi",
-            title: "Tower of Hanoi",
-            category: "math",
-            desc: "Solve Tower of Hanoi puzzle",
-            tags: "math,puzzle",
-          },
-          {
-            project: "math-quiz",
-            title: "Math Quiz",
-            category: "math",
-            desc: "Test your math skills",
-            tags: "math,quiz",
-          },
-          {
-            project: "fourier-series",
-            title: "Fourier Series Visualizer",
-            category: "math",
-            desc: "Explore waveform approximation using harmonics",
-            tags: "math,fourier,wave,harmonics",
-          },
+        <div class="playground-controls">
+          <button aria-label="Run Python code" class="btn-run" disabled id="runCode" type="button">
+            <i aria-hidden="true" class="fas fa-play"></i> Run Code
+          </button>
+          <button aria-label="Stop execution" class="btn-stop" disabled id="stopCode" type="button">
+            <i aria-hidden="true" class="fas fa-stop"></i> Stop
+          </button>
+          <select id="draftSelector" class="draft-selector" aria-label="Select draft">
+            <option value="">Select Draft</option>
+          </select>
 
-          // UTILITIES (10+)
-          {
-            project: "pathfinding-visualizer",
-            title: "Pathfinding Visualizer",
-            category: "utilities",
-            desc: "Interactive visualizer for Dijkstra and A* algorithms",
-            tags: "utility,algorithm,visualizer,pathfinding"
-          },
-          {
-            project: "budget-tracker",
-            title: "Budget Tracker",
-            category: "utilities",
-            desc: "Track income and expenses, view categories, and persist data locally",
-            tags: "utility,finance,tracker,money"
-          },
-          {
-            project: "morse-code",
-            title: "Morse Code",
-            category: "utilities",
-            desc: "Convert text to Morse code",
-            tags: "utility,converter",
-          },
-          {
-            project: "number-converter",
-            title: "Number Converter",
-            category: "utilities",
-            desc: "Convert between number systems",
-            tags: "utility,converter",
-          },
-          {
-            project: "password-forge",
-            title: "Password Forge",
-            category: "utilities",
-            desc: "Generate strong passwords",
-            tags: "utility,security",
-          },
-          {
-            project: "typing-speed-tester",
-            title: "Typing Speed Tester",
-            category: "utilities",
-            desc: "Test your typing speed",
-            tags: "utility,typing",
-          },
-          {
-            project: "productive-pet",
-            title: "Productive Pet",
-            category: "utilities",
-            desc: "Virtual productivity pet",
-            tags: "utility,pet",
-          },
-          {
-            project: "color-palette",
-            title: "Color Palette",
-            category: "utilities",
-            desc: "Generate color palettes",
-            tags: "utility,design",
-          },
-          {
-            project: "resume-analyzer",
-            title: "Resume Analyzer",
-            category: "utilities",
-            desc: "Analyze and improve resumes",
-            tags: "utility,career",
-          },
-          {
-            project: "calculator",
-            title: "Scientific Graphing Calculator",
-            category: "math",
-            desc: "A scientific graphing calculator",
-            tags: "math,calculator",
-          },
-          {
-            project: "progress-tracker",
-            title: "Progress Tracker",
-            category: "utilities",
-            desc: "Track your learning progress",
-            tags: "utility,tracker",
-          },
-          {
-            project: "caesar-cipher",
-            title: "Caesar Cipher",
-            category: "utilities",
-            desc: "Encrypt and decrypt messages with a shift cipher",
-            tags: "utility,cipher,encryption,decryption",
-          },
-          {
-            project: "unit-converter",
-            title: "Unit Converter",
-            category: "utilities",
-            desc: "Converts values between different units",
-            tags: "utility,tool",
-          },
-          {
-            project: "tsp-visualizer",
-            title: "TSP Visualizer",
-            category: "utilities",
-            desc: "Visualize the Traveling Salesperson Problem",
-            tags: "utility,algorithm,visualizer,tsp",
-          },
-        ];
+          <button id="saveDraft" class="btn-panel-action" type="button">
+            Save Draft
+          </button>
 
-        projectsGrid.innerHTML = "";
+          <button id="loadDraft" class="btn-panel-action" type="button">
+            Load Draft
+          </button>
 
-        // Get favorites from localStorage
-        let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+          <button id="deleteDraft" class="btn-panel-action" type="button">
+            Delete Draft
+          </button>
+        </div>
+        <div id="draftStatus" class="draft-status">
+          No draft loaded
+        </div>
+      </div>
+    </section>
+  </main>
 
-        // Function to save favorites
-        function saveFavorites() {
-          localStorage.setItem("favorites", JSON.stringify(favorites));
-        }
+  <!-- Project Modal -->
+  <div aria-hidden="true" aria-labelledby="modalDialogTitle" aria-modal="true" class="modal" id="projectModal"
+    role="dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-label="Close project dialog" class="modal-close" id="modalClose" type="button">
+          &times;
+        </button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
 
-        projectsData.forEach((proj) => {
-          const card = document.createElement("div");
-          card.className = "project-card";
-          card.setAttribute("data-category", proj.category);
-          card.setAttribute("data-project", proj.project);
-          card.setAttribute("data-tags", proj.tags);
+  <!-- Back to Top -->
+  <button aria-label="Back to top" class="back-to-top" id="backToTop" title="Back to top" type="button">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
 
-          const isFavorite = favorites.includes(proj.project);
-          const starClass = isFavorite ? "fas fa-star" : "far fa-star";
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h2>🎮 Python Mini Projects</h2>
+          <p>Learn Python the Fun Way! Interactive games, math visualizations, and utilities built directly in
+            your browser.</p>
+          <div class="footer-social-icons">
+            <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
+              rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
+            <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)"><i
+                class="fa fa-x-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
+                class="fab fa-linkedin"></i></a>
+            <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
+                class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()">Games</a>
+            </li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()">Math</a>
+            </li>
+            <li><a href="#main-content"
+                onclick="document.querySelector('[data-category=\'utilities\']').click()">Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()">Favorites</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()">Playground</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
+                  class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
+            <li><a
+                href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
+                  class="fas fa-code-branch" aria-hidden="true"></i>
+                Contribute</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i class="fas fa-bug"
+                  aria-hidden="true"></i> Report a Bug</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
+                  class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-newsletter">
+          <h3>Stay Updated</h3>
+          <p>Get notified about new projects and features!</p>
+          <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
+            <input type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
+            <button type="submit" aria-label="Subscribe">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-bottom-links">
+          <a href="#">Privacy Policy</a>
+          <span class="separator">•</span>
+          <a href="#">Terms of Service</a>
+        </div>
+        <p>Made with ❤️ for Python learners everywhere &copy; 2026</p>
+      </div>
+    </div>
+    </div>
+  </footer>
 
-          card.innerHTML = `
+  <!-- Scripts -->
+  <script defer src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  <script defer src="js/audio.js"></script>
+  <script defer src="js/audioManager.js"></script>
+
+  <!-- ALL PROJECT SCRIPTS -->
+  <script defer src="js/projects/rock-paper-scissor.js"></script>
+  <script defer src="js/projects/dice-rolling.js"></script>
+  <script defer src="js/projects/coin-flip.js"></script>
+  <script defer src="js/projects/progress-tracker.js"></script>
+  <script defer src="js/projects/number-guessing.js"></script>
+  <script defer src="js/projects/binary-search.js"></script>
+  <script defer src="js/projects/sorting-visualizer.js"></script>
+  <script defer src="js/projects/quick-sort.js"></script>
+  <script defer src="js/projects/merge-sort.js"></script>
+  <script defer src="js/projects/hangman.js"></script>
+  <script defer src="js/projects/flames.js"></script>
+  <script defer src="js/projects/fibonacci.js"></script>
+  <script defer src="js/projects/pascal-triangle.js"></script>
+  <script defer src="js/projects/calculator.js?v=2"></script>
+  <script defer src="js/projects/collatz.js"></script>
+  <script defer src="js/projects/armstrong.js"></script>
+  <script defer src="js/projects/prime-analyzer.js"></script>
+  <script defer src="js/projects/projectile-motion.js"></script>
+  <script defer src="js/projects/progression-recognizer.js"></script>
+  <script defer src="js/projects/coordinate-polar-transform.js"></script>
+  <script defer src="js/projects/derivative-calculator.js"></script>
+  <script defer src="js/projects/morse-code.js"></script>
+  <script defer src="js/projects/tower-of-hanoi.js"></script>
+  <script defer src="js/projects/math-quiz.js"></script>
+  <script defer src="js/projects/simon-says.js"></script>
+  <script defer src="js/projects/flappy-game.js"></script>
+  <script defer src="js/projects/tic-tac-toe.js"></script>
+  <script defer src="js/projects/2048-game.js"></script>
+  <script defer src="js/projects/dots-boxes.js"></script>
+  <script defer src="js/projects/emoji-memory-game.js"></script>
+  <script defer src="js/projects/number-converter.js"></script>
+  <script defer src="js/projects/password-forge.js"></script>
+  <script defer src="js/projects/typing-speed-tester.js"></script>
+  <script defer src="js/projects/productive-pet.js"></script>
+  <script defer src="js/projects/whack-a-mole.js"></script>
+  <script defer src="js/projects/word-scramble.js"></script>
+  <script defer src="js/projects/snake.js"></script>
+  <script defer src="js/projects/spot-the-difference.js"></script>
+  <script defer src="js/projects/sudoku-game.js"></script>
+  <script defer src="js/projects/color-palette.js"></script>
+  <script defer src="js/projects/resume-analyzer.js"></script>
+  <script src="js/projects/caesar-cipher.js"></script>
+  <script src="js/projects/matrix-calculator.js"></script>
+  <script defer src="js/projects/reverse-hangman.js"></script>
+  <script defer src="js/projects/unit-converter.js"></script>
+  <script defer src="js/projects/fourier-series.js"></script>
+  <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
+  <script defer src="js/projects/tsp-visualizer.js"></script>
+  <script defer src="js/projects.js?v=3"></script>
+  <script defer src="js/cm-editor.js"></script>
+  <script defer src="js/playground.js"></script>
+  <script defer type="module" src="js/main.js?v=2"></script>
+  <script defer src="js/hero-canvas.js"></script>
+  <script defer src="js/projects/war-card-game.js"></script>
+  <script defer src="js/projects/number-sliding-puzzle.js"></script>
+  <script defer src="js/projects/budget-tracker.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  </script>
+
+  <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
+  <script>
+    (function () {
+      const projectsGrid = document.getElementById("projectsGrid");
+      if (!projectsGrid) return;
+
+      // ALL projects from your js/projects/ folder
+      const projectsData = [
+        // GAMES (20+)
+        {
+          project: "number-sliding-puzzle",
+          title: "Number Sliding Puzzle",
+          category: "games",
+          desc: "Arrange tiles in order by sliding them into empty space",
+          tags: "game,puzzle,sliding,numbers",
+        },
+        {
+          project: "2048-game",
+          title: "2048 Game",
+          category: "games",
+          desc: "Combine tiles and reach 2048!",
+          tags: "game,puzzle,2048",
+        },
+        {
+          project: "rock-paper-scissor",
+          title: "Rock Paper Scissor",
+          category: "games",
+          desc: "Classic hand game against AI",
+          tags: "game,rock,paper",
+        },
+        {
+          project: "dice-rolling",
+          title: "Dice Rolling",
+          category: "games",
+          desc: "Roll virtual dice",
+          tags: "game,dice",
+        },
+        {
+          project: "coin-flip",
+          title: "Coin Flip",
+          category: "games",
+          desc: "Flip a coin for decisions",
+          tags: "game,coin",
+        },
+        {
+          project: "number-guessing",
+          title: "Number Guessing",
+          category: "games",
+          desc: "Guess the secret number",
+          tags: "game,numbers",
+        },
+        {
+          project: "hangman",
+          title: "Hangman",
+          category: "games",
+          desc: "Classic word guessing game",
+          tags: "game,words",
+        },
+        {
+          project: "word-scramble",
+          title: "Word Scramble",
+          category: "games",
+          desc: "Unscramble letters to find words",
+          tags: "game,words",
+        },
+        {
+          project: "tic-tac-toe",
+          title: "Tic Tac Toe",
+          category: "games",
+          desc: "Classic X vs O game",
+          tags: "game,strategy",
+        },
+        {
+          project: "snake",
+          title: "Snake Game",
+          category: "games",
+          desc: "Classic snake eating game",
+          tags: "game,arcade",
+        },
+        {
+          project: "flappy-game",
+          title: "Flappy Game",
+          category: "games",
+          desc: "Flappy bird style game",
+          tags: "game,arcade",
+        },
+        {
+          project: "simon-says",
+          title: "Simon Says",
+          category: "games",
+          desc: "Memory pattern game",
+          tags: "game,memory",
+        },
+        {
+          project: "whack-a-mole",
+          title: "Whack a Mole",
+          category: "games",
+          desc: "Hit the moles as they pop up",
+          tags: "game,arcade",
+        },
+        {
+          project: "dots-boxes",
+          title: "Dots and Boxes",
+          category: "games",
+          desc: "Connect dots to complete boxes",
+          tags: "game,strategy",
+        },
+        {
+          project: "emoji-memory-game",
+          title: "Emoji Memory",
+          category: "games",
+          desc: "Match pairs of emojis",
+          tags: "game,memory",
+        },
+        {
+          project: "spot-the-difference",
+          title: "Spot the Difference",
+          category: "games",
+          desc: "Find differences between images",
+          tags: "game,puzzle",
+        },
+        {
+          project: "flames",
+          title: "FLAMES Game",
+          category: "games",
+          desc: "Friendship relationship calculator",
+          tags: "game,relationship",
+        },
+        {
+          project: "sudoku-game",
+          title: "Sudoku Solver & Game",
+          category: "games",
+          desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
+          tags: "game,puzzle,backtracking,solver",
+          project: "war-card-game",
+          title: "War Card Game",
+          category: "games",
+          desc: "A classic two-player card game based on comparing rank values",
+          tags: "game,cards,multiplayer,war",
+        },
+
+        // MATH (15+)
+        {
+          project: "binary-search",
+          title: "Binary Search",
+          category: "math",
+          desc: "Visualize binary search algorithm",
+          tags: "math,algorithm",
+        },
+        {
+          project: "sorting-visualizer",
+          title: "Sorting Visualizer",
+          category: "math",
+          desc: "Visualize multi-algorithm sorting (Bubble, Selection, Insertion, Quick)",
+          tags: "math,algorithm,sorting",
+        },
+        {
+          project: "quick-sort",
+          title: "Quick Sort",
+          category: "math",
+          desc: "Visualize quick sort algorithm with pivot partitioning",
+          tags: "math,algorithm",
+        },
+        {
+          project: "merge-sort",
+          title: "Merge Sort",
+          category: "math",
+          desc: "Visualize merge sort algorithm with divide-and-conquer approach",
+          tags: "math,algorithm",
+        },
+        {
+          project: "fibonacci",
+          title: "Fibonacci",
+          category: "math",
+          desc: "Generate Fibonacci sequence",
+          tags: "math,numbers",
+        },
+        {
+          project: "pascal-triangle",
+          title: "Pascal Triangle",
+          category: "math",
+          desc: "Generate Pascal's triangle",
+          tags: "math,numbers",
+        },
+        {
+          project: "armstrong",
+          title: "Armstrong Number",
+          category: "math",
+          desc: "Check Armstrong numbers",
+          tags: "math,numbers",
+        },
+        {
+          project: "collatz",
+          title: "Collatz Conjecture",
+          category: "math",
+          desc: "3n+1 sequence analyzer",
+          tags: "math,numbers",
+        },
+        {
+          project: "prime-analyzer",
+          title: "Prime Analyzer",
+          category: "math",
+          desc: "Prime number checker",
+          tags: "math,numbers",
+        },
+        {
+          project: "projectile-motion",
+          title: "Projectile Motion",
+          category: "math",
+          desc: "Physics projectile calculator",
+          tags: "math,physics",
+        },
+        {
+          project: "progression-recognizer",
+          title: "Progression Recognizer",
+          category: "math",
+          desc: "Recognize sequences",
+          tags: "math,sequences",
+        },
+        {
+          project: "matrix-calculator",
+          title: "Matrix Calculator",
+          category: "math",
+          desc: "Add, subtract, multiply, transpose, determinant, rank, inverse",
+          tags: "math,matrix,algebra,calculator",
+        },
+        {
+          project: "reverse-hangman",
+          title: "Reverse Hangman",
+          category: "games",
+          desc: "Computer tries to guess your secret word using AI logic",
+          tags: "game,hangman,ai,word,guessing",
+        },
+        {
+          project: "coordinate-polar-transform",
+          title: "Coordinate Transform",
+          category: "math",
+          desc: "Convert between coordinate systems",
+          tags: "math,coordinates",
+        },
+        {
+          project: "derivative-calculator",
+          title: "Derivative Calculator",
+          category: "math",
+          desc: "Calculate derivatives",
+          tags: "math,calculus",
+        },
+        {
+          project: "tower-of-hanoi",
+          title: "Tower of Hanoi",
+          category: "math",
+          desc: "Solve Tower of Hanoi puzzle",
+          tags: "math,puzzle",
+        },
+        {
+          project: "math-quiz",
+          title: "Math Quiz",
+          category: "math",
+          desc: "Test your math skills",
+          tags: "math,quiz",
+        },
+        {
+          project: "fourier-series",
+          title: "Fourier Series Visualizer",
+          category: "math",
+          desc: "Explore waveform approximation using harmonics",
+          tags: "math,fourier,wave,harmonics",
+        },
+
+        // UTILITIES (10+)
+        {
+          project: "pathfinding-visualizer",
+          title: "Pathfinding Visualizer",
+          category: "utilities",
+          desc: "Interactive visualizer for Dijkstra and A* algorithms",
+          tags: "utility,algorithm,visualizer,pathfinding"
+        },
+        {
+          project: "budget-tracker",
+          title: "Budget Tracker",
+          category: "utilities",
+          desc: "Track income and expenses, view categories, and persist data locally",
+          tags: "utility,finance,tracker,money"
+        },
+        {
+          project: "morse-code",
+          title: "Morse Code",
+          category: "utilities",
+          desc: "Convert text to Morse code",
+          tags: "utility,converter",
+        },
+        {
+          project: "number-converter",
+          title: "Number Converter",
+          category: "utilities",
+          desc: "Convert between number systems",
+          tags: "utility,converter",
+        },
+        {
+          project: "password-forge",
+          title: "Password Forge",
+          category: "utilities",
+          desc: "Generate strong passwords",
+          tags: "utility,security",
+        },
+        {
+          project: "typing-speed-tester",
+          title: "Typing Speed Tester",
+          category: "utilities",
+          desc: "Test your typing speed",
+          tags: "utility,typing",
+        },
+        {
+          project: "productive-pet",
+          title: "Productive Pet",
+          category: "utilities",
+          desc: "Virtual productivity pet",
+          tags: "utility,pet",
+        },
+        {
+          project: "color-palette",
+          title: "Color Palette",
+          category: "utilities",
+          desc: "Generate color palettes",
+          tags: "utility,design",
+        },
+        {
+          project: "resume-analyzer",
+          title: "Resume Analyzer",
+          category: "utilities",
+          desc: "Analyze and improve resumes",
+          tags: "utility,career",
+        },
+        {
+          project: "calculator",
+          title: "Scientific Graphing Calculator",
+          category: "math",
+          desc: "A scientific graphing calculator",
+          tags: "math,calculator",
+        },
+        {
+          project: "progress-tracker",
+          title: "Progress Tracker",
+          category: "utilities",
+          desc: "Track your learning progress",
+          tags: "utility,tracker",
+        },
+        {
+          project: "caesar-cipher",
+          title: "Caesar Cipher",
+          category: "utilities",
+          desc: "Encrypt and decrypt messages with a shift cipher",
+          tags: "utility,cipher,encryption,decryption",
+        },
+        {
+          project: "unit-converter",
+          title: "Unit Converter",
+          category: "utilities",
+          desc: "Converts values between different units",
+          tags: "utility,tool",
+        },
+        {
+          project: "tsp-visualizer",
+          title: "TSP Visualizer",
+          category: "utilities",
+          desc: "Visualize the Traveling Salesperson Problem",
+          tags: "utility,algorithm,visualizer,tsp",
+        },
+      ];
+
+      projectsGrid.innerHTML = "";
+
+      // Get favorites from localStorage
+      let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+      // Function to save favorites
+      function saveFavorites() {
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+      }
+
+      projectsData.forEach((proj) => {
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.setAttribute("data-category", proj.category);
+        card.setAttribute("data-project", proj.project);
+        card.setAttribute("data-tags", proj.tags);
+
+        const isFavorite = favorites.includes(proj.project);
+        const starClass = isFavorite ? "fas fa-star" : "far fa-star";
+
+        card.innerHTML = `
             <img class="card-banner" src="assets/banners/${proj.project}.webp" alt="${proj.title}" loading="lazy">
             <div class="card-actions">
                 <button class="btn-play" data-project="${proj.project}" aria-label="Play PyMini Logo">Try It</button>
@@ -1356,221 +1060,222 @@
             <p>${proj.desc}</p>
         `;
 
-          projectsGrid.appendChild(card);
-        });
+        projectsGrid.appendChild(card);
+      });
 
-        // Update counts
-        const total = projectsData.length;
-        const games = projectsData.filter((p) => p.category === "games").length;
-        const math = projectsData.filter((p) => p.category === "math").length;
-        const utils = projectsData.filter(
-          (p) => p.category === "utilities"
-        ).length;
+      // Update counts
+      const total = projectsData.length;
+      const games = projectsData.filter((p) => p.category === "games").length;
+      const math = projectsData.filter((p) => p.category === "math").length;
+      const utils = projectsData.filter(
+        (p) => p.category === "utilities"
+      ).length;
 
-        const heroCount = document.getElementById("heroProjectCount");
-        const heroGames = document.getElementById("heroGameCount");
-        const heroMath = document.getElementById("heroMathCount");
-        const heroUtils = document.getElementById("heroUtilityCount");
-        const projectBadge = document.getElementById("projectCountBadge");
+      const heroCount = document.getElementById("heroProjectCount");
+      const heroGames = document.getElementById("heroGameCount");
+      const heroMath = document.getElementById("heroMathCount");
+      const heroUtils = document.getElementById("heroUtilityCount");
+      const projectBadge = document.getElementById("projectCountBadge");
 
-        if (heroCount) heroCount.textContent = total;
-        if (heroGames) heroGames.textContent = games;
-        if (heroMath) heroMath.textContent = math;
-        if (heroUtils) heroUtils.textContent = utils;
-        if (projectBadge) projectBadge.textContent = total + " projects";
+      if (heroCount) heroCount.textContent = total;
+      if (heroGames) heroGames.textContent = games;
+      if (heroMath) heroMath.textContent = math;
+      if (heroUtils) heroUtils.textContent = utils;
+      if (projectBadge) projectBadge.textContent = total + " projects";
 
-        console.log(
-          `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
-        );
+      console.log(
+        `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
+      );
 
-        // Wire up buttons
-        setTimeout(() => {
-          // Play buttons
-          document.querySelectorAll(".btn-play").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const projectName = btn.getAttribute("data-project");
-              if (projectName && window.openProjectSafe) {
-                window.openProjectSafe(projectName, btn);
-              }
-            });
-          });
-
-          // Favorite buttons
-          document.querySelectorAll(".btn-favorite").forEach((btn) => {
-            btn.addEventListener("click", (e) => {
-              e.stopPropagation();
-              const projectName = btn.getAttribute("data-project");
-              const icon = btn.querySelector("i");
-
-              let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-              const index = favs.indexOf(projectName);
-
-              if (index === -1) {
-                // Add to favorites
-                favs.push(projectName);
-                icon.className = "fas fa-star";
-                btn.setAttribute("aria-label", "Remove from favorites");
-                console.log(`⭐ Added ${projectName} to favorites`);
-              } else {
-                // Remove from favorites
-                favs.splice(index, 1);
-                icon.className = "far fa-star";
-                btn.setAttribute("aria-label", "Add to favorites");
-                console.log(`☆ Removed ${projectName} from favorites`);
-              }
-
-              localStorage.setItem("favorites", JSON.stringify(favs));
-
-              // If we're on favorites tab, refresh the view
-              const activeCategory = document
-                .querySelector(".sidebar-tab.active")
-                ?.getAttribute("data-category");
-              if (
-                activeCategory === "favorites" &&
-                typeof applyCategoryFilter === "function"
-              ) {
-                applyCategoryFilter("favorites");
-              }
-            });
-          });
-
-          // Card clicks
-          document.querySelectorAll(".project-card").forEach((card) => {
-            card.addEventListener("click", (e) => {
-              if (
-                e.target.closest(".btn-play") ||
-                e.target.closest(".btn-favorite")
-              )
-                return;
-              const projectName = card.getAttribute("data-project");
-              if (projectName && window.openProjectSafe) {
-                window.openProjectSafe(projectName, card);
-              }
-            });
-          });
-        }, 100);
-      })();
-    </script>
-
-    <!-- THEME TOGGLE FIX - FINAL -->
-    <script>
-      (function () {
-        const html = document.documentElement;
-        const themeColorMeta = document.getElementById("themeColorMeta");
-
-        // Get all theme toggle buttons
-        const themeToggles = document.querySelectorAll(".theme-toggle");
-
-        // Update all toggle icons and aria labels based on current theme
-        function updateAllToggles(theme) {
-          themeToggles.forEach((toggle) => {
-            const icon = toggle.querySelector("i");
-            if (icon) {
-              if (theme === "dark") {
-                icon.className = "fas fa-moon";
-                toggle.setAttribute("aria-label", "Switch to light mode");
-              } else {
-                icon.className = "fas fa-sun";
-                toggle.setAttribute("aria-label", "Switch to dark mode");
-              }
+      // Wire up buttons
+      setTimeout(() => {
+        // Play buttons
+        document.querySelectorAll(".btn-play").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const projectName = btn.getAttribute("data-project");
+            if (projectName && window.openProjectSafe) {
+              window.openProjectSafe(projectName, btn);
             }
           });
-        }
+        });
 
-        // Apply theme to the page
-        function applyTheme(theme) {
-          html.setAttribute("data-theme", theme);
-          localStorage.setItem("theme", theme);
+        // Favorite buttons
+        document.querySelectorAll(".btn-favorite").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const projectName = btn.getAttribute("data-project");
+            const icon = btn.querySelector("i");
 
-          // Update theme-color meta tag
-          if (themeColorMeta) {
-            themeColorMeta.setAttribute(
-              "content",
-              theme === "light" ? "#f4f6f9" : "#0c0f1a"
-            );
-          }
+            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+            const index = favs.indexOf(projectName);
 
-          // Update all toggle icons
-          updateAllToggles(theme);
+            if (index === -1) {
+              // Add to favorites
+              favs.push(projectName);
+              icon.className = "fas fa-star";
+              btn.setAttribute("aria-label", "Remove from favorites");
+              console.log(`⭐ Added ${projectName} to favorites`);
+            } else {
+              // Remove from favorites
+              favs.splice(index, 1);
+              icon.className = "far fa-star";
+              btn.setAttribute("aria-label", "Add to favorites");
+              console.log(`☆ Removed ${projectName} from favorites`);
+            }
 
-          console.log("Theme set to:", theme);
-        }
+            localStorage.setItem("favorites", JSON.stringify(favs));
 
-        // Load saved theme or default to dark
-        const savedTheme = localStorage.getItem("theme");
-        const initialTheme =
-          savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
-        applyTheme(initialTheme);
-
-        // Add click listeners to all theme toggles
-        themeToggles.forEach((toggle) => {
-          toggle.addEventListener("click", function (e) {
-            e.preventDefault();
-            const current = html.getAttribute("data-theme");
-            const next = current === "light" ? "dark" : "light";
-            applyTheme(next);
+            // If we're on favorites tab, refresh the view
+            const activeCategory = document
+              .querySelector(".sidebar-tab.active")
+              ?.getAttribute("data-category");
+            if (
+              activeCategory === "favorites" &&
+              typeof applyCategoryFilter === "function"
+            ) {
+              applyCategoryFilter("favorites");
+            }
           });
         });
 
-        console.log(
-          "✅ Theme toggle ready. Found",
-          themeToggles.length,
-          "toggle buttons"
-        );
-      })();
-    </script>
+        // Card clicks
+        document.querySelectorAll(".project-card").forEach((card) => {
+          card.addEventListener("click", (e) => {
+            if (
+              e.target.closest(".btn-play") ||
+              e.target.closest(".btn-favorite")
+            )
+              return;
+            const projectName = card.getAttribute("data-project");
+            if (projectName && window.openProjectSafe) {
+              window.openProjectSafe(projectName, card);
+            }
+          });
+        });
+      }, 100);
+    })();
+  </script>
 
+  <!-- THEME TOGGLE FIX - FINAL -->
+  <script>
+    (function () {
+      const html = document.documentElement;
+      const themeColorMeta = document.getElementById("themeColorMeta");
 
-    <script>
-      // FIX 1: Add missing toPascalCase function
-      if (typeof window.toPascalCase !== 'function') {
-        window.toPascalCase = function(str) {
-          return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
-        };
-        console.log('✅ toPascalCase function added');
+      // Get all theme toggle buttons
+      const themeToggles = document.querySelectorAll(".theme-toggle");
+
+      // Update all toggle icons and aria labels based on current theme
+      function updateAllToggles(theme) {
+        themeToggles.forEach((toggle) => {
+          const icon = toggle.querySelector("i");
+          if (icon) {
+            if (theme === "dark") {
+              icon.className = "fas fa-moon";
+              toggle.setAttribute("aria-label", "Switch to light mode");
+            } else {
+              icon.className = "fas fa-sun";
+              toggle.setAttribute("aria-label", "Switch to dark mode");
+            }
+          }
+        });
       }
 
-      // FIX 2: Fix modal focus error
-      setTimeout(function() {
+      // Apply theme to the page
+      function applyTheme(theme) {
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+
+        // Update theme-color meta tag
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute(
+            "content",
+            theme === "light" ? "#f4f6f9" : "#0c0f1a"
+          );
+        }
+
+        // Update all toggle icons
+        updateAllToggles(theme);
+
+        console.log("Theme set to:", theme);
+      }
+
+      // Load saved theme or default to dark
+      const savedTheme = localStorage.getItem("theme");
+      const initialTheme =
+        savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
+      applyTheme(initialTheme);
+
+      // Add click listeners to all theme toggles
+      themeToggles.forEach((toggle) => {
+        toggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = html.getAttribute("data-theme");
+          const next = current === "light" ? "dark" : "light";
+          applyTheme(next);
+        });
+      });
+
+      console.log(
+        "✅ Theme toggle ready. Found",
+        themeToggles.length,
+        "toggle buttons"
+      );
+    })();
+  </script>
+
+
+  <script>
+    // FIX 1: Add missing toPascalCase function
+    if (typeof window.toPascalCase !== 'function') {
+      window.toPascalCase = function (str) {
+        return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+      };
+      console.log('✅ toPascalCase function added');
+    }
+
+    // FIX 2: Fix modal focus error
+    setTimeout(function () {
       const modal = document.getElementById('projectModal');
       if (modal) {
         // Remove any broken focus code
         modal.removeAttribute('tabindex');
       }
-    
+
       // Fix any focus-related errors
       const activeElement = document.activeElement;
       if (!activeElement || activeElement === document.body) {
         document.body.setAttribute('tabindex', '-1');
         document.body.style.outline = 'none';
       }
-    
+
       console.log('✅ Focus error fixed');
     }, 100);
   </script>
-  
-    <!-- Info Modal Popup -->
-    <div id="infoModalOverlay" class="info-modal-overlay">
-    <div class="info-modal-content">
-        <button class="info-modal-close" id="infoModalClose">&times;</button>
-        <h3 id="infoModalTitle">How to Play</h3>
-        <ul id="infoModalList"></ul>
-        <button class="info-modal-btn" id="infoModalGotIt">Got it</button>
-    </div>
-</div>
 
-    <!-- Themed Confirm Modal (used for Clear All) -->
-    <div id="confirmModalOverlay" class="confirm-modal-overlay" aria-hidden="true">
-      <div class="confirm-modal-content" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
-        <h3 id="confirmModalTitle">Confirm</h3>
-        <p id="confirmModalMessage"></p>
-        <div class="confirm-modal-actions">
-          <button id="confirmCancelBtn" class="btn btn-secondary">Cancel</button>
-          <button id="confirmOkBtn" class="btn btn-primary">Confirm</button>
-        </div>
+  <!-- Info Modal Popup -->
+  <div id="infoModalOverlay" class="info-modal-overlay">
+    <div class="info-modal-content">
+      <button class="info-modal-close" id="infoModalClose">&times;</button>
+      <h3 id="infoModalTitle">How to Play</h3>
+      <ul id="infoModalList"></ul>
+      <button class="info-modal-btn" id="infoModalGotIt">Got it</button>
+    </div>
+  </div>
+
+  <!-- Themed Confirm Modal (used for Clear All) -->
+  <div id="confirmModalOverlay" class="confirm-modal-overlay" aria-hidden="true">
+    <div class="confirm-modal-content" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
+      <h3 id="confirmModalTitle">Confirm</h3>
+      <p id="confirmModalMessage"></p>
+      <div class="confirm-modal-actions">
+        <button id="confirmCancelBtn" class="btn btn-secondary">Cancel</button>
+        <button id="confirmOkBtn" class="btn btn-primary">Confirm</button>
       </div>
     </div>
+  </div>
 
-  </body>
+</body>
+
 </html>

@@ -3098,7 +3098,6 @@ body.sidebar-collapsed .playground-section {
   border-top: 1px solid var(--border);
   background: var(--surface);
   position: relative;
-  z-index: 1;
 }
 
 .footer-content {
@@ -6644,6 +6643,7 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
  * desktop. The padding-left values themselves are defined above inside the
  * 768px media query. */
 @media (min-width: 768px) {
+
   .projects-section,
   .hero-section,
   .hero-timeline-section,
@@ -7155,7 +7155,7 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
 }
 
 .info-modal-overlay.active {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
