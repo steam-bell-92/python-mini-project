@@ -18,7 +18,7 @@ function getProjectHTML(projectName) {
         'prime-analyzer': getPrimeAnalyzerHTML(),
         'projectile-motion': getProjectileMotionHTML(),
         'coordinate-polar-transform': getCoordinatePolarTransformHTML(),
-        'derivative-calculator': getDerivativeCalculatorHTML(),
+        'complete-calculus-engine': getCompleteCalculusEngineHTML(),
         'morse-code': getMorseCodeHTML(),
         'tower-of-hanoi': getTowerOfHanoiHTML(),
         'nqueens' : getNQueensHTML(),
@@ -57,7 +57,7 @@ function initializeProject(projectName) {
         'prime-analyzer': initPrimeAnalyzer,
         'projectile-motion': initProjectileMotion,
         'coordinate-polar-transform': initCoordinatePolarTransform,
-        'derivative-calculator': initDerivativeCalculator,
+        'complete-calculus-engine': initCompleteCalculusEngine,
         'morse-code': initMorseCode,
         'tower-of-hanoi': initTowerOfHanoi,
         'nqueens' : initNQueens,
@@ -1715,12 +1715,12 @@ const projectInstructions = {
       "Click Convert to get polar transformation"
     ]
   },
-  "derivative-calculator": {
-    title: "📈 How Derivative Calculator Works",
+  "complete-calculus-engine": {
+    title: "∫ How Complete Calculus Engine Works",
     steps: [
-      "Enter derivative order (n)",
-      "Enter coefficients",
-      "Enter x value to evaluate"
+      "Enter a polynomial equation",
+      "Set derivative order or integration bounds",
+      "Click the appropriate calculation button to evaluate and graph"
     ]
   },
   "progression-recognizer": {
@@ -2785,7 +2785,7 @@ function initCoordinatePolarTransform() {
 function getDerivativeCalculatorHTML() {
     return `
         <div class="project-content">
-            <h2>∂ Polynomial Derivative Calculator</h2>
+            <h2>∫ Complete Calculus Engine</h2>
             <div class="derivative-container">
                 <p class="derivative-help">Enter coefficients from highest power to constant. Example: <strong>3,0,-2,7</strong> for 3x^3 - 2x + 7.</p>
 
@@ -3042,7 +3042,7 @@ function initializeProject(projectName) {
     "prime-analyzer": "initPrimeAnalyzer",
     "projectile-motion": "initProjectileMotion",
     "coordinate-polar-transform": "initCoordinatePolarTransform",
-    "derivative-calculator": "initDerivativeCalculator",
+    "complete-calculus-engine": "initCompleteCalculusEngine",
     "morse-code": "initMorseCode",
     "tower-of-hanoi": "initTowerOfHanoi",
     "number-converter": "initNumberConverter",

@@ -196,19 +196,21 @@
     "path": "math/Projectile-Motion-Game/Projectile-Motion-Game.py"
   },
   {
-    "name": "Derivative Calculator",
-    "emoji": "∂",
+    "name": "Complete Calculus Engine",
+    "emoji": "∫",
     "category": "math",
     "difficulty": "advanced",
-    "description": "Compute first and nth polynomial derivatives at any point.",
+    "description": "Compute derivatives and integrals, evaluate definite integrals, and graph polynomial functions.",
     "keywords": [
       "derivative",
+      "integral",
       "calculus",
       "polynomial",
       "math",
-      "algebra"
+      "algebra",
+      "graph"
     ],
-    "path": "math/Derivative-Calculator/Derivative-Calculator.py"
+    "path": "math/Complete-Calculus-Engine/Complete-Calculus-Engine.py"
   },
   {
     "name": "Coordinate to Polar Transformation",

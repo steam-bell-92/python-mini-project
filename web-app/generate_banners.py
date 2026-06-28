@@ -189,6 +189,28 @@ def generate_banner(name, category, filename):
         v_draw.line(points, fill=color_accent, width=3)
         # Draw target explosion
         v_draw.ellipse([690, 340, 710, 360], fill=color_accent, outline=(255,255,255), width=2)
+    elif "calculus" in n_lower:
+        # Draw a beautiful math curve with an integral shaded area
+        points = []
+        for x_val in range(150, 650, 5):
+            t = (x_val - 150) / 500.0
+            y_val = 225 - 120 * math.sin(t * math.pi * 2)
+            points.append((x_val, y_val))
+        
+        # Shade the area under the first arch
+        fill_points = [(150, 225)] + points[:50] + [(points[49][0], 225)]
+        v_draw.polygon(fill_points, fill=color_accent_dim)
+        
+        # Draw the main curve
+        v_draw.line(points, fill=color_accent, width=4)
+        
+        # Draw some calculus symbols
+        v_draw.text((250, 100), "∫ f(x) dx", fill=color_accent, font=font_title, anchor="mm")
+        v_draw.text((550, 320), "d/dx", fill=color_accent, font=font_title, anchor="mm")
+        
+        # Draw axes
+        v_draw.line([(100, 225), (700, 225)], fill=(255,255,255,50), width=2)
+        v_draw.line([(400, 50), (400, 400)], fill=(255,255,255,50), width=2)
     elif "calculator" in n_lower:
         # Operator grids
         ops = ["+", "-", "×", "÷"]
@@ -680,7 +702,7 @@ projects = [
     ("Calculator", "math", "calculator.webp"),
     ("Collatz Conjecture", "math", "collatz.webp"),
     ("Coordinate to Polar", "math", "coordinate-polar-transform.webp"),
-    ("Derivative Calculator", "math", "derivative-calculator.webp"),
+    ("Complete Calculus Engine", "math", "complete-calculus-engine.webp"),
     ("Fibonacci Series", "math", "fibonacci.webp"),
     ("Pascal's Triangle", "math", "pascal-triangle.webp"),
     ("Prime Analyzer", "math", "prime-analyzer.webp"),

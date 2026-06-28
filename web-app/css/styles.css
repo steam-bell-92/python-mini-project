@@ -7041,11 +7041,13 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
 }
 
 /* ============================================
-   FIX: Derivative Calculator - All Buttons - GREEN GLOW (Smaller)
+   FIX: Complete Calculus Engine - All Buttons - GREEN GLOW (Smaller)
    ============================================ */
 #calcFirstDerivativeBtn,
 #calcNthDerivativeBtn,
-#evalDerivativeBtn {
+#evalDerivativeBtn,
+#calcIndefiniteIntegralBtn,
+#calcDefiniteIntegralBtn {
   background: linear-gradient(135deg, #22c55e, #16a34a) !important;
   color: #ffffff !important;
   border: none !important;
