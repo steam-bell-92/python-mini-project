@@ -1455,6 +1455,22 @@ document.addEventListener("DOMContentLoaded", function () {
        ═══════════════════════════════════════════════════════════════ */
   function wireProjectCard(card) {
     var name = card.getAttribute("data-project");
+    const difficulty =
+card.getAttribute("data-difficulty");
+
+if(difficulty){
+
+const badge=document.createElement("span");
+
+badge.className=
+"difficulty-badge "+
+difficulty.toLowerCase();
+
+badge.textContent=difficulty;
+
+card.appendChild(badge);
+
+}
 
     /* ── Favorite Button ──────────────────────────────────── */
     // Remove any existing favorite button first to avoid duplicates
@@ -1567,6 +1583,14 @@ document.addEventListener("DOMContentLoaded", function () {
     var section = document.getElementById("recentlyViewedSection");
     if (!grid || !section) return;
     var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+    const historyBadge =
+document.getElementById("historyCountBadge");
+
+if(historyBadge){
+
+historyBadge.textContent=`(${recent.length})`;
+
+}
     console.log("[DEBUG] recentProjects array:", recent); if (recent.length === 0) {
       section.style.display = "none";
       return;
@@ -1966,4 +1990,29 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial card filtering state update
   updateProjectVisibility(currentCategory, currentSearchQuery);
   window.updateRecentlyViewed();
+
+  const clearBtn =
+document.getElementById("clearHistoryBtn");
+
+if(clearBtn){
+
+clearBtn.addEventListener("click",()=>{
+
+showConfirm(
+"Clear recently viewed projects?",
+()=>{
+
+localStorage.removeItem("recentProjects");
+
+window.updateRecentlyViewed();
+
+showToast("History Cleared");
+
+}
+
+);
+
+});
+
+}
 });

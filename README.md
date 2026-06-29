@@ -88,6 +88,12 @@ python-mini-project/
 
 #### 1. Clone the Repository
 
+<div align="right">
+
+<button class="copy-btn" data-copy="clone-command">📋 Copy</button>
+
+</div>
+
 ```bash
 git clone https://github.com/steam-bell-92/python-mini-project.git
 cd python-mini-project
@@ -96,6 +102,12 @@ cd python-mini-project
 #### 2. Create a Virtual Environment
 
 For Linux/macOS:
+
+<div align="right">
+
+<button class="copy-btn" data-copy="linux-venv">📋 Copy</button>
+
+</div>
 
 ```bash
 python3 -m venv venv
@@ -117,6 +129,12 @@ venv\Scripts\Activate.ps1
 ```
 
 #### 3. Install Dependencies
+
+<div align="right">
+
+<button class="copy-btn" data-copy="install-command">📋 Copy</button>
+
+</div>
 
 ```bash
 pip install --upgrade pip
@@ -161,6 +179,12 @@ The web app requires Node.js and npm:
 
 #### Steps to Run Web App
 
+<div align="right">
+
+<button class="copy-btn" data-copy="web-command">📋 Copy</button>
+
+</div>
+
 ```bash
 cd web-app
 npm install
@@ -172,6 +196,12 @@ The app will open at `http://localhost:3000` (or your configured port).
 ### Running Tests
 
 To verify that the projects work correctly, run the test suite:
+
+<div align="right">
+
+<button class="copy-btn" data-copy="pytest-command">📋 Copy</button>
+
+</div>
 
 ```bash
 pytest tests/ -v

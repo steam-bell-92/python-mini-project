@@ -276,6 +276,52 @@
       </div>
     </div>
 
+    <section class="stats-dashboard-section">
+  <div class="container">
+
+    <div class="section-header">
+      <h2 class="section-heading">
+        📊 Project Statistics Dashboard
+      </h2>
+    </div>
+
+    <div class="stats-dashboard">
+
+      <div class="stats-card" data-filter="all">
+        <h3 id="statsTotal">0</h3>
+        <p>Total Projects</p>
+      </div>
+
+      <div class="stats-card" data-filter="games">
+        <h3 id="statsGames">0</h3>
+        <p>Games</p>
+      </div>
+
+      <div class="stats-card" data-filter="math">
+        <h3 id="statsMath">0</h3>
+        <p>Math</p>
+      </div>
+
+      <div class="stats-card" data-filter="utilities">
+        <h3 id="statsUtilities">0</h3>
+        <p>Utilities</p>
+      </div>
+
+      <div class="stats-card" data-filter="favorites">
+        <h3 id="statsFavorites">0</h3>
+        <p>Favorites</p>
+      </div>
+
+      <div class="stats-card">
+        <h3 id="statsViewed">0</h3>
+        <p>Recently Viewed</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
     <!-- Timeline Section -->
     <section class="hero-timeline-section" id="timelineSection">
       <div class="timeline-background" aria-hidden="true"></div>
@@ -388,8 +434,49 @@
       </div>
     </section>
 
+    <!-- Bookmarked Projects Section -->
+<section class="projects-section" id="bookmarkedProjectsSection">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">
+        ⭐ Bookmarked Projects
+        <span id="bookmarkCountBadge"></span>
+      </h2>
+    </div>
+
+    <div class="projects-grid" id="bookmarkedProjectsGrid"></div>
+
+    <div id="noBookmarksMessage" class="empty-state">
+      <p>No bookmarked projects yet.</p>
+      <p class="empty-state-hint">
+        Click the ⭐ icon on any project to bookmark it.
+      </p>
+    </div>
+  </div>
+</section>
+
     <!-- Recently Viewed Section -->
-    <section class="projects-section" id="recentlyViewedSection">
+    <div class="section-header">
+
+<h2 class="section-heading">
+🕒 Recently Opened Projects
+<span id="historyCount"></span>
+</h2>
+
+<div>
+
+<input
+id="historySearch"
+type="text"
+placeholder="Search history...">
+
+<button id="clearHistoryBtn">
+Clear History
+</button>
+
+</div>
+
+</div>
       <div class="container">
         <div class="section-header">
           <h2 class="section-heading">
@@ -667,16 +754,26 @@
       const projectsGrid = document.getElementById("projectsGrid");
       if (!projectsGrid) return;
 
+      const bookmarkedGrid =
+document.getElementById("bookmarkedProjectsGrid");
+
+const bookmarkBadge =
+document.getElementById("bookmarkCountBadge");
+
+const noBookmarks =
+document.getElementById("noBookmarksMessage");
+
       // ALL projects from your js/projects/ folder
       const projectsData = [
         // GAMES (20+)
         {
-          project: "number-sliding-puzzle",
-          title: "Number Sliding Puzzle",
-          category: "games",
-          desc: "Arrange tiles in order by sliding them into empty space",
-          tags: "game,puzzle,sliding,numbers",
-        },
+  project: "number-sliding-puzzle",
+  title: "Number Sliding Puzzle",
+  category: "games",
+  difficulty: "Intermediate",
+  desc: "Arrange tiles in order by sliding them into empty space",
+  tags: "game,puzzle,sliding,numbers",
+},
         {
           project: "2048-game",
           title: "2048 Game",
@@ -1043,6 +1140,46 @@
         localStorage.setItem("favorites", JSON.stringify(favorites));
       }
 
+      function renderBookmarkedProjects() {
+
+    if (!bookmarkedGrid) return;
+
+    bookmarkedGrid.innerHTML = "";
+
+    const favs =
+        JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    bookmarkBadge.textContent =
+        "(" + favs.length + ")";
+
+    if (favs.length === 0) {
+
+        noBookmarks.style.display = "block";
+
+        return;
+    }
+
+    noBookmarks.style.display = "none";
+
+    favs.forEach(projectId => {
+
+        const card =
+        document.querySelector(
+            `.project-card[data-project="${projectId}"]`
+        );
+
+        if(card){
+
+            bookmarkedGrid.appendChild(
+                card.cloneNode(true)
+            );
+
+        }
+
+    });
+
+}
+
       projectsData.forEach((proj) => {
         const card = document.createElement("div");
         card.className = "project-card";
@@ -1054,22 +1191,58 @@
         const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
         card.innerHTML = `
-            <img class="card-banner" src="assets/banners/${proj.project}.webp?v=2" alt="${proj.title}" loading="lazy">
-            <div class="card-actions">
-                <button class="btn-play" data-project="${proj.project}" aria-label="Play PyMini Logo">Try It</button>
-                <button class="btn-favorite" data-project="${proj.project}" aria-label="Add to favorites">
-                    <i class="${starClass}"></i>
-                </button>
-            </div>
-            <h3>${proj.title}</h3>
-            <p>${proj.desc}</p>
-        `;
+    <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
+        ${proj.difficulty}
+    </div>
+
+    <img class="card-banner"
+         src="assets/banners/${proj.project}.webp?v=2"
+         alt="${proj.title}"
+         loading="lazy">
+
+    <div class="card-actions">
+        <button class="btn-play"
+                data-project="${proj.project}">
+            Try It
+        </button>
+
+        <button class="btn-favorite"
+                data-project="${proj.project}">
+            <i class="${starClass}"></i>
+        </button>
+    </div>
+
+    <h3>${proj.title}</h3>
+
+    <p>${proj.desc}</p>
+`;
 
         projectsGrid.appendChild(card);
       });
 
       // Update counts
       const total = projectsData.length;
+      function animateCounter(id,value){
+
+let start=0;
+
+const element=document.getElementById(id);
+
+const timer=setInterval(()=>{
+
+start++;
+
+element.textContent=start;
+
+if(start>=value){
+
+clearInterval(timer);
+
+}
+
+},25);
+
+}
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
       const utils = projectsData.filter(
@@ -1087,10 +1260,31 @@
       if (heroMath) heroMath.textContent = math;
       if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
+      animateCounter("statsTotal",total);
+
+animateCounter("statsGames",games);
+
+animateCounter("statsMath",math);
+
+animateCounter("statsUtilities",utils);
+
+animateCounter(
+"statsFavorites",
+favorites.length
+);
+
+const viewed=
+JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+
+animateCounter(
+"statsViewed",
+viewed.length
+);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
       );
+      renderBookmarkedProjects();
 
       // Wire up buttons
       setTimeout(() => {
@@ -1130,6 +1324,7 @@
             }
 
             localStorage.setItem("favorites", JSON.stringify(favs));
+            renderBookmarkedProjects();
 
             // If we're on favorites tab, refresh the view
             const activeCategory = document
