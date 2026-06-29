@@ -1455,6 +1455,22 @@ document.addEventListener("DOMContentLoaded", function () {
        ═══════════════════════════════════════════════════════════════ */
   function wireProjectCard(card) {
     var name = card.getAttribute("data-project");
+    const difficulty =
+card.getAttribute("data-difficulty");
+
+if(difficulty){
+
+const badge=document.createElement("span");
+
+badge.className=
+"difficulty-badge "+
+difficulty.toLowerCase();
+
+badge.textContent=difficulty;
+
+card.appendChild(badge);
+
+}
 
     /* ── Favorite Button ──────────────────────────────────── */
     // Remove any existing favorite button first to avoid duplicates
