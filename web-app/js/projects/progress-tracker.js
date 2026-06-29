@@ -54,7 +54,7 @@ function getProgressTrackerHTML() {
 function initProgressTracker() {
     const PROJECTS = {
         '🎲 Games': ['Rock-Paper-Scissor','Dice-Rolling','Coin-Flip','Number-Guessing-Game','Hangman-Game','FLAMES-Game'],
-        '🔢 Math': ['Fibonacci-Series','Pascals-Triangle','Armstrong-Number','Scientific-Graphing-Calculator','Collatz-Conjecture','Prime-Number-Analyzer','Projectile-Motion-Game','Coordinate-to-Polar','Derivative-Calculator','AP-GP-AGP-HP-Recognizer'],
+        '🔢 Math': ['Fibonacci-Series','Pascals-Triangle','Armstrong-Number','Scientific-Graphing-Calculator','Collatz-Conjecture','Prime-Number-Analyzer','Projectile-Motion-Game','Coordinate-to-Polar','Complete-Calculus-Engine','AP-GP-AGP-HP-Recognizer'],
         '🔐 Utilities': ['Text-to-Morse','Tower-of-Hanoi']
     };
     const TOTAL = Object.values(PROJECTS).flat().length;

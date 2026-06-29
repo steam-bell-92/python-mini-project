@@ -619,7 +619,7 @@
   <script defer src="js/projects/projectile-motion.js"></script>
   <script defer src="js/projects/progression-recognizer.js"></script>
   <script defer src="js/projects/coordinate-polar-transform.js"></script>
-  <script defer src="js/projects/derivative-calculator.js"></script>
+  <script defer src="js/projects/complete-calculus-engine.js"></script>
   <script defer src="js/projects/morse-code.js"></script>
   <script defer src="js/projects/tower-of-hanoi.js"></script>
   <script defer src="js/projects/math-quiz.js"></script>
@@ -902,8 +902,8 @@
           tags: "math,coordinates",
         },
         {
-          project: "derivative-calculator",
-          title: "Derivative Calculator",
+          project: "complete-calculus-engine",
+          title: "Complete Calculus Engine",
           category: "math",
           desc: "Calculate derivatives",
           tags: "math,calculus",
@@ -1052,7 +1052,7 @@
         const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
         card.innerHTML = `
-            <img class="card-banner" src="assets/banners/${proj.project}.webp" alt="${proj.title}" loading="lazy">
+            <img class="card-banner" src="assets/banners/${proj.project}.webp?v=2" alt="${proj.title}" loading="lazy">
             <div class="card-actions">
                 <button class="btn-play" data-project="${proj.project}" aria-label="Play PyMini Logo">Try It</button>
                 <button class="btn-favorite" data-project="${proj.project}" aria-label="Add to favorites">
