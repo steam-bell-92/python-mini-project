@@ -61,74 +61,80 @@ def main():
         {"word": "storm", "hint": "Strong wind and rain"}
     ]
 
-    selected = random.choice(word_data)
-    word = selected["word"]
-    hint = selected["hint"]
-    word_length = len(word)
+    while True:
+        selected = random.choice(word_data)
+        word = selected["word"]
+        hint = selected["hint"]
+        word_length = len(word)
 
-    guessed_letters = []
-    correct_letters = []
-    max_attempts = 6
-    attempts = 0
-    won = False
+        guessed_letters = []
+        correct_letters = []
+        max_attempts = 6
+        attempts = 0
+        won = False
 
-    print(f"\nThe word has {word_length} letters.")
-    print(f"Hint: {hint}")
-    print(f"You have {max_attempts} attempts to guess the word.\n")
+        print(f"\nThe word has {word_length} letters.")
+        print(f"Hint: {hint}")
+        print(f"You have {max_attempts} attempts to guess the word.\n")
 
-    while attempts < max_attempts and not won:
-        # 1. Update and show the current word progress
-        display = ""
-        for letter in word:
-            if letter in correct_letters:
-                display += letter + " "
-            else:
-                display += "_ "
-    
-        print(f"Word: {display}")
+        while attempts < max_attempts and not won:
+            # 1. Update and show the current word progress
+            display = ""
+            for letter in word:
+                if letter in correct_letters:
+                    display += letter + " "
+                else:
+                    display += "_ "
         
-        # 2. CHECK WIN CONDITION HERE BEFORE ASKING FOR A NEW GUESS
-        # If there are no more underscores left, the player has won!
-        if "_" not in display:
-            won = True
-            break
+            print(f"Word: {display}")
+            
+            # 2. CHECK WIN CONDITION HERE BEFORE ASKING FOR A NEW GUESS
+            # If there are no more underscores left, the player has won!
+            if "_" not in display:
+                won = True
+                break
 
-        print(f"Attempts remaining: {max_attempts - attempts}")
-        print(f"Guessed letters: {', '.join(guessed_letters) if guessed_letters else 'None'}")
-    
-        guess = input("\nGuess a letter: ").lower()
-    
-        if len(guess) != 1 or not guess.isalpha():
-            print("Please enter a single letter!")
+            print(f"Attempts remaining: {max_attempts - attempts}")
+            print(f"Guessed letters: {', '.join(guessed_letters) if guessed_letters else 'None'}")
+        
+            guess = input("\nGuess a letter: ").lower()
+        
+            if len(guess) != 1 or not guess.isalpha():
+                print("Please enter a single letter!")
+                print("-" * 50)
+                continue
+        
+            if guess in guessed_letters:
+                print("You already guessed that letter!")
+                print("-" * 50)
+                continue
+        
+            guessed_letters.append(guess)
+        
+            if guess in word:
+                print(f"✓ Correct! '{guess}' is in the word.")
+                correct_letters.append(guess)
+            else:
+                print(f"✗ Wrong! '{guess}' is not in the word.")
+                attempts += 1
+        
             print("-" * 50)
-            continue
-    
-        if guess in guessed_letters:
-            print("You already guessed that letter!")
-            print("-" * 50)
-            continue
-    
-        guessed_letters.append(guess)
-    
-        if guess in word:
-            print(f"✓ Correct! '{guess}' is in the word.")
-            correct_letters.append(guess)
+
+        # Endgame sequence
+        print("\n" + "=" * 50)
+        if won:
+            print("🎉 CONGRATULATIONS! YOU WON LIGHTNING FAST!")
+            print(f"The word was: {word}")
+            print(f"You guessed it with {max_attempts - attempts} attempts remaining!")
         else:
-            print(f"✗ Wrong! '{guess}' is not in the word.")
-            attempts += 1
-    
-        print("-" * 50)
+            print("😔 GAME OVER! YOU LOST!")
+            print(f"The word was: {word}")
+        print("=" * 50)
 
-    # Endgame sequence
-    print("\n" + "=" * 50)
-    if won:
-        print("🎉 CONGRATULATIONS! YOU WON LIGHTNING FAST!")
-        print(f"The word was: {word}")
-        print(f"You guessed it with {max_attempts - attempts} attempts remaining!")
-    else:
-        print("😔 GAME OVER! YOU LOST!")
-        print(f"The word was: {word}")
-    print("=" * 50)
+        play_again = input("\n🔄 Do you want to play again? (y/n): ").strip().lower()
+        if play_again not in ['y', 'yes']:
+            print("\n👋 Thanks for playing Hangman! Goodbye!\n")
+            break
 
 if __name__ == '__main__':
     main()
