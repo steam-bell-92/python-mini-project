@@ -8,7 +8,7 @@ import os
 from datetime import datetime
 
 # ── Config ────────────────────────────────────────────────────────────────────
-DATA_FILE = "completed_projects.json"
+DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "completed_projects.json")
 
 # Load Project Registry from projects_registry.json
 REGISTRY_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "projects_registry.json"))
