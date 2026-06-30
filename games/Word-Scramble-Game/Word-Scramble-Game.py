@@ -35,6 +35,7 @@ DIFFICULTY_LEVELS = {
     "hard": {"min_length": 9, "max_length": 100, "points": 20},
 }
 
+
 def main():
     global _, again, attempts, base_points, bonus, category, difficulty, fancy_scrambled, filtered_words, grade, hint_used, letters, lives, lives_str, max_attempts, raw, remaining, round_num, score, scrambled, settings, still_playing, valid_words, word, words
     while True:
@@ -72,7 +73,8 @@ def main():
             settings = DIFFICULTY_LEVELS[difficulty]
             valid_words = []
             for category, words in WORD_BANK.items():
-                filtered_words = [w for w in words if settings["min_length"] <= len(w) <= settings["max_length"]]
+                filtered_words = [w for w in words if settings["min_length"] <= len(
+                    w) <= settings["max_length"]]
                 if filtered_words:
                     valid_words.append((category, filtered_words))
 
@@ -86,7 +88,7 @@ def main():
                 scrambled = "".join(letters)
                 if scrambled != word:
                     break
-        
+
             fancy_scrambled = "  ".join(scrambled.upper())
 
             hint_used = False
@@ -99,13 +101,15 @@ def main():
                 print("║          🔤  W O R D  S C R A M B L E  🔤         ║")
                 print("╠══════════════════════════════════════════════╣")
                 lives_str = "❤️ " * lives + "🖤 " * (3 - lives)
-                print(f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
+                print(
+                    f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
                 print(f"║  Difficulty: {difficulty.capitalize():<31}║")
                 print("╚══════════════════════════════════════════════╝\n")
 
                 print(f"  🔀  Unscramble this word:\n")
                 print(f"      ✨  {fancy_scrambled}  ✨\n")
-                print(f"  Letters: {len(word)}   |   Attempts left this round: {max_attempts - attempts}")
+                print(
+                    f"  Letters: {len(word)}   |   Attempts left this round: {max_attempts - attempts}")
 
                 if hint_used:
                     print(f"  💡 Hint: {category}")
@@ -147,17 +151,20 @@ def main():
                     print("╔══════════════════════════════════════════════╗")
                     print("║          🔤  W O R D  S C R A M B L E  🔤         ║")
                     print("╠══════════════════════════════════════════════╣")
-                    print(f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
+                    print(
+                        f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
                     print(f"║  Difficulty: {difficulty.capitalize():<31}║")
                     print("╚══════════════════════════════════════════════╝\n")
-                
-                    print(f"\n  🎉 Correct! +{bonus} points {'(hint used: half points)' if hint_used else ''}\n")
+
+                    print(
+                        f"\n  🎉 Correct! +{bonus} points {'(hint used: half points)' if hint_used else ''}\n")
                     time.sleep(1.5)
                     break
                 else:
                     remaining = max_attempts - attempts
                     if remaining > 0:
-                        print(f"\n  ❌ Nope! Try again. ({remaining} attempt{'s' if remaining != 1 else ''} left)")
+                        print(
+                            f"\n  ❌ Nope! Try again. ({remaining} attempt{'s' if remaining != 1 else ''} left)")
                         time.sleep(1)
                     else:
                         lives -= 1
@@ -166,32 +173,42 @@ def main():
                         print("║          🔤  W O R D  S C R A M B L E  🔤         ║")
                         print("╠══════════════════════════════════════════════╣")
                         lives_str = "❤️ " * lives + "🖤 " * (3 - lives)
-                        print(f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
+                        print(
+                            f"║  Round: {round_num:<5}  Score: {score:<6}  Lives: {lives_str:<14}║")
                         print(f"║  Difficulty: {difficulty.capitalize():<31}║")
                         print("╚══════════════════════════════════════════════╝\n")
-                    
-                        print(f"\n  💔 Out of attempts! The word was: {word.upper()}\n")
+
+                        print(
+                            f"\n  💔 Out of attempts! The word was: {word.upper()}\n")
                         time.sleep(2)
                         break
 
             if still_playing:
                 round_num += 1
 
-        os.system("cls" if os.name == "nt" else "clear")
-        print("\n  ╔══════════════════════════════════╗")
-        print("  ║         💀  GAME  OVER  💀          ║")
-        print("  ╚══════════════════════════════════╝\n")
-        print(f"  You survived {round_num} round{'s' if round_num != 1 else ''}.")
-        print(f"  Final score: {score} points\n")
+        if still_playing:
+            os.system("cls" if os.name == "nt" else "clear")
+            print("\n  ╔══════════════════════════════════╗")
+            print("  ║         💀  GAME  OVER  💀          ║")
+            print("  ╚══════════════════════════════════╝\n")
+            print(
+                f"  You survived {round_num} round{'s' if round_num != 1 else ''}.")
+            print(f"  Final score: {score} points\n")
 
-        grade = (
-            "🏆 Wordsmith Supreme!" if score >= 80 else
-            "🥇 Excellent!" if score >= 60 else
-            "🥈 Good effort!" if score >= 40 else
-            "🥉 Keep practising!" if score >= 20 else
-            "📚 Hit the dictionary!"
-        )
-        print(f"  {grade}\n")
+            grade = (
+                "🏆 Wordsmith Supreme!" if score >= 80 else
+                "🥇 Excellent!" if score >= 60 else
+                "🥈 Good effort!" if score >= 40 else
+                "🥉 Keep practising!" if score >= 20 else
+                "📚 Hit the dictionary!"
+            )
+            print(f"  {grade}\n")
+        else:
+            os.system("cls" if os.name == "nt" else "clear")
+            print("\nThanks for playing! 👋\n")
+
+        if not still_playing:
+            break
 
         try:
             again = input("  Play again? (y/n): ").strip().lower()
