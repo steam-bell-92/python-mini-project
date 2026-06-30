@@ -621,8 +621,15 @@ Clear History
           <div class="footer-social-icons">
             <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
               rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)"><i
-                class="fa fa-x-twitter"></i></a>
+            <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)">
+              <svg xmlns="http://www.w3.org/2000/svg"
+       width="15"
+       height="15"
+       viewBox="0 0 24 24"
+       fill="currentColor">
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
+  </svg>
+</a>
             <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
                 class="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
@@ -632,14 +639,14 @@ Clear History
         <div class="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()">Games</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
             </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()">Math</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a>
             </li>
             <li><a href="#main-content"
-                onclick="document.querySelector('[data-category=\'utilities\']').click()">Utilities</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()">Favorites</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()">Playground</a></li>
+                onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
           </ul>
         </div>
         <div class="footer-links">
@@ -661,7 +668,7 @@ Clear History
           <h3>Stay Updated</h3>
           <p>Get notified about new projects and features!</p>
           <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-            <input type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
+            <input class="footer-input" type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
             <button type="submit" aria-label="Subscribe">
               <i class="fas fa-paper-plane"></i>
             </button>
