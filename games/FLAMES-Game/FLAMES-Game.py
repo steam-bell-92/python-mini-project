@@ -4,6 +4,23 @@ import os
 
 def main():
     global char, choice, count, final, flames, index, mapping, matched_chars, name1, name1_list, name2, name2_list, original_name1, original_name2, result, score, share_text, total_len, valid_game
+
+    # Session statistics tracker
+    session = {
+        "rounds": 0,
+        "results": {r: 0 for r in "FLAMES"},
+        "total_score": 0,
+    }
+
+    mapping = {
+        'F': {"rel": "Friends",  "emoji": "🤝", "metric": "Bond Strength"},
+        'L': {"rel": "Love",     "emoji": "❤️", "metric": "Compatibility Score"},
+        'A': {"rel": "Affection","emoji": "😊", "metric": "Crush Intensity"},
+        'M': {"rel": "Marriage", "emoji": "💍", "metric": "Marital Bliss"},
+        'E': {"rel": "Enemies",  "emoji": "😈", "metric": "Rivalry Quotient"},
+        'S': {"rel": "Siblings", "emoji": "🏠", "metric": "Nuisance Factor"},
+    }
+
     while True:
         print("\n" + "=" * 50)
         print("🔥 FLAMES GAME - FIND YOUR RELATIONSHIP STATUS! 🔥")
@@ -71,16 +88,12 @@ def main():
                 flames.pop(index)
 
             result = flames[0]
-
-            mapping = {
-                'F': {"rel": "Friends", "emoji": "🤝", "metric": "Bond Strength"},
-                'L': {"rel": "Love", "emoji": "❤️", "metric": "Compatibility Score"},
-                'A': {"rel": "Affection", "emoji": "😊", "metric": "Crush Intensity"},
-                'M': {"rel": "Marriage", "emoji": "💍", "metric": "Marital Bliss"},
-                'E': {"rel": "Enemies", "emoji": "😈", "metric": "Rivalry Quotient"},
-                'S': {"rel": "Siblings", "emoji": "🏠", "metric": "Nuisance Factor"}
-            }
             final = mapping[result]
+
+            # Update session statistics
+            session["rounds"] += 1
+            session["results"][result] += 1
+            session["total_score"] += score
 
             print("\n" + "=" * 50)
             print("📝 MATCH REPORT CARD")
@@ -107,6 +120,23 @@ def main():
             print("⚠️ Invalid choice. Please enter 'y' or 'n'.")
 
         if choice in ('n', 'no'):
+            # Display session statistics on exit
+            if session["rounds"] > 0:
+                avg = session["total_score"] / session["rounds"]
+                top = max(session["results"], key=session["results"].get)
+                print("\n" + "=" * 50)
+                print("📊 SESSION STATS")
+                print("=" * 50)
+                print(f"  Total Rounds Played : {session['rounds']}")
+                print("-" * 50)
+                for letter, count in session["results"].items():
+                    label = mapping[letter]["rel"]
+                    bar   = "█" * session["results"][letter]
+                    print(f"  {label:<12}: {count:>2}  {bar}")
+                print("-" * 50)
+                print(f"  Most Common Result  : {mapping[top]['rel']} {mapping[top]['emoji']}")
+                print(f"  Avg Score           : {avg:.1f}%")
+                print("=" * 50)
             print("\n👋 Thanks for playing FLAMES! Goodbye!")
             break
 
