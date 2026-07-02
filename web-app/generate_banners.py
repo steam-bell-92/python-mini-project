@@ -730,6 +730,7 @@ projects = [
     ("Budget Tracker", "utilities", "budget-tracker.webp"),
     ("Pathfinding Visualizer", "utilities", "pathfinding-visualizer.webp"),
     ("TSP Visualizer", "utilities", "tsp-visualizer.webp"),
+    ("Sorting Visualizer", "utilities", "sorting-visualizer.webp")
 ]
 
 # Run generation
