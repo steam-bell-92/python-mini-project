@@ -6,7 +6,7 @@
 
 ### _Learn Python by Building Fun, Interactive Games & Tools!_
 
-[![Python Version](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.10--3.12-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 <p align="center">
@@ -80,7 +80,7 @@ python-mini-project/
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.10, 3.11, or 3.12
 - Git (for cloning the repository)
 - pip (Python package manager)
 
@@ -122,6 +122,8 @@ venv\Scripts\Activate.ps1
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
+
+The dependency set is tested on Python 3.10 through 3.12. Newer Python releases may not have compatible wheels for every pinned dependency yet.
 
 ### Running Command-Line Projects
 
