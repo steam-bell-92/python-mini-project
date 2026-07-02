@@ -114,9 +114,14 @@ function getBudgetTrackerHTML() {
                         <div class="budget-panel transactions-panel">
                             <div class="transactions-header">
                                 <h3><i class="fas fa-list"></i> History</h3>
-                                <button id="btnClearBudgetData" class="btn-clear-budget" type="button">
-                                    <i class="fas fa-trash-can"></i> Clear All
-                                </button>
+                                <div class="transactions-header-actions">
+                                    <button id="btnExportBudgetCsv" class="btn-export-budget" type="button" disabled>
+                                        <i class="fas fa-file-csv"></i> Export CSV
+                                    </button>
+                                    <button id="btnClearBudgetData" class="btn-clear-budget" type="button">
+                                        <i class="fas fa-trash-can"></i> Clear All
+                                    </button>
+                                </div>
                             </div>
                             
                             <!-- Search and Filters -->
@@ -545,6 +550,50 @@ function getBudgetTrackerHTML() {
                 padding-bottom: 0;
             }
 
+            .transactions-header-actions {
+                display: flex;
+                align-items: center;
+                gap: 0.6rem;
+            }
+
+            .btn-export-budget {
+                background: transparent;
+                border: 1px solid var(--success-color, #10b981);
+                color: var(--success-color, #10b981);
+                border-radius: 8px;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.3rem;
+                transition: all 0.2s ease;
+            }
+
+            .btn-export-budget:hover:not(:disabled) {
+                background: var(--success-color, #10b981);
+                color: white;
+                box-shadow: 0 2px 8px rgba(16, 185, 129, 0.25);
+            }
+
+            .btn-export-budget:active:not(:disabled) {
+                transform: scale(0.96);
+            }
+
+            .btn-export-budget:disabled {
+                opacity: 0.45;
+                cursor: not-allowed;
+                border-color: var(--border-color);
+                color: var(--text-secondary);
+            }
+
+            .btn-export-budget.exported {
+                background: var(--success-color, #10b981);
+                color: white;
+                border-color: var(--success-color, #10b981);
+            }
+
             .btn-clear-budget {
                 background: transparent;
                 border: 1px solid #ef4444;
@@ -864,6 +913,7 @@ function initBudgetTracker() {
     const searchInput = document.getElementById("budgetSearchInput");
     const filterType = document.getElementById("budgetFilterType");
     const clearBtn = document.getElementById("btnClearBudgetData");
+    const exportBtn = document.getElementById("btnExportBudgetCsv");
 
     // Exit early if elements not found
     if (!form || !categorySelect || !transactionsList) return;
@@ -983,7 +1033,64 @@ function initBudgetTracker() {
         }
     });
 
+    exportBtn.addEventListener("click", exportTransactionsToCsv);
+
     // Helper functions
+    function csvEscape(value) {
+        const str = String(value === undefined || value === null ? "" : value);
+        if (/[",\n]/.test(str)) {
+            return `"${str.replace(/"/g, '""')}"`;
+        }
+        return str;
+    }
+
+    function exportTransactionsToCsv() {
+        if (!transactions.length) return;
+
+        const header = ["Date", "Type", "Category", "Description", "Amount (INR)"];
+        const rows = transactions.map(t => [
+            t.date,
+            t.type,
+            t.category,
+            t.description || "",
+            t.amount.toFixed(2)
+        ]);
+
+        const csvContent = [header, ...rows]
+            .map(row => row.map(csvEscape).join(","))
+            .join("\r\n");
+
+        const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const now = new Date();
+        const dateStr = now.getFullYear() + '-' +
+            String(now.getMonth() + 1).padStart(2, '0') + '-' +
+            String(now.getDate()).padStart(2, '0');
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `budget-tracker-${dateStr}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Free the blob URL once the download has been triggered
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+
+        // Brief visual confirmation
+        const originalHTML = exportBtn.innerHTML;
+        exportBtn.classList.add("exported");
+        exportBtn.innerHTML = '<i class="fas fa-check"></i> Downloaded!';
+        exportBtn.disabled = true;
+
+        setTimeout(() => {
+            exportBtn.classList.remove("exported");
+            exportBtn.innerHTML = originalHTML;
+            exportBtn.disabled = transactions.length === 0;
+        }, 2000);
+    }
+
     function onTypeChange() {
         populateCategories();
     }
@@ -1018,6 +1125,9 @@ function initBudgetTracker() {
         updateSummary();
         renderBreakdown();
         renderTransactions();
+        if (exportBtn) {
+            exportBtn.disabled = transactions.length === 0;
+        }
     }
 
     function updateSummary() {
