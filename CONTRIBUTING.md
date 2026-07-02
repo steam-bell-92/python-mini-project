@@ -449,17 +449,17 @@ Once you feel comfortable, you can gradually try `level:intermediate`, `level:ad
 
 ## 🧪 Writing Tests
 
-To maintain code quality and ensure zero external dependencies, we use the standard library's `unittest` framework.
+To maintain code quality, the repository uses `pytest` for its automated test suite.
 
 1. **Test Directory**: All tests must be placed in the `tests/` directory at the root of the project.
 2. **File Naming**: Name your test file starting with `test_` (e.g., `test_armstrong.py`).
-3. **No External Modules**: Do not use external libraries like `pytest`. Stick strictly to `unittest`.
+3. **Test Runner**: Use `pytest` so local checks match the GitHub Actions workflow.
 4. **Mocking Inputs**: For CLI projects, use `subprocess` to provide input via `stdin`, or import helper methods directly.
 
 ### Running Tests Locally
 To run all tests and verify your changes:
 ```bash
-python -m unittest discover -s tests -v
+python -m pytest tests/ -v
 ```
 To run a syntax check across all files (similar to our CI):
 ```bash
