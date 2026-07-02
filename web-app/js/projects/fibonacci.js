@@ -129,7 +129,7 @@ function initFibonacci() {
             display.appendChild(numEl);
         });
 
-        drawSpiral(fib.slice(0, Math.min(n, 12)));
+        drawSpiral(fib.slice(0, Math.min(n, 10)));
     }
     
     function drawSpiral(fib) {
