@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "python -m http.server 8000",
     "build": "esbuild cm-src/cm-bundle.js --bundle --minify --format=iife --outfile=js/cm-editor.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "test:e2e": "playwright test"
