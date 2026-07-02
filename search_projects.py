@@ -10,6 +10,11 @@ import subprocess
 import sys
 import json
 
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(errors="replace")
+
 # ─────────────────────────────────────────────
 #  Project Registry
 # ─────────────────────────────────────────────
