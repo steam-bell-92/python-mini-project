@@ -16,6 +16,12 @@ function getWordScrambleHTML() {
         <div class="project-content">
             <h2>&#128292; Word Scramble</h2>
             <div class="scramble-container">
+                <div class="difficulty-select" id="difficultySelect">
+                    <button class="difficulty-btn active" data-difficulty="easy" type="button">🟢 Easy</button>
+                    <button class="difficulty-btn" data-difficulty="medium" type="button">🟡 Medium</button>
+                    <button class="difficulty-btn" data-difficulty="hard" type="button">🔴 Hard</button>
+                </div>
+
                 <div class="game-stats">
                     <div class="stat">
                         <span class="stat-label">Score:</span>
@@ -61,6 +67,38 @@ function getWordScrambleHTML() {
                 max-width: 800px;
                 margin: 0 auto;
                 text-align: center;
+            }
+
+            .difficulty-select {
+                display: flex;
+                gap: 0.7rem;
+                justify-content: center;
+                flex-wrap: wrap;
+                margin-bottom: 1.5rem;
+            }
+
+            .difficulty-btn {
+                background: var(--surface-color);
+                color: var(--text-color);
+                border: 2px solid var(--border-color);
+                border-radius: 50px;
+                padding: 0.6rem 1.4rem;
+                font-size: 0.95rem;
+                font-weight: 700;
+                cursor: pointer;
+                transition: var(--transition);
+            }
+
+            .difficulty-btn:hover {
+                transform: scale(1.05);
+                border-color: var(--primary-color);
+            }
+
+            .difficulty-btn.active {
+                background: var(--primary-color);
+                border-color: var(--primary-color);
+                color: white;
+                box-shadow: 0 6px 14px rgba(99, 102, 241, 0.35);
             }
 
             .scramble-container .game-stats {
@@ -230,6 +268,11 @@ function getWordScrambleHTML() {
             }
 
             @media (max-width: 600px) {
+                .difficulty-btn {
+                    padding: 0.5rem 1.1rem;
+                    font-size: 0.85rem;
+                }
+
                 .scramble-container {
                     padding: 1rem 0.25rem;
                 }
@@ -270,70 +313,95 @@ function initWordScramble() {
   const attemptsEl = document.getElementById("scrambleAttempts");
   const messageEl = document.getElementById("scrambleMessage");
   const timerEl = document.getElementById("scrambleTimer");
+  const difficultyBtns = document.querySelectorAll(".difficulty-btn");
 
-  const words = [
-    // Space & Science
-    { word: "planet", hint: "A celestial body that orbits a star." },
-    { word: "galaxy", hint: "A massive system of stars, gas, and dust." },
-    { word: "comet", hint: "An icy celestial body with a glowing tail." },
-    {
-      word: "telescope",
-      hint: "Instrument used to observe distant objects in space.",
+  // ============================================
+  // WORD BANK — split by difficulty tier
+  // Easy   : 3–5 letters  (common, everyday)
+  // Medium : 5–7 letters  (moderate vocab)
+  // Hard   : 7+ letters   (advanced / complex)
+  // ============================================
+  const wordsByDifficulty = {
+    easy: [
+      { word: "comet", hint: "An icy celestial body with a glowing tail." },
+      { word: "piano", hint: "Keyboard instrument with black and white keys." },
+      { word: "drums", hint: "Percussion instrument played with sticks." },
+      { word: "pizza", hint: "Italian dish with cheese, sauce, and toppings." },
+      { word: "sushi", hint: "Japanese dish with raw fish and rice." },
+      { word: "ocean", hint: "Vast body of saltwater covering most of Earth." },
+      { word: "tennis", hint: "Sport played with rackets and a yellow ball." },
+      { word: "chess", hint: "Strategic board game with kings, queens, and pawns." },
+      { word: "cat", hint: "Common household pet that meows." },
+      { word: "book", hint: "You read this to learn or enjoy a story." },
+      { word: "sun", hint: "Star at the center of our solar system." },
+      { word: "moon", hint: "Earth's only natural satellite." },
+    ],
+    medium: [
+      { word: "planet", hint: "A celestial body that orbits a star." },
+      { word: "galaxy", hint: "A massive system of stars, gas, and dust." },
+      { word: "gravity", hint: "The force that pulls objects toward Earth." },
+      { word: "guitar", hint: "String instrument played by strumming." },
+      { word: "violin", hint: "Small string instrument played with a bow." },
+      { word: "melody", hint: "A sequence of musical notes that is pleasing." },
+      { word: "burger", hint: "Sandwich with a patty between buns." },
+      { word: "mountain", hint: "Large natural elevation of Earth's surface." },
+      { word: "forest", hint: "Large area covered with trees." },
+      { word: "desert", hint: "Dry area with little rainfall and sand." },
+      { word: "volcano", hint: "Mountain that erupts with lava and ash." },
+      { word: "monitor", hint: "Screen that displays computer output." },
+      { word: "speaker", hint: "Device that produces sound." },
+      { word: "printer", hint: "Device that puts text/images on paper." },
+      { word: "browser", hint: "App like Chrome or Firefox to surf the web." },
+      { word: "swimming", hint: "Sport where you move through water." },
+    ],
+    hard: [
+      {
+        word: "telescope",
+        hint: "Instrument used to observe distant objects in space.",
+      },
+      { word: "molecule", hint: "Two or more atoms bonded together." },
+      { word: "chocolate", hint: "Sweet brown treat made from cocoa beans." },
+      { word: "icecream", hint: "Frozen dessert that melts in the sun." },
+      { word: "waterfall", hint: "Water flowing over a vertical drop." },
+      { word: "keyboard", hint: "Device with keys for typing." },
+      {
+        word: "internet",
+        hint: "Global network connecting millions of computers.",
+      },
+      { word: "football", hint: "Sport where you kick a ball into a goal." },
+      {
+        word: "basketball",
+        hint: "Sport where you shoot a ball through a hoop.",
+      },
+      {
+        word: "cricket",
+        hint: "Popular bat-and-ball sport in England and India.",
+      },
+    ],
+  };
+
+  // ============================================
+  // DIFFICULTY CONFIG — timer, attempts, scoring
+  // ============================================
+  const DIFFICULTY_CONFIG = {
+    easy: {
+      timer: 55,
+      attempts: 4,
+      points: { fast: 15, veryFast: 12, good: 8, slow: 5 },
     },
-    { word: "gravity", hint: "The force that pulls objects toward Earth." },
-    { word: "molecule", hint: "Two or more atoms bonded together." },
-
-    // Music
-    { word: "guitar", hint: "String instrument played by strumming." },
-    { word: "piano", hint: "Keyboard instrument with black and white keys." },
-    { word: "drums", hint: "Percussion instrument played with sticks." },
-    { word: "violin", hint: "Small string instrument played with a bow." },
-    { word: "melody", hint: "A sequence of musical notes that is pleasing." },
-
-    //Food
-    { word: "pizza", hint: "Italian dish with cheese, sauce, and toppings." },
-    { word: "burger", hint: "Sandwich with a patty between buns." },
-    { word: "sushi", hint: "Japanese dish with raw fish and rice." },
-    { word: "chocolate", hint: "Sweet brown treat made from cocoa beans." },
-    { word: "icecream", hint: "Frozen dessert that melts in the sun." },
-
-    // Nature
-    { word: "mountain", hint: "Large natural elevation of Earth's surface." },
-    { word: "ocean", hint: "Vast body of saltwater covering most of Earth." },
-    { word: "forest", hint: "Large area covered with trees." },
-    { word: "desert", hint: "Dry area with little rainfall and sand." },
-    { word: "volcano", hint: "Mountain that erupts with lava and ash." },
-    { word: "waterfall", hint: "Water flowing over a vertical drop." },
-
-    // Technology
-    { word: "keyboard", hint: "Device with keys for typing." },
-    { word: "monitor", hint: "Screen that displays computer output." },
-    { word: "speaker", hint: "Device that produces sound." },
-    { word: "printer", hint: "Device that puts text/images on paper." },
-    {
-      word: "internet",
-      hint: "Global network connecting millions of computers.",
+    medium: {
+      timer: 38,
+      attempts: 3,
+      points: { fast: 20, veryFast: 16, good: 12, slow: 8 },
     },
-    { word: "browser", hint: "App like Chrome or Firefox to surf the web." },
+    hard: {
+      timer: 20,
+      attempts: 2,
+      points: { fast: 30, veryFast: 24, good: 18, slow: 12 },
+    },
+  };
 
-    // Sports
-    { word: "football", hint: "Sport where you kick a ball into a goal." },
-    {
-      word: "basketball",
-      hint: "Sport where you shoot a ball through a hoop.",
-    },
-    { word: "tennis", hint: "Sport played with rackets and a yellow ball." },
-    {
-      word: "cricket",
-      hint: "Popular bat-and-ball sport in England and India.",
-    },
-    { word: "swimming", hint: "Sport where you move through water." },
-    {
-      word: "chess",
-      hint: "Strategic board game with kings, queens, and pawns.",
-    },
-  ];
-
+  let currentDifficulty = "easy";
   let current = null;
   let score = 0;
   let streak = 0;
@@ -347,7 +415,7 @@ function initWordScramble() {
 
   function startTimer() {
     clearInterval(timerId); // Terminate any existing background loops
-    timeLeft = 30;
+    timeLeft = DIFFICULTY_CONFIG[currentDifficulty].timer;
     timerEl.textContent = `${timeLeft}s`;
 
     timerId = setInterval(() => {
@@ -413,22 +481,24 @@ function initWordScramble() {
   }
 
   function chooseWord() {
-    if (usedWords.length === words.length) {
+    const pool = wordsByDifficulty[currentDifficulty];
+
+    if (usedWords.length === pool.length) {
       usedWords = [];
     }
 
     let index;
     do {
-      index = Math.floor(Math.random() * words.length);
+      index = Math.floor(Math.random() * pool.length);
     } while (usedWords.includes(index));
 
     usedWords.push(index);
-    return words[index];
+    return pool[index];
   }
 
   function startRound(keepStreak = true) {
     current = chooseWord();
-    attempts = 3;
+    attempts = DIFFICULTY_CONFIG[currentDifficulty].attempts;
     roundOver = false;
     guessInput.value = "";
     guessInput.disabled = false;
@@ -461,24 +531,26 @@ function initWordScramble() {
     }
 
     if (guess === current.word) {
-      // Calculate time taken for this round
-      const timeTaken = 30 - timeLeft;
+      const cfg = DIFFICULTY_CONFIG[currentDifficulty];
 
-      // Calculate points based on time taken
+      // Calculate time taken for this round
+      const timeTaken = cfg.timer - timeLeft;
+
+      // Calculate points based on time taken, scaled to this difficulty's timer
       let points = 0;
       let speedCategory = "";
 
-      if (timeTaken <= 5) {
-        points = 15;
+      if (timeTaken <= cfg.timer * 0.17) {
+        points = cfg.points.fast;
         speedCategory = "LIGHTNING FAST!";
-      } else if (timeTaken <= 10) {
-        points = 12;
+      } else if (timeTaken <= cfg.timer * 0.35) {
+        points = cfg.points.veryFast;
         speedCategory = "VERY FAST!";
-      } else if (timeTaken <= 20) {
-        points = 8;
+      } else if (timeTaken <= cfg.timer * 0.65) {
+        points = cfg.points.good;
         speedCategory = "GOOD!";
       } else {
-        points = 5;
+        points = cfg.points.slow;
         speedCategory = "SLOW...";
       }
 
@@ -530,6 +602,23 @@ function initWordScramble() {
     guessInput.value = "";
     guessInput.focus();
   }
+
+  // Difficulty switcher
+  difficultyBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const chosen = btn.getAttribute("data-difficulty");
+      if (chosen === currentDifficulty) return;
+
+      difficultyBtns.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      currentDifficulty = chosen;
+      usedWords = [];
+      score = 0;
+      streak = 0;
+      startRound(false);
+    });
+  });
 
   checkBtn.addEventListener("click", checkGuess);
   guessInput.addEventListener("keydown", (event) => {
