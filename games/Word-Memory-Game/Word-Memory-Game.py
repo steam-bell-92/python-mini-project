@@ -25,27 +25,27 @@ def display_menu(highest_scores, last_game):
     """Display the main menu."""
 
     print("=" * 40)
-    print("        WORD MEMORY GAME")
+    print("        🧠 WORD MEMORY GAME")
     print("=" * 40)
 
     if highest_scores:
-        print("\nHighest Scores")
+        print("\n🏆 Highest Scores")
         for level in ["easy", "medium", "hard"]:
             if level in highest_scores:
                 print(f"🏆 {level.title():<7}: {highest_scores[level]}")
 
     if last_game["difficulty"]:
         print("\n" + "-" * 40)
-        print("You Scored")
+        print("🎯 You Scored")
         print(
             f"{last_game['difficulty'].title():<7}: {last_game['score']}"
         )
 
     print("\n" + "-" * 40)
-    print("1. Easy")
-    print("2. Medium")
-    print("3. Hard")
-    print("4. Exit")
+    print("1. 🟢 Easy")
+    print("2. 🟡 Medium")
+    print("3. 🔴 Hard")
+    print("4. 🚪 Exit")
     print()
 
 
@@ -71,7 +71,7 @@ def get_difficulty(highest_scores, last_game):
             clear_screen()
 
             print("=" * 40)
-            print("      YOUR HIGHEST SCORES")
+            print("      🏆 YOUR HIGHEST SCORES")
             print("=" * 40)
 
             if highest_scores:
@@ -82,14 +82,15 @@ def get_difficulty(highest_scores, last_game):
                 print("No games played.")
 
             print("\n" + "-" * 40)
-            print("\nThanks for playing! 👋")
+            print("\n🎉 Thanks for playing!")
+            print("👋 Hope to see you again!")
 
             sys.exit()
 
         if choice in difficulty_map:
             return difficulty_map[choice]
 
-        print("\nInvalid choice!")
+        print("\n⚠️ Invalid choice! Please try again.")
         time.sleep(1)
 
 
@@ -122,13 +123,13 @@ def play_game(words, difficulty, highest_scores, last_game):
         clear_screen()
 
         print("=" * 40)
-        print(f"    WORD MEMORY GAME ({difficulty.upper()})")
+        print(f"🧠 WORD MEMORY GAME ({difficulty.upper()})")
         print("=" * 40)
 
-        print("\nRemember this word:\n")
+        print("\n🧠 Memorize this word:\n")
         print(f"        {word.upper()}")
 
-        print(f"\nYou have {DISPLAY_TIME} seconds...")
+        print(f"\n⏳ You have {DISPLAY_TIME} seconds...")
 
         time.sleep(DISPLAY_TIME)
 
@@ -138,23 +139,23 @@ def play_game(words, difficulty, highest_scores, last_game):
         print(f"    WORD MEMORY GAME ({difficulty.upper()})")
         print("=" * 40)
 
-        answer = input("\nEnter the word: ").strip()
+        answer = input("\n✍️ Enter the word: ").strip()
 
         if answer.lower() == word.lower():
             score += 1
-            print("\n✅ Correct!")
+            print("\n🎉 Correct! Great Memory!")
         else:
             print("\n❌ Incorrect!")
-            print(f"Correct Word : {word.upper()}")
+            print(f"📖 Correct Word : {word.upper()}")
 
-        print(f"\nCurrent Score : {score}")
+        print(f"\n⭐ Current Score : {score}")
 
         while True:
 
             print("\n" + "-" * 40)
-            print("1. Continue")
-            print("2. Main Menu")
-            print("3. Exit")
+            print("▶️ 1. Continue")
+            print("🏠 2. Main Menu")
+            print("🚪 3. Exit")
 
             choice = input("\nChoose an option: ").strip()
 
@@ -176,29 +177,44 @@ def play_game(words, difficulty, highest_scores, last_game):
                 clear_screen()
 
                 print("=" * 40)
-                print("      YOUR HIGHEST SCORES")
+                print("      🏆 YOUR HIGHEST SCORES")
                 print("=" * 40)
 
                 if highest_scores:
                     for level in ["easy", "medium", "hard"]:
                         if level in highest_scores:
-                            print(
-                                f"🏆 {level.title():<7}: {highest_scores[level]}"
-                            )
+                            print(f"🏆 {level.title():<7}: {highest_scores[level]}")
                 else:
                     print("No games played.")
 
                 print("\n" + "-" * 40)
-                print("\nThanks for playing! 👋")
+                print("\n🎉 Thanks for playing!")
+                print("👋 Hope to see you again!")
 
                 sys.exit()
 
-            print("\nInvalid choice! Please enter 1, 2 or 3.")
+            print("\n⚠️ Invalid choice! Please enter 1, 2 or 3.")
             time.sleep(1)
 
+def show_instructions():
+    clear_screen()
+
+    print("=" * 40)
+    print("        🧠 WORD MEMORY GAME")
+    print("=" * 40)
+
+    print("\n📖 HOW TO PLAY\n")
+
+    print("1️⃣ Select a difficulty level.")
+    print("2️⃣ A word will appear for 2 seconds.")
+    print("3️⃣ Memorize the displayed word.")
+    print("4️⃣ Type the word after the screen clears.")
+    print("5️⃣ Earn ⭐ 1 point for every correct answer.")
+    print("6️⃣ Continue, return to the menu, or exit anytime.")
+
+    input("\nPress Enter to start... 🚀")
 
 def main():
-    """Main function."""
 
     words = load_words()
 
@@ -209,8 +225,9 @@ def main():
         "score": 0
     }
 
-    while True:
+    show_instructions()
 
+    while True:
         difficulty = get_difficulty(
             highest_scores,
             last_game
@@ -222,7 +239,6 @@ def main():
             highest_scores,
             last_game
         )
-
 
 if __name__ == "__main__":
     main()
