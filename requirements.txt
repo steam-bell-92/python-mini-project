@@ -17,4 +17,5 @@ reportlab==4.5.1
 
 # NLP dependencies
 nltk==3.9.1
+pyenchant==3.3.0
 
