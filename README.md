@@ -84,6 +84,10 @@ python-mini-project/
 - Git (for cloning the repository)
 - pip (Python package manager)
 
+### Encoding Note
+
+This repository uses UTF-8 for documentation, issue templates, and project metadata. If emoji or box-drawing characters appear as mojibake in a Windows terminal, switch the terminal to UTF-8 before viewing or running the files.
+
 ### Installation Steps
 
 #### 1. Clone the Repository
