@@ -1,3 +1,6 @@
+import sys
+import time
+
 morse_code = {
     'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
     'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
@@ -11,6 +14,71 @@ morse_code = {
 }
 
 reverse_morse = {v: k for k, v in morse_code.items()}
+
+# ---------------------------------------------------------------------------
+# Timing constants (in milliseconds) – ITU-R M.1677 inspired
+# ---------------------------------------------------------------------------
+DOT_DURATION   = 100   # ms  – short beep for dot
+DASH_DURATION  = 300   # ms  – long beep for dash
+INTRA_CHAR_GAP = 100   # ms  – silence between symbols inside a letter
+INTER_CHAR_GAP = 300   # ms  – silence between letters
+WORD_GAP       = 700   # ms  – silence for word separator '/'
+BEEP_FREQ      = 700   # Hz  – comfortable mid-range tone
+
+
+def _sleep_ms(ms: int) -> None:
+    """Sleep for *ms* milliseconds."""
+    time.sleep(ms / 1000.0)
+
+
+def _play_beep(duration_ms: int) -> None:
+    """Play a single beep using winsound (Windows) or a terminal bell fallback."""
+    if sys.platform == "win32":
+        import winsound
+        winsound.Beep(BEEP_FREQ, duration_ms)
+    else:
+        # Cross-platform fallback: print the terminal bell character.
+        # Users on Linux/macOS can install 'beepy' for real audio support.
+        sys.stdout.write("\a")
+        sys.stdout.flush()
+        _sleep_ms(duration_ms)
+
+
+def play_morse_audio(morse_output: str) -> None:
+    """
+    Play *morse_output* as audio beeps.
+
+    The string is expected to be space-separated Morse tokens where '/'
+    represents a word boundary (as produced by this translator).
+
+    Timing:
+      · dot   → DOT_DURATION ms beep
+      − dash  → DASH_DURATION ms beep
+      (gap between symbols in same letter) → INTRA_CHAR_GAP ms silence
+      (gap between letters)               → INTER_CHAR_GAP ms silence
+      / word separator                    → WORD_GAP ms silence
+    """
+    tokens = morse_output.split()
+
+    for i, token in enumerate(tokens):
+        if token == '/':
+            # Word gap (already includes the inter-letter gaps on each side,
+            # so just add the extra pause that makes up a full 7-unit gap).
+            _sleep_ms(WORD_GAP)
+        else:
+            # Play each symbol inside the letter
+            for j, symbol in enumerate(token):
+                if symbol == '.':
+                    _play_beep(DOT_DURATION)
+                elif symbol == '-':
+                    _play_beep(DASH_DURATION)
+                # Intra-character gap after every symbol except the last
+                if j < len(token) - 1:
+                    _sleep_ms(INTRA_CHAR_GAP)
+
+            # Inter-character gap after every letter (skip after last token)
+            if i < len(tokens) - 1 and tokens[i + 1] != '/':
+                _sleep_ms(INTER_CHAR_GAP)
 
 
 def main():
@@ -45,6 +113,27 @@ def main():
 
             if unsupported_chars:
                 print(f"⚠️ Unsupported characters: {' '.join(sorted(set(unsupported_chars)))}")
+
+            # ---------------------------------------------------------------
+            # Optional audio playback
+            # ---------------------------------------------------------------
+            play_audio = input("\n🔊 Play as audio? (y/n): ").strip().lower()
+            if play_audio == 'y':
+                if sys.platform != "win32":
+                    print(
+                        "ℹ️  Non-Windows platform detected. Audio playback uses the "
+                        "terminal bell (\\a). For real beeps install 'beepy' and "
+                        "update _play_beep() accordingly."
+                    )
+                print("▶️  Playing Morse code audio… (press Ctrl+C to stop)")
+                try:
+                    play_morse_audio(morse_output)
+                    print("✅ Playback complete.")
+                except KeyboardInterrupt:
+                    print("\n⏹️  Playback stopped by user.")
+                except Exception as exc:
+                    print(f"❌ Audio playback failed: {exc}")
+            # ---------------------------------------------------------------
 
             print()
 
