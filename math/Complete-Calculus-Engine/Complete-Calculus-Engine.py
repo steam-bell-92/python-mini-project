@@ -179,7 +179,8 @@ def main():
 
         terms = parse_polynomial(raw)
         if terms is None:
-            print("❌ Error: Could not parse equation. Check your formatting.")
+            print("❌ Error: Could not parse equation.")
+            print("   ✅ Correct format: 3x^2 - 2x + 5  (separate terms with spaces)")
             continue
             
         print(f"\n✨ Equation: {poly_to_string(terms)}")
