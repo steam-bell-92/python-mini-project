@@ -75,6 +75,14 @@ class Game2048:
         )
         self.restart_button.grid(pady=5)
 
+        self.reset_high_score_button = tk.Button(
+            root,
+            text="Reset High Score",
+            font=("Arial", 12, "bold"),
+            command=self.reset_high_score
+        )
+        self.reset_high_score_button.grid(pady=5)
+
         self.instruction_label = tk.Label(
             root,
             text="🎮 Controls: WASD / ← ↑ → ↓ | Merge same numbers | Goal: 2048 🎯",
@@ -108,6 +116,18 @@ class Game2048:
             HIGH_SCORE_PATH.write_text(str(self.high_score))
         except OSError as e:
             print(f"Warning: Could not save high score: {e}")
+
+    def reset_high_score(self):
+        """Reset the high score to 0 and clear the saved high score file."""
+        self.high_score = 0
+        try:
+            if HIGH_SCORE_PATH.exists():
+                HIGH_SCORE_PATH.unlink()
+        except OSError as e:
+            print(f"Warning: Could not delete high score file: {e}")
+        self.score_label.configure(
+            text=f"Score: {self.score}    High Score: {self.high_score}"
+        )
 
     def create_grid(self):
         for row in range(GRID_SIZE):
