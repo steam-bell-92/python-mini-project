@@ -18,7 +18,8 @@ if hasattr(sys.stderr, "reconfigure"):
 # ─────────────────────────────────────────────
 #  Project Registry
 # ─────────────────────────────────────────────
-REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "projects_registry.json")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REGISTRY_PATH = os.path.join(BASE_DIR, "projects_registry.json")
 
 try:
     with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
@@ -101,12 +102,13 @@ def launch_project(projects):
         idx = int(choice) - 1
         if 0 <= idx < len(projects):
             path = projects[idx]["path"]
-            if os.path.exists(path):
+            project_path = path if os.path.isabs(path) else os.path.join(BASE_DIR, path)
+            if os.path.exists(project_path):
                 print(f"\n  🚀  Launching: {path}\n")
-                subprocess.run([sys.executable, path])
+                subprocess.run([sys.executable, project_path])
             else:
                 print(f"\n  ⚠️  File not found: {path}")
-                print("     Make sure you're running this from the repo root.")
+                print("     Make sure the registry path points to an existing file.")
         else:
             print("  ⚠️  Invalid number.")
     except ValueError:
