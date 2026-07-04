@@ -59,15 +59,6 @@ function initializeProject(projectName) {
     }
 }
 
-function toPascalCase(str) {
-  if (str === "nqueens") return "NQueens";
-  return str
-    .split("-")
-    .map(function (word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    })
-    .join("");
-}
 
 function getProjectHTML(projectName) {
   const fnName = "get" + toPascalCase(projectName) + "HTML";
@@ -636,66 +627,4 @@ function initNQueens() {
         output.innerHTML = "";
         solutionCountEl.textContent = "0";
     });
-}
-
-function initializeProject(projectName) {
-  const initializers = {
-    "tic-tac-toe": "initTicTacToe",
-    "chess": "initChess",
-    "rock-paper-scissor": "initRockPaperScissor",
-    "dice-rolling": "initDiceRolling",
-    "coin-flip": "initCoinFlip",
-    "blackjack-21": "initBlackjack",
-    "number-guessing": "initNumberGuessing",
-    hangman: "initHangman",
-    "word-scramble": "initWordScramble",
-    flames: "initFlames",
-    "dots-boxes": "initDotsBoxes",
-    "emoji-memory": "initEmojiMemoryGame",
-    fibonacci: "initFibonacci",
-    "binary-search": "initBinarySearch",
-    "sorting-visualizer": "initSortingVisualizer",
-    "quick-sort": "initQuickSort",
-    "merge-sort": "initMergeSort",
-    "progression-recognizer": "initProgressionRecognizer",
-    "pascal-triangle": "initPascalTriangle",
-    armstrong: "initArmstrong",
-    calculator: "initCalculator",
-    collatz: "initCollatz",
-    "prime-analyzer": "initPrimeAnalyzer",
-    "projectile-motion": "initProjectileMotion",
-    "coordinate-polar-transform": "initCoordinatePolarTransform",
-    "derivative-calculator": "initDerivativeCalculator",
-    "morse-code": "initMorseCode",
-    "tower-of-hanoi": "initTowerOfHanoi",
-    "number-converter": "initNumberConverter",
-    "typing-speed-tester": "initTypingSpeedTester",
-    "snake-game": "initSnakeGame",
-    "password-forge": "initPasswordForge",
-    "spot-the-difference": "initSpotTheDifference",
-    "whack-a-mole": "initWhackaMole",
-    "flappy-game": "initFlappyGame",
-    "productive-pet": "initProductivePet",
-    "simon-says": "initSimonSays",
-    "2048-game": "init2048Game",
-    "color-palette": "initColorPalette",
-    "math-quiz": "initMathQuiz",
-    "resume-analyzer": "initAIResumeAnalyzer",
-    "caesar-cipher": "initCaesarCipher",
-    "sudoku-game": "initSudokuGame",
-    "resume-analyzer": "initResumeAnalyzer",
-    "caesar-cipher": "initCaesarCipher",
-    "war-card-game": "initWarCardGame",
-    "number-sliding-puzzle": "initNumberSlidingPuzzle",
-    "budget-tracker": "initBudgetTracker",
-    "fourier-series": "initFourierSeries",
-    "pathfinding-visualizer": "initPathfindingVisualizer",
-    "tsp-visualizer": "initTspVisualizer"
-  };
-
-  const initializerName = initializers[projectName];
-  if (initializerName && typeof window[initializerName] === "function") {
-    window[initializerName]();
-  }
-}
 }
