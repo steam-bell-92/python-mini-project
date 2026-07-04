@@ -769,5 +769,110 @@
       "images"
     ],
     "path": "games/Spot-the-Difference/Spot-the-Difference.py"
+  },
+  {
+    "name": "Snake Game",
+    "emoji": "🐍",
+    "category": "games",
+    "difficulty": "beginner",
+    "description": "Classic snake game where the player grows by eating food while avoiding collisions.",
+    "keywords": [
+      "snake",
+      "game",
+      "arcade",
+      "food",
+      "collision"
+    ],
+    "path": "games/Snake-Game/Snake-Game.py"
+  },
+  {
+    "name": "Word Building",
+    "emoji": "🔤",
+    "category": "games",
+    "difficulty": "intermediate",
+    "description": "Build word chains against the computer using valid English words.",
+    "keywords": [
+      "word",
+      "building",
+      "vocabulary",
+      "chain",
+      "game"
+    ],
+    "path": "games/Word-Building/word_building.py"
+  },
+  {
+    "name": "Happy Number",
+    "emoji": "😊",
+    "category": "math",
+    "difficulty": "beginner",
+    "description": "Check whether a number is happy by repeatedly summing the squares of its digits.",
+    "keywords": [
+      "happy",
+      "number",
+      "digits",
+      "sequence",
+      "math"
+    ],
+    "path": "math/Happy-Number/Happy-Number.py"
+  },
+  {
+    "name": "Quick Sort",
+    "emoji": "⚡",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Sort integer lists using the quick sort divide-and-conquer algorithm.",
+    "keywords": [
+      "quick",
+      "sort",
+      "algorithm",
+      "partition",
+      "math"
+    ],
+    "path": "math/Quick-Sort/Quick-Sort.py"
+  },
+  {
+    "name": "Merge Sort",
+    "emoji": "🔀",
+    "category": "math",
+    "difficulty": "intermediate",
+    "description": "Sort integer lists using the merge sort divide-and-conquer algorithm.",
+    "keywords": [
+      "merge",
+      "sort",
+      "algorithm",
+      "divide",
+      "math"
+    ],
+    "path": "math/Merge-Sort/Merge-Sort.py"
+  },
+  {
+    "name": "Markdown PDF Converter",
+    "emoji": "📄",
+    "category": "utilities",
+    "difficulty": "intermediate",
+    "description": "Convert Markdown documents into formatted PDF files.",
+    "keywords": [
+      "markdown",
+      "pdf",
+      "converter",
+      "document",
+      "utility"
+    ],
+    "path": "utilities/Markdown-PDF-Converter/markdown_to_pdf.py"
+  },
+  {
+    "name": "N-Queens",
+    "emoji": "♛",
+    "category": "utilities",
+    "difficulty": "advanced",
+    "description": "Solve the N-Queens puzzle by placing queens safely on an n by n board.",
+    "keywords": [
+      "n queens",
+      "queens",
+      "backtracking",
+      "puzzle",
+      "algorithm"
+    ],
+    "path": "utilities/N-Queens/N-Queens.py"
   }
 ]
