@@ -36,6 +36,10 @@
 </head>
 
 <body class="sidebar-active">
+  <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
+        aria-expanded="true">
+        <i class="fas fa-bars"></i>
+      </button>
   <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
     <i class="fas fa-moon" aria-hidden="true"></i>
   </button>
@@ -67,10 +71,6 @@
         <i class="fas fa-search"></i>
         <input aria-label="Search projects" id="navSearchInput" placeholder="Search projects or games..." type="text" />
       </div>
-      <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
-        aria-expanded="true">
-        <i class="fas fa-bars"></i>
-      </button>
       <div class="nav-controls" id="navControls">
         <button aria-label="Mute sounds" class="sound-toggle" type="button">
           <i class="fas fa-volume-up"></i>
@@ -133,24 +133,38 @@
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
         <button aria-selected="true" class="sidebar-tab active" data-category="all" role="tab" tabindex="0">
           <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
-          <span class="sidebar-label">All Projects</span>
+          <span class="sidebar-label">All Projects
+            <span id="allProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg>
           </span>
-          <span class="sidebar-label">Games Arcade</span>
+          <span class="sidebar-label">
+            Games Arcade
+            <span id="gamesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-          <span class="sidebar-label">Maths Lab</span>
+          <span class="sidebar-label">
+            Maths Lab
+            <span id="mathProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
-          <span class="sidebar-label">Utilities Lab</span>
+          <span class="sidebar-label">
+            Utilities Lab
+            <span id="utilitiesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
-          <span class="sidebar-label">My Favorites</span>
+          <span class="sidebar-label">
+            My Favorites
+            <span id="favoritesCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="terminal"></svg></span>
@@ -273,6 +287,52 @@
       </div>
     </div>
 
+    <section class="stats-dashboard-section">
+  <div class="container">
+
+    <div class="section-header">
+      <h2 class="section-heading">
+        📊 Project Statistics Dashboard
+      </h2>
+    </div>
+
+    <div class="stats-dashboard">
+
+      <div class="stats-card" data-filter="all">
+        <h3 id="statsTotal">0</h3>
+        <p>Total Projects</p>
+      </div>
+
+      <div class="stats-card" data-filter="games">
+        <h3 id="statsGames">0</h3>
+        <p>Games</p>
+      </div>
+
+      <div class="stats-card" data-filter="math">
+        <h3 id="statsMath">0</h3>
+        <p>Math</p>
+      </div>
+
+      <div class="stats-card" data-filter="utilities">
+        <h3 id="statsUtilities">0</h3>
+        <p>Utilities</p>
+      </div>
+
+      <div class="stats-card" data-filter="favorites">
+        <h3 id="statsFavorites">0</h3>
+        <p>Favorites</p>
+      </div>
+
+      <div class="stats-card">
+        <h3 id="statsViewed">0</h3>
+        <p>Recently Viewed</p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
     <!-- Timeline Section -->
     <section class="hero-timeline-section" id="timelineSection">
       <div class="timeline-background" aria-hidden="true"></div>
@@ -384,17 +444,19 @@
         </div>
       </div>
     </section>
+    
+<!-- Recently Viewed Section -->
+<section class="projects-section" id="recentlyViewedSection">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">
+        Recently Viewed
+      </h2>
+    </div>
+    <div class="projects-grid" id="recentlyViewedGrid"></div>
+  </div>
+</section>
 
-    <!-- Recently Viewed Section -->
-    <section class="projects-section" id="recentlyViewedSection">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading">
-            Recently Viewed
-          </h2>
-        </div>
-        <div class="projects-grid" id="recentlyViewedGrid"></div>
-      </div>
     </section>
 
     <!-- Projects Section -->
@@ -531,8 +593,15 @@
           <div class="footer-social-icons">
             <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
               rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
-            <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)"><i
-                class="fa fa-x-twitter"></i></a>
+            <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)">
+              <svg xmlns="http://www.w3.org/2000/svg"
+       width="15"
+       height="15"
+       viewBox="0 0 24 24"
+       fill="currentColor">
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
+  </svg>
+</a>
             <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
                 class="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
@@ -542,14 +611,14 @@
         <div class="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()">Games</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
             </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()">Math</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a>
             </li>
             <li><a href="#main-content"
-                onclick="document.querySelector('[data-category=\'utilities\']').click()">Utilities</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()">Favorites</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()">Playground</a></li>
+                onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
           </ul>
         </div>
         <div class="footer-links">
@@ -571,7 +640,7 @@
           <h3>Stay Updated</h3>
           <p>Get notified about new projects and features!</p>
           <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-            <input type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
+            <input class="footer-input" type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
             <button type="submit" aria-label="Subscribe">
               <i class="fas fa-paper-plane"></i>
             </button>
@@ -616,7 +685,7 @@
   <script defer src="js/projects/projectile-motion.js"></script>
   <script defer src="js/projects/progression-recognizer.js"></script>
   <script defer src="js/projects/coordinate-polar-transform.js"></script>
-  <script defer src="js/projects/derivative-calculator.js"></script>
+  <script defer src="js/projects/complete-calculus-engine.js"></script>
   <script defer src="js/projects/morse-code.js"></script>
   <script defer src="js/projects/tower-of-hanoi.js"></script>
   <script defer src="js/projects/math-quiz.js"></script>
@@ -663,17 +732,17 @@
     (function () {
       const projectsGrid = document.getElementById("projectsGrid");
       if (!projectsGrid) return;
-
       // ALL projects from your js/projects/ folder
       const projectsData = [
         // GAMES (20+)
         {
-          project: "number-sliding-puzzle",
-          title: "Number Sliding Puzzle",
-          category: "games",
-          desc: "Arrange tiles in order by sliding them into empty space",
-          tags: "game,puzzle,sliding,numbers",
-        },
+  project: "number-sliding-puzzle",
+  title: "Number Sliding Puzzle",
+  category: "games",
+  difficulty: "Intermediate",
+  desc: "Arrange tiles in order by sliding them into empty space",
+  tags: "game,puzzle,sliding,numbers",
+},
         {
           project: "2048-game",
           title: "2048 Game",
@@ -792,6 +861,8 @@
           category: "games",
           desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
           tags: "game,puzzle,backtracking,solver",
+        },
+        {
           project: "war-card-game",
           title: "War Card Game",
           category: "games",
@@ -899,8 +970,8 @@
           tags: "math,coordinates",
         },
         {
-          project: "derivative-calculator",
-          title: "Derivative Calculator",
+          project: "complete-calculus-engine",
+          title: "Complete Calculus Engine",
           category: "math",
           desc: "Calculate derivatives",
           tags: "math,calculus",
@@ -1049,22 +1120,60 @@
         const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
         card.innerHTML = `
-            <img class="card-banner" src="assets/banners/${proj.project}.webp" alt="${proj.title}" loading="lazy">
-            <div class="card-actions">
-                <button class="btn-play" data-project="${proj.project}" aria-label="Play PyMini Logo">Try It</button>
-                <button class="btn-favorite" data-project="${proj.project}" aria-label="Add to favorites">
-                    <i class="${starClass}"></i>
-                </button>
-            </div>
-            <h3>${proj.title}</h3>
-            <p>${proj.desc}</p>
-        `;
+    ${proj.difficulty ? `
+    <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
+        ${proj.difficulty}
+    </div>
+    ` : ''}
+
+    <img class="card-banner"
+         src="assets/banners/${proj.project}.webp?v=2"
+         alt="${proj.title}"
+         loading="lazy">
+
+    <div class="card-actions">
+        <button class="btn-play"
+                data-project="${proj.project}">
+            Try It
+        </button>
+
+        <button class="btn-favorite"
+                data-project="${proj.project}">
+            <i class="${starClass}"></i>
+        </button>
+    </div>
+
+    <h3>${proj.title}</h3>
+
+    <p>${proj.desc}</p>
+`;
 
         projectsGrid.appendChild(card);
       });
 
       // Update counts
       const total = projectsData.length;
+      function animateCounter(id,value){
+
+let start=0;
+
+const element=document.getElementById(id);
+
+const timer=setInterval(()=>{
+
+start++;
+
+element.textContent=start;
+
+if(start>=value){
+
+clearInterval(timer);
+
+}
+
+},25);
+
+}
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
       const utils = projectsData.filter(
@@ -1082,6 +1191,26 @@
       if (heroMath) heroMath.textContent = math;
       if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
+      animateCounter("statsTotal",total);
+
+animateCounter("statsGames",games);
+
+animateCounter("statsMath",math);
+
+animateCounter("statsUtilities",utils);
+
+animateCounter(
+"statsFavorites",
+favorites.length
+);
+
+const viewed=
+JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+
+animateCounter(
+"statsViewed",
+viewed.length
+);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
@@ -1125,6 +1254,7 @@
             }
 
             localStorage.setItem("favorites", JSON.stringify(favs));
+            renderBookmarkedProjects();
 
             // If we're on favorites tab, refresh the view
             const activeCategory = document

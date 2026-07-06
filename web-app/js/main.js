@@ -453,14 +453,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  /* ── Mobile Sidebar Toggle ────────────────────────────────── */
-  if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener("click", function (e) {
-      e.stopPropagation();
-      document.body.classList.toggle("sidebar-active");
-    });
-  }
-
   document.addEventListener("click", function (e) {
     if (window.innerWidth < 1100) {
       var isClickInsideSidebar = mainSidebar && mainSidebar.contains(e.target);
@@ -558,6 +550,9 @@ document.addEventListener("DOMContentLoaded", function () {
   syncCountNodes(heroGameCounts, String(gameCount));
   syncCountNodes(heroMathCounts, String(mathCount));
   syncCountNodes(heroUtilityCounts, String(utilityCount));
+
+  updateSidebarCategoryCounts();
+
   if (projectCountBadge)
     projectCountBadge.textContent = String(totalCount) + " projects";
 
@@ -572,6 +567,27 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ── Category Filtering ───────────────────────────────────── */
   var sidebarTabs = document.querySelectorAll(".sidebar-dock .sidebar-tab");
   var sidebarBadge = null;
+
+  function updateSidebarCategoryCounts() {
+    const allBadge = document.getElementById("allProjectsCountBadge");
+    const gamesBadge = document.getElementById("gamesProjectsCountBadge");
+    const mathBadge = document.getElementById("mathProjectsCountBadge");
+    const utilitiesBadge = document.getElementById("utilitiesProjectsCountBadge");
+    const favoritesBadge = document.getElementById("favoritesCountBadge");
+
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    const allCount = projectCards.length;
+    const gamesCount = projectCards.filter(card => card.dataset.category === "games").length;
+    const mathCount = projectCards.filter(card => card.dataset.category === "math").length;
+    const utilitiesCount = projectCards.filter(card => card.dataset.category === "utilities").length;
+
+    if (allBadge) allBadge.textContent = `(${allCount})`;
+    if (gamesBadge) gamesBadge.textContent = `(${gamesCount})`;
+    if (mathBadge) mathBadge.textContent = `(${mathCount})`;
+    if (utilitiesBadge) utilitiesBadge.textContent = `(${utilitiesCount})`;
+    if (favoritesBadge) favoritesBadge.textContent = `(${favorites.length})`;
+  }
 
   function applyCategoryFilter(category) {
     if (category === "playground") return;
@@ -1290,15 +1306,29 @@ document.addEventListener("DOMContentLoaded", function () {
       if (typeof initializeProject === "function") {
         initializeProject(name);
       }
-      setupModalInfoButton(name);
+      // setupModalInfoButton(name);
 
-      // Inject info button
+      // Inject info button - FIXED for Tic Tac Toe and all projects
       var projectContent = modalBody.querySelector(".project-content");
       if (projectContent) {
+        // First, check if there's already an info button (to avoid duplicates)
+        if (projectContent.querySelector(".inline-info-btn")) {
+        // Info button already exists, skip injection
+        console.log('ℹ️ Info button already exists for', name);
+      } else {
+        // Look for any heading element
         var firstHeading = projectContent.querySelector("h2, h3, .resume-analyzer-copy h2, .pet-title");
+    
+        // Special case for Tic Tac Toe - look for the heading inside project-content
         if (!firstHeading) {
+          firstHeading = projectContent.querySelector('[style*="display: flex"] h2');
+        }
+    
+        if (!firstHeading) {
+          // Look for any element that might be a title
           firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
         }
+    
         if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
           var infoBtn = document.createElement("button");
           infoBtn.className = "inline-info-btn";
@@ -1316,7 +1346,9 @@ document.addEventListener("DOMContentLoaded", function () {
             e.stopPropagation();
             if (typeof getProjectInstructions === "function") {
               var info = getProjectInstructions(name);
-              showInfoModal(info.title, info.steps);
+              if (info && typeof showInfoModal === "function") {
+                showInfoModal(info.title, info.steps);
+              }
             }
           });
 
@@ -1326,7 +1358,8 @@ document.addEventListener("DOMContentLoaded", function () {
           firstHeading.appendChild(infoBtn);
         }
       }
-    });
+    }
+  });
 
     // Setup focus trap
     if (removeTrap) removeTrap();
@@ -1438,6 +1471,22 @@ document.addEventListener("DOMContentLoaded", function () {
        ═══════════════════════════════════════════════════════════════ */
   function wireProjectCard(card) {
     var name = card.getAttribute("data-project");
+    const difficulty =
+card.getAttribute("data-difficulty");
+
+if(difficulty){
+
+const badge=document.createElement("span");
+
+badge.className=
+"difficulty-badge "+
+difficulty.toLowerCase();
+
+badge.textContent=difficulty;
+
+card.appendChild(badge);
+
+}
 
     /* ── Favorite Button ──────────────────────────────────── */
     // Remove any existing favorite button first to avoid duplicates
@@ -1474,6 +1523,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
       localStorage.setItem("favorites", JSON.stringify(favs));
+      updateSidebarCategoryCounts();  
     });
 
     var cardActions = card.querySelector(".card-actions");
@@ -1542,11 +1592,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   projectCards.forEach(wireProjectCard);
 
+  updateSidebarCategoryCounts();
+
   window.updateRecentlyViewed = function () {
     var grid = document.getElementById("recentlyViewedGrid");
     var section = document.getElementById("recentlyViewedSection");
     if (!grid || !section) return;
     var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+    const historyBadge =
+document.getElementById("historyCountBadge");
+
+if(historyBadge){
+
+historyBadge.textContent=`(${recent.length})`;
+
+}
     console.log("[DEBUG] recentProjects array:", recent); if (recent.length === 0) {
       section.style.display = "none";
       return;
@@ -1946,4 +2006,29 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial card filtering state update
   updateProjectVisibility(currentCategory, currentSearchQuery);
   window.updateRecentlyViewed();
+
+  const clearBtn =
+document.getElementById("clearHistoryBtn");
+
+if(clearBtn){
+
+clearBtn.addEventListener("click",()=>{
+
+showConfirm(
+"Clear recently viewed projects?",
+()=>{
+
+localStorage.removeItem("recentProjects");
+
+window.updateRecentlyViewed();
+
+showToast("History Cleared");
+
+}
+
+);
+
+});
+
+}
 });
