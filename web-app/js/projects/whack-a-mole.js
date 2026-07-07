@@ -97,7 +97,7 @@ function getWhackAMoleHTML() {
     
 }
 
-function initWhackaMole() {
+function initWhackAMole() {
     const board = document.getElementById('whackBoard');
     const startBtn = document.getElementById('startWhackBtn');
     const resetBtn = document.getElementById('resetWhackBtn');
