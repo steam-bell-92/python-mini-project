@@ -550,6 +550,9 @@ document.addEventListener("DOMContentLoaded", function () {
   syncCountNodes(heroGameCounts, String(gameCount));
   syncCountNodes(heroMathCounts, String(mathCount));
   syncCountNodes(heroUtilityCounts, String(utilityCount));
+
+  updateSidebarCategoryCounts();
+
   if (projectCountBadge)
     projectCountBadge.textContent = String(totalCount) + " projects";
 
@@ -564,6 +567,27 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ── Category Filtering ───────────────────────────────────── */
   var sidebarTabs = document.querySelectorAll(".sidebar-dock .sidebar-tab");
   var sidebarBadge = null;
+
+  function updateSidebarCategoryCounts() {
+    const allBadge = document.getElementById("allProjectsCountBadge");
+    const gamesBadge = document.getElementById("gamesProjectsCountBadge");
+    const mathBadge = document.getElementById("mathProjectsCountBadge");
+    const utilitiesBadge = document.getElementById("utilitiesProjectsCountBadge");
+    const favoritesBadge = document.getElementById("favoritesCountBadge");
+
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    const allCount = projectCards.length;
+    const gamesCount = projectCards.filter(card => card.dataset.category === "games").length;
+    const mathCount = projectCards.filter(card => card.dataset.category === "math").length;
+    const utilitiesCount = projectCards.filter(card => card.dataset.category === "utilities").length;
+
+    if (allBadge) allBadge.textContent = `(${allCount})`;
+    if (gamesBadge) gamesBadge.textContent = `(${gamesCount})`;
+    if (mathBadge) mathBadge.textContent = `(${mathCount})`;
+    if (utilitiesBadge) utilitiesBadge.textContent = `(${utilitiesCount})`;
+    if (favoritesBadge) favoritesBadge.textContent = `(${favorites.length})`;
+  }
 
   function applyCategoryFilter(category) {
     if (category === "playground") return;
@@ -1501,6 +1525,24 @@ card.appendChild(badge);
     }
 
     favBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      var idx = favs.indexOf(name);
+      if (idx === -1) {
+        favs.push(name);
+        favBtn.classList.add("active");
+        favBtn.innerHTML = '<i class="fas fa-star"></i>';
+      } else {
+        favs.splice(idx, 1);
+        favBtn.classList.remove("active");
+        favBtn.innerHTML = '<i class="far fa-star"></i>';
+        if (currentCategory === "favorites") {
+          card.style.display = "none";
+        }
+      }
+      localStorage.setItem("favorites", JSON.stringify(favs));
+      updateSidebarCategoryCounts();  
+    });
   e.stopPropagation();
   var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
   var idx = favs.indexOf(name);
@@ -1596,7 +1638,7 @@ card.appendChild(badge);
 
   projectCards.forEach(wireProjectCard);
 
-  updateFavoritesCountBadge();
+  updateSidebarCategoryCounts();
 
   window.updateRecentlyViewed = function () {
     var grid = document.getElementById("recentlyViewedGrid");

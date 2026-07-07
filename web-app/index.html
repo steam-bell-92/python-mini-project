@@ -133,20 +133,31 @@
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
         <button aria-selected="true" class="sidebar-tab active" data-category="all" role="tab" tabindex="0">
           <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
-          <span class="sidebar-label">All Projects</span>
+          <span class="sidebar-label">All Projects
+            <span id="allProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg>
           </span>
-          <span class="sidebar-label">Games Arcade</span>
+          <span class="sidebar-label">
+            Games Arcade
+            <span id="gamesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-          <span class="sidebar-label">Maths Lab</span>
+          <span class="sidebar-label">
+            Maths Lab
+            <span id="mathProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
-          <span class="sidebar-label">Utilities Lab</span>
+          <span class="sidebar-label">
+            Utilities Lab
+            <span id="utilitiesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
