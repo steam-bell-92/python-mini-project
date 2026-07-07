@@ -1970,6 +1970,22 @@ body.sidebar-active .sidebar-dock {
     padding-left: 128px !important;
   }
 
+  body.sidebar-active:not(.sidebar-collapsed) .recently-viewed-section {
+    padding-left: 296px !important;
+  }
+
+  body.sidebar-collapsed .recently-viewed-section {
+    padding-left: 128px !important;
+  }
+
+  body.sidebar-active:not(.sidebar-collapsed) .recently-opened-section {
+    padding-left: 296px !important;
+  }
+
+  body.sidebar-collapsed .recently-opened-section {
+    padding-left: 128px !important;
+  }
+
   body.sidebar-active:not(.sidebar-collapsed) .hero-section,
   body.sidebar-active:not(.sidebar-collapsed) .hero-timeline-section,
   body.sidebar-active:not(.sidebar-collapsed) .playground-section {
@@ -5765,7 +5781,8 @@ button:focus-visible,
 }
 
 .achievement-strip,
-.projects-section {
+.projects-section,
+.recently-viewed-container {
   padding: 1.2rem 0 2.5rem;
 }
 
@@ -6557,6 +6574,16 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
   margin: 0 auto !important;
 }
 
+.recently-viewed-section .container,
+.recently-opened-section .section-header{
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  margin: 0 auto !important;
+}
+
+
 /* Projects grid - FILL THE SPACE */
 .projects-grid {
   display: grid !important;
@@ -6644,6 +6671,7 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
 @media (min-width: 768px) {
 
   .projects-section,
+  .recently-viewed-container,
   .hero-section,
   .hero-timeline-section,
   .playground-section,
