@@ -1550,49 +1550,36 @@ card.appendChild(badge);
       e.stopPropagation();
       var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
       var idx = favs.indexOf(name);
+      
       if (idx === -1) {
+        // Add to favorites
         favs.push(name);
         favBtn.classList.add("active");
         favBtn.innerHTML = '<i class="fas fa-star"></i>';
+        favBtn.style.color = "#f5a623"; // Yellow
+        console.log("⭐ Added " + name + " to favorites");
       } else {
+        // Remove from favorites
         favs.splice(idx, 1);
         favBtn.classList.remove("active");
         favBtn.innerHTML = '<i class="far fa-star"></i>';
+        favBtn.style.color = ""; // Reset to default
+        console.log("☆ Removed " + name + " from favorites");
         if (currentCategory === "favorites") {
           card.style.display = "none";
         }
       }
+      
       localStorage.setItem("favorites", JSON.stringify(favs));
-      updateSidebarCategoryCounts();  
+      
+      // Update badge and counts
+      if (typeof updateSidebarCategoryCounts === 'function') {
+        updateSidebarCategoryCounts();
+      }
+      if (typeof updateFavoritesCountBadge === 'function') {
+        updateFavoritesCountBadge();
+      }
     });
-  e.stopPropagation();
-  var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-  var idx = favs.indexOf(name);
-  
-  if (idx === -1) {
-    // Add to favorites
-    favs.push(name);
-    favBtn.classList.add("active");
-    favBtn.innerHTML = '<i class="fas fa-star"></i>';
-    favBtn.style.color = "#f5a623"; // Yellow
-    console.log("⭐ Added " + name + " to favorites");
-  } else {
-    // Remove from favorites
-    favs.splice(idx, 1);
-    favBtn.classList.remove("active");
-    favBtn.innerHTML = '<i class="far fa-star"></i>';
-    favBtn.style.color = ""; // Reset to default
-    console.log("☆ Removed " + name + " from favorites");
-    if (currentCategory === "favorites") {
-      card.style.display = "none";
-    }
-  }
-  
-  localStorage.setItem("favorites", JSON.stringify(favs));
-  
-  // Update badge
-  updateFavoritesCountBadge();
-});
 
     var cardActions = card.querySelector(".card-actions");
     if (cardActions) cardActions.appendChild(favBtn);
