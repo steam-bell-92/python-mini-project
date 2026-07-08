@@ -51,6 +51,11 @@ function toPascalCase(str) {
 }
 
 function initializeProject(projectName) {
+    if (projectName === "number-sliding-puzzle") {
+        initNumberSlidingPuzzle();
+        return;
+    }
+
     const fnName = "init" + toPascalCase(projectName);
     const init = window[fnName];
 
@@ -61,6 +66,10 @@ function initializeProject(projectName) {
 
 
 function getProjectHTML(projectName) {
+  if (projectName === "number-sliding-puzzle") {
+    return getNumberSlidingPuzzleHTML();
+  }
+
   const fnName = "get" + toPascalCase(projectName) + "HTML";
 
   try {
