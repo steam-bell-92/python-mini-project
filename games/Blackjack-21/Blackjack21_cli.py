@@ -25,7 +25,7 @@ def main():
             # Player draw
             card = deck.pop()
             player_cards.append(card)
-            rank = card[:-2]
+            rank = card.rstrip('♠️♥️♦️♣️\ufe0f').strip()
             if rank in ['Q','K','J']:
                 player_hand.append(10)
             elif rank == 'A':
@@ -36,7 +36,7 @@ def main():
             # Dealer draw
             card = deck.pop()
             dealer_cards.append(card)
-            rank = card[:-2]
+            rank = card.rstrip('♠️♥️♦️♣️\ufe0f').strip()
             if rank in ['Q','K','J']:
                 dealer_hand.append(10)
             elif rank == 'A':
@@ -62,7 +62,7 @@ def main():
             if choice in ['h', 'hit']:
                 card = deck.pop()
                 player_cards.append(card)
-                rank = card[:-2]
+                rank = card.rstrip('♠️♥️♦️♣️\ufe0f').strip()
                 if rank in ['Q','K','J']:
                     player_hand.append(10)
                 elif rank == 'A':
@@ -101,7 +101,7 @@ def main():
                 print("🃏 Dealer hits...")
                 card = deck.pop()
                 dealer_cards.append(card)
-                rank = card[:-2]
+                rank = card.rstrip('♠️♥️♦️♣️\ufe0f').strip()
                 if rank in ['Q','K','J']:
                     dealer_hand.append(10)
                 elif rank == 'A':
