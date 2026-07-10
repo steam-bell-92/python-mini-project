@@ -35,14 +35,17 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
-<body class="sidebar-active">
-  <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
-        aria-expanded="true">
-        <i class="fas fa-bars"></i>
-      </button>
+<body>
+  <!-- Mobile Menu Toggle -->
+  <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar" aria-expanded="true">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <!-- Theme Toggle -->
   <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
     <i class="fas fa-moon" aria-hidden="true"></i>
   </button>
+  
   <!-- Scroll Progress Bar -->
   <div id="scrollProgressContainer" aria-label="Page scroll progress">
     <div id="scrollProgressBar"></div>
@@ -53,81 +56,8 @@
   <!-- Cursor Glow -->
   <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Navigation -->
-  <nav aria-label="Primary" class="navbar" id="mainNavbar">
-    <div class="nav-island">
-      <div class="navbar-brand">
-        <a class="logo-wrap" href="#">
-          <img alt="PyMini Logo" class="navbar-logo" src="assets/favicon.svg" / loading="lazy">
-          <div class="logo-text">
-            <span class="logo-py">py</span>
-            <span class="logo-mini">.mini</span>
-            <span class="logo-parens">()</span>
-          </div>
-          <span class="logo-tagline">games, math &amp; terminal toys</span>
-        </a>
-      </div>
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input aria-label="Search projects" id="navSearchInput" placeholder="Search projects or games..." type="text" />
-      </div>
-      <div class="nav-controls" id="navControls">
-        <button aria-label="Mute sounds" class="sound-toggle" type="button">
-          <i class="fas fa-volume-up"></i>
-        </button>
-        <button aria-label="Switch theme" class="theme-toggle" type="button">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
-
-  <aside class="sidebar-dock" id="mainSidebar">
-    <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close sidebar" type="button">
-      <i class="fas fa-times" aria-hidden="true"></i>
-    </button>
-    <div class="sidebar-search">
-      <div class="search-box" style="position: relative">
-        <i class="fas fa-search" aria-hidden="true"></i>
-        <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"
-          role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false" />
-        <div class="search-dropdown" id="searchDropdown" aria-live="polite">
-          <div class="dropdown-content" id="searchDropdownContent">
-            <div class="search-loader" id="searchLoader" style="display: none">
-              <div class="spinner"></div>
-            </div>
-            <div class="recent-searches-section" id="recentSearchesSection">
-              <div class="dropdown-section-title">
-                <span>Recent</span>
-                <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
-                  All</button>
-              </div>
-              <div class="dropdown-list" id="recentSearchesList"></div>
-            </div>
-            <div class="results-section" id="resultsSection" style="display: none">
-              <div class="dropdown-section-title">Projects</div>
-              <div class="dropdown-list" id="resultsList" role="listbox"></div>
-            </div>
-            <div class="tips-section" id="tipsSection">
-              <p><strong>Search tips</strong></p>
-              <ul>
-                <li>
-                  Type a project name — <code>snake</code>, <code>quiz</code>
-                </li>
-                <li>
-                  Filter by tag — <code>game</code>, <code>math</code>,
-                  <code>utility</code>
-                </li>
-              </ul>
-            </div>
-            <div class="no-results-message" id="noResultsMessage" style="display: none">
-              No projects found. Try a different keyword.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <!-- SIDEBAR - Fixed Position on Left -->
+  <aside class="sidebar" id="mainSidebar">
     <div class="sidebar-menu-wrapper">
       <div class="sidebar-menu-title">Categories</div>
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
@@ -138,8 +68,7 @@
           </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
-          <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg>
-          </span>
+          <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg></span>
           <span class="sidebar-label">
             Games Arcade
             <span id="gamesProjectsCountBadge">0</span>
@@ -189,12 +118,13 @@
       </div>
     </div>
   </aside>
+  
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
+  <!-- MAIN CONTENT -->
   <main id="main-content" tabindex="-1">
-    <!-- Hero Section -->
-    <section class="hero-section" aria-label="Welcome">
-      <canvas aria-hidden="true" id="boardCanvas"></canvas>
+    <!-- Hero Section - COMPACT VERSION -->
+    <section class="hero-section compact-hero" aria-label="Welcome">
       <div class="hero-background" aria-hidden="true"></div>
       <div aria-hidden="true" class="hero-orb hero-orb-one"></div>
       <div aria-hidden="true" class="hero-orb hero-orb-two"></div>
@@ -261,202 +191,65 @@
     <div class="sticky-filter-bar visible" id="stickyFilterBar" aria-label="Project category filters">
       <div class="sticky-filter-inner">
         <button aria-selected="true" class="sticky-tab active" data-sticky-category="all" role="tab" tabindex="0"
-          type="button">
-          All
-        </button>
+          type="button">All</button>
         <button aria-selected="false" class="sticky-tab" data-sticky-category="games" role="tab" tabindex="-1"
-          type="button">
-          Games
-        </button>
+          type="button">Games</button>
         <button aria-selected="false" class="sticky-tab" data-sticky-category="math" role="tab" tabindex="-1"
-          type="button">
-          Math
-        </button>
+          type="button">Math</button>
         <button aria-selected="false" class="sticky-tab" data-sticky-category="utilities" role="tab" tabindex="-1"
-          type="button">
-          Utilities
-        </button>
+          type="button">Utilities</button>
         <button aria-selected="false" class="sticky-tab" data-sticky-category="favorites" role="tab" tabindex="-1"
-          type="button">
-          Favorites
-        </button>
+          type="button">Favorites</button>
         <button aria-selected="false" class="sticky-tab" data-sticky-category="playground" role="tab" tabindex="-1"
-          type="button">
-          Playground
-        </button>
+          type="button">Playground</button>
       </div>
     </div>
 
+    <!-- Stats Dashboard -->
     <section class="stats-dashboard-section">
-  <div class="container">
-
-<div class="section-header">
-  <h2 class="section-heading">
-    <span class="heading-text">Project Statistics</span>
-  </h2>
-</div>
-
-    <div class="stats-dashboard">
-
-      <div class="stats-card" data-filter="all">
-        <h3 id="statsTotal">0</h3>
-        <p>Total Projects</p>
-      </div>
-
-      <div class="stats-card" data-filter="games">
-        <h3 id="statsGames">0</h3>
-        <p>Games</p>
-      </div>
-
-      <div class="stats-card" data-filter="math">
-        <h3 id="statsMath">0</h3>
-        <p>Math</p>
-      </div>
-
-      <div class="stats-card" data-filter="utilities">
-        <h3 id="statsUtilities">0</h3>
-        <p>Utilities</p>
-      </div>
-
-      <div class="stats-card" data-filter="favorites">
-        <h3 id="statsFavorites">0</h3>
-        <p>Favorites</p>
-      </div>
-
-      <div class="stats-card">
-        <h3 id="statsViewed">0</h3>
-        <p>Recently Viewed</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-    <!-- Timeline Section -->
-    <section class="hero-timeline-section" id="timelineSection">
-      <div class="timeline-background" aria-hidden="true"></div>
-      <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
-      <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
-      <div class="timeline-container">
-        <div class="timeline-route-badge">TRACK-ROUTE</div>
-        <div class="timeline-grid">
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="house"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">01</span>
-                <h3 class="timeline-title">Welcome</h3>
-                <p class="timeline-desc">
-                  Jump into a tiny Python arcade built for curious beginners
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading">
+            <span class="heading-text">Project Statistics</span>
+          </h2>
+        </div>
+        <div class="stats-dashboard">
+          <div class="stats-card" data-filter="all">
+            <h3 id="statsTotal">0</h3>
+            <p>Total Projects</p>
           </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="compass"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">02</span>
-                <h3 class="timeline-title">Explore</h3>
-                <p class="timeline-desc">
-                  Browse games, math puzzles &amp; utilities — each one ready
-                  in your browser
-                </p>
-              </div>
-            </div>
+          <div class="stats-card" data-filter="games">
+            <h3 id="statsGames">0</h3>
+            <p>Games</p>
           </div>
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="play"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">03</span>
-                <h3 class="timeline-title">Play</h3>
-                <p class="timeline-desc">
-                  Launch any project instantly, experiment with code, and
-                  share your wins
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
+          <div class="stats-card" data-filter="math">
+            <h3 id="statsMath">0</h3>
+            <p>Math</p>
           </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="book-open"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">04</span>
-                <h3 class="timeline-title">Learn</h3>
-                <p class="timeline-desc">
-                  Pick up Python concepts as you play — loops, logic, data
-                  &amp; more
-                </p>
-              </div>
-            </div>
+          <div class="stats-card" data-filter="utilities">
+            <h3 id="statsUtilities">0</h3>
+            <p>Utilities</p>
           </div>
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="hammer"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">05</span>
-                <h3 class="timeline-title">Build</h3>
-                <p class="timeline-desc">
-                  Create your own mini projects and share them with the
-                  community
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
+          <div class="stats-card" data-filter="favorites">
+            <h3 id="statsFavorites">0</h3>
+            <p>Favorites</p>
           </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="share-2"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">06</span>
-                <h3 class="timeline-title">Share</h3>
-                <p class="timeline-desc">
-                  Show off your work, get feedback, and keep growing as a dev
-                </p>
-              </div>
-            </div>
+          <div class="stats-card">
+            <h3 id="statsViewed">0</h3>
+            <p>Recently Viewed</p>
           </div>
         </div>
       </div>
     </section>
     
-<!-- Recently Viewed Section -->
-<section class="projects-section" id="recentlyViewedSection">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-heading">
-        Recently Viewed
-      </h2>
-    </div>
-    <div class="projects-grid" id="recentlyViewedGrid"></div>
-  </div>
-</section>
-
+    <!-- Recently Viewed Section -->
+    <section class="projects-section" id="recentlyViewedSection">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading">Recently Viewed</h2>
+        </div>
+        <div class="projects-grid" id="recentlyViewedGrid"></div>
+      </div>
     </section>
 
     <!-- Projects Section -->
@@ -474,9 +267,7 @@
         <div class="projects-grid" id="projectsGrid"></div>
         <div id="emptyState" class="empty-state" style="display: none">
           <p>No Projects right now :)</p>
-          <p class="empty-state-hint">
-            Try adjusting your search or category filter.
-          </p>
+          <p class="empty-state-hint">Try adjusting your search or category filter.</p>
         </div>
       </div>
     </section>
@@ -504,8 +295,7 @@
         <div class="playground-body">
           <div class="editor-panel">
             <div class="panel-header">
-              <span><i aria-hidden="true" class="fas fa-code"></i> Code
-                Editor</span>
+              <span><i aria-hidden="true" class="fas fa-code"></i> Code Editor</span>
               <div class="editor-actions">
                 <button class="btn-panel-action" id="loadExample" title="Load a sample snippet" type="button">
                   <i aria-hidden="true" class="fas fa-lightbulb"></i> Example
@@ -524,8 +314,7 @@
 
           <div class="console-panel">
             <div class="panel-header">
-              <span><i aria-hidden="true" class="fas fa-terminal"></i> Output
-                Console</span>
+              <span><i aria-hidden="true" class="fas fa-terminal"></i> Output Console</span>
               <button class="btn-panel-action" id="clearConsole" title="Clear the console" type="button">
                 <i aria-hidden="true" class="fas fa-times-circle"></i> Clear
               </button>
@@ -544,22 +333,11 @@
           <select id="draftSelector" class="draft-selector" aria-label="Select draft">
             <option value="">Select Draft</option>
           </select>
-
-          <button id="saveDraft" class="btn-panel-action" type="button">
-            Save Draft
-          </button>
-
-          <button id="loadDraft" class="btn-panel-action" type="button">
-            Load Draft
-          </button>
-
-          <button id="deleteDraft" class="btn-panel-action" type="button">
-            Delete Draft
-          </button>
+          <button id="saveDraft" class="btn-panel-action" type="button">Save Draft</button>
+          <button id="loadDraft" class="btn-panel-action" type="button">Load Draft</button>
+          <button id="deleteDraft" class="btn-panel-action" type="button">Delete Draft</button>
         </div>
-        <div id="draftStatus" class="draft-status">
-          No draft loaded
-        </div>
+        <div id="draftStatus" class="draft-status">No draft loaded</div>
       </div>
     </section>
   </main>
@@ -569,9 +347,7 @@
     role="dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button aria-label="Close project dialog" class="modal-close" id="modalClose" type="button">
-          &times;
-        </button>
+        <button aria-label="Close project dialog" class="modal-close" id="modalClose" type="button">&times;</button>
       </div>
       <div id="modalBody"></div>
     </div>
@@ -588,20 +364,15 @@
       <div class="footer-content">
         <div class="footer-brand">
           <h2>🎮 Python Mini Projects</h2>
-          <p>Learn Python the Fun Way! Interactive games, math visualizations, and utilities built directly in
-            your browser.</p>
+          <p>Learn Python the Fun Way! Interactive games, math visualizations, and utilities built directly in your browser.</p>
           <div class="footer-social-icons">
             <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
               rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
             <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)">
-              <svg xmlns="http://www.w3.org/2000/svg"
-       width="15"
-       height="15"
-       viewBox="0 0 24 24"
-       fill="currentColor">
-    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
-  </svg>
-</a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
+              </svg>
+            </a>
             <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
                 class="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
@@ -611,12 +382,9 @@
         <div class="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
-            </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a>
-            </li>
-            <li><a href="#main-content"
-                onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
             <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
             <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
           </ul>
@@ -624,16 +392,10 @@
         <div class="footer-links">
           <h3>Resources</h3>
           <ul>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
-                  class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
-            <li><a
-                href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
-                  class="fas fa-code-branch" aria-hidden="true"></i>
-                Contribute</a></li>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i class="fas fa-bug"
-                  aria-hidden="true"></i> Report a Bug</a></li>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i
-                  class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i class="fas fa-book"></i> Documentation</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i class="fas fa-code-branch"></i> Contribute</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i class="fas fa-bug"></i> Report a Bug</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project/blob/main/README.md"><i class="fas fa-question-circle"></i> FAQ</a></li>
           </ul>
         </div>
         <div class="footer-newsletter">
@@ -641,9 +403,7 @@
           <p>Get notified about new projects and features!</p>
           <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
             <input class="footer-input" type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
-            <button type="submit" aria-label="Subscribe">
-              <i class="fas fa-paper-plane"></i>
-            </button>
+            <button type="submit" aria-label="Subscribe"><i class="fas fa-paper-plane"></i></button>
           </form>
         </div>
       </div>
@@ -655,7 +415,6 @@
         </div>
         <p>Made with ❤️ for Python learners everywhere &copy; 2026</p>
       </div>
-    </div>
     </div>
   </footer>
 
@@ -713,36 +472,32 @@
   <script defer src="js/projects/fourier-series.js"></script>
   <script defer src="js/projects/pathfinding-visualizer.js?v=2"></script>
   <script defer src="js/projects/tsp-visualizer.js"></script>
+  <script defer src="js/projects/war-card-game.js"></script>
+  <script defer src="js/projects/number-sliding-puzzle.js"></script>
+  <script defer src="js/projects/budget-tracker.js"></script>
+  
   <script defer src="js/projects.js?v=3"></script>
   <script defer src="js/cm-editor.js"></script>
   <script defer src="js/playground.js"></script>
   <script defer type="module" src="js/main.js?v=2"></script>
   <script defer src="js/hero-canvas.js"></script>
-  <script defer src="js/projects/war-card-game.js"></script>
-  <script defer src="js/projects/number-sliding-puzzle.js"></script>
-  <script defer src="js/projects/budget-tracker.js"></script>
-  <script>
-    window.addEventListener('DOMContentLoaded', () => {
-      if (typeof lucide !== 'undefined') lucide.createIcons();
-    });
-  </script>
 
-  <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
+  <!-- PROJECT LOADER SCRIPT -->
   <script>
     (function () {
       const projectsGrid = document.getElementById("projectsGrid");
       if (!projectsGrid) return;
-      // ALL projects from your js/projects/ folder
+      
       const projectsData = [
-        // GAMES (20+)
+        // GAMES
         {
-  project: "number-sliding-puzzle",
-  title: "Number Sliding Puzzle",
-  category: "games",
-  difficulty: "Intermediate",
-  desc: "Arrange tiles in order by sliding them into empty space",
-  tags: "game,puzzle,sliding,numbers",
-},
+          project: "number-sliding-puzzle",
+          title: "Number Sliding Puzzle",
+          category: "games",
+          difficulty: "Intermediate",
+          desc: "Arrange tiles in order by sliding them into empty space",
+          tags: "game,puzzle,sliding,numbers",
+        },
         {
           project: "2048-game",
           title: "2048 Game",
@@ -869,8 +624,7 @@
           desc: "A classic two-player card game based on comparing rank values",
           tags: "game,cards,multiplayer,war",
         },
-
-        // MATH (15+)
+        // MATH
         {
           project: "binary-search",
           title: "Binary Search",
@@ -997,8 +751,7 @@
           desc: "Explore waveform approximation using harmonics",
           tags: "math,fourier,wave,harmonics",
         },
-
-        // UTILITIES (10+)
+        // UTILITIES
         {
           project: "pathfinding-visualizer",
           title: "Pathfinding Visualizer",
@@ -1100,14 +853,7 @@
       ];
 
       projectsGrid.innerHTML = "";
-
-      // Get favorites from localStorage
       let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-      // Function to save favorites
-      function saveFavorites() {
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-      }
 
       projectsData.forEach((proj) => {
         const card = document.createElement("div");
@@ -1120,92 +866,64 @@
         const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
         card.innerHTML = `
-    ${proj.difficulty ? `
-    <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
-        ${proj.difficulty}
-    </div>
-    ` : ''}
-
-    <img class="card-banner"
-         src="assets/banners/${proj.project}.webp?v=2"
-         alt="${proj.title}"
-         loading="lazy">
-
-  <div class="card-actions">
-
-    <button class="btn-play" data-project="${proj.project}">Try It</button>
-
-  </div>
-
-        <button class="btn-favorite"
-                data-project="${proj.project}">
-            <i class="${starClass}"></i>
-        </button>
-    </div>
-
-    <h3>${proj.title}</h3>
-
-    <p>${proj.desc}</p>
-`;
+          ${proj.difficulty ? `
+            <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
+              ${proj.difficulty}
+            </div>
+          ` : ''}
+          <img class="card-banner"
+               src="assets/banners/${proj.project}.webp?v=2"
+               alt="${proj.title}"
+               loading="lazy">
+          <div class="card-actions">
+            <button class="btn-play" data-project="${proj.project}">Try It</button>
+            <button class="btn-favorite" data-project="${proj.project}">
+              <i class="${starClass}"></i>
+            </button>
+          </div>
+          <h3>${proj.title}</h3>
+          <p>${proj.desc}</p>
+        `;
 
         projectsGrid.appendChild(card);
       });
 
       // Update counts
       const total = projectsData.length;
-      function animateCounter(id,value){
-
-let start=0;
-
-const element=document.getElementById(id);
-
-const timer=setInterval(()=>{
-
-start++;
-
-element.textContent=start;
-
-if(start>=value){
-
-clearInterval(timer);
-
-}
-
-},25);
-
-}
+      function animateCounter(id, value) {
+        let start = 0;
+        const element = document.getElementById(id);
+        if (!element) return;
+        const timer = setInterval(() => {
+          start++;
+          element.textContent = start;
+          if (start >= value) clearInterval(timer);
+        }, 25);
+      }
+      
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
-      const utils = projectsData.filter(
-        (p) => p.category === "utilities"
-      ).length;
+      const utils = projectsData.filter((p) => p.category === "utilities").length;
 
-      const heroCount = document.getElementById("heroProjectCount");
-      const heroGames = document.getElementById("heroGameCount");
-      const heroMath = document.getElementById("heroMathCount");
-      const heroUtils = document.getElementById("heroUtilityCount");
-      const projectBadge = document.getElementById("projectCountBadge");
+      document.getElementById("heroProjectCount").textContent = total;
+      document.getElementById("heroGameCount").textContent = games;
+      document.getElementById("heroMathCount").textContent = math;
+      document.getElementById("heroUtilityCount").textContent = utils;
+      document.getElementById("projectCountBadge").textContent = total + " projects";
+      
+      animateCounter("statsTotal", total);
+      animateCounter("statsGames", games);
+      animateCounter("statsMath", math);
+      animateCounter("statsUtilities", utils);
+      
+      document.getElementById("statsFavorites").textContent = favorites.length;
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      animateCounter("statsViewed", viewed.length);
 
-      if (heroCount) heroCount.textContent = total;
-      if (heroGames) heroGames.textContent = games;
-      if (heroMath) heroMath.textContent = math;
-      if (heroUtils) heroUtils.textContent = utils;
-      if (projectBadge) projectBadge.textContent = total + " projects";
-      animateCounter("statsTotal",total);
-animateCounter("statsGames",games);
-animateCounter("statsMath",math);
-animateCounter("statsUtilities",utils);
-document.getElementById("statsFavorites").textContent = favorites.length;
-const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-animateCounter("statsViewed",viewed.length);
-
-      console.log(
-        `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
-      );
+      console.log(`✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`);
 
       // Wire up buttons
       setTimeout(() => {
-        // Play buttons
         document.querySelectorAll(".btn-play").forEach((btn) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -1216,47 +934,34 @@ animateCounter("statsViewed",viewed.length);
           });
         });
 
-        // Favorite buttons
         document.querySelectorAll(".btn-favorite").forEach((btn) => {
-  btn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    const projectName = this.getAttribute("data-project");
-    if (!projectName) {
-      console.error("No project name found for favorite button");
-      return;
-    }
-    
-    const icon = this.querySelector("i");
-    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const index = favs.indexOf(projectName);
+          btn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            const projectName = this.getAttribute("data-project");
+            if (!projectName) return;
+            
+            const icon = this.querySelector("i");
+            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+            const index = favs.indexOf(projectName);
 
-    if (index === -1) {
-      favs.push(projectName);
-      icon.className = "fas fa-star";
-      console.log(`⭐ Added ${projectName} to favorites`);
-    } else {
-      favs.splice(index, 1);
-      icon.className = "far fa-star";
-      console.log(`☆ Removed ${projectName} from favorites`);
-    }
+            if (index === -1) {
+              favs.push(projectName);
+              icon.className = "fas fa-star";
+            } else {
+              favs.splice(index, 1);
+              icon.className = "far fa-star";
+            }
 
-    localStorage.setItem("favorites", JSON.stringify(favs));
-    
-    // Update badge
-    if (typeof updateFavoritesCountBadge === "function") {
-      updateFavoritesCountBadge();
-    }
-  });
-});
+            localStorage.setItem("favorites", JSON.stringify(favs));
+            if (typeof updateFavoritesCountBadge === "function") {
+              updateFavoritesCountBadge();
+            }
+          });
+        });
 
-        // Card clicks
         document.querySelectorAll(".project-card").forEach((card) => {
           card.addEventListener("click", (e) => {
-            if (
-              e.target.closest(".btn-play") ||
-              e.target.closest(".btn-favorite")
-            )
-              return;
+            if (e.target.closest(".btn-play") || e.target.closest(".btn-favorite")) return;
             const projectName = card.getAttribute("data-project");
             if (projectName && window.openProjectSafe) {
               window.openProjectSafe(projectName, card);
@@ -1267,16 +972,13 @@ animateCounter("statsViewed",viewed.length);
     })();
   </script>
 
-  <!-- THEME TOGGLE FIX - FINAL -->
+  <!-- THEME TOGGLE -->
   <script>
     (function () {
       const html = document.documentElement;
       const themeColorMeta = document.getElementById("themeColorMeta");
-
-      // Get all theme toggle buttons
       const themeToggles = document.querySelectorAll(".theme-toggle");
 
-      // Update all toggle icons and aria labels based on current theme
       function updateAllToggles(theme) {
         themeToggles.forEach((toggle) => {
           const icon = toggle.querySelector("i");
@@ -1292,75 +994,38 @@ animateCounter("statsViewed",viewed.length);
         });
       }
 
-      // Apply theme to the page
       function applyTheme(theme) {
         html.setAttribute("data-theme", theme);
         localStorage.setItem("theme", theme);
-
-        // Update theme-color meta tag
         if (themeColorMeta) {
-          themeColorMeta.setAttribute(
-            "content",
-            theme === "light" ? "#f4f6f9" : "#0c0f1a"
-          );
+          themeColorMeta.setAttribute("content", theme === "light" ? "#f4f6f9" : "#0c0f1a");
         }
-
-        // Update all toggle icons
         updateAllToggles(theme);
-
-        console.log("Theme set to:", theme);
       }
 
-      // Load saved theme or default to dark
       const savedTheme = localStorage.getItem("theme");
-      const initialTheme =
-        savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
-      applyTheme(initialTheme);
+      applyTheme(savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark");
 
-      // Add click listeners to all theme toggles
       themeToggles.forEach((toggle) => {
         toggle.addEventListener("click", function (e) {
           e.preventDefault();
           const current = html.getAttribute("data-theme");
-          const next = current === "light" ? "dark" : "light";
-          applyTheme(next);
+          applyTheme(current === "light" ? "dark" : "light");
         });
       });
-
-      console.log(
-        "✅ Theme toggle ready. Found",
-        themeToggles.length,
-        "toggle buttons"
-      );
     })();
   </script>
 
-
   <script>
-    // FIX 1: Add missing toPascalCase function
     if (typeof window.toPascalCase !== 'function') {
       window.toPascalCase = function (str) {
         return str.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
       };
-      console.log('✅ toPascalCase function added');
     }
 
-    // FIX 2: Fix modal focus error
     setTimeout(function () {
       const modal = document.getElementById('projectModal');
-      if (modal) {
-        // Remove any broken focus code
-        modal.removeAttribute('tabindex');
-      }
-
-      // Fix any focus-related errors
-      const activeElement = document.activeElement;
-      if (!activeElement || activeElement === document.body) {
-        document.body.setAttribute('tabindex', '-1');
-        document.body.style.outline = 'none';
-      }
-
-      console.log('✅ Focus error fixed');
+      if (modal) modal.removeAttribute('tabindex');
     }, 100);
   </script>
 
@@ -1374,7 +1039,7 @@ animateCounter("statsViewed",viewed.length);
     </div>
   </div>
 
-  <!-- Themed Confirm Modal (used for Clear All) -->
+  <!-- Confirm Modal -->
   <div id="confirmModalOverlay" class="confirm-modal-overlay" aria-hidden="true">
     <div class="confirm-modal-content" role="dialog" aria-modal="true" aria-labelledby="confirmModalTitle">
       <h3 id="confirmModalTitle">Confirm</h3>
