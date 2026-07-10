@@ -29,6 +29,7 @@ function getProjectHTML(projectName) {
         'reverse-hangman': () => getReverseHangmanHTML(),
         'budget-tracker': getBudgetTrackerHTML(),
         'snake-game': getSnakeGameHTML(),
+        'chess': getChessHTML(),
         'sorting-visualizer': getSortingVisualizerHTML(),
         'quick-sort': getQuickSortHTML(),
         'fourier-series': getFourierSeriesHTML(),
