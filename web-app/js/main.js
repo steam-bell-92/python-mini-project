@@ -567,6 +567,9 @@ document.addEventListener("DOMContentLoaded", function () {
   syncCountNodes(heroGameCounts, String(gameCount));
   syncCountNodes(heroMathCounts, String(mathCount));
   syncCountNodes(heroUtilityCounts, String(utilityCount));
+
+  updateSidebarCategoryCounts();
+
   if (projectCountBadge)
     projectCountBadge.textContent = String(totalCount) + " projects";
 
@@ -581,6 +584,27 @@ document.addEventListener("DOMContentLoaded", function () {
   /* ── Category Filtering ───────────────────────────────────── */
   var sidebarTabs = document.querySelectorAll(".sidebar-dock .sidebar-tab");
   var sidebarBadge = null;
+
+  function updateSidebarCategoryCounts() {
+    const allBadge = document.getElementById("allProjectsCountBadge");
+    const gamesBadge = document.getElementById("gamesProjectsCountBadge");
+    const mathBadge = document.getElementById("mathProjectsCountBadge");
+    const utilitiesBadge = document.getElementById("utilitiesProjectsCountBadge");
+    const favoritesBadge = document.getElementById("favoritesCountBadge");
+
+    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+    const allCount = projectCards.length;
+    const gamesCount = projectCards.filter(card => card.dataset.category === "games").length;
+    const mathCount = projectCards.filter(card => card.dataset.category === "math").length;
+    const utilitiesCount = projectCards.filter(card => card.dataset.category === "utilities").length;
+
+    if (allBadge) allBadge.textContent = `(${allCount})`;
+    if (gamesBadge) gamesBadge.textContent = `(${gamesCount})`;
+    if (mathBadge) mathBadge.textContent = `(${mathCount})`;
+    if (utilitiesBadge) utilitiesBadge.textContent = `(${utilitiesCount})`;
+    if (favoritesBadge) favoritesBadge.textContent = `(${favorites.length})`;
+  }
 
   function applyCategoryFilter(category) {
     if (category === "playground") return;
@@ -1192,6 +1216,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       input.addEventListener("keydown", function (e) {
         if (e.key === "Escape") {
+          input.value = "";
+          syncSearchInputs("", input);
+          currentSearchQuery = "";
+          performSearch(false);
           closeDropdown();
           input.blur();
         }
@@ -1216,8 +1244,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  function isTypingInField(target) {
+    if (!target) return false;
+    var tag = target.tagName ? target.tagName.toLowerCase() : "";
+    return (
+      tag === "input" ||
+      tag === "textarea" ||
+      tag === "select" ||
+      target.isContentEditable
+    );
+  }
+
   document.addEventListener("keydown", function (e) {
     if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+      e.preventDefault();
+      if (navSearchInput) navSearchInput.focus();
+      else if (searchInput) searchInput.focus();
+      return;
+    }
+
+    if (e.key === "/" && !isTypingInField(e.target)) {
       e.preventDefault();
       if (navSearchInput) navSearchInput.focus();
       else if (searchInput) searchInput.focus();
@@ -1435,13 +1481,23 @@ document.addEventListener("DOMContentLoaded", function () {
   window.closeProjectSafe = closeProjectSafe;
   window.setMainInert = setMainInert;
 
-  function updateFavoritesCountBadge() {
-    const badge = document.getElementById("favoritesCountBadge");
-    if (!badge) return;
-
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    badge.textContent = `(${favorites.length})`;
+ function updateFavoritesCountBadge() {
+  const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  const count = favorites.length;
+  
+  // Update sidebar badge
+  const badge = document.getElementById("favoritesCountBadge");
+  if (badge) {
+    badge.textContent = "(" + count + ")";
   }
+  
+  // Update stats dashboard
+  const statsFavorites = document.getElementById("statsFavorites");
+  if (statsFavorites) {
+    statsFavorites.textContent = count;
+  }
+}
+updateFavoritesCountBadge();
 
   /* ═══════════════════════════════════════════════════════════════
        WIRE PROJECT CARDS
@@ -1487,20 +1543,35 @@ card.appendChild(badge);
       e.stopPropagation();
       var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
       var idx = favs.indexOf(name);
+      
       if (idx === -1) {
+        // Add to favorites
         favs.push(name);
         favBtn.classList.add("active");
         favBtn.innerHTML = '<i class="fas fa-star"></i>';
+        favBtn.style.color = "#f5a623"; // Yellow
+        console.log("⭐ Added " + name + " to favorites");
       } else {
+        // Remove from favorites
         favs.splice(idx, 1);
         favBtn.classList.remove("active");
         favBtn.innerHTML = '<i class="far fa-star"></i>';
+        favBtn.style.color = ""; // Reset to default
+        console.log("☆ Removed " + name + " from favorites");
         if (currentCategory === "favorites") {
           card.style.display = "none";
         }
       }
+      
       localStorage.setItem("favorites", JSON.stringify(favs));
-      updateFavoritesCountBadge();
+      
+      // Update badge and counts
+      if (typeof updateSidebarCategoryCounts === 'function') {
+        updateSidebarCategoryCounts();
+      }
+      if (typeof updateFavoritesCountBadge === 'function') {
+        updateFavoritesCountBadge();
+      }
     });
 
     var cardActions = card.querySelector(".card-actions");
@@ -1569,7 +1640,7 @@ card.appendChild(badge);
 
   projectCards.forEach(wireProjectCard);
 
-  updateFavoritesCountBadge();
+  updateSidebarCategoryCounts();
 
   window.updateRecentlyViewed = function () {
     var grid = document.getElementById("recentlyViewedGrid");
@@ -1685,7 +1756,9 @@ historyBadge.textContent=`(${recent.length})`;
       var curr = el;
       while (curr && curr !== parent) {
         top += curr.offsetTop || 0;
+
         left += curr.offsetLeft || 0;
+
         curr = curr.offsetParent;
       }
       return { top: top, left: left };
@@ -1712,6 +1785,7 @@ historyBadge.textContent=`(${recent.length})`;
         grad.setAttribute("x1", "0%");
         grad.setAttribute("y1", "0%");
         grad.setAttribute("x2", "0%");
+        
         grad.setAttribute("y2", "100%");
 
         var stop1 = document.createElementNS(svgNamespace, "stop");

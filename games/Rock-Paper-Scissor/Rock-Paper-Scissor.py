@@ -1,16 +1,17 @@
 import random
 import os
+from pathlib import Path
 
-RESULTS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "game_results.txt")
+RESULTS_FILE = Path(__file__).parent / "game_results.txt"
 
 
 def parse_results():
     """Read game_results.txt and return a list of result dicts."""
     records = []
-    if not os.path.exists(RESULTS_FILE):
+    if not RESULTS_FILE.exists():
         return records
     try:
-        with open(RESULTS_FILE, "r") as f:
+        with open(RESULTS_FILE, "r", encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if not line:
@@ -209,7 +210,7 @@ def main():
                 f"(User-Computer), Rounds: {rounds_played}\n"
             )
             try:
-                with open(RESULTS_FILE, "a") as f:
+                with open(RESULTS_FILE, "a", encoding="utf-8") as f:
                     f.write(result_string)
                 print("Game results saved successfully.")
             except IOError:

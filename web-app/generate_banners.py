@@ -716,10 +716,6 @@ projects = [
     ("Fourier Series", "math", "fourier-series.webp"),
 
     # UTILITIES
-    # NOTE: "Tower of Hanoi" under utilities removed — it was a duplicate of
-    # the math entry above and wrote to the same "tower-of-hanoi.webp" path,
-    # silently overwriting it. If a utilities-specific banner is wanted,
-    # give it a distinct filename instead (e.g. "tower-of-hanoi-util.webp").
     ("Morse Code", "utilities", "morse-code.webp"),
     ("Number Converter", "utilities", "number-converter.webp"),
     ("Typing Speed Tester", "utilities", "typing-speed-tester.webp"),

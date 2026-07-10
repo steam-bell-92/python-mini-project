@@ -181,9 +181,6 @@ img {
   opacity: 0 !important;
 }
 
-nav[aria-label="Primary"] {
-  display: none;
-}
 
 main>.hero-section:has(.hero-code-snippets) {
   display: none;
@@ -1967,6 +1964,22 @@ body.sidebar-active .sidebar-dock {
   }
 
   body.sidebar-collapsed .projects-section {
+    padding-left: 128px !important;
+  }
+
+  body.sidebar-active:not(.sidebar-collapsed) .recently-viewed-section {
+    padding-left: 296px !important;
+  }
+
+  body.sidebar-collapsed .recently-viewed-section {
+    padding-left: 128px !important;
+  }
+
+  body.sidebar-active:not(.sidebar-collapsed) .recently-opened-section {
+    padding-left: 296px !important;
+  }
+
+  body.sidebar-collapsed .recently-opened-section {
     padding-left: 128px !important;
   }
 
@@ -5930,7 +5943,8 @@ button:focus-visible,
 }
 
 .achievement-strip,
-.projects-section {
+.projects-section,
+.recently-viewed-container {
   padding: 1.2rem 0 2.5rem;
 }
 
@@ -6722,6 +6736,16 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
   margin: 0 auto !important;
 }
 
+.recently-viewed-section .container,
+.recently-opened-section .section-header{
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  margin: 0 auto !important;
+}
+
+
 /* Projects grid - FILL THE SPACE */
 .projects-grid {
   display: grid !important;
@@ -6809,6 +6833,7 @@ body.sidebar-collapsed .sidebar-dock .sidebar-footer .sidebar-main-controls {
 @media (min-width: 768px) {
 
   .projects-section,
+  .recently-viewed-container,
   .hero-section,
   .hero-timeline-section,
   .playground-section,
@@ -7555,4 +7580,260 @@ margin-bottom:18px;
   color: #94a3b8;
   margin: 0;
   font-size: 0.9rem;
+=======
+/* ============================================
+   PROJECT STATISTICS DASHBOARD
+   ============================================ */
+
+.stats-dashboard-section {
+  padding: 3rem 0 1.5rem 0;
+  position: relative;
+}
+
+/* Dashboard Title - Styled like TRACK-ROUTE badge */
+.stats-dashboard-section .section-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.stats-dashboard-section .section-heading {
+  font-family: var(--font-sans);
+  font-size: clamp(1.5rem, 4vw, 2.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  margin: 0 auto;
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  padding-bottom: 8px;
+}
+
+.stats-dashboard-section .section-heading::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), #06b6d4, transparent);
+  opacity: 0.8;
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: width 0.3s ease;
+}
+
+.stats-dashboard-section .section-heading:hover::after {
+  width: 100%;
+}
+
+.stats-dashboard-section .section-heading .heading-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+  -webkit-text-fill-color: initial;
+  background: none;
+}
+
+.stats-dashboard-section .section-heading .heading-text {
+  background: linear-gradient(135deg, var(--accent), #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Stats Grid */
+.stats-dashboard {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+/* Stats Cards */
+.stats-card {
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 1.2rem 0.8rem;
+  text-align: center;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Card hover effect */
+.stats-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent-color);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* Card glow on hover */
+.stats-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent-color, #22c55e), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stats-card:hover::before {
+  opacity: 1;
+}
+
+/* Card numbers */
+.stats-card h3 {
+  font-family: var(--font-sans, 'Space Grotesk', sans-serif);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  background: linear-gradient(135deg, var(--accent-color, #22c55e), #06b6d4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Card labels */
+.stats-card p {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0.4rem 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Category-specific accent colors */
+.stats-card[data-filter="games"] h3 {
+  background: linear-gradient(135deg, #ec4899, #f43f5e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-card[data-filter="games"]::before {
+  background: linear-gradient(90deg, transparent, #ec4899, transparent);
+}
+
+.stats-card[data-filter="math"] h3 {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-card[data-filter="math"]::before {
+  background: linear-gradient(90deg, transparent, #6366f1, transparent);
+}
+
+.stats-card[data-filter="utilities"] h3 {
+  background: linear-gradient(135deg, #10b981, #059669);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-card[data-filter="utilities"]::before {
+  background: linear-gradient(90deg, transparent, #10b981, transparent);
+}
+
+.stats-card[data-filter="favorites"] h3 {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.stats-card[data-filter="favorites"]::before {
+  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+}
+
+/* Clickable stats cards */
+.stats-card[data-filter] {
+  cursor: pointer;
+}
+
+.stats-card[data-filter]:hover {
+  border-color: var(--accent-color);
+}
+
+/* Responsive - Tablet */
+@media (max-width: 768px) {
+  .stats-dashboard {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .stats-card {
+    padding: 1rem 0.5rem;
+  }
+  
+  .stats-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .stats-dashboard-section .section-heading {
+    font-size: 1.25rem;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .stats-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .stats-card {
+    padding: 0.8rem 0.4rem;
+    border-radius: 10px;
+  }
+  
+  .stats-card h3 {
+    font-size: 1.2rem;
+  }
+  
+  .stats-card p {
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+  }
+
+  .stats-dashboard-section .section-heading {
+    font-size: 1rem;
+  }
+  
+  .stats-dashboard-section .section-heading .heading-icon {
+    font-size: 1.2rem;
+  }
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .stats-card {
+    transition: none;
+  }
+  
+  .stats-card:hover {
+    transform: none;
+  }
+  
+  .stats-dashboard-section .section-heading::after {
+    transition: none;
+  }
 }

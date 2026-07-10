@@ -48,13 +48,19 @@ async def fetch_phrase_async():
         "https://api.quotable.io/random"
     ]
     async with aiohttp.ClientSession() as session:
-        tasks = [fetch_url(session, url) for url in urls]
-        # Gather them concurrently
-        results = await asyncio.gather(*tasks)
-        for res in results:
-            if res:
-                return res
-    return None
+        tasks = {asyncio.create_task(fetch_url(session, url)) for url in urls}
+        
+        while tasks:
+            done, tasks = await asyncio.wait(tasks, return_when=asyncio.FIRST_COMPLETED)
+            for task in done:
+                result = task.result()
+                if result:
+                    # Cancel remaining tasks — we got what we need
+                    for t in tasks:
+                        t.cancel()
+                    return result
+        
+        return None
 
 
 def main():
@@ -88,14 +94,9 @@ def main():
         # Calculate time
         time_taken = end_time - start_time
 
-        # Calculate words per minute based on typed text
-        sentence_words = sentence.split()
-        typed_words = typed_text.split()
-        correct_words = sum(
-            1 for i, word in enumerate(typed_words)
-            if i < len(sentence_words) and word == sentence_words[i]
-        )
-        wpm = (correct_words / time_taken) * 60 if time_taken > 0 else 0
+        # Calculate words per minute using the standard WPM formula
+        typed_characters = len(typed_text)
+        wpm = ((typed_characters / 5) / (time_taken / 60)) if time_taken > 0 else 0
 
         # Calculate accuracy
         correct_chars = 0

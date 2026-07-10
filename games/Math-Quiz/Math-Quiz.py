@@ -86,9 +86,9 @@ def generate_question(difficulty):
         a, b = random.randint(2, 15), random.randint(2, 15)
         return f"What is {a} x {b}?", a * b
     elif q_type == 'div':
-        b = random.randint(2, 10)
-        a = b * random.randint(2, 10)
-        return f"What is {a} / {b}?", a // b
+        b=random.randint(2,10)
+        a=random.randint(2,100)
+        return f"What is {a} / {b}?",round(a/b,2)
     elif q_type == 'negative':
         a = random.randint(-25, -1)
         b = random.randint(1, 30)
@@ -138,7 +138,10 @@ def generate_options(correct):
 
     options = {correct}
     while len(options) < 4:
-        fake = correct + random.randint(-15, 15)
+        if isinstance(correct,float):
+            fake=round(correct+random.uniform(-3,3),2)
+        else:
+            fake=correct+random.randint(-15,15)
         if fake != correct:
             options.add(fake)
     options = list(options)

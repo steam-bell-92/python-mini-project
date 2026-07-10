@@ -339,18 +339,32 @@ def main():
         lives = 3
         round_num = 1
         still_playing = True
+        used_words = set()
 
         while lives > 0 and still_playing:
-            settings = DIFFICULTY_LEVELS[difficulty]
             valid_words = []
+            
             for category, words in WORD_BANK.items():
-                filtered_words = [w for w in words if settings["min_length"] <= len(
-                    w) <= settings["max_length"]]
-                if filtered_words:
-                    valid_words.append((category, filtered_words))
-
+                available_words = [
+                    w for w in words[tier]
+                    if w not in used_words
+                ]
+                
+                if available_words:
+                    valid_words.append((category, available_words)
+                           
+            if not valid_words:
+                    used_words.clear()
+                    
+                    for category, words in WORD_BANK.items():
+                        available_words = words[tier]
+                        if available_words:
+                            valid_words.append((category, available_words))
+                            
             category, words = random.choice(valid_words)
             word = random.choice(words)
+
+            used_words.add(word)
 
             letters = list(word)
             scrambled = ""

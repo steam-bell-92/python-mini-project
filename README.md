@@ -265,7 +265,7 @@ deactivate
 
 ## 👥 Contributors
 
-We appreciate all contributions to recode hive! Thank you to everyone who has helped make this project better.
+We appreciate all contributions to the Python Mini Projects Collection! Thank you to everyone who has helped make this project better.
 
 <a href="https://github.com/steam-bell-92/python-mini-project/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=steam-bell-92/python-mini-project" />

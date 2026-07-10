@@ -35,6 +35,7 @@ function getNumberConverterHTML() {
             .converter-row label { font-weight: 600; }
             .converter-row input, .converter-row select { padding: 0.9rem; border-radius: 10px; border: 2px solid var(--border-color); background: var(--surface-color); color: var(--text-color); }
             .converter-result { min-height: 2rem; padding: 0.9rem 1rem; border-radius: 10px; background: var(--surface-color); border: 1px solid var(--border-color); font-weight: 700; }
+            .converter-result.error { color: #ef4444; border-color: #ef4444; }
             .btn-primary {
                 background: var(--primary-color);
                 color: white;
@@ -70,23 +71,57 @@ function initNumberConverter() {
 
     if (!input || !sourceBase || !targetBase || !button || !result) return;
 
+    // Regex patterns for validating digits allowed in each base.
+    // Each pattern allows an optional leading minus sign followed by
+    // one or more valid digits for that base, and nothing else.
+    const BASE_PATTERNS = {
+        2: /^-?[01]+$/,
+        8: /^-?[0-7]+$/,
+        10: /^-?[0-9]+$/,
+        16: /^-?[0-9A-Fa-f]+$/
+    };
+
+    const BASE_NAMES = {
+        2: 'Binary',
+        8: 'Octal',
+        10: 'Decimal',
+        16: 'Hexadecimal'
+    };
+
+    const setError = (message) => {
+        result.textContent = message;
+        result.classList.add('error');
+    };
+
+    const setSuccess = (message) => {
+        result.textContent = message;
+        result.classList.remove('error');
+    };
+
     const convert = () => {
         const value = input.value.trim();
         const fromBase = Number(sourceBase.value);
         const toBase = Number(targetBase.value);
 
         if (!value) {
-            result.textContent = 'Enter a number to convert.';
+            setError('Enter a number to convert.');
+            return;
+        }
+
+        const pattern = BASE_PATTERNS[fromBase];
+        if (!pattern || !pattern.test(value)) {
+            const baseName = BASE_NAMES[fromBase] || `base ${fromBase}`;
+            setError(`Invalid input: "${value}" is not a valid ${baseName} number.`);
             return;
         }
 
         const parsed = parseInt(value, fromBase);
         if (Number.isNaN(parsed)) {
-            result.textContent = 'Invalid input for the selected base.';
+            setError('Invalid input for the selected base.');
             return;
         }
 
-        result.textContent = `Result: ${parsed.toString(toBase).toUpperCase()}`;
+        setSuccess(`Result: ${parsed.toString(toBase).toUpperCase()}`);
     };
 
     button.addEventListener('click', convert);

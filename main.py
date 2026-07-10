@@ -10,7 +10,8 @@ import subprocess
 import sys
 import json
 
-REGISTRY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "projects_registry.json")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+REGISTRY_PATH = os.path.join(BASE_DIR, "projects_registry.json")
 
 try:
     with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
@@ -109,16 +110,18 @@ def list_projects_by_category(category_name):
 
 
 def launch_project(path):
-    if not os.path.exists(path):
+    project_path = path if os.path.isabs(path) else os.path.join(BASE_DIR, path)
+
+    if not os.path.exists(project_path):
         print(f"\n❌ Error: File not found at '{path}'")
         input("\nPress Enter to return to menu...")
         return
 
-    print(f"\n🚀 Launching: {os.path.basename(path)}")
+    print(f"\n🚀 Launching: {os.path.basename(project_path)}")
     print("─" * 60 + "\n")
     try:
         # Run with current python executable
-        subprocess.run([sys.executable, path])
+        subprocess.run([sys.executable, project_path])
     except Exception as e:
         print(f"\n❌ Error executing script: {e}")
     print("\n" + "─" * 60)

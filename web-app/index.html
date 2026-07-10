@@ -139,26 +139,37 @@
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
         <button aria-selected="true" class="sidebar-tab active" data-category="all" role="tab" tabindex="0">
           <span class="sidebar-icon"><svg data-lucide="layers"></svg></span>
-          <span class="sidebar-label">All Projects</span>
+          <span class="sidebar-label">All Projects
+            <span id="allProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="games" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="gamepad-2"></svg>
           </span>
-          <span class="sidebar-label">Games Arcade</span>
+          <span class="sidebar-label">
+            Games Arcade
+            <span id="gamesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="math" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="sigma"></svg></span>
-          <span class="sidebar-label">Maths Lab</span>
+          <span class="sidebar-label">
+            Maths Lab
+            <span id="mathProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="utilities" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="wrench"></svg></span>
-          <span class="sidebar-label">Utilities Lab</span>
+          <span class="sidebar-label">
+            Utilities Lab
+            <span id="utilitiesProjectsCountBadge">0</span>
+          </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="favorites" role="tab" tabindex="-1">
           <span class="sidebar-icon"><svg data-lucide="star"></svg></span>
           <span class="sidebar-label">
             My Favorites
-            <span id="favoritesCountBadge">0</span>
+            <span id="favoritesCountBadge"></span>
           </span>
         </button>
         <button aria-selected="false" class="sidebar-tab" data-category="playground" role="tab" tabindex="-1">
@@ -285,11 +296,11 @@
     <section class="stats-dashboard-section">
   <div class="container">
 
-    <div class="section-header">
-      <h2 class="section-heading">
-        📊 Project Statistics Dashboard
-      </h2>
-    </div>
+<div class="section-header">
+  <h2 class="section-heading">
+    <span class="heading-text">Project Statistics</span>
+  </h2>
+</div>
 
     <div class="stats-dashboard">
 
@@ -439,58 +450,19 @@
         </div>
       </div>
     </section>
-
-    <!-- Bookmarked Projects Section -->
-<section class="projects-section" id="bookmarkedProjectsSection">
+    
+<!-- Recently Viewed Section -->
+<section class="projects-section" id="recentlyViewedSection">
   <div class="container">
     <div class="section-header">
       <h2 class="section-heading">
-        ⭐ Bookmarked Projects
-        <span id="bookmarkCountBadge"></span>
+        Recently Viewed
       </h2>
     </div>
-
-    <div class="projects-grid" id="bookmarkedProjectsGrid"></div>
-
-    <div id="noBookmarksMessage" class="empty-state">
-      <p>No bookmarked projects yet.</p>
-      <p class="empty-state-hint">
-        Click the ⭐ icon on any project to bookmark it.
-      </p>
-    </div>
+    <div class="projects-grid" id="recentlyViewedGrid"></div>
   </div>
 </section>
 
-    <!-- Recently Viewed Section -->
-    <div class="section-header">
-
-<h2 class="section-heading">
-🕒 Recently Opened Projects
-<span id="historyCount"></span>
-</h2>
-
-<div>
-
-<input
-id="historySearch"
-type="text"
-placeholder="Search history...">
-
-<button id="clearHistoryBtn">
-Clear History
-</button>
-
-</div>
-
-</div>
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading">
-            Recently Viewed
-          </h2>
-        </div>
-        <div class="projects-grid" id="recentlyViewedGrid"></div>
-      </div>
     </section>
 
     <!-- Projects Section -->
@@ -766,16 +738,6 @@ Clear History
     (function () {
       const projectsGrid = document.getElementById("projectsGrid");
       if (!projectsGrid) return;
-
-      const bookmarkedGrid =
-document.getElementById("bookmarkedProjectsGrid");
-
-const bookmarkBadge =
-document.getElementById("bookmarkCountBadge");
-
-const noBookmarks =
-document.getElementById("noBookmarksMessage");
-
       // ALL projects from your js/projects/ folder
       const projectsData = [
         // GAMES (20+)
@@ -844,7 +806,7 @@ document.getElementById("noBookmarksMessage");
           tags: "game,strategy",
         },
         {
-          project: "snake",
+          project: "snake-game",
           title: "Snake Game",
           category: "games",
           desc: "Classic snake eating game",
@@ -1023,9 +985,9 @@ document.getElementById("noBookmarksMessage");
         {
           project: "tower-of-hanoi",
           title: "Tower of Hanoi",
-          category: "math",
+          category: "utilities",
           desc: "Solve Tower of Hanoi puzzle",
-          tags: "math,puzzle",
+          tags: "utility,puzzle",
         },
         {
           project: "math-quiz",
@@ -1153,46 +1115,6 @@ document.getElementById("noBookmarksMessage");
         localStorage.setItem("favorites", JSON.stringify(favorites));
       }
 
-      function renderBookmarkedProjects() {
-
-    if (!bookmarkedGrid) return;
-
-    bookmarkedGrid.innerHTML = "";
-
-    const favs =
-        JSON.parse(localStorage.getItem("favorites") || "[]");
-
-    bookmarkBadge.textContent =
-        "(" + favs.length + ")";
-
-    if (favs.length === 0) {
-
-        noBookmarks.style.display = "block";
-
-        return;
-    }
-
-    noBookmarks.style.display = "none";
-
-    favs.forEach(projectId => {
-
-        const card =
-        document.querySelector(
-            `.project-card[data-project="${projectId}"]`
-        );
-
-        if(card){
-
-            bookmarkedGrid.appendChild(
-                card.cloneNode(true)
-            );
-
-        }
-
-    });
-
-}
-
       projectsData.forEach((proj) => {
         const card = document.createElement("div");
         card.className = "project-card";
@@ -1215,11 +1137,11 @@ document.getElementById("noBookmarksMessage");
          alt="${proj.title}"
          loading="lazy">
 
-    <div class="card-actions">
-        <button class="btn-play"
-                data-project="${proj.project}">
-            Try It
-        </button>
+  <div class="card-actions">
+
+    <button class="btn-play" data-project="${proj.project}">Try It</button>
+
+  </div>
 
         <button class="btn-favorite"
                 data-project="${proj.project}">
@@ -1276,30 +1198,16 @@ clearInterval(timer);
       if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
       animateCounter("statsTotal",total);
-
 animateCounter("statsGames",games);
-
 animateCounter("statsMath",math);
-
 animateCounter("statsUtilities",utils);
-
-animateCounter(
-"statsFavorites",
-favorites.length
-);
-
-const viewed=
-JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-
-animateCounter(
-"statsViewed",
-viewed.length
-);
+document.getElementById("statsFavorites").textContent = favorites.length;
+const viewed= JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
+animateCounter("statsViewed",viewed.length);
 
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
       );
-      renderBookmarkedProjects();
 
       // Wire up buttons
       setTimeout(() => {
@@ -1316,43 +1224,36 @@ viewed.length
 
         // Favorite buttons
         document.querySelectorAll(".btn-favorite").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const projectName = btn.getAttribute("data-project");
-            const icon = btn.querySelector("i");
+  btn.addEventListener("click", function(e) {
+    e.stopPropagation();
+    const projectName = this.getAttribute("data-project");
+    if (!projectName) {
+      console.error("No project name found for favorite button");
+      return;
+    }
+    
+    const icon = this.querySelector("i");
+    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const index = favs.indexOf(projectName);
 
-            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-            const index = favs.indexOf(projectName);
+    if (index === -1) {
+      favs.push(projectName);
+      icon.className = "fas fa-star";
+      console.log(`⭐ Added ${projectName} to favorites`);
+    } else {
+      favs.splice(index, 1);
+      icon.className = "far fa-star";
+      console.log(`☆ Removed ${projectName} from favorites`);
+    }
 
-            if (index === -1) {
-              // Add to favorites
-              favs.push(projectName);
-              icon.className = "fas fa-star";
-              btn.setAttribute("aria-label", "Remove from favorites");
-              console.log(`⭐ Added ${projectName} to favorites`);
-            } else {
-              // Remove from favorites
-              favs.splice(index, 1);
-              icon.className = "far fa-star";
-              btn.setAttribute("aria-label", "Add to favorites");
-              console.log(`☆ Removed ${projectName} from favorites`);
-            }
-
-            localStorage.setItem("favorites", JSON.stringify(favs));
-            renderBookmarkedProjects();
-
-            // If we're on favorites tab, refresh the view
-            const activeCategory = document
-              .querySelector(".sidebar-tab.active")
-              ?.getAttribute("data-category");
-            if (
-              activeCategory === "favorites" &&
-              typeof applyCategoryFilter === "function"
-            ) {
-              applyCategoryFilter("favorites");
-            }
-          });
-        });
+    localStorage.setItem("favorites", JSON.stringify(favs));
+    
+    // Update badge
+    if (typeof updateFavoritesCountBadge === "function") {
+      updateFavoritesCountBadge();
+    }
+  });
+});
 
         // Card clicks
         document.querySelectorAll(".project-card").forEach((card) => {

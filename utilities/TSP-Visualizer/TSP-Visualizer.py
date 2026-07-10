@@ -62,8 +62,9 @@ def draw_nodes(win, nodes, order=[], current_edge=None, best_dist=0):
     pygame.display.update()
 
 def solve_nearest_neighbor(nodes):
-    if len(nodes) < 2: return
-    
+    if len(nodes) < 2:
+        return [], 0
+
     unvisited = list(range(1, len(nodes)))
     current = 0
     order = [0]
@@ -78,20 +79,29 @@ def solve_nearest_neighbor(nodes):
         nearest = min(unvisited, key=lambda x: get_distance(nodes[current], nodes[x]))
         
         # Animate the connection being tested
-        draw_nodes(WIN, nodes, order, current_edge=(nodes[current], nodes[nearest]), best_dist=path_distance(nodes, order))
+        draw_nodes(
+            WIN,
+            nodes,
+            order,
+            current_edge=(nodes[current], nodes[nearest]),
+            best_dist=path_distance(nodes, order)
+        )
         pygame.time.delay(100)
         
         order.append(nearest)
         unvisited.remove(nearest)
         current = nearest
         
-    draw_nodes(WIN, nodes, order, best_dist=path_distance(nodes, order))
-
+    best_dist = path_distance(nodes, order)
+    draw_nodes(WIN, nodes, order, best_dist=best_dist)
+    return order, best_dist
+    
 def solve_brute_force(nodes):
-    if len(nodes) < 2: return
+    if len(nodes) < 2:
+        return [], 0
     if len(nodes) > 10:
         print("Too many nodes for brute force! (Max 10 recommended)")
-        return
+        return [], 0
         
     min_dist = float('inf')
     best_order = []
@@ -112,12 +122,19 @@ def solve_brute_force(nodes):
         if dist < min_dist:
             min_dist = dist
             best_order = current_order
-            
+
         count += 1
-        if count % max(1, total // 100) == 0:  # animate periodically
-            draw_nodes(WIN, nodes, best_order, current_edge=(nodes[current_order[-1]], nodes[current_order[0]]), best_dist=min_dist)
-            
+        if count % max(1, total // 100) == 0:
+            draw_nodes(
+                WIN,
+                nodes,
+                best_order,
+                current_edge=(nodes[current_order[-1]], nodes[current_order[0]]),
+                best_dist=min_dist
+            )
+
     draw_nodes(WIN, nodes, best_order, best_dist=min_dist)
+    return best_order, min_dist
 
 def main():
     nodes = []
@@ -142,7 +159,7 @@ def main():
                 if event.key == pygame.K_c:
                     nodes = []
                     order = []
-                    best_dist = 0
+                    best_dist = 0          
                 elif event.key == pygame.K_r:
                     nodes = []
                     for _ in range(10):
@@ -153,7 +170,8 @@ def main():
                     best_dist = 0
                 elif event.key == pygame.K_1:
                     if len(nodes) > 1:
-                        solve_nearest_neighbor(nodes)
+                        order, best_dist = solve_nearest_neighbor(nodes
+                                                                  
                 elif event.key == pygame.K_2:
                     if len(nodes) > 1:
                         if len(nodes) > 10:
@@ -161,9 +179,9 @@ def main():
                             pygame.display.update()
                             pygame.time.delay(2000)
                         else:
-                            solve_brute_force(nodes)
+                            order, best_dist = solve_brute_force(nodes
 
     pygame.quit()
-
+                               
 if __name__ == "__main__":
     main()

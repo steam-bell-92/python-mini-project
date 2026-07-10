@@ -207,9 +207,19 @@ function initTowerOfHanoi() {
         }
     }
     
-    function executeMove(from, to, saveHistory = true) {
-        if (towers[from].length === 0) return;
-        const disk = towers[from].pop();
+    function executeMove(from, to, saveHistory = true, showWarning = false) {
+        if (towers[from].length === 0) return false;
+        const disk = towers[from][towers[from].length - 1];
+        const targetTopDisk = towers[to][towers[to].length - 1];
+
+        if (targetTopDisk !== undefined && disk > targetTopDisk) {
+            if (showWarning) {
+                alert("Invalid move: you cannot place a larger disk on a smaller disk.");
+            }
+            return false;
+        }
+
+        towers[from].pop();
         towers[to].push(disk);
         
         if (saveHistory) {
@@ -225,6 +235,8 @@ function initTowerOfHanoi() {
         if (towers[2].length === diskCount && !isAnimating) {
             setTimeout(() => alert("🎉 Puzzle Solved!"), 100);
         }
+
+        return true;
     }
 
     async function autoMove(from, to) {
@@ -311,7 +323,7 @@ function initTowerOfHanoi() {
                 drawTowers();
             } else {
                 moveQueue = []; // Clear auto queue on manual intervention
-                executeMove(selectedTower, clickedTower);
+                executeMove(selectedTower, clickedTower, true, true);
                 selectedTower = null;
                 drawTowers();
             }

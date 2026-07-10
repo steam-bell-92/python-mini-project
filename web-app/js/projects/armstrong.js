@@ -171,7 +171,18 @@ function initArmstrong() {
             return;
         }
         
-        const num = parseInt(numStr);
+        // Strict whole-number validation: only digits allowed (no decimals,
+        // letters, symbols, signs, or scientific notation). This rejects
+        // things like "153.9", "12e3", "-5", "abc" before parseInt ever
+        // gets a chance to silently truncate them.
+        const isWholeNumber = /^\d+$/.test(numStr);
+        
+        if (!isWholeNumber) {
+            resultDiv.innerHTML = '<div class="armstrong-result"><p style="color: #f44336;">⚠️ Please enter a valid positive whole number (no decimals, letters, or symbols)!</p></div>';
+            return;
+        }
+        
+        const num = parseInt(numStr, 10);
         
         if (isNaN(num) || num < 0) {
             resultDiv.innerHTML = '<div class="armstrong-result"><p style="color: #f44336;">⚠️ Please enter a valid positive integer!</p></div>';

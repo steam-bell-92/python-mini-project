@@ -57,6 +57,9 @@ def run_dijkstra(grid, start, end):
     while previous[curr] is not None:
         path.append(curr)
         curr = previous[curr]
+
+    if curr != start:
+        return False 
         
     for p in reversed(path):
         if p != end and p != start:
@@ -64,6 +67,7 @@ def run_dijkstra(grid, start, end):
             clear_screen()
             print_grid(grid)
             time.sleep(0.05)
+    return True
 
 def main():
     rows, cols = 10, 20
@@ -80,13 +84,17 @@ def main():
         grid[i][6] = '█'
     for i in range(1, 7):
         grid[i][12] = '█'
-        
+       
     print("🗺️ Pathfinding Visualizer (Terminal Edition)")
     print("S = Start, E = End, █ = Wall, . = Visited, * = Path")
     input("Press Enter to run Dijkstra's Algorithm...")
+
+    path_found = run_dijkstra(grid, start, end)
+    if path_found:
+        print("✅ Finished Pathfinding! Path found.")
+    else:
+        print("❌ No path exists between Start and End!")
     
-    run_dijkstra(grid, start, end)
-    print("Finished Pathfinding!")
 
 if __name__ == "__main__":
     main()

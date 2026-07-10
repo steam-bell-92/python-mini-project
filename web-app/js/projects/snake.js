@@ -272,9 +272,19 @@ function gameEngine() {
     ctx.fillRect(food.x * 20, food.y * 20, 18, 18);
 }
 
-function gameLoop() {
-    gameEngine();
+// rAF fires ~60 times/sec regardless of difficulty. To make `speed` actually
+// control how fast the snake moves, we throttle how often gameEngine() runs
+// based on elapsed time, using the high-res timestamp rAF provides.
+function gameLoop(ctime) {
     animationId = requestAnimationFrame(gameLoop);
+
+    if (!gameRunning || isPaused) return;
+
+    // Only advance the game `speed` times per second
+    if ((ctime - lastPaintTime) / 1000 < 1 / speed) return;
+
+    lastPaintTime = ctime;
+    gameEngine();
 }
 
 function restartGame() {
@@ -285,6 +295,7 @@ function restartGame() {
     isPaused = false;
     isGameOver = false;
     gameRunning = true;
+    lastPaintTime = 0;
     
     // Reset UI
     document.getElementById('score').textContent = '0';
@@ -311,6 +322,9 @@ function togglePause() {
         pauseOverlay.classList.remove('hidden');
         if (pauseBtn) pauseBtn.textContent = 'Resume';
     } else {
+        // Reset the throttle clock so the snake doesn't "catch up" with a
+        // burst of queued moves after being paused.
+        lastPaintTime = 0;
         pauseOverlay.classList.add('hidden');
         if (pauseBtn) pauseBtn.textContent = 'Pause';
     }
@@ -334,6 +348,7 @@ function initSnakeGame() {
     direction = { x: 1, y: 0 };
     snakeArr = [{ x: 13, y: 10 }];
     score = 0;
+    lastPaintTime = 0;
     
     // Update UI
     const scoreEl = document.getElementById('score');
