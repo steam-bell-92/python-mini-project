@@ -255,8 +255,15 @@ function initTypingSpeedTester() {
     let startTime = null;
     let timerInterval = null;
     let isRunning = false;
-    let totalCorrect = 0;
-    let totalIncorrect = 0;
+
+    // Session-wide totals (persist across sentences, reset only when a new test starts)
+    let sessionCorrect = 0;
+    let sessionIncorrect = 0;
+
+    // Per-sentence totals (reset every time a new sentence is generated)
+    let currentCorrect = 0;
+    let currentIncorrect = 0;
+
     let sentencesCompleted = 0;
     
     function renderSentence(sentence) {
@@ -283,9 +290,9 @@ function initTypingSpeedTester() {
         typingInput.disabled = false;
         typingInput.focus();
         
-        // Reset current test stats
-        totalCorrect = 0;
-        totalIncorrect = 0;
+        // Only reset the CURRENT sentence counters — session totals stay intact
+        currentCorrect = 0;
+        currentIncorrect = 0;
         updateStats();
         
         if (resultPanel) {
@@ -294,21 +301,24 @@ function initTypingSpeedTester() {
     }
     
     function updateStats() {
-        const total = totalCorrect + totalIncorrect;
-        const accuracy = total > 0 ? Math.round((totalCorrect / total) * 100) : 0;
-        if (statWpm) statWpm.textContent = '0';
+        const combinedCorrect = sessionCorrect + currentCorrect;
+        const combinedIncorrect = sessionIncorrect + currentIncorrect;
+        const total = combinedCorrect + combinedIncorrect;
+        const accuracy = total > 0 ? Math.round((combinedCorrect / total) * 100) : 0;
+        if (statWpm) statWpm.textContent = calculateWPM().toString();
         if (statAccuracy) statAccuracy.textContent = accuracy + '%';
-        if (statCorrect) statCorrect.textContent = totalCorrect;
-        if (statIncorrect) statIncorrect.textContent = totalIncorrect;
+        if (statCorrect) statCorrect.textContent = combinedCorrect;
+        if (statIncorrect) statIncorrect.textContent = combinedIncorrect;
         if (accuracyDisplay) accuracyDisplay.textContent = accuracy + '%';
-        if (errorsDisplay) errorsDisplay.textContent = totalIncorrect;
+        if (errorsDisplay) errorsDisplay.textContent = combinedIncorrect;
     }
     
     function calculateWPM() {
         if (!startTime) return 0;
         const elapsedMinutes = (Date.now() - startTime) / 60000;
         if (elapsedMinutes <= 0) return 0;
-        const words = totalCorrect / 5; // Standard: 5 chars = 1 word
+        const combinedCorrect = sessionCorrect + currentCorrect;
+        const words = combinedCorrect / 5; // Standard: 5 chars = 1 word
         return Math.round(words / elapsedMinutes);
     }
     
@@ -348,17 +358,23 @@ function initTypingSpeedTester() {
         typingInput.disabled = true;
         isRunning = false;
         
+        // Fold whatever was typed in the current (incomplete) sentence into the session totals
+        sessionCorrect += currentCorrect;
+        sessionIncorrect += currentIncorrect;
+        currentCorrect = 0;
+        currentIncorrect = 0;
+        
         const wpm = calculateWPM();
-        const total = totalCorrect + totalIncorrect;
-        const accuracy = total > 0 ? Math.round((totalCorrect / total) * 100) : 0;
+        const total = sessionCorrect + sessionIncorrect;
+        const accuracy = total > 0 ? Math.round((sessionCorrect / total) * 100) : 0;
         
         const resultsHtml = `
             <div style="text-align: center;">
                 <div style="font-size: 2rem; margin-bottom: 1rem;">${isComplete ? '🎉' : '⏰'}</div>
                 <div><strong>Final WPM:</strong> ${wpm}</div>
                 <div><strong>Accuracy:</strong> ${accuracy}%</div>
-                <div><strong>Correct Characters:</strong> ${totalCorrect}</div>
-                <div><strong>Incorrect Characters:</strong> ${totalIncorrect}</div>
+                <div><strong>Correct Characters:</strong> ${sessionCorrect}</div>
+                <div><strong>Incorrect Characters:</strong> ${sessionIncorrect}</div>
                 <div><strong>Sentences Completed:</strong> ${sentencesCompleted}</div>
                 <div><strong>Difficulty:</strong> ${difficultyConfig[selectedDifficulty].label}</div>
             </div>
@@ -407,13 +423,17 @@ function initTypingSpeedTester() {
             }
         }
         
-        totalCorrect = correct;
-        totalIncorrect = incorrect;
+        // These reflect ONLY the sentence currently being typed
+        currentCorrect = correct;
+        currentIncorrect = incorrect;
         updateStats();
         updateLiveStats();
         
         // Check if sentence is complete
         if (typed.length >= sentence.length) {
+            // Fold this sentence's results into the running session totals
+            sessionCorrect += currentCorrect;
+            sessionIncorrect += currentIncorrect;
             sentencesCompleted++;
             generateSentence();
         }
@@ -425,8 +445,10 @@ function initTypingSpeedTester() {
         resultStage.classList.add('hidden');
         
         sentencesCompleted = 0;
-        totalCorrect = 0;
-        totalIncorrect = 0;
+        sessionCorrect = 0;
+        sessionIncorrect = 0;
+        currentCorrect = 0;
+        currentIncorrect = 0;
         startTime = Date.now();
         isRunning = false;
         
@@ -454,8 +476,10 @@ function initTypingSpeedTester() {
         gameStage.classList.remove('hidden');
         
         sentencesCompleted = 0;
-        totalCorrect = 0;
-        totalIncorrect = 0;
+        sessionCorrect = 0;
+        sessionIncorrect = 0;
+        currentCorrect = 0;
+        currentIncorrect = 0;
         startTime = Date.now();
         isRunning = false;
         
