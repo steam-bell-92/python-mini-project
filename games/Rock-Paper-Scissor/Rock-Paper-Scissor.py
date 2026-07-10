@@ -1,8 +1,8 @@
 import random
-import os
 from pathlib import Path
 
 RESULTS_FILE = Path(__file__).parent / "game_results.txt"
+RESULTS_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 
 def parse_results():
@@ -210,11 +210,11 @@ def main():
                 f"(User-Computer), Rounds: {rounds_played}\n"
             )
             try:
-                with open(RESULTS_FILE, "a", encoding="utf-8") as f:
+                with RESULTS_FILE.open("a", encoding="utf-8") as f:
                     f.write(result_string)
                 print("Game results saved successfully.")
-            except IOError:
-                print("Error: Could not save game results to file.")
+            except OSError as e:
+                print(f"Error: Could not save game results: {e}")
             break
 
 
