@@ -4,18 +4,15 @@ from pathlib import Path
 WORDS_FILE = Path(__file__).with_name("words.bat")
 
 def DataAdding(word):
-    file = open(WORDS_FILE, 'rb')
-    words = pickle.load(file)
+    with open(WORDS_FILE, 'rb') as file:
+        words = pickle.load(file)
     a = words[word[0].lower()]
     a.append(word)
     b = word[0].lower()
     words[b] = a
-    file.close()
     
-    file = open(WORDS_FILE, 'wb')
-    pickle.dump(words, file)
-    file.close()
+    with open(WORDS_FILE, 'wb') as file:
+        pickle.dump(words, file)
 
-file = open(WORDS_FILE, 'rb')
-words = pickle.load(file)
-file.close()
+with open(WORDS_FILE, 'rb') as file:
+    words = pickle.load(file)
