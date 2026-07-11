@@ -59,8 +59,6 @@ def view_leaderboard():
 
 
 def main():
-    global ADAPT_RATE, HISTORY_CAP, MIN_ADAPTIVE, beaten_by, blended, c, choices, computer_choice, computer_score, confidence, fav, freq, i, last_move, mode, move, n, name, pct, play_again_input, player_history, predicted, remaining, result_string, rounds_played, total_trans, trans, user_choice, user_score
-
     print("Welcome to Rock, Paper, Scissors!")
     print("The computer will learn your patterns and adapt — good luck! 🧠")
 
