@@ -5,28 +5,29 @@ A central, interactive CLI menu at the root level to browse,
 search, and launch all games, math utilities, and other tools.
 """
 
+import json
 import os
 import subprocess
 import sys
-import json
+from typing import Any
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 REGISTRY_PATH = os.path.join(BASE_DIR, "projects_registry.json")
 
 try:
     with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
-        PROJECTS = json.load(f)
+        PROJECTS: list[dict[str, Any]] = json.load(f)
 except Exception as e:
     print(f"Error loading project registry: {e}")
     PROJECTS = []
 
-DIFFICULTY_BADGES = {
+DIFFICULTY_BADGES: dict[str, str] = {
     "beginner": "🟢 Beg",
     "intermediate": "🟡 Int",
     "advanced": "🔴 Adv",
 }
 
-CATEGORY_EMOJIS = {
+CATEGORY_EMOJIS: dict[str, str] = {
     "games": "🎮",
     "math": "🔢",
     "utilities": "🔧",
@@ -35,7 +36,7 @@ CATEGORY_EMOJIS = {
 # ── Keyboard Shortcuts ─────────────────────────────────────
 # Users can override these by creating keyboard_shortcuts.json
 # in the same directory as main.py. See `show_help()` for details.
-KEYBOARD_SHORTCUTS = {
+KEYBOARD_SHORTCUTS: dict[str, dict[str, str]] = {
     "main_menu": {
         "g": "games",
         "m": "math",
@@ -58,24 +59,24 @@ _SHORTCUTS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "keyb
 if os.path.exists(_SHORTCUTS_PATH):
     try:
         with open(_SHORTCUTS_PATH, "r", encoding="utf-8") as f:
-            _user_shortcuts = json.load(f)
+            _user_shortcuts: dict[str, dict[str, str]] = json.load(f)
         KEYBOARD_SHORTCUTS["main_menu"].update(_user_shortcuts.get("main_menu", {}))
         KEYBOARD_SHORTCUTS["global"].update(_user_shortcuts.get("global", {}))
     except Exception:
         pass
 
 
-def print_header():
+def print_header() -> None:
     print("\n" + "═" * 60)
     print("        🚀  PYTHON MINI PROJECTS — INTERACTIVE LAUNCHER")
     print("═" * 60)
 
 
-def print_footer():
+def print_footer() -> None:
     print("═" * 60)
 
 
-def show_help():
+def show_help() -> None:
     """Display a help modal with all available keyboard shortcuts."""
     os.system('cls' if os.name == 'nt' else 'clear')
     print_header()
@@ -103,13 +104,13 @@ def show_help():
     input("  👉 Press Enter to return...")
 
 
-def list_projects_by_category(category_name):
+def list_projects_by_category(category_name: str) -> list[dict[str, Any]]:
     filtered = [p for p in PROJECTS if p["category"] == category_name]
     filtered_sorted = sorted(filtered, key=lambda p: p["name"])
     return filtered_sorted
 
 
-def launch_project(path):
+def launch_project(path: str) -> None:
     project_path = path if os.path.isabs(path) else os.path.join(BASE_DIR, path)
 
     if not os.path.exists(project_path):
@@ -128,7 +129,7 @@ def launch_project(path):
     input("ℹ️ Script finished. Press Enter to return to the launcher...")
 
 
-def _handle_global_shortcuts(choice, allow_back=True):
+def _handle_global_shortcuts(choice: str, allow_back: bool = True) -> str | None:
     """Return a canonical action string for global shortcuts, or None."""
     lowered = choice.lower().strip()
     if lowered in KEYBOARD_SHORTCUTS["global"]:
@@ -141,7 +142,7 @@ def _handle_global_shortcuts(choice, allow_back=True):
     return None
 
 
-def main_menu():
+def main_menu() -> None:
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print_header()
@@ -201,7 +202,7 @@ def main_menu():
             input("\n⚠️ Invalid selection. Press Enter to try again...")
 
 
-def category_menu(category_key, category_title):
+def category_menu(category_key: str, category_title: str) -> None:
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print_header()
@@ -240,7 +241,7 @@ def category_menu(category_key, category_title):
             input("\n⚠️ Invalid input. Please enter a number, 'b', or '?'. Press Enter to try again...")
 
 
-def search_menu():
+def search_menu() -> None:
     os.system('cls' if os.name == 'nt' else 'clear')
     print_header()
     print("  🔍 Search Projects")
@@ -298,7 +299,7 @@ def search_menu():
             input("\n⚠️ Invalid input. Please enter a number, 'b', or '?'. Press Enter to try again...")
 
 
-def list_all_menu():
+def list_all_menu() -> None:
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
         print_header()
