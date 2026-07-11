@@ -2,7 +2,6 @@ import pygame
 import sys
 
 def main():
-    global ACCENT_O, ACCENT_X, BG, BH, BOARD_BOTTOM, BORDER, BORDER2, BTN1, BTN2, BTN_HOV, BTN_Y, BW, BX, BY, CELL, DRAW_COL, F_BTN, F_RESULT, F_SL, F_SV, F_SYM, F_TAG, F_TURN, GAP, H, PGAP, PH, PW, PX_START, PY, SURFACE, SURFACE2, TEXT_PRI, TEXT_SEC, W, WINS, WIN_O_BD, WIN_O_BG, WIN_X_BD, WIN_X_BG, _, a, b, bd, bg, board, bw, c, clock, col, combo, current, event, game_over, ghost, hov, hover_idx, i, idx, label, mx, my, n, pill_data, pr, px, r, rect, s, scores, screen, w
     pygame.init()
 
     # ── Palette ──────────────────────────────────────────────
