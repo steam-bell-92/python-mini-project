@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 import traceback
-from collections import Counter
+from collections import Counter, deque
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -55,7 +55,7 @@ def summarize_logs(log_path: str | Path | None = None) -> dict[str, Any]:
 
     exception_counts: Counter[str] = Counter()
     project_counts: Counter[str] = Counter()
-    latest_errors: list[dict[str, Any]] = []
+    latest_errors: deque[dict[str, Any]] = deque(maxlen=5)
 
     with path.open("r", encoding="utf-8") as handle:
         for line in handle:
@@ -71,7 +71,7 @@ def summarize_logs(log_path: str | Path | None = None) -> dict[str, Any]:
         "total_errors": sum(exception_counts.values()),
         "exception_counts": dict(exception_counts),
         "project_counts": dict(project_counts),
-        "latest_errors": latest_errors[-5:],
+        "latest_errors": list(latest_errors),
     }
 
 
