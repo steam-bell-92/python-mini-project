@@ -1,7 +1,6 @@
 import random
 
 def main():
-    global card1, card2, cards1, cards2, choice, deck, mid, name1, name2, rank_name, rank_value, ranks, replay, round_number, score1, score2, suit, suits
     while True:
         print("\n===== Welcome to War Card Game =====\n")
 
