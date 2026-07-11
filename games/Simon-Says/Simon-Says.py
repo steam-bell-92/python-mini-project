@@ -13,7 +13,6 @@ from utils.banners import print_game_over_banner
 
 
 def main():
-    global color_map, display_speed, emoji, game_over, i, new_emoji, play_again, player_input, player_sequence, replay_choice, round_number, sequence, valid_input
     print("🎮 Simon Says - Memory Sequence Game! 🎮")
     print("Watch the sequence and repeat it correctly!")
     print("Each round, the sequence gets longer!\n")
