@@ -1,6 +1,5 @@
 
 def main():
-    global GRID_SIZE, HAMMER, HOLE, LEVELS, MOLE, accuracy, active, avg_rt, char, chosen, col, elapsed, gap, has_msvcrt, hit, idx, k, level, level_choice, line, max_score, misses, n_moles, reaction_times, replay, rnd, round_miss, round_score, rounds, row, score, start_ts, timed_out, user_input_str, v, valid_hits, window, wrong_hits
     """
     🔨 Whack-a-Mole
     Type the number of the mole before it disappears!
