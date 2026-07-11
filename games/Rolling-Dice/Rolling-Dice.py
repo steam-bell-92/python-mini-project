@@ -2,7 +2,6 @@ import random
 
 
 def main():
-    global choice, dice_emoji, num1, num2
     print("🎲 Dice Rolling Game! 🎲")
     print("Roll two dice and see what you get!\n")
 
