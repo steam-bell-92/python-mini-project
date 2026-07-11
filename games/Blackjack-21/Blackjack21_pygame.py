@@ -7,7 +7,6 @@ from suits import get_suit_surface
 
 # Initialize Pygame
 def main():
-    global BG_COLOR, BLACK, FPS, GOLD, GRAY, HEIGHT, RED, WHITE, WIDTH, aces, card, card_rect, clock, color, d_score, dealer_cards, deck, event, font, game_state, hit_button, i, img, is_hidden, large_suit, mouse_pos, p_score, player_cards, rank, rank_surf, rank_surf_inv, ranks, rect, restart_button, result_msg, running, score, screen, small_font, stand_button, suit, suits, title_font, visible_score, x_offset
     pygame.init()
 
     # --- CONSTANTS ---
