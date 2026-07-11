@@ -5,14 +5,19 @@ This folder contains practical Python mini-tools and utility-based projects such
 ## Projects in `utilities/`
 
 - AI-Resume-Analyzer
+- Budget-Tracker
 - Caesar-Cipher
 - Fake-News-Headline-Generator
+- Markdown-PDF-Converter
+- N-Queens
 - Number-System-Converter
+- Pathfinding-Visualizer
 - Productivity-Pet
+- Progress-Tracker
 - Text-to-Morse
 - Tower-of-Hanoi
+- TSP-Visualizer
 - Typing-Speed-Tester
-- F1-Performance-Analyzer
 
 ## How to Set Up and Run Any Utility Project
 
