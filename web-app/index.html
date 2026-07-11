@@ -53,35 +53,6 @@
   <!-- Cursor Glow -->
   <div aria-hidden="true" class="cursor-glow" id="cursorGlow"></div>
 
-  <!-- Navigation -->
-  <nav aria-label="Primary" class="navbar" id="mainNavbar">
-    <div class="nav-island">
-      <div class="navbar-brand">
-        <a class="logo-wrap" href="#">
-          <img alt="PyMini Logo" class="navbar-logo" src="assets/favicon.svg" / loading="lazy">
-          <div class="logo-text">
-            <span class="logo-py">py</span>
-            <span class="logo-mini">.mini</span>
-            <span class="logo-parens">()</span>
-          </div>
-          <span class="logo-tagline">games, math &amp; terminal toys</span>
-        </a>
-      </div>
-      <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input aria-label="Search projects" id="navSearchInput" placeholder="Search projects or games..." type="text" />
-      </div>
-      <div class="nav-controls" id="navControls">
-        <button aria-label="Mute sounds" class="sound-toggle" type="button">
-          <i class="fas fa-volume-up"></i>
-        </button>
-        <button aria-label="Switch theme" class="theme-toggle" type="button">
-          <i class="fas fa-moon"></i>
-        </button>
-      </div>
-    </div>
-  </nav>
-
   <aside class="sidebar-dock" id="mainSidebar">
     <button class="sidebar-mobile-close" id="sidebarMobileClose" aria-label="Close sidebar" type="button">
       <i class="fas fa-times" aria-hidden="true"></i>
@@ -127,6 +98,20 @@
         </div>
       </div>
     </div>
+
+    <div class="recent-searches-section" id="recentSearchesSection">
+  <div class="dropdown-section-title recent-searches-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
+      <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
+      Search History
+    </span>
+    <button id="clearRecentBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+      <i class="fas fa-trash-alt"></i> Clear History
+    </button>
+  </div>
+  <div class="recent-searches-chips" id="recentSearchesList" role="list"></div>
+</div>
+
     <div class="sidebar-menu-wrapper">
       <div class="sidebar-menu-title">Categories</div>
       <nav class="sidebar-menu" role="tablist" aria-label="Filter by category">
@@ -257,194 +242,6 @@
           <div>
             <span data-filter="favorites"><strong id="heroFavoriteCount">0</strong>Favorites</span>
             <span><strong id="heroViewedCount">0</strong>Recently Viewed</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Sticky Filter Bar -->
-    <div class="sticky-filter-bar visible" id="stickyFilterBar" aria-label="Project category filters">
-      <div class="sticky-filter-inner">
-        <button aria-selected="true" class="sticky-tab active" data-sticky-category="all" role="tab" tabindex="0"
-          type="button">
-          All
-        </button>
-        <button aria-selected="false" class="sticky-tab" data-sticky-category="games" role="tab" tabindex="-1"
-          type="button">
-          Games
-        </button>
-        <button aria-selected="false" class="sticky-tab" data-sticky-category="math" role="tab" tabindex="-1"
-          type="button">
-          Math
-        </button>
-        <button aria-selected="false" class="sticky-tab" data-sticky-category="utilities" role="tab" tabindex="-1"
-          type="button">
-          Utilities
-        </button>
-        <button aria-selected="false" class="sticky-tab" data-sticky-category="favorites" role="tab" tabindex="-1"
-          type="button">
-          Favorites
-        </button>
-        <button aria-selected="false" class="sticky-tab" data-sticky-category="playground" role="tab" tabindex="-1"
-          type="button">
-          Playground
-        </button>
-      </div>
-    </div>
-
-    <section class="stats-dashboard-section">
-  <div class="container">
-
-<div class="section-header">
-  <h2 class="section-heading">
-    <span class="heading-text">Project Statistics</span>
-  </h2>
-</div>
-
-    <div class="stats-dashboard">
-
-      <div class="stats-card" data-filter="all">
-        <h3 id="statsTotal">0</h3>
-        <p>Total Projects</p>
-      </div>
-
-      <div class="stats-card" data-filter="games">
-        <h3 id="statsGames">0</h3>
-        <p>Games</p>
-      </div>
-
-      <div class="stats-card" data-filter="math">
-        <h3 id="statsMath">0</h3>
-        <p>Math</p>
-      </div>
-
-      <div class="stats-card" data-filter="utilities">
-        <h3 id="statsUtilities">0</h3>
-        <p>Utilities</p>
-      </div>
-
-      <div class="stats-card" data-filter="favorites">
-        <h3 id="statsFavorites">0</h3>
-        <p>Favorites</p>
-      </div>
-
-      <div class="stats-card">
-        <h3 id="statsViewed">0</h3>
-        <p>Recently Viewed</p>
-      </div>
-
-    </div>
-
-  </div>
-</section>
-
-    <!-- Timeline Section -->
-    <section class="hero-timeline-section" id="timelineSection">
-      <div class="timeline-background" aria-hidden="true"></div>
-      <div aria-hidden="true" class="timeline-orb timeline-orb-one"></div>
-      <div aria-hidden="true" class="timeline-orb timeline-orb-two"></div>
-      <div class="timeline-container">
-        <div class="timeline-route-badge">TRACK-ROUTE</div>
-        <div class="timeline-grid">
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="house"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">01</span>
-                <h3 class="timeline-title">Welcome</h3>
-                <p class="timeline-desc">
-                  Jump into a tiny Python arcade built for curious beginners
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
-          </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="compass"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">02</span>
-                <h3 class="timeline-title">Explore</h3>
-                <p class="timeline-desc">
-                  Browse games, math puzzles &amp; utilities — each one ready
-                  in your browser
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="play"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">03</span>
-                <h3 class="timeline-title">Play</h3>
-                <p class="timeline-desc">
-                  Launch any project instantly, experiment with code, and
-                  share your wins
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
-          </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="book-open"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">04</span>
-                <h3 class="timeline-title">Learn</h3>
-                <p class="timeline-desc">
-                  Pick up Python concepts as you play — loops, logic, data
-                  &amp; more
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="timeline-item" data-reveal>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="hammer"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">05</span>
-                <h3 class="timeline-title">Build</h3>
-                <p class="timeline-desc">
-                  Create your own mini projects and share them with the
-                  community
-                </p>
-              </div>
-            </div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div></div>
-          </div>
-          <div class="timeline-item" data-reveal>
-            <div></div>
-            <div class="timeline-node">
-              <div class="timeline-dot"></div>
-            </div>
-            <div class="timeline-content">
-              <span class="timeline-icon" data-lucide="share-2"></span>
-              <div class="timeline-text">
-                <span class="timeline-step">06</span>
-                <h3 class="timeline-title">Share</h3>
-                <p class="timeline-desc">
-                  Show off your work, get feedback, and keep growing as a dev
-                </p>
-              </div>
-            </div>
           </div>
         </div>
       </div>

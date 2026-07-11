@@ -158,7 +158,6 @@
 
   // Initialize animations on both canvases
   var mesh1 = new ParticleMesh('boardCanvas');
-  var mesh2 = new ParticleMesh('timelineCanvas');
 
   /* ── Observe theme changes ───────────────────────────────── */
   var themeObserver = new MutationObserver(function (mutations) {
