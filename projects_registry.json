@@ -609,11 +609,11 @@
     "path": "utilities/Typing-Speed-Tester/Typing-Speed-Tester.py"
   },
   {
-    "name": "Sudoku Solver & Game",
+    "name": "Sudoku Game",
     "emoji": "🧩",
     "category": "games",
     "difficulty": "intermediate",
-    "description": "Interactive Sudoku puzzle with difficulty levels and a visual backtracking solver.",
+    "description": "Interactive Sudoku puzzle game featuring an automatic recursive backtracking solver visualization.",
     "keywords": [
       "sudoku",
       "game",

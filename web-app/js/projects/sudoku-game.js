@@ -5,8 +5,18 @@
 function getSudokuGameHTML() {
     return `
         <div class="project-content">
-            <h2>🧩 Sudoku Solver & Visualizer</h2>
-            <p class="sudoku-subtitle">Challenge yourself with a puzzle or watch the backtracking solver search for the solution dynamically!</p>
+            <div class="sudoku-shell">
+                <div class="sudoku-shell-header">
+                    <div class="terminal-dots">
+                        <span class="terminal-dot red"></span>
+                        <span class="terminal-dot yellow"></span>
+                        <span class="terminal-dot green"></span>
+                    </div>
+                    <span class="terminal-title">~/games/sudoku</span>
+                </div>
+                <div class="sudoku-shell-body">
+                    <h2>🧩 Interactive Sudoku Terminal</h2>
+                    <p class="sudoku-subtitle">Choose a difficulty, fill the grid, and watch the recursive solver trace each step in real time.</p>
             
             <div class="sudoku-container">
                 <!-- Difficulty Screen -->
@@ -89,10 +99,48 @@ function getSudokuGameHTML() {
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
         </div>
 
         <style>
+            .sudoku-shell {
+                border: 1px solid var(--border);
+                border-radius: 20px;
+                overflow: hidden;
+                background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.88));
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+                font-family: var(--font-mono, "Fira Code", monospace);
+            }
+            .sudoku-shell-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0.8rem 1rem;
+                background: rgba(255, 255, 255, 0.04);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+            .terminal-dots {
+                display: flex;
+                gap: 0.4rem;
+            }
+            .terminal-dot {
+                width: 10px;
+                height: 10px;
+                border-radius: 999px;
+                display: inline-block;
+            }
+            .terminal-dot.red { background: #ff5f56; }
+            .terminal-dot.yellow { background: #ffbd2e; }
+            .terminal-dot.green { background: #27c93f; }
+            .terminal-title {
+                font-size: 0.9rem;
+                color: #9db2c7;
+                letter-spacing: 0.05em;
+            }
+            .sudoku-shell-body {
+                padding: 1rem 1rem 1.5rem;
+            }
             .sudoku-subtitle {
                 color: var(--text-secondary);
                 text-align: center;
@@ -138,15 +186,17 @@ function getSudokuGameHTML() {
                 padding-bottom: 6px;
             }
             .sudoku-container {
-                padding: 1rem;
+                padding: 0.5rem 0 0;
                 max-width: 900px;
                 margin: 0 auto;
                 text-align: center;
             }
             .sudoku-intro {
-                font-size: 1.3rem;
-                margin-bottom: 2rem;
-                color: var(--text);
+                font-size: 1.15rem;
+                margin-bottom: 1.5rem;
+                color: #dce7f5;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
             }
             .difficulty-cards {
                 display: flex;
@@ -161,10 +211,10 @@ function getSudokuGameHTML() {
                 align-items: center;
                 gap: 0.4rem;
                 width: 180px;
-                padding: 1.5rem 1rem;
+                padding: 1.25rem 0.9rem;
                 border-radius: 14px;
-                border: 2px solid var(--border);
-                background: var(--surface);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                background: rgba(255, 255, 255, 0.03);
                 cursor: pointer;
                 transition: all var(--duration-fast) ease;
                 color: var(--text);
@@ -199,8 +249,8 @@ function getSudokuGameHTML() {
                 border-radius: 10px;
                 font-size: 0.9rem;
                 font-weight: 600;
-                border: 1px solid var(--border);
-                background: var(--bg-glass);
+                border: 1px solid rgba(255, 255, 255, 0.09);
+                background: rgba(255, 255, 255, 0.04);
                 color: var(--text);
                 transition: all var(--duration-fast) ease;
                 cursor: pointer;
@@ -208,6 +258,7 @@ function getSudokuGameHTML() {
                 align-items: center;
                 justify-content: center;
                 gap: 6px;
+                font-family: var(--font-mono, "Fira Code", monospace);
             }
             .sudoku-btn:hover {
                 transform: translateY(-2px);
@@ -386,14 +437,15 @@ function getSudokuGameHTML() {
             .sudoku-status-message {
                 font-size: 0.95rem;
                 font-weight: 600;
-                color: var(--text-secondary);
+                color: #9db2c7;
                 text-align: center;
-                background: var(--surface);
-                border: 1px solid var(--border);
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid rgba(255, 255, 255, 0.08);
                 border-radius: 12px;
                 padding: 10px 20px;
                 width: 100%;
                 transition: all 0.3s ease;
+                font-family: var(--font-mono, "Fira Code", monospace);
             }
             .sudoku-status-message.success {
                 color: #10b981;
@@ -1052,7 +1104,13 @@ function initSudokuGame() {
     console.log('✅ Sudoku Game UI initialized successfully');
 }
 
-// Register functions globally
+// Register module entry points for the web app
+const SudokuGameModule = {
+    getHTML: getSudokuGameHTML,
+    init: initSudokuGame
+};
+
+window.SudokuGame = SudokuGameModule;
 window.getSudokuGameHTML = getSudokuGameHTML;
 window.initSudokuGame = initSudokuGame;
 
