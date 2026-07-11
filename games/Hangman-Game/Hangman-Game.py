@@ -23,9 +23,6 @@ if sys.stderr.encoding != 'utf-8':
 from utils.banners import print_victory_banner, print_game_over_banner
 
 def main():
-    # Cleaned up global variables (not strictly necessary unless modifying in nested scopes, but kept for your structure)
-    global all_guessed, attempts, correct_letters, display, guess, guessed_letters, hint, letter, max_attempts, selected, won, word, word_data, word_length
-    
     print("=" * 50)
     print("WELCOME TO HANGMAN GAME")
     print("=" * 50)
