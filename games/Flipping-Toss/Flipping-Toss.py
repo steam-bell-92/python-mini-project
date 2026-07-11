@@ -2,7 +2,6 @@ import random
 import time
 
 def main():
-    global accuracy, choice, correct_predictions, heads_count, num, prediction, result, tails_count, total_tosses
     print("🪙 Coin Flip Game! 🪙\n")
 
     # Statistics Variables
