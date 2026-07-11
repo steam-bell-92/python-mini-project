@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 import traceback
 from collections import Counter
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, TypeVar
 
+T = TypeVar("T")
 
 DEFAULT_LOG_PATH = Path(__file__).resolve().parent / "logs" / "error-logs.jsonl"
 
@@ -75,7 +77,40 @@ def summarize_logs(log_path: str | Path | None = None) -> dict[str, Any]:
     }
 
 
-def safe_run(project_name: str, action, log_path: str | Path | None = None):
+def get_recent_errors(
+    limit: int = 50,
+    log_path: str | Path | None = None,
+) -> list[dict[str, Any]]:
+    """Return the most recent error entries."""
+    path = _ensure_log_path(log_path)
+    if not path.exists():
+        return []
+
+    errors: list[dict[str, Any]] = []
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line:
+                continue
+            errors.append(json.loads(line))
+
+    return errors[-limit:]
+
+
+def clear_logs(log_path: str | Path | None = None) -> bool:
+    """Clear all error logs. Returns True if logs were cleared."""
+    path = _ensure_log_path(log_path)
+    if path.exists():
+        path.unlink()
+        return True
+    return False
+
+
+def safe_run(
+    project_name: str,
+    action: Callable[[], T],
+    log_path: str | Path | None = None,
+) -> T:
     """Run an action while logging any unexpected exceptions."""
     try:
         return action()
