@@ -1,5 +1,20 @@
 from random import randrange
-from turtle import *
+from turtle import (
+    clear,
+    goto,
+    dot,
+    color,
+    write,
+    update,
+    setup,
+    bgcolor,
+    hideturtle,
+    up,
+    tracer,
+    onscreenclick,
+    ontimer,
+    done,
+)
 import math
 import os
 
