@@ -6,6 +6,8 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB_PATH = os.path.join(BASE_DIR, "data.db")
 
+_db_initialized = False
+
 def get_connection():
     """Returns a connection to the SQLite database."""
     conn = sqlite3.connect(DB_PATH)
@@ -13,6 +15,9 @@ def get_connection():
 
 def init_db():
     """Initializes the database and creates high_scores table if it doesn't exist."""
+    global _db_initialized
+    if _db_initialized:
+        return
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -26,6 +31,7 @@ def init_db():
     """)
     conn.commit()
     conn.close()
+    _db_initialized = True
 
 def save_score(game_name: str, player_name: str, score: int):
     """Saves a player's score to the database."""
