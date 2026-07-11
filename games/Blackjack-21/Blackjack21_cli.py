@@ -1,7 +1,6 @@
 import random
 
 def main():
-    global _, aces, card, choice, dealer_cards, dealer_count, dealer_hand, deck, player_bust, player_cards, player_count, player_hand, rank, replay
     while True:
         print("\n" + "="*40)
         print("🃏 WELCOME TO BLACKJACK 21 🃏")
