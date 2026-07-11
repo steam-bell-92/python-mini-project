@@ -5,21 +5,30 @@ This folder contains beginner-friendly Python mini games. Each game is self-cont
 ## Projects in `games/`
 
 - 2048-Game
+- Blackjack-21
 - Dots-Boxes-AI
 - Emoji-Memory-Game
+- Flappy-Game
 - FLAMES-Game
 - Flipping-Toss
 - Hangman-Game
+- Math-Quiz
+- Minesweeper
 - Number-Guessing-Game
 - Number-Sliding-Puzzle
 - Password-Forge
+- Pygame-Chess
 - Reverse-Hangman-Game
 - Rock-Paper-Scissor
 - Rolling-Dice
 - Simon-Says
 - Snake-Game
+- Spot-the-Difference
+- Sudoku-Game
 - Tic-Tac-Toe
+- War-Card-Game
 - Whack-a-Mole
+- Word-Building
 - Word-Scramble-Game
 
 ## How to Set Up and Run Any Game Project
