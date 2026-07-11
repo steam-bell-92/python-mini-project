@@ -36,7 +36,6 @@ def is_completed_box(r, c, horizontal_lines, vertical_lines):
 
 
 def main():
-    global ai_difficulty, available_moves, best_move, best_score, boxes, c, c_b, col, col_in, completed, completes, computer_score, current_player, d, danger, diff, direction, horizontal_lines, line, mode, move, player_score, r, r_b, replay, row, row_in, safe_moves, score, selected_move, sides, size, size_input, symbol, total_boxes, vertical_lines
     while True:
         print(BOLD + CYAN)
         print("=" * 70)
