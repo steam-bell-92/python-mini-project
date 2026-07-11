@@ -5,10 +5,11 @@ Search, filter, and explore all projects by keyword,
 category, or difficulty level.
 """
 
+import json
 import os
 import subprocess
 import sys
-import json
+from typing import Any
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(errors="replace")
@@ -23,47 +24,47 @@ REGISTRY_PATH = os.path.join(BASE_DIR, "projects_registry.json")
 
 try:
     with open(REGISTRY_PATH, "r", encoding="utf-8") as f:
-        PROJECTS = json.load(f)
+        PROJECTS: list[dict[str, Any]] = json.load(f)
 except Exception as e:
     print(f"Error loading project registry: {e}")
     PROJECTS = []
 
-DIFFICULTY_ORDER = {"beginner": 1, "intermediate": 2, "advanced": 3}
+DIFFICULTY_ORDER: dict[str, int] = {"beginner": 1, "intermediate": 2, "advanced": 3}
 
-DIFFICULTY_BADGE = {
-    "beginner":     "🟢 Beginner",
+DIFFICULTY_BADGE: dict[str, str] = {
+    "beginner": "🟢 Beginner",
     "intermediate": "🟡 Intermediate",
-    "advanced":     "🔴 Advanced",
+    "advanced": "🔴 Advanced",
 }
 
-CATEGORY_BADGE = {
-    "games":     "🎮 Games",
-    "math":      "🔢 Math",
+CATEGORY_BADGE: dict[str, str] = {
+    "games": "🎮 Games",
+    "math": "🔢 Math",
     "utilities": "🔧 Utilities",
 }
 
 
-def banner():
+def banner() -> None:
     print("\n" + "═" * 56)
     print("   🔍  Python Mini Projects — Interactive Search")
     print("═" * 56)
 
 
-def divider():
+def divider() -> None:
     print("─" * 56)
 
 
-def display_project(idx, p, show_path=False):
+def display_project(idx: int, p: dict[str, Any], show_path: bool = False) -> None:
     print(f"\n  [{idx}] {p['emoji']}  {p['name']}")
-    category_badge = CATEGORY_BADGE.get(p.get('category', '').lower(), 'Unknown')
-    difficulty_badge = DIFFICULTY_BADGE.get(p.get('difficulty', '').lower(), 'Unknown')
+    category_badge = CATEGORY_BADGE.get(p.get("category", "").lower(), "Unknown")
+    difficulty_badge = DIFFICULTY_BADGE.get(p.get("difficulty", "").lower(), "Unknown")
     print(f"       {category_badge}   {difficulty_badge}")
     print(f"       {p['description']}")
     if show_path:
         print(f"       📂 {p['path']}")
 
 
-def display_results(results, show_path=False):
+def display_results(results: list[dict[str, Any]], show_path: bool = False) -> None:
     if not results:
         print("\n  ⚠️  No projects found. Try a different search term.")
         return
@@ -73,7 +74,7 @@ def display_results(results, show_path=False):
         divider()
 
 
-def search_by_keyword(query):
+def search_by_keyword(query: str) -> list[dict[str, Any]]:
     q = query.lower().strip()
     return [
         p for p in PROJECTS
@@ -83,15 +84,15 @@ def search_by_keyword(query):
     ]
 
 
-def filter_by_category(category):
+def filter_by_category(category: str) -> list[dict[str, Any]]:
     return [p for p in PROJECTS if p["category"] == category.lower().strip()]
 
 
-def filter_by_difficulty(level):
+def filter_by_difficulty(level: str) -> list[dict[str, Any]]:
     return [p for p in PROJECTS if p["difficulty"] == level.lower().strip()]
 
 
-def launch_project(projects):
+def launch_project(projects: list[dict[str, Any]]) -> None:
     if not projects:
         return
     divider()
@@ -115,7 +116,7 @@ def launch_project(projects):
         print("  ⚠️  Please enter a valid number.")
 
 
-def main():
+def main() -> None:
     banner()
 
     while True:
