@@ -2,7 +2,6 @@ import secrets
 import re
 
 def main():
-    global banned_digit, current_rules_passed, difficulty, digit_total, elements, failed_rules, failed_visible, i, lives, lucky_letter, months, passed_rules, passed_visible, password, rule, rules, score, specials, target_sum, unlocked_rules, vowel_count, vowels
     print("🔥 PASSWORD FORGE 🔥")
     print("Survive evolving firewall rules.\n")
 
