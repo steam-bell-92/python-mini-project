@@ -7,7 +7,6 @@ WORDS = [ "karate", "judo", "taekwondo", "aikido", "kungfu", "muaythai", "capoei
 
 WORDS_BY_LENGTH = {}
 def main():
-    global attempts_left, choice, frequency, guess, guessed_letters, i, length, letter, pattern, pattern_list, possible_words, remaining, target_word, valid, word, wrong_letters
     for word in WORDS:
         length = len(word)
         if length not in WORDS_BY_LENGTH:
