@@ -197,7 +197,10 @@ class SafeTarExtractor:
                 while bytes_copied < member.size:
                     chunk = src.read(min(chunk_size, member.size - bytes_copied))
                     if not chunk:
-                        break
+                        raise UnsafeTarError(
+                            f"Truncated file: {member.name} - expected {member.size} bytes, "
+                            f"got {bytes_copied}"
+                        )
                     bytes_copied += len(chunk)
                     tmp.write(chunk)
                 
