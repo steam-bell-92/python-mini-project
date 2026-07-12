@@ -3,18 +3,24 @@
 This folder contains Python mini-projects focused on math concepts, number patterns, calculators, and transformations. Each project is in its own subfolder and can be run directly from the terminal.
 
 ## Projects in `math/`
-
 - AP-GP-AGP-HP-Recognizer
 - Armstrong-Number
+- Binary-Search
+- Bubble-Sort
 - Collatz-Conjecture
+- Complete-Calculus-Engine
 - Coordinate-to-Polar-Transformation
 - Derivative-Calculator
 - Fibonacci-Series
+- Fourier-Series-Visualizer
 - Happy-Number
 - Matrix-Calculator
+- Merge-Sort
 - Pascal-Triangle
 - Prime-Number-Analyzer
 - Projectile-Motion-Game
+- Quadratic-Solver
+- Quick-Sort
 - Scientific-Graphing-Calculator
 
 ## How to Set Up and Run Any Math Project

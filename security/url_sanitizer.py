@@ -155,6 +155,21 @@ class URLSanitizer:
         elif port in self.BLOCKED_PORTS:
             raise InvalidURLError(f"Blocked port: {port}")
     
+    def _validate_port(self, port: Optional[int]) -> None:
+        """Validate port number against allowed/blocked lists."""
+        if port is None:
+            return
+        if port < 1 or port > 65535:
+            raise InvalidURLError(f"Invalid port number: {port}")
+        if self.allowed_ports is not None:
+            if port not in self.allowed_ports:
+                raise InvalidURLError(
+                    f"Port {port} is not allowed. "
+                    f"Allowed ports: {', '.join(str(p) for p in self.allowed_ports)}"
+                )
+        elif port in self.BLOCKED_PORTS:
+            raise InvalidURLError(f"Blocked port: {port}")
+
     def _validate_characters(self, url: str) -> None:
         """Check for unsafe or malicious characters."""
         if '\0' in url:
