@@ -164,6 +164,15 @@ function initUnitConverter() {
     }
 
 
+    // ==== FORMATTING ====
+
+    function formatResult(value) {
+        if (isNaN(value) || value === null) return "Invalid input";
+        // Round to 6 decimal places, then strip trailing zeros
+        return parseFloat(value.toFixed(6)).toString();
+    }
+
+
     // ==== EVENT LISTENERS ====
 
     document.getElementById("from").addEventListener("input", convert);
@@ -220,15 +229,17 @@ function initUnitConverter() {
             else if (inpOpt === "k") {
                 tempVal = inpVal - 273.15;
             }
+            let tempOut;
             if (outOpt === "c") {
-                outVal.value = tempVal;
+                tempOut = tempVal;
             }
             else if (outOpt === "f") {
-                outVal.value = (tempVal * 9 / 5) + 32;
+                tempOut = (tempVal * 9 / 5) + 32;
             }
             else if (outOpt === "k") {
-                outVal.value = tempVal + 273.15;
+                tempOut = tempVal + 273.15;
             }
+            outVal.value = formatResult(tempOut);
             result.value = `${inpVal} ${fromName} = ${outVal.value} ${toName}`
             return;
         }
@@ -236,7 +247,8 @@ function initUnitConverter() {
         // OTHER CONVERSIONS 
 
         const base = inpVal * units[currentCategory][inpOpt].factor;
-        outVal.value = base / units[currentCategory][outOpt].factor;
+        const rawOut = base / units[currentCategory][outOpt].factor;
+        outVal.value = formatResult(rawOut);
 
         result.value = `${inpVal} ${fromName} = ${outVal.value} ${toName}`
 
