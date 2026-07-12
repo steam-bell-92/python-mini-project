@@ -174,7 +174,27 @@ class TestSafeTarExtractor:
         with pytest.raises(UnsafeTarError):
             extractor.extract(tar_file, extract_dir)
             
-    def test_absolute_path_traversal(self, tmp_path):
+    def test_prefix_bypass_path_traversal(self, tmp_path):
+        """Test that prefix-based bypass (e.g., /tmp/a vs /tmp/ab) is caught."""
+        tar_file = tmp_path / "prefix_bypass.tar"
+        
+        with tarfile.open(tar_file, 'w') as tar:
+            info = tarfile.TarInfo(name='../ab/evil.txt')
+            info.size = 10
+            info.type = tarfile.REGTYPE
+            content = b'x' * 10
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+        
+        extract_dir = tmp_path / "a"
+        extract_dir.mkdir(exist_ok=True)
+        sibling_dir = tmp_path / "ab"
+        sibling_dir.mkdir(exist_ok=True)
+        
+        extractor = SafeTarExtractor()
+        
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
         """Test absolute path traversal prevention."""
         tar_file = tmp_path / "absolute_traversal.tar"
         

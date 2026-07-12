@@ -130,30 +130,24 @@ class SafeTarExtractor:
         
         target_path = self._get_safe_path(member, extract_path)
         
-        # Check for path traversal
+        # Check for path traversal using Path.relative_to()
         try:
             target_abs = target_path.resolve()
             extract_abs = extract_path.resolve()
-            if os.path.commonpath([str(target_abs), str(extract_abs)]) != str(extract_abs):
-                raise UnsafeTarError(
-                    f"Path traversal detected: {member.name} -> {target_path}"
-                )
-        except (OSError, RuntimeError):
-            target_str = str(target_path.absolute())
-            extract_str = str(extract_path.absolute())
-            try:
-                if os.path.commonpath([target_str, extract_str]) != extract_str:
-                    raise UnsafeTarError(
-                        f"Path traversal detected: {member.name} -> {target_path}"
-                    )
-            except ValueError:
-                raise UnsafeTarError(
-                    f"Path traversal detected (different drives): {member.name} -> {target_path}"
-                )
-        except ValueError:
-            # os.path.commonpath raises ValueError on Windows for different drives
+            target_abs.relative_to(extract_abs)
+        except (ValueError, OSError, RuntimeError):
             raise UnsafeTarError(
-                f"Path traversal detected (different drives): {member.name} -> {target_path}"
+                f"Path traversal detected: {member.name} -> {target_path}"
+            )
+        
+        if target_path.exists() and not overwrite:
+            raise UnsafeTarError(
+                f"File already exists and overwrite=False: {target_path}"
+            )
+        
+        if member.type in self.blocked_types:
+            raise UnsafeTarError(
+                f"Blocked file type for {member.name}: {member.type}"
             )
         
         if target_path.exists() and not overwrite:
