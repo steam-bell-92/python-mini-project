@@ -19,3 +19,5 @@ reportlab==4.5.1
 nltk==3.9.1
 pyenchant==3.3.0
 
+# TUI dependencies
+textual>=0.50.0
