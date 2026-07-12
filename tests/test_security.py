@@ -217,6 +217,27 @@ class TestSafeTarExtractor:
         assert len(extracted) == 1
         assert (extract_dir / 'dir1' / 'dir2' / 'file.txt').exists()
     
+    def test_truncated_file_detection(self, tmp_path):
+        """Test that truncated files (size metadata > actual data) are detected."""
+        tar_file = tmp_path / "truncated.tar"
+
+        with tarfile.open(tar_file, 'w') as tar:
+            info = tarfile.TarInfo(name='truncated.txt')
+            info.size = 1000
+            info.type = tarfile.REGTYPE
+            content = b'x' * 1000
+            fileobj = io.BytesIO(content)
+            tar.addfile(info, fileobj)
+
+        data = tar_file.read_bytes()
+        tar_file.write_bytes(data[:512 + 500])
+
+        extract_dir = tmp_path / "extracted"
+        extractor = SafeTarExtractor()
+
+        with pytest.raises(UnsafeTarError):
+            extractor.extract(tar_file, extract_dir)
+
     def test_size_limits(self, tmp_path):
         """Test file size limits."""
         tar_file = tmp_path / "large.tar"
