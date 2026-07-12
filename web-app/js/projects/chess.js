@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════
 //  ♟️ Chess Game  —  web-app/js/projects/chess.js
 //  Category : games
-//  Features : 2-Player Pass-and-Play | vs AI (Minimax) | 
-//             Theme Customization | Interactive Selection
+//  Features : 2-Player Pass-and-Play | vs Stockfish AI (with local Minimax fallback) | 
+//             Theme Customization (including Pygame original assets) | Game-Over Overlay
 // ═══════════════════════════════════════════════════════════
 
 // ── 1. HTML Template ──────────────────────────────────────
@@ -17,14 +17,15 @@ function getChessHTML() {
           <div class="control-group">
             <label for="chess-mode">Game Mode</label>
             <select id="chess-mode">
-              <option value="2p">👥 Pass & Play</option>
               <option value="ai">🤖 vs Computer AI</option>
+              <option value="2p">👥 Pass & Play</option>
             </select>
           </div>
 
           <div class="control-group">
             <label for="chess-theme">Board Theme</label>
             <select id="chess-theme">
+              <option value="pygame">♟️ Pygame Chess (Original)</option>
               <option value="classic">🟢 Classic Forest</option>
               <option value="wood">🟫 Warm Wood</option>
               <option value="charcoal">⬛ Charcoal</option>
@@ -42,6 +43,14 @@ function getChessHTML() {
 
         <div class="board-wrapper">
           <div class="chess-board" id="chess-board"></div>
+          
+          <!-- Game Over Overlay (Styled after Pygame screen overlay) -->
+          <div class="game-over-overlay" id="chess-gameover" style="display: none;">
+            <div class="game-over-content">
+              <h1 id="gameover-title">WHITE WINS!</h1>
+              <button class="control-btn play-again-btn" id="chess-playAgainBtn">Play Again</button>
+            </div>
+          </div>
         </div>
 
         <div class="game-actions">
@@ -166,6 +175,7 @@ function getChessHTML() {
         padding: 8px;
         border-radius: 12px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        position: relative;
       }
 
       .chess-board {
@@ -188,6 +198,16 @@ function getChessHTML() {
       .chess-board.charcoal .square.light { background: #e8ebef; }
       .chess-board.charcoal .square.dark  { background: #7d8796; }
 
+      /* Pygame Board Textures */
+      .chess-board.pygame .square.light { 
+        background-image: url('assets/projects/chess/board_pixels/white_square.jpeg');
+        background-size: cover;
+      }
+      .chess-board.pygame .square.dark  { 
+        background-image: url('assets/projects/chess/board_pixels/black_square.jpeg');
+        background-size: cover;
+      }
+
       .square {
         display: flex;
         justify-content: center;
@@ -209,6 +229,13 @@ function getChessHTML() {
         height: 100%;
       }
 
+      .piece img {
+        width: 80%;
+        height: 80%;
+        pointer-events: none;
+        user-select: none;
+      }
+
       .piece.w {
         color: #ffffff;
         filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.6));
@@ -223,18 +250,18 @@ function getChessHTML() {
         transform: scale(1.08);
       }
 
-      /* Highlighting */
+      /* Pygame-Chess Highlighting (rgba yellow selected square, blue circle moves) */
       .square.selected {
-        outline: 3px solid #f6e05e;
-        outline-offset: -3px;
-        box-shadow: inset 0 0 12px rgba(246, 224, 94, 0.6);
+        background-color: rgba(255, 255, 0, 0.4) !important;
+        box-shadow: none;
+        outline: none;
       }
 
       .square.legal-move::after {
         content: "";
-        width: 14px;
-        height: 14px;
-        background: rgba(0, 0, 0, 0.25);
+        width: 20px;
+        height: 20px;
+        background: rgba(0, 100, 255, 0.45);
         border-radius: 50%;
         position: absolute;
         z-index: 3;
@@ -243,7 +270,7 @@ function getChessHTML() {
       .square.legal-move.has-piece::after {
         width: 80%;
         height: 80%;
-        border: 4px solid rgba(229, 62, 62, 0.4);
+        border: 4px solid rgba(0, 100, 255, 0.45);
         background: transparent;
         border-radius: 50%;
       }
@@ -268,6 +295,35 @@ function getChessHTML() {
 
       .control-btn:hover {
         opacity: 0.9;
+      }
+
+      /* Pygame Game Over Overlay Screen */
+      .game-over-overlay {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+        border-radius: 6px;
+      }
+
+      .game-over-content h1 {
+        color: #ffffff;
+        font-size: 2.8rem;
+        margin-bottom: 20px;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+
+      .play-again-btn {
+        background: #3182ce;
       }
 
       /* Promotion Modal */
@@ -319,7 +375,8 @@ function getChessHTML() {
 
       @media (max-width: 500px) {
         .piece { font-size: 2rem; }
-        .square.legal-move::after { width: 10px; height: 10px; }
+        .square.legal-move::after { width: 12px; height: 12px; }
+        .game-over-content h1 { font-size: 2rem; }
       }
     </style>
   `;
@@ -335,11 +392,24 @@ function initChess() {
   const modeSelect = document.getElementById("chess-mode");
   const themeSelect = document.getElementById("chess-theme");
   const promoModal = document.getElementById("promotion-modal");
+  const gameoverEl = document.getElementById("chess-gameover");
+  const gameoverTitle = document.getElementById("gameover-title");
+  const playAgainBtn = document.getElementById("chess-playAgainBtn");
 
   // Unicode Chess Pieces Map (using solid shapes for both, colored via CSS)
   const UNICODE_PIECES = {
     wk: "♚", wq: "♛", wr: "♜", wb: "♝", wn: "♞", wp: "♟",
     bk: "♚", bq: "♛", br: "♜", bb: "♝", bn: "♞", bp: "♟"
+  };
+
+  // Pygame Chess Asset Mapping Names
+  const PIECE_NAMES = {
+    p: "pawn",
+    r: "rook",
+    n: "knight",
+    b: "bishop",
+    q: "queen",
+    k: "king"
   };
 
   // State representation (flat array of 64 elements)
@@ -373,6 +443,8 @@ function initChess() {
     rookMoved = { w: { q: false, k: false }, b: { q: false, k: false } };
     lastMove = null;
     activePromotion = null;
+    
+    if (gameoverEl) gameoverEl.style.display = "none";
   }
 
   // Render board to DOM
@@ -391,7 +463,17 @@ function initChess() {
       if (piece) {
         const pieceEl = document.createElement("div");
         pieceEl.className = `piece ${piece[0]}`; // Adds class 'w' or 'b'
-        pieceEl.textContent = UNICODE_PIECES[piece];
+        
+        if (themeSelect.value === "pygame") {
+          const imgEl = document.createElement("img");
+          const colorName = piece[0] === "w" ? "white" : "black";
+          const pieceName = PIECE_NAMES[piece[1]];
+          imgEl.src = `assets/projects/chess/pieces/${colorName}/${pieceName}.png`;
+          pieceEl.appendChild(imgEl);
+        } else {
+          pieceEl.textContent = UNICODE_PIECES[piece];
+        }
+        
         sq.appendChild(pieceEl);
       }
 
@@ -411,7 +493,7 @@ function initChess() {
     turnDot.className = `indicator-dot ${turn}`;
     
     const kingIdx = findKing(turn);
-    if (isSquareAttacked(kingIdx, turn === "w" ? "b" : "w")) {
+    if (kingIdx !== -1 && isSquareAttacked(kingIdx, turn === "w" ? "b" : "w")) {
       warningEl.style.display = "block";
     } else {
       warningEl.style.display = "none";
@@ -438,7 +520,7 @@ function initChess() {
         legalMoves = [];
         renderBoard();
         
-        // Trigger AI if playing vs AI
+        // Trigger AI if playing vs AI and it's Black's turn
         if (modeSelect.value === "ai" && turn === "b" && !checkGameEnded()) {
           setTimeout(makeAIMove, 400);
         }
@@ -501,7 +583,7 @@ function initChess() {
             moves.push(targetIdx);
           }
           // En Passant
-          if (lastMove && lastMove.piece[1] === "p" && lastMove.to === from + dc) {
+          if (lastMove && lastMove.piece && lastMove.piece[1] === "p" && lastMove.to === from + dc) {
             const lastRowFrom = Math.floor(lastMove.from / 8);
             const lastRowTo = Math.floor(lastMove.to / 8);
             if (Math.abs(lastRowFrom - lastRowTo) === 2) {
@@ -633,6 +715,7 @@ function initChess() {
 
   // Is Square Attacked?
   function isSquareAttacked(squareIdx, attackerColor) {
+    if (squareIdx === -1) return false;
     const sr = Math.floor(squareIdx / 8);
     const sc = squareIdx % 8;
 
@@ -646,7 +729,7 @@ function initChess() {
 
       if (type === "p") {
         const dir = attackerColor === "w" ? -1 : 1;
-        // Pawns always attack diagonally forward, whether the target square is occupied or not
+        // Pawns attack diagonally forward
         if (r + dir === sr && Math.abs(c - sc) === 1) {
           return true;
         }
@@ -659,8 +742,9 @@ function initChess() {
   }
 
   // Apply a Move to the Board
-  function makeMove(from, to) {
+  function makeMove(from, to, promoType = null) {
     const piece = board[from];
+    if (!piece) return;
     const color = piece[0];
     const type = piece[1];
 
@@ -695,12 +779,16 @@ function initChess() {
     // Pawn Promotion check
     const destRow = Math.floor(to / 8);
     if (type === "p" && (destRow === 0 || destRow === 7)) {
-      activePromotion = { from, to };
-      showPromotionDialog();
-      return; // Delay turn switch until promotion completes
+      if (promoType) {
+        board[to] = color + promoType;
+      } else {
+        activePromotion = { from, to };
+        showPromotionDialog();
+        return; // Delay turn switch until promotion completes
+      }
     }
 
-    lastMove = { from, to, piece };
+    lastMove = { from, to, piece: board[to] };
     turn = turn === "w" ? "b" : "w";
     checkGameEnded();
   }
@@ -727,7 +815,7 @@ function initChess() {
     });
   }
 
-  // Check Game Ended (Checkmate or Stalemate)
+  // Check Game Ended (Checkmate, Stalemate or Insufficient Material Draw)
   function checkGameEnded() {
     let hasMoves = false;
     for (let i = 0; i < 64; i++) {
@@ -744,18 +832,125 @@ function initChess() {
       const kingIdx = findKing(turn);
       const isCheck = isSquareAttacked(kingIdx, turn === "w" ? "b" : "w");
       if (isCheck) {
-        const winner = turn === "w" ? "Black" : "White";
-        alert(`🏆 Checkmate! ${winner} Wins!`);
+        const winner = turn === "w" ? "BLACK WINS!" : "WHITE WINS!";
+        showWinnerOverlay(winner);
       } else {
-        alert("🤝 Game Drawn by Stalemate!");
+        showWinnerOverlay("STALEMATE");
       }
       return true;
+    }
+
+    if (isInsufficientMaterial()) {
+      showWinnerOverlay("DRAW");
+      return true;
+    }
+
+    return false;
+  }
+
+  // Insufficient Material Checker
+  function isInsufficientMaterial() {
+    let pieces = [];
+    for (let i = 0; i < 64; i++) {
+      if (board[i]) pieces.push(board[i]);
+    }
+    if (pieces.length === 2) {
+      return true; // Only 2 kings left
+    }
+    if (pieces.length === 3) {
+      const otherPiece = pieces.find(p => p[1] !== "k");
+      if (otherPiece && (otherPiece[1] === "b" || otherPiece[1] === "n")) {
+        return true; // King & Bishop or King & Knight vs King
+      }
     }
     return false;
   }
 
-  // ── 3. Mini-Max AI Engine ───────────────────────────────
-  function makeAIMove() {
+  // Winner overlay management
+  function showWinnerOverlay(message) {
+    if (gameoverTitle && gameoverEl) {
+      gameoverTitle.textContent = message;
+      gameoverEl.style.display = "flex";
+    }
+  }
+
+  // Convert current board position to FEN notation for Stockfish API
+  function generateFEN() {
+    let fen = "";
+    for (let r = 0; r < 8; r++) {
+      let emptyCount = 0;
+      for (let c = 0; c < 8; c++) {
+        const idx = r * 8 + c;
+        const piece = board[idx];
+        if (piece === null) {
+          emptyCount++;
+        } else {
+          if (emptyCount > 0) {
+            fen += emptyCount;
+            emptyCount = 0;
+          }
+          const color = piece[0];
+          const type = piece[1];
+          const symbol = color === "w" ? type.toUpperCase() : type.toLowerCase();
+          fen += symbol;
+        }
+      }
+      if (emptyCount > 0) {
+        fen += emptyCount;
+      }
+      if (r < 7) {
+        fen += "/";
+      }
+    }
+
+    // Active color
+    fen += " " + turn;
+
+    // Castling rights
+    let castling = "";
+    if (!kingMoved.w) {
+      if (!rookMoved.w.k) castling += "K";
+      if (!rookMoved.w.q) castling += "Q";
+    }
+    if (!kingMoved.b) {
+      if (!rookMoved.b.k) castling += "k";
+      if (!rookMoved.b.q) castling += "q";
+    }
+    fen += " " + (castling || "-");
+
+    // En passant square
+    let epSquare = "-";
+    if (lastMove && lastMove.piece && lastMove.piece[1] === "p") {
+      const fromRow = Math.floor(lastMove.from / 8);
+      const toRow = Math.floor(lastMove.to / 8);
+      const toCol = lastMove.to % 8;
+      if (Math.abs(fromRow - toRow) === 2) {
+        const epRow = fromRow + (toRow - fromRow) / 2;
+        const file = String.fromCharCode(97 + toCol);
+        const rank = 8 - epRow;
+        epSquare = file + rank;
+      }
+    }
+    fen += " " + epSquare;
+
+    // Halfmove clock and fullmove number (defaults)
+    fen += " 0 1";
+
+    return fen;
+  }
+
+  // Convert algebraic square string (e.g. "e2") to array index (0-63)
+  function squareToIdx(square) {
+    const col = square.charCodeAt(0) - 97; // 'a' is 97
+    const row = 8 - parseInt(square[1]);
+    return row * 8 + col;
+  }
+
+  // ── 3. Stockfish Online / Minimax AI Engine ────────────────
+  async function makeAIMove() {
+    // Before computing, make sure Black is active and AI mode is enabled
+    if (turn !== "b" || modeSelect.value !== "ai") return;
+
     const moves = [];
     for (let i = 0; i < 64; i++) {
       const piece = board[i];
@@ -767,11 +962,50 @@ function initChess() {
 
     if (moves.length === 0) return;
 
-    // AI Minimax evaluation search
+    // Update Turn Text to show AI status
+    turnText.textContent = "Computer is thinking...";
+
+    try {
+      const fen = generateFEN();
+      const url = `https://stockfish.online/api/s/v2.php?fen=${encodeURIComponent(fen)}&depth=10`;
+      
+      const response = await fetch(url);
+      if (!response.ok) throw new Error("Stockfish API request failed");
+      
+      const data = await response.json();
+      
+      if (turn !== "b" || modeSelect.value !== "ai") return; // Safety check for mid-turn changes
+
+      if (data.success && data.bestmove) {
+        const moveTokens = data.bestmove.split(" ");
+        const bestMoveUCI = moveTokens[1]; // e.g. "e7e8q"
+        if (bestMoveUCI && bestMoveUCI !== "(none)") {
+          const fromSquare = bestMoveUCI.slice(0, 2);
+          const toSquare = bestMoveUCI.slice(2, 4);
+          const promo = bestMoveUCI.length > 4 ? bestMoveUCI[4] : null;
+
+          const fromIdx = squareToIdx(fromSquare);
+          const toIdx = squareToIdx(toSquare);
+
+          makeMove(fromIdx, toIdx, promo);
+          renderBoard();
+          return;
+        }
+      }
+      throw new Error("Invalid bestmove format");
+    } catch (e) {
+      console.warn("Stockfish API failed. Falling back to local Minimax engine:", e);
+      if (turn !== "b" || modeSelect.value !== "ai") return;
+      runMinimaxAI(moves);
+    }
+  }
+
+  // Fallback minimax algorithm
+  function runMinimaxAI(moves) {
     let bestScore = -Infinity;
     let bestMoves = [];
 
-    // Simple one-level lookahead with evaluation
+    // Simple one-level lookahead with material valuation
     for (const move of moves) {
       const origTo = board[move.to];
       const origFrom = board[move.from];
@@ -794,9 +1028,16 @@ function initChess() {
       }
     }
 
-    // Select random best move
     const selectedMove = bestMoves[Math.floor(Math.random() * bestMoves.length)];
-    makeMove(selectedMove.from, selectedMove.to);
+    
+    // Auto-promote to queen for minimax moves
+    let promo = null;
+    const movingPiece = board[selectedMove.from];
+    if (movingPiece && movingPiece[1] === "p" && Math.floor(selectedMove.to / 8) === 7) {
+      promo = "q";
+    }
+
+    makeMove(selectedMove.from, selectedMove.to, promo);
     renderBoard();
   }
 
@@ -813,9 +1054,10 @@ function initChess() {
     return score;
   }
 
-  // Settings Handlers
+  // Settings & Resets Handlers
   themeSelect.addEventListener("change", () => {
     boardEl.className = `chess-board ${themeSelect.value}`;
+    renderBoard();
   });
 
   resetBtn.addEventListener("click", () => {
@@ -828,9 +1070,14 @@ function initChess() {
     renderBoard();
   });
 
+  playAgainBtn.addEventListener("click", () => {
+    initBoardState();
+    renderBoard();
+  });
+
   // Start Session
-  themeSelect.value = "classic";
-  boardEl.className = "chess-board classic";
+  themeSelect.value = "pygame";
+  boardEl.className = "chess-board pygame";
   initBoardState();
   renderBoard();
 }
