@@ -884,6 +884,14 @@ function getCategoryEmoji(category, type) {
     return type === "income" ? CATEGORY_EMOJIS["income_default"] : CATEGORY_EMOJIS["expense_default"];
 }
 
+// Escapes a user-controlled string so it renders as literal text when
+// interpolated into an innerHTML template, preventing HTML/script injection.
+function escapeHTML(str) {
+    const div = document.createElement("div");
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 function initBudgetTracker() {
     let transactions = [];
     let activeBreakdownType = "expense";
@@ -1181,7 +1189,7 @@ function initBudgetTracker() {
             item.className = "breakdown-item";
             item.innerHTML = `
                 <div class="breakdown-info">
-                    <span class="breakdown-name">${emoji} ${cat} (${percent.toFixed(1)}%)</span>
+                    <span class="breakdown-name">${emoji} ${escapeHTML(cat)} (${percent.toFixed(1)}%)</span>
                     <span class="breakdown-amount">₹${amount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
                 <div class="breakdown-bar-bg">
@@ -1230,8 +1238,8 @@ function initBudgetTracker() {
                         <span>${emoji}</span>
                     </div>
                     <div class="trans-text">
-                        <span class="trans-category-tag">${t.category}</span>
-                        ${t.description ? `<span class="trans-desc">${t.description}</span>` : ''}
+                        <span class="trans-category-tag">${escapeHTML(t.category)}</span>
+                        ${t.description ? `<span class="trans-desc">${escapeHTML(t.description)}</span>` : ''}
                         <span class="trans-date">${t.date}</span>
                     </div>
                 </div>
