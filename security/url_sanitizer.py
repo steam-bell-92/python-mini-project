@@ -29,18 +29,32 @@ class URLSanitizer:
         "file", "gopher", "data", "javascript", "vbscript",
         "about", "view-source", "ws", "wss"
     }
-    
+
+    BLOCKED_PORTS: Set[int] = {
+        7, 9, 11, 13, 15, 17, 19, 20, 21, 22, 23, 25, 37, 42,
+        43, 53, 77, 79, 87, 95, 101, 102, 103, 104, 109, 110,
+        111, 113, 115, 117, 119, 123, 135, 139, 143, 179, 389,
+        443, 445, 465, 512, 513, 514, 515, 526, 530, 531, 532,
+        540, 548, 554, 556, 563, 587, 601, 636, 993, 995,
+        1433, 1434, 1521, 2049, 2375, 2376, 3128, 3306, 3389,
+        4333, 5432, 5900, 5901, 6000, 6001, 6379, 6666, 6667,
+        6668, 6669, 7001, 7002, 8000, 8080, 8081, 8443, 9000,
+        9001, 9090, 9200, 9300, 11211, 27017, 27018, 27019,
+    }
+
     def __init__(
         self,
         allowed_schemes: Optional[List[str]] = None,
         allow_localhost: bool = False,
         allow_private: bool = False,
-        max_length: int = 2048
+        max_length: int = 2048,
+        allowed_ports: Optional[List[int]] = None,
     ):
         self.allowed_schemes = allowed_schemes or ['http', 'https']
         self.allow_localhost = allow_localhost
         self.allow_private = allow_private
         self.max_length = max_length
+        self.allowed_ports = allowed_ports
         self._blocked_networks = [ip_network(net) for net in self.BLOCKED_NETWORKS]
     
     def validate_url(self, url: str) -> str:
@@ -79,7 +93,8 @@ class URLSanitizer:
         host = parsed.hostname
         if not host:
             raise InvalidURLError("URL must have a valid hostname")
-        
+
+        self._validate_port(parsed.port)
         self._validate_ip_address(host)
         self._validate_characters(url)
         
@@ -107,6 +122,21 @@ class URLSanitizer:
                     if not (self.allow_private and ip.is_private):
                         raise InvalidURLError(f"Blocked IP address: {host}")
     
+    def _validate_port(self, port: Optional[int]) -> None:
+        """Validate port number against allowed/blocked lists."""
+        if port is None:
+            return
+        if port < 1 or port > 65535:
+            raise InvalidURLError(f"Invalid port number: {port}")
+        if self.allowed_ports is not None:
+            if port not in self.allowed_ports:
+                raise InvalidURLError(
+                    f"Port {port} is not allowed. "
+                    f"Allowed ports: {', '.join(str(p) for p in self.allowed_ports)}"
+                )
+        elif port in self.BLOCKED_PORTS:
+            raise InvalidURLError(f"Blocked port: {port}")
+
     def _validate_characters(self, url: str) -> None:
         """Check for unsafe or malicious characters."""
         if '\0' in url:
@@ -134,8 +164,13 @@ class URLSanitizer:
 def validate_url(
     url: str,
     allowed_schemes: Optional[List[str]] = None,
+    allowed_ports: Optional[List[int]] = None,
     **kwargs
 ) -> str:
     """Convenience function to validate a URL."""
-    sanitizer = URLSanitizer(allowed_schemes=allowed_schemes, **kwargs)
+    sanitizer = URLSanitizer(
+        allowed_schemes=allowed_schemes,
+        allowed_ports=allowed_ports,
+        **kwargs
+    )
     return sanitizer.validate_url(url)
