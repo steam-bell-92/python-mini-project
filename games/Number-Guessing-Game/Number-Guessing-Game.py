@@ -17,6 +17,13 @@ from utils.validation import get_choice, get_int
 MIN_NUMBER = 1
 MAX_NUMBER = 100
 
+# Difficulty configuration
+DIFFICULTY_ATTEMPTS = {
+    "1": 15,
+    "2": 10,
+    "3": 5,
+}
+
 # Proximity hint thresholds
 VERY_CLOSE_THRESHOLD = 3
 CLOSE_THRESHOLD = 10
@@ -39,12 +46,7 @@ def main() -> None:
             error_invalid="⚠️ Invalid selection. Please enter 1, 2 or 3."
         )
 
-        if choice == "1":
-            max_attempts = 15
-        elif choice == "3":
-            max_attempts = 5
-        else:
-            max_attempts = 10
+        max_attempts = DIFFICULTY_ATTEMPTS[choice]
 
         number = random.randint(MIN_NUMBER, MAX_NUMBER)
         attempts = 0
