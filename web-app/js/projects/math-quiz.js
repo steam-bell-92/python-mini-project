@@ -328,7 +328,7 @@ function initMathQuiz() {
             correct = a + b;
         }
 
-        return { question, correct };
+        return { question, correct, fixedOptions };
     }
 
     function generateOptions(correct) {
