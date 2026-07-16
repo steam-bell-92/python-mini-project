@@ -1005,16 +1005,7 @@
         (p) => p.category === "utilities"
       ).length;
 
-      const heroCount = document.getElementById("heroProjectCount");
-      const heroGames = document.getElementById("heroGameCount");
-      const heroMath = document.getElementById("heroMathCount");
-      const heroUtils = document.getElementById("heroUtilityCount");
       const projectBadge = document.getElementById("projectCountBadge");
-
-      if (heroCount) heroCount.textContent = total;
-      if (heroGames) heroGames.textContent = games;
-      if (heroMath) heroMath.textContent = math;
-      if (heroUtils) heroUtils.textContent = utils;
       if (projectBadge) projectBadge.textContent = total + " projects";
       animateCounter("statsTotal",total);
 animateCounter("statsGames",games);

@@ -39,8 +39,6 @@ function getProjectHTML(projectName) {
     'minesweeper': getMinesweeperHTML()
   };
 
-  return projects[projectName] || "<h2>Project Coming Soon!</h2>";
-}
 
 function toPascalCase(str) {
   if (str === "2048-game") return "2048Game";
