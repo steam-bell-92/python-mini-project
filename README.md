@@ -240,6 +240,46 @@ pytest tests/test_smoke.py -v
 - Add unit tests for your code
 - Test your project before submitting a PR
 
+### Registry Validator
+
+Before opening a pull request, validate the project registry to ensure all project metadata is correct.
+
+#### Run validation
+
+```bash
+python utils/registry_validator.py
+```
+
+#### Validate a custom registry
+
+```bash
+python utils/registry_validator.py --file projects_registry.json
+```
+
+#### JSON output
+
+```bash
+python utils/registry_validator.py --json
+```
+
+#### Strict mode (CI-friendly)
+
+Returns a non-zero exit code if validation fails.
+
+```bash
+python utils/registry_validator.py --strict
+```
+
+The validator checks:
+
+- Valid JSON format
+- Required project fields
+- Valid categories
+- Valid difficulty levels
+- Duplicate project names
+- Duplicate project paths
+- Missing project files
+
 #### Virtual Environment Reminder
 
 Always activate your virtual environment before working:

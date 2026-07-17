@@ -47,9 +47,15 @@ git checkout -b fix/bug-description
 
 ### 3. Make Your Changes
 
-- Write your code following our [Project Guidelines](#-project-guidelines)
+- Write your code following our Project Guidelines
+- Validate `projects_registry.json` before submitting your changes
 - Test your project thoroughly
 - Ensure it follows the repository style
+
+Run the registry validator:
+
+```bash
+python utils/registry_validator.py --strict
 
 ### 4. Commit Your Changes
 
@@ -465,6 +471,44 @@ To run a syntax check across all files (similar to our CI):
 ```bash
 find . -name "*.py" -exec python -m py_compile {} +
 ```
+
+## 📋 Registry Validation
+
+If your contribution adds or modifies `projects_registry.json`, validate the registry before opening a pull request.
+
+### Run validation
+
+```bash
+python utils/registry_validator.py
+```
+
+### Validate a custom registry
+
+```bash
+python utils/registry_validator.py --file projects_registry.json
+```
+
+### JSON output
+
+```bash
+python utils/registry_validator.py --json
+```
+
+### Strict mode
+
+```bash
+python utils/registry_validator.py --strict
+```
+
+The validator checks:
+
+- Valid JSON format
+- Required project fields
+- Valid categories
+- Valid difficulty levels
+- Duplicate project names
+- Duplicate project paths
+- Missing project files
 
 ---
 

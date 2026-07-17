@@ -785,6 +785,8 @@
       "mines"
     ],
     "path": "games/Minesweeper/minesweeper.py"
+  },
+  {
     "name": "Snake Game",
     "emoji": "🐍",
     "category": "games",
