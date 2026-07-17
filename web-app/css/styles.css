@@ -2975,6 +2975,10 @@ body.sidebar-collapsed .playground-section {
   padding: 0;
 }
 
+body.sidebar-collapsed .recent-searches-chips{
+  display: none;
+}
+
 .recent-search-chip {
   display: inline-flex;
   align-items: center;
