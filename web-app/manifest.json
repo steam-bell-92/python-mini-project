@@ -1,0 +1,50 @@
+{
+  "name": "Python Mini Projects",
+  "short_name": "PyProjects",
+  "description": "18+ beginner-friendly Python mini projects—games, math tools, and utilities playable in your browser.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0c0f1a",
+  "theme_color": "#0c0f1a",
+  "orientation": "any",
+  "lang": "en",
+  "categories": ["education", "games", "utilities"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Games",
+      "short_name": "Games",
+      "description": "Browse all Python games",
+      "url": "/games.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Math Tools",
+      "short_name": "Math",
+      "description": "Browse math tools and visualisers",
+      "url": "/math.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Utilities",
+      "short_name": "Utils",
+      "description": "Browse utility tools",
+      "url": "/utilities.html",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}
