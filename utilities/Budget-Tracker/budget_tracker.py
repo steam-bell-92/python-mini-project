@@ -1,4 +1,3 @@
-
 """
 💰 Budget Tracker CLI Tool
 A command-line budget tracker to manage income, expenses, and view summaries by category.
@@ -9,9 +8,10 @@ import csv
 import os
 from datetime import datetime
 from collections import defaultdict
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 
 DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "budget_data.csv")
-FIELDNAMES = ["date", "type", "category", "description", "amount"]
+FIELDNAMES = ["id", "date", "type", "category", "description", "amount"]
 
 # ─────────────────────────────────────────────
 # FILE HELPERS
@@ -23,24 +23,61 @@ def initialize_file():
         with open(DATA_FILE, mode="w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
             writer.writeheader()
+    else:
+        # Migrate old files that don't have the 'id' column
+        with open(DATA_FILE, mode="r", newline="") as f:
+            reader = csv.DictReader(f)
+            existing_fields = reader.fieldnames or []
+            rows = list(reader)
+
+        if "id" not in existing_fields:
+            for idx, row in enumerate(rows, start=1):
+                row["id"] = str(idx)
+            with open(DATA_FILE, mode="w", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+                writer.writeheader()
+                writer.writerows(rows)
 
 
 def load_transactions():
-    """Load all transactions from CSV."""
+    """Load all transactions from CSV, returning amounts as Decimal."""
     transactions = []
     with open(DATA_FILE, mode="r", newline="") as f:
         reader = csv.DictReader(f)
         for row in reader:
-            row["amount"] = float(row["amount"])
+            row["amount"] = Decimal(row["amount"])
             transactions.append(row)
     return transactions
+
+
+def save_all_transactions(transactions):
+    """Overwrite the CSV with the given list of transactions."""
+    with open(DATA_FILE, mode="w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+        writer.writeheader()
+        for t in transactions:
+            writer.writerow({
+                "id": t["id"],
+                "date": t["date"],
+                "type": t["type"],
+                "category": t["category"],
+                "description": t["description"],
+                "amount": str(t["amount"]),
+            })
+
+
+def next_id(transactions):
+    """Return the next available integer ID as a string."""
+    if not transactions:
+        return "1"
+    return str(max(int(t["id"]) for t in transactions) + 1)
 
 
 def save_transaction(entry):
     """Append a single transaction to the CSV."""
     with open(DATA_FILE, mode="a", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
-        writer.writerow(entry)
+        writer.writerow({**entry, "amount": str(entry["amount"])})
 
 
 # ─────────────────────────────────────────────
@@ -59,24 +96,27 @@ def add_transaction(trans_type):
     description = input("Description (optional): ").strip()
 
     try:
-        amount = float(input("Amount (₹): ").strip())
+        raw = input("Amount (₹): ").strip()
+        amount = Decimal(raw).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
         if amount <= 0:
             print("❌ Amount must be greater than 0.")
             return
-    except ValueError:
+    except InvalidOperation:
         print("❌ Invalid amount. Please enter a number.")
         return
 
+    transactions = load_transactions()
     entry = {
+        "id": next_id(transactions),
         "date": datetime.now().strftime("%Y-%m-%d %H:%M"),
         "type": trans_type,
         "category": category.capitalize(),
         "description": description,
-        "amount": round(amount, 2),
+        "amount": amount,
     }
 
     save_transaction(entry)
-    print(f"✅ {trans_type.capitalize()} of ₹{amount:.2f} added under '{category.capitalize()}'.")
+    print(f"✅ {trans_type.capitalize()} of ₹{amount} added under '{category.capitalize()}' (ID: {entry['id']}).")
 
 
 def view_summary():
@@ -94,11 +134,11 @@ def view_summary():
     print("\n" + "═" * 35)
     print("       💰 BUDGET SUMMARY")
     print("═" * 35)
-    print(f"  Total Income  : ₹{total_income:>10.2f}")
-    print(f"  Total Expenses: ₹{total_expense:>10.2f}")
+    print(f"  Total Income  : ₹{total_income:>10}")
+    print(f"  Total Expenses: ₹{total_expense:>10}")
     print("─" * 35)
     balance_label = "✅ Balance" if balance >= 0 else "⚠️  Deficit"
-    print(f"  {balance_label}  : ₹{abs(balance):>10.2f}")
+    print(f"  {balance_label}  : ₹{abs(balance):>10}")
     print("═" * 35)
 
 
@@ -110,8 +150,8 @@ def view_category_summary():
         print("\n📭 No transactions found.")
         return
 
-    income_by_cat = defaultdict(float)
-    expense_by_cat = defaultdict(float)
+    income_by_cat: dict[str, Decimal] = defaultdict(Decimal)
+    expense_by_cat: dict[str, Decimal] = defaultdict(Decimal)
 
     for t in transactions:
         if t["type"] == "income":
@@ -126,12 +166,12 @@ def view_category_summary():
     if income_by_cat:
         print("\n  📈 Income:")
         for cat, amt in sorted(income_by_cat.items()):
-            print(f"    {cat:<20} ₹{amt:.2f}")
+            print(f"    {cat:<20} ₹{amt}")
 
     if expense_by_cat:
         print("\n  📉 Expenses:")
         for cat, amt in sorted(expense_by_cat.items()):
-            print(f"    {cat:<20} ₹{amt:.2f}")
+            print(f"    {cat:<20} ₹{amt}")
 
     print("═" * 35)
 
@@ -144,18 +184,109 @@ def view_all_transactions():
         print("\n📭 No transactions found.")
         return
 
-    print("\n" + "═" * 70)
-    print(f"  {'DATE':<17} {'TYPE':<10} {'CATEGORY':<15} {'DESCRIPTION':<15} {'AMOUNT':>8}")
-    print("─" * 70)
+    print("\n" + "═" * 76)
+    print(f"  {'ID':<5} {'DATE':<17} {'TYPE':<10} {'CATEGORY':<15} {'DESCRIPTION':<13} {'AMOUNT':>9}")
+    print("─" * 76)
 
     for t in transactions:
         symbol = "+" if t["type"] == "income" else "-"
         print(
-            f"  {t['date']:<17} {t['type']:<10} {t['category']:<15} "
-            f"{t['description'][:14]:<15} {symbol}₹{t['amount']:>7.2f}"
+            f"  {t['id']:<5} {t['date']:<17} {t['type']:<10} {t['category']:<15} "
+            f"{t['description'][:12]:<13} {symbol}₹{t['amount']:>8}"
         )
 
-    print("═" * 70)
+    print("═" * 76)
+
+
+def edit_transaction():
+    """Edit an existing transaction by ID."""
+    transactions = load_transactions()
+
+    if not transactions:
+        print("\n📭 No transactions to edit.")
+        return
+
+    view_all_transactions()
+
+    try:
+        target_id = input("\n✏️  Enter the ID of the transaction to edit: ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print("\n❌ Cancelled.")
+        return
+
+    match = next((t for t in transactions if t["id"] == target_id), None)
+    if not match:
+        print(f"❌ No transaction found with ID {target_id}.")
+        return
+
+    print(f"\n── Editing Transaction #{target_id} ──")
+    print("  Press Enter to keep the current value.\n")
+
+    # Category
+    new_category = input(f"  Category [{match['category']}]: ").strip()
+    if new_category:
+        match["category"] = new_category.capitalize()
+
+    # Description
+    new_desc = input(f"  Description [{match['description']}]: ").strip()
+    if new_desc != "":
+        match["description"] = new_desc
+
+    # Amount
+    new_amount_raw = input(f"  Amount (₹) [{match['amount']}]: ").strip()
+    if new_amount_raw:
+        try:
+            new_amount = Decimal(new_amount_raw).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+            if new_amount <= 0:
+                print("❌ Amount must be greater than 0. Keeping original value.")
+            else:
+                match["amount"] = new_amount
+        except InvalidOperation:
+            print("❌ Invalid amount. Keeping original value.")
+
+    # Type
+    new_type = input(f"  Type (income/expense) [{match['type']}]: ").strip().lower()
+    if new_type in ("income", "expense"):
+        match["type"] = new_type
+    elif new_type:
+        print("❌ Invalid type. Keeping original value.")
+
+    save_all_transactions(transactions)
+    print(f"✅ Transaction #{target_id} updated successfully.")
+
+
+def delete_transaction():
+    """Delete a single transaction by ID."""
+    transactions = load_transactions()
+
+    if not transactions:
+        print("\n📭 No transactions to delete.")
+        return
+
+    view_all_transactions()
+
+    try:
+        target_id = input("\n🗑️  Enter the ID of the transaction to delete: ").strip()
+    except (KeyboardInterrupt, EOFError):
+        print("\n❌ Cancelled.")
+        return
+
+    match = next((t for t in transactions if t["id"] == target_id), None)
+    if not match:
+        print(f"❌ No transaction found with ID {target_id}.")
+        return
+
+    print(f"\n  Transaction to delete:")
+    print(f"  [{match['id']}] {match['date']} | {match['type']} | "
+          f"{match['category']} | {match['description']} | ₹{match['amount']}")
+
+    confirm = input("\n  Confirm delete? (yes/no): ").strip().lower()
+    if confirm == "yes":
+        updated = [t for t in transactions if t["id"] != target_id]
+        save_all_transactions(updated)
+        print(f"🗑️  Transaction #{target_id} deleted.")
+    else:
+        print("❌ Cancelled.")
 
 
 def delete_all_transactions():
@@ -183,8 +314,10 @@ def print_menu():
     print("  3. 📋 View All Transactions")
     print("  4. 📊 View Summary")
     print("  5. 🗂️  Category-wise Breakdown")
-    print("  6. 🗑️  Clear All Data")
-    print("  7. 🚪 Exit")
+    print("  6. ✏️  Edit a Transaction")
+    print("  7. 🗑️  Delete a Transaction")
+    print("  8. 💣 Clear All Data")
+    print("  9. 🚪 Exit")
     print("═" * 35)
 
 
@@ -194,7 +327,7 @@ def main():
 
     while True:
         print_menu()
-        choice = input("  Enter your choice (1-7): ").strip()
+        choice = input("  Enter your choice (1-9): ").strip()
 
         if choice == "1":
             add_transaction("income")
@@ -207,12 +340,16 @@ def main():
         elif choice == "5":
             view_category_summary()
         elif choice == "6":
-            delete_all_transactions()
+            edit_transaction()
         elif choice == "7":
+            delete_transaction()
+        elif choice == "8":
+            delete_all_transactions()
+        elif choice == "9":
             print("\n👋 Goodbye! Keep tracking your budget. 💸\n")
             break
         else:
-            print("❌ Invalid choice. Please enter a number between 1 and 7.")
+            print("❌ Invalid choice. Please enter a number between 1 and 9.")
 
 
 if __name__ == "__main__":
