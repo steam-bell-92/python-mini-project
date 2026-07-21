@@ -877,7 +877,15 @@ if (!pageCategory && projectsSection) {
       // Show sidebar when projects section is in view AND we're scrolled past hero
       const heroSection = document.querySelector('.hero-section');
       const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-      const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
+      // FIX ISSUE #1704: Hide the fixed sidebar when the footer enters the viewport
+      const footer = document.querySelector(".footer");
+      const isFooterVisible = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight
+        : false;
+      const showSidebar =
+        rect.top < window.innerHeight &&
+        !isFooterVisible &&
+        window.scrollY > heroBottom - 100;
  
       document.body.classList.toggle("sidebar-active", showSidebar);
       console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY, 'playgroundActive:', playgroundActive);
