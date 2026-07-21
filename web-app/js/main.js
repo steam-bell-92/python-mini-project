@@ -776,6 +776,57 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+  /* ==========================================================
+   FIX ISSUE #1703
+   Wire Hero Category Navigation
+========================================================== */
+
+const heroNavButtons = document.querySelectorAll(".hero-nav-btn");
+
+heroNavButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const category = button.dataset.category;
+
+        heroNavButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        syncSidebarTabs(category);
+        syncStickyTabs(category);
+
+        if (category === "playground") {
+
+            showPlaygroundSection();
+
+            if (playgroundSection) {
+                playgroundSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+
+        } else {
+
+            showProjectsSection();
+            applyCategoryFilter(category);
+
+            if (projectsSection) {
+                projectsSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+
+        }
+
+    });
+
+});
+
 
   /* ── Stats Cards ──────────────────────────────────────────── */
   var statsCards = document.querySelectorAll(".stats-card");
