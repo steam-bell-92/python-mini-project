@@ -937,6 +937,129 @@ main>.hero-section:has(.hero-code-snippets) {
   padding: 0 1rem;
 }
 
+/* ==========================================================
+   FIX ISSUE #1703
+   Homepage Category Navigation
+========================================================== */
+
+.hero-category-nav{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:18px;
+
+    width:fit-content;
+
+    margin:0 auto 42px;
+
+    padding:12px 24px;
+
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,255,255,.35);
+
+    border-radius:18px;
+
+    box-shadow:0 8px 30px rgba(0,0,0,.08);
+
+}
+
+.hero-nav-btn{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    background:none;
+
+    border:none;
+
+    cursor:pointer;
+
+    padding:10px 4px;
+
+    position:relative;
+
+    color:var(--text-secondary);
+
+    font-size:15px;
+
+    font-weight:600;
+
+    transition:.25s;
+
+}
+
+.hero-nav-btn i{
+
+    font-size:14px;
+
+}
+
+.hero-nav-btn:hover{
+
+    color:var(--accent);
+
+}
+
+.hero-nav-btn.active{
+
+    color:var(--accent);
+
+}
+
+.hero-nav-btn::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-8px;
+
+    width:100%;
+
+    height:3px;
+
+    background:var(--accent);
+
+    border-radius:999px;
+
+    transform:scaleX(0);
+
+    transition:.25s;
+
+}
+
+.hero-nav-btn.active::after{
+
+    transform:scaleX(1);
+
+}
+
+html[data-theme="dark"] .hero-category-nav{
+
+    background:rgba(28,28,28,.65);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    box-shadow:0 10px 35px rgba(0,0,0,.45);
+
+}
+
+
+
+
+
 /* ── Hero Big Logo & Brand Title ────────────────────────────── */
 .hero-logo-header {
   display: flex;
