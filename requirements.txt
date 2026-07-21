@@ -16,7 +16,7 @@ markdown2==2.5.5
 reportlab==4.5.1
 
 # NLP dependencies
-nltk==3.9.1
+nltk==3.10.0
 pyenchant==3.3.0
 
 # TUI dependencies

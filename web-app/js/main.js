@@ -776,6 +776,57 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
+  /* ==========================================================
+   FIX ISSUE #1703
+   Wire Hero Category Navigation
+========================================================== */
+
+const heroNavButtons = document.querySelectorAll(".hero-nav-btn");
+
+heroNavButtons.forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const category = button.dataset.category;
+
+        heroNavButtons.forEach(function (btn) {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        syncSidebarTabs(category);
+        syncStickyTabs(category);
+
+        if (category === "playground") {
+
+            showPlaygroundSection();
+
+            if (playgroundSection) {
+                playgroundSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+
+        } else {
+
+            showProjectsSection();
+            applyCategoryFilter(category);
+
+            if (projectsSection) {
+                projectsSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                });
+            }
+
+        }
+
+    });
+
+});
+
 
   /* ── Stats Cards ──────────────────────────────────────────── */
   var statsCards = document.querySelectorAll(".stats-card");
@@ -877,7 +928,15 @@ if (!pageCategory && projectsSection) {
       // Show sidebar when projects section is in view AND we're scrolled past hero
       const heroSection = document.querySelector('.hero-section');
       const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-      const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
+      // FIX ISSUE #1704: Hide the fixed sidebar when the footer enters the viewport
+      const footer = document.querySelector(".footer");
+      const isFooterVisible = footer
+        ? footer.getBoundingClientRect().top < window.innerHeight
+        : false;
+      const showSidebar =
+        rect.top < window.innerHeight &&
+        !isFooterVisible &&
+        window.scrollY > heroBottom - 100;
  
       document.body.classList.toggle("sidebar-active", showSidebar);
       console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY, 'playgroundActive:', playgroundActive);
