@@ -29,6 +29,7 @@
   <meta content="Interactive games, math visualizations, and utilities in the browser." name="twitter:description" />
   <title>Python Mini Projects — Interactive Web Edition</title>
   <link href="assets/favicon.svg" rel="icon" type="image/svg+xml" />
+  <link rel="manifest" href="manifest.json" />
   <link href="css/styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -1733,6 +1734,15 @@ window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
     </div>
   </div>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then((reg) => console.log('Service Worker registered:', reg.scope))
+          .catch((err) => console.error('Service Worker registration failed:', err));
+      });
+    }
+  </script>
 </body>
 
 </html>
