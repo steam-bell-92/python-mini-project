@@ -663,4 +663,4 @@ function initNQueens() {
     solutionCountEl.textContent = "0";
   });
 }
-}
+
