@@ -480,10 +480,18 @@
         ...CM.completionKeymap,
         /* Search */
         ...CM.searchKeymap,
-        /* Ctrl/Cmd + Enter → Run Code */
+        /* Ctrl/Cmd + Enter or Ctrl/Cmd + Shift + Enter → Run Code */
         {
           key: "Ctrl-Enter",
           mac: "Cmd-Enter",
+          run: function () {
+            runCode();
+            return true;
+          },
+        },
+        {
+          key: "Ctrl-Shift-Enter",
+          mac: "Cmd-Shift-Enter",
           run: function () {
             runCode();
             return true;
