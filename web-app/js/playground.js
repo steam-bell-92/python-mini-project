@@ -480,12 +480,29 @@
         ...CM.completionKeymap,
         /* Search */
         ...CM.searchKeymap,
-        /* Ctrl/Cmd + Enter → Run Code */
+        /* Ctrl/Cmd + Enter or Ctrl/Cmd + Shift + Enter → Run Code */
         {
           key: "Ctrl-Enter",
           mac: "Cmd-Enter",
           run: function () {
             runCode();
+            return true;
+          },
+        },
+        {
+          key: "Ctrl-Shift-Enter",
+          mac: "Cmd-Shift-Enter",
+          run: function () {
+            runCode();
+            return true;
+          },
+        },
+        /* Ctrl/Cmd + Shift + L → Clear Console */
+        {
+          key: "Ctrl-Shift-l",
+          mac: "Cmd-Shift-l",
+          run: function () {
+            resetConsole();
             return true;
           },
         },
@@ -1004,24 +1021,56 @@
     });
   }
 
-  // Keyboard shortcut for copy: Ctrl+Shift+C in editor
-  if (cmView) {
-    document.addEventListener("keydown", function (event) {
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.code === "KeyC") {
-        // Check if focus is in the editor
-        if (
-          editorMount &&
-          (editorMount.contains(document.activeElement) ||
-            document.activeElement === editorMount)
-        ) {
-          event.preventDefault();
-          if (copyEditorCodeBtn) {
-            copyEditorCodeBtn.click();
-          }
+  /* ──────────────────────────────────────────────────────────────
+     Keyboard Shortcuts — Issue #1716 & Issue #1215
+     - Ctrl/Cmd + Enter: Run Python Code
+     - Ctrl/Cmd + Shift + L: Clear Output Console
+     - Ctrl/Cmd + Shift + C: Copy Code (when focused in editor)
+     ────────────────────────────────────────────────────────────── */
+  document.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) return;
+
+    // Only process if playground section is active/visible
+    if (!playgroundSection || playgroundSection.style.display === "none") return;
+
+    var isMod = event.ctrlKey || event.metaKey;
+    if (!isMod) return;
+
+    // Ctrl/Cmd + Shift + C: Copy editor code
+    if (
+      event.shiftKey &&
+      (event.key === "c" || event.key === "C" || event.code === "KeyC")
+    ) {
+      if (
+        editorMount &&
+        (editorMount.contains(document.activeElement) ||
+          document.activeElement === editorMount)
+      ) {
+        event.preventDefault();
+        if (copyEditorCodeBtn) {
+          copyEditorCodeBtn.click();
         }
       }
-    });
-  }
+      return;
+    }
+
+    // Ctrl/Cmd + Enter: Run Code
+    if (event.key === "Enter" || event.code === "Enter") {
+      event.preventDefault();
+      runCode();
+      return;
+    }
+
+    // Ctrl/Cmd + Shift + L: Clear Output Console
+    if (
+      event.shiftKey &&
+      (event.key === "l" || event.key === "L" || event.code === "KeyL")
+    ) {
+      event.preventDefault();
+      resetConsole();
+      return;
+    }
+  });
   if (saveDraftBtn) {
     saveDraftBtn.addEventListener("click", function () {
       var draftName = prompt("Enter a name for this draft:");
