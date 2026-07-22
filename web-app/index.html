@@ -615,590 +615,841 @@
   <script defer src="js/projects/number-sliding-puzzle.js"></script>
   <script defer src="js/projects/budget-tracker.js"></script>
   <script defer src="js/projects/minesweeper.js"></script>
+  <!-- FIX: Project Modal Loading - DIRECT OVERRIDE -->
+<script>
+(function() {
+  console.log('🔧 Applying DIRECT project modal fix...');
+  
+  // Wait for project.js to be fully loaded
+  function waitForProjectJS() {
+    if (typeof getProjectHTML === 'function' && typeof initializeProject === 'function') {
+      console.log('✅ project.js loaded, applying fix...');
+      applyFix();
+    } else {
+      console.log('⏳ Waiting for project.js...');
+      setTimeout(waitForProjectJS, 200);
+    }
+  }
+  
+  function applyFix() {
+    // Store original if exists
+    const originalOpen = window.openProjectSafe;
+    
+    // Override openProjectSafe
+    window.openProjectSafe = function(projectName, element) {
+      console.log(`📂 Opening project: ${projectName}`);
+      
+      const modal = document.getElementById('projectModal');
+      const modalBody = document.getElementById('modalBody');
+      
+      if (!modal || !modalBody) {
+        console.error('❌ Modal elements not found');
+        return;
+      }
+      
+      // Show loading
+      modalBody.innerHTML = `
+        <div style="text-align:center;padding:60px 20px;">
+          <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
+          <h3 style="color:#e2e8f0;">Loading ${projectName.replace(/-/g, ' ')}...</h3>
+          <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        </div>
+      `;
+      modal.style.display = 'flex';
+      
+      // Add to recently viewed
+      let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+      recentlyViewed = recentlyViewed.filter(name => name !== projectName);
+      recentlyViewed.unshift(projectName);
+      if (recentlyViewed.length > 10) recentlyViewed.pop();
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+      
+      // Update counter
+      setTimeout(() => {
+        if (window.updateRecentlyViewedCounter) {
+          window.updateRecentlyViewedCounter();
+        }
+      }, 100);
+      
+      // Load the project - USE THE CORRECT FUNCTIONS FROM project.js
+      setTimeout(() => {
+        try {
+          console.log(`🔄 Calling getProjectHTML for: ${projectName}`);
+          
+          // Get HTML from project.js
+          let htmlContent = getProjectHTML(projectName);
+          
+          if (htmlContent && !htmlContent.includes('error-state')) {
+            modalBody.innerHTML = htmlContent;
+            console.log(`✅ HTML loaded for: ${projectName}`);
+            
+            // Initialize the project using project.js
+            setTimeout(() => {
+              console.log(`🔄 Initializing: ${projectName}`);
+              initializeProject(projectName);
+            }, 100);
+          } else {
+            // Fallback: Try to find render function
+            const renderFn = 'render' + projectName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+            if (typeof window[renderFn] === 'function') {
+              modalBody.innerHTML = window[renderFn]();
+              console.log(`✅ Used fallback render function: ${renderFn}`);
+            } else {
+              throw new Error(`No render function found for ${projectName}`);
+            }
+          }
+        } catch (error) {
+          console.error(`❌ Error loading ${projectName}:`, error);
+          modalBody.innerHTML = `
+            <div style="text-align:center;padding:60px 20px;">
+              <div style="font-size:3rem;margin-bottom:20px;">🚀</div>
+              <h2 style="color:#e2e8f0;">${projectName.replace(/-/g, ' ').toUpperCase()}</h2>
+              <p style="color:#94a3b8;margin:10px 0 20px;">This project is coming soon!</p>
+              <button onclick="document.getElementById('projectModal').style.display='none'" 
+                      style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
+                Close
+              </button>
+            </div>
+          `;
+        }
+      }, 300);
+    };
+    
+    console.log('✅ openProjectSafe overridden successfully!');
+  }
+  
+  // Start waiting for project.js
+  waitForProjectJS();
+})();
+</script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();
     });
   </script>
 
-  <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
-  <script>
-    (function () {
-      const projectsGrid = document.getElementById("projectsGrid");
-      if (!projectsGrid) return;
-      // ALL projects from your js/projects/ folder
-      const projectsData = [
-        // GAMES (20+)
-        {
-  project: "number-sliding-puzzle",
-  title: "Number Sliding Puzzle",
-  category: "games",
-  difficulty: "Intermediate",
-  desc: "Arrange tiles in order by sliding them into empty space",
-  tags: "game,puzzle,sliding,numbers",
-},
-        {
-          project: "2048-game",
-          title: "2048 Game",
-          category: "games",
-          desc: "Combine tiles and reach 2048!",
-          tags: "game,puzzle,2048",
-        },
-        {
-          project: "rock-paper-scissor",
-          title: "Rock Paper Scissor",
-          category: "games",
-          desc: "Classic hand game against AI",
-          tags: "game,rock,paper",
-        },
-        {
-          project: "dice-rolling",
-          title: "Dice Rolling",
-          category: "games",
-          desc: "Roll virtual dice",
-          tags: "game,dice",
-        },
-        {
-          project: "coin-flip",
-          title: "Coin Flip",
-          category: "games",
-          desc: "Flip a coin for decisions",
-          tags: "game,coin",
-        },
-        {
-          project: "number-guessing",
-          title: "Number Guessing",
-          category: "games",
-          desc: "Guess the secret number",
-          tags: "game,numbers",
-        },
-        {
-          project: "hangman",
-          title: "Hangman",
-          category: "games",
-          desc: "Classic word guessing game",
-          tags: "game,words",
-        },
-        {
-          project: "word-scramble",
-          title: "Word Scramble",
-          category: "games",
-          desc: "Unscramble letters to find words",
-          tags: "game,words",
-        },
-        {
-          project: "tic-tac-toe",
-          title: "Tic Tac Toe",
-          category: "games",
-          desc: "Classic X vs O game",
-          tags: "game,strategy",
-        },
-        {
-          project: "snake-game",
-          title: "Snake Game",
-          category: "games",
-          desc: "Classic snake eating game",
-          tags: "game,arcade",
-        },
-        {
-          project: "flappy-game",
-          title: "Flappy Game",
-          category: "games",
-          desc: "Flappy bird style game",
-          tags: "game,arcade",
-        },
-        {
-          project: "simon-says",
-          title: "Simon Says",
-          category: "games",
-          desc: "Memory pattern game",
-          tags: "game,memory",
-        },
-        {
-          project: "whack-a-mole",
-          title: "Whack a Mole",
-          category: "games",
-          desc: "Hit the moles as they pop up",
-          tags: "game,arcade",
-        },
-        {
-          project: "dots-boxes",
-          title: "Dots and Boxes",
-          category: "games",
-          desc: "Connect dots to complete boxes",
-          tags: "game,strategy",
-        },
-        {
-          project: "emoji-memory-game",
-          title: "Emoji Memory",
-          category: "games",
-          desc: "Match pairs of emojis",
-          tags: "game,memory",
-        },
-        {
-          project: "spot-the-difference",
-          title: "Spot the Difference",
-          category: "games",
-          desc: "Find differences between images",
-          tags: "game,puzzle",
-        },
-        {
-          project: "minesweeper",
-          title: "Minesweeper",
-          category: "games",
-          desc: "Clear the minefield without detonating any mines!",
-          tags: "game,puzzle,logic,minesweeper",
-        },
-        {
-          project: "flames",
-          title: "FLAMES Game",
-          category: "games",
-          desc: "Friendship relationship calculator",
-          tags: "game,relationship",
-        },
-        {
-          project: "sudoku-game",
-          title: "Sudoku Solver & Game",
-          category: "games",
-          desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
-          tags: "game,puzzle,backtracking,solver",
-        },
-        {
-          project: "queens-logic-puzzle",
-          title: "Queens Logic Puzzle",
-          category: "games",
-          desc: "Place queens following row, column, region, and adjacency rules!",
-          tags: "game,puzzle,logic,queens,strategy",
-        },
-        {
-          project: "pattern-recall-game",
-          title: "Pattern Recall Game",
-          category: "games",
-          desc: "Watch and recreate the pattern within 10 seconds!",
-          tags: "game,memory,pattern,recall,puzzle",
-        },
-        {
-          project: "chess",
-          title: "Chess Game",
-          category: "games",
-          desc: "Play a standard game of Chess locally or against a basic AI!",
-          tags: "chess, strategy, board game, 2 player, ai, minimax",
-        },
-        {
-          project: "war-card-game",
-          title: "War Card Game",
-          category: "games",
-          desc: "A classic two-player card game based on comparing rank values",
-          tags: "game,cards,multiplayer,war",
-        },
+  <!-- PROJECT LOADER - WITH FAVORITE BUTTONS & FIXED MODAL -->
+<script>
+  (function () {
+    const projectsGrid = document.getElementById("projectsGrid");
+    if (!projectsGrid) return;
+    
+    // ALL projects from your js/projects/ folder
+    const projectsData = [
+      // GAMES (20+)
+      {
+        project: "number-sliding-puzzle",
+        title: "Number Sliding Puzzle",
+        category: "games",
+        difficulty: "Intermediate",
+        desc: "Arrange tiles in order by sliding them into empty space",
+        tags: "game,puzzle,sliding,numbers",
+      },
+      {
+        project: "2048-game",
+        title: "2048 Game",
+        category: "games",
+        desc: "Combine tiles and reach 2048!",
+        tags: "game,puzzle,2048",
+      },
+      {
+        project: "rock-paper-scissor",
+        title: "Rock Paper Scissor",
+        category: "games",
+        desc: "Classic hand game against AI",
+        tags: "game,rock,paper",
+      },
+      {
+        project: "dice-rolling",
+        title: "Dice Rolling",
+        category: "games",
+        desc: "Roll virtual dice",
+        tags: "game,dice",
+      },
+      {
+        project: "coin-flip",
+        title: "Coin Flip",
+        category: "games",
+        desc: "Flip a coin for decisions",
+        tags: "game,coin",
+      },
+      {
+        project: "number-guessing",
+        title: "Number Guessing",
+        category: "games",
+        desc: "Guess the secret number",
+        tags: "game,numbers",
+      },
+      {
+        project: "hangman",
+        title: "Hangman",
+        category: "games",
+        desc: "Classic word guessing game",
+        tags: "game,words",
+      },
+      {
+        project: "word-scramble",
+        title: "Word Scramble",
+        category: "games",
+        desc: "Unscramble letters to find words",
+        tags: "game,words",
+      },
+      {
+        project: "tic-tac-toe",
+        title: "Tic Tac Toe",
+        category: "games",
+        desc: "Classic X vs O game",
+        tags: "game,strategy",
+      },
+      {
+        project: "snake-game",
+        title: "Snake Game",
+        category: "games",
+        desc: "Classic snake eating game",
+        tags: "game,arcade",
+      },
+      {
+        project: "flappy-game",
+        title: "Flappy Game",
+        category: "games",
+        desc: "Flappy bird style game",
+        tags: "game,arcade",
+      },
+      {
+        project: "simon-says",
+        title: "Simon Says",
+        category: "games",
+        desc: "Memory pattern game",
+        tags: "game,memory",
+      },
+      {
+        project: "whack-a-mole",
+        title: "Whack a Mole",
+        category: "games",
+        desc: "Hit the moles as they pop up",
+        tags: "game,arcade",
+      },
+      {
+        project: "dots-boxes",
+        title: "Dots and Boxes",
+        category: "games",
+        desc: "Connect dots to complete boxes",
+        tags: "game,strategy",
+      },
+      {
+        project: "emoji-memory-game",
+        title: "Emoji Memory",
+        category: "games",
+        desc: "Match pairs of emojis",
+        tags: "game,memory",
+      },
+      {
+        project: "spot-the-difference",
+        title: "Spot the Difference",
+        category: "games",
+        desc: "Find differences between images",
+        tags: "game,puzzle",
+      },
+      {
+        project: "minesweeper",
+        title: "Minesweeper",
+        category: "games",
+        desc: "Clear the minefield without detonating any mines!",
+        tags: "game,puzzle,logic,minesweeper",
+      },
+      {
+        project: "flames",
+        title: "FLAMES Game",
+        category: "games",
+        desc: "Friendship relationship calculator",
+        tags: "game,relationship",
+      },
+      {
+        project: "sudoku-game",
+        title: "Sudoku Solver & Game",
+        category: "games",
+        desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
+        tags: "game,puzzle,backtracking,solver",
+      },
+      {
+        project: "queens-logic-puzzle",
+        title: "Queens Logic Puzzle",
+        category: "games",
+        desc: "Place queens following row, column, region, and adjacency rules!",
+        tags: "game,puzzle,logic,queens,strategy",
+      },
+      {
+        project: "pattern-recall-game",
+        title: "Pattern Recall Game",
+        category: "games",
+        desc: "Watch and recreate the pattern within 10 seconds!",
+        tags: "game,memory,pattern,recall,puzzle",
+      },
+      {
+        project: "chess",
+        title: "Chess Game",
+        category: "games",
+        desc: "Play a standard game of Chess locally or against a basic AI!",
+        tags: "chess, strategy, board game, 2 player, ai, minimax",
+      },
+      {
+        project: "war-card-game",
+        title: "War Card Game",
+        category: "games",
+        desc: "A classic two-player card game based on comparing rank values",
+        tags: "game,cards,multiplayer,war",
+      },
 
-        // MATH (15+)
-        {
-          project: "binary-search",
-          title: "Binary Search",
-          category: "math",
-          desc: "Visualize binary search algorithm",
-          tags: "math,algorithm",
-        },
-        {
-          project: "sorting-visualizer",
-          title: "Sorting Visualizer",
-          category: "math",
-          desc: "Visualize multi-algorithm sorting (Bubble, Selection, Insertion, Quick)",
-          tags: "math,algorithm,sorting",
-        },
-        {
-          project: "quick-sort",
-          title: "Quick Sort",
-          category: "math",
-          desc: "Visualize quick sort algorithm with pivot partitioning",
-          tags: "math,algorithm",
-        },
-        {
-          project: "merge-sort",
-          title: "Merge Sort",
-          category: "math",
-          desc: "Visualize merge sort algorithm with divide-and-conquer approach",
-          tags: "math,algorithm",
-        },
-        {
-          project: "fibonacci",
-          title: "Fibonacci",
-          category: "math",
-          desc: "Generate Fibonacci sequence",
-          tags: "math,numbers",
-        },
-        {
-          project: "pascal-triangle",
-          title: "Pascal Triangle",
-          category: "math",
-          desc: "Generate Pascal's triangle",
-          tags: "math,numbers",
-        },
-        {
-          project: "armstrong",
-          title: "Armstrong Number",
-          category: "math",
-          desc: "Check Armstrong numbers",
-          tags: "math,numbers",
-        },
-        {
-          project: "collatz",
-          title: "Collatz Conjecture",
-          category: "math",
-          desc: "3n+1 sequence analyzer",
-          tags: "math,numbers",
-        },
-        {
-          project: "prime-analyzer",
-          title: "Prime Analyzer",
-          category: "math",
-          desc: "Prime number checker",
-          tags: "math,numbers",
-        },
-        {
-          project: "projectile-motion",
-          title: "Projectile Motion",
-          category: "math",
-          desc: "Physics projectile calculator",
-          tags: "math,physics",
-        },
-        {
-          project: "progression-recognizer",
-          title: "Progression Recognizer",
-          category: "math",
-          desc: "Recognize sequences",
-          tags: "math,sequences",
-        },
-        {
-          project: "matrix-calculator",
-          title: "Matrix Calculator",
-          category: "math",
-          desc: "Add, subtract, multiply, transpose, determinant, rank, inverse",
-          tags: "math,matrix,algebra,calculator",
-        },
-        {
-          project: "reverse-hangman",
-          title: "Reverse Hangman",
-          category: "games",
-          desc: "Computer tries to guess your secret word using AI logic",
-          tags: "game,hangman,ai,word,guessing",
-        },
-        {
-          project: "coordinate-polar-transform",
-          title: "Coordinate Transform",
-          category: "math",
-          desc: "Convert between coordinate systems",
-          tags: "math,coordinates",
-        },
-        {
-          project: "complete-calculus-engine",
-          title: "Complete Calculus Engine",
-          category: "math",
-          desc: "Calculate derivatives",
-          tags: "math,calculus",
-        },
-        {
-          project: "tower-of-hanoi",
-          title: "Tower of Hanoi",
-          category: "utilities",
-          desc: "Solve Tower of Hanoi puzzle",
-          tags: "utility,puzzle",
-        },
-        {
-          project: "math-quiz",
-          title: "Math Quiz",
-          category: "math",
-          desc: "Test your math skills",
-          tags: "math,quiz",
-        },
-        {
-          project: "fourier-series",
-          title: "Fourier Series Visualizer",
-          category: "math",
-          desc: "Explore waveform approximation using harmonics",
-          tags: "math,fourier,wave,harmonics",
-        },
+      // MATH (15+)
+      {
+        project: "binary-search",
+        title: "Binary Search",
+        category: "math",
+        desc: "Visualize binary search algorithm",
+        tags: "math,algorithm",
+      },
+      {
+        project: "sorting-visualizer",
+        title: "Sorting Visualizer",
+        category: "math",
+        desc: "Visualize multi-algorithm sorting (Bubble, Selection, Insertion, Quick)",
+        tags: "math,algorithm,sorting",
+      },
+      {
+        project: "quick-sort",
+        title: "Quick Sort",
+        category: "math",
+        desc: "Visualize quick sort algorithm with pivot partitioning",
+        tags: "math,algorithm",
+      },
+      {
+        project: "merge-sort",
+        title: "Merge Sort",
+        category: "math",
+        desc: "Visualize merge sort algorithm with divide-and-conquer approach",
+        tags: "math,algorithm",
+      },
+      {
+        project: "fibonacci",
+        title: "Fibonacci",
+        category: "math",
+        desc: "Generate Fibonacci sequence",
+        tags: "math,numbers",
+      },
+      {
+        project: "pascal-triangle",
+        title: "Pascal Triangle",
+        category: "math",
+        desc: "Generate Pascal's triangle",
+        tags: "math,numbers",
+      },
+      {
+        project: "armstrong",
+        title: "Armstrong Number",
+        category: "math",
+        desc: "Check Armstrong numbers",
+        tags: "math,numbers",
+      },
+      {
+        project: "collatz",
+        title: "Collatz Conjecture",
+        category: "math",
+        desc: "3n+1 sequence analyzer",
+        tags: "math,numbers",
+      },
+      {
+        project: "prime-analyzer",
+        title: "Prime Analyzer",
+        category: "math",
+        desc: "Prime number checker",
+        tags: "math,numbers",
+      },
+      {
+        project: "projectile-motion",
+        title: "Projectile Motion",
+        category: "math",
+        desc: "Physics projectile calculator",
+        tags: "math,physics",
+      },
+      {
+        project: "progression-recognizer",
+        title: "Progression Recognizer",
+        category: "math",
+        desc: "Recognize sequences",
+        tags: "math,sequences",
+      },
+      {
+        project: "matrix-calculator",
+        title: "Matrix Calculator",
+        category: "math",
+        desc: "Add, subtract, multiply, transpose, determinant, rank, inverse",
+        tags: "math,matrix,algebra,calculator",
+      },
+      {
+        project: "reverse-hangman",
+        title: "Reverse Hangman",
+        category: "games",
+        desc: "Computer tries to guess your secret word using AI logic",
+        tags: "game,hangman,ai,word,guessing",
+      },
+      {
+        project: "coordinate-polar-transform",
+        title: "Coordinate Transform",
+        category: "math",
+        desc: "Convert between coordinate systems",
+        tags: "math,coordinates",
+      },
+      {
+        project: "complete-calculus-engine",
+        title: "Complete Calculus Engine",
+        category: "math",
+        desc: "Calculate derivatives",
+        tags: "math,calculus",
+      },
+      {
+        project: "tower-of-hanoi",
+        title: "Tower of Hanoi",
+        category: "utilities",
+        desc: "Solve Tower of Hanoi puzzle",
+        tags: "utility,puzzle",
+      },
+      {
+        project: "math-quiz",
+        title: "Math Quiz",
+        category: "math",
+        desc: "Test your math skills",
+        tags: "math,quiz",
+      },
+      {
+        project: "fourier-series",
+        title: "Fourier Series Visualizer",
+        category: "math",
+        desc: "Explore waveform approximation using harmonics",
+        tags: "math,fourier,wave,harmonics",
+      },
 
-        // UTILITIES (10+)
-        {
-          project: "pathfinding-visualizer",
-          title: "Pathfinding Visualizer",
-          category: "utilities",
-          desc: "Interactive visualizer for Dijkstra and A* algorithms",
-          tags: "utility,algorithm,visualizer,pathfinding"
-        },
-        {
-          project: "budget-tracker",
-          title: "Budget Tracker",
-          category: "utilities",
-          desc: "Track income and expenses, view categories, and persist data locally",
-          tags: "utility,finance,tracker,money"
-        },
-        {
-          project: "morse-code",
-          title: "Morse Code",
-          category: "utilities",
-          desc: "Convert text to Morse code",
-          tags: "utility,converter",
-        },
-        {
-          project: "number-converter",
-          title: "Number Converter",
-          category: "utilities",
-          desc: "Convert between number systems",
-          tags: "utility,converter",
-        },
-        {
-          project: "password-forge",
-          title: "Password Forge",
-          category: "utilities",
-          desc: "Generate strong passwords",
-          tags: "utility,security",
-        },
-        {
-          project: "typing-speed-tester",
-          title: "Typing Speed Tester",
-          category: "utilities",
-          desc: "Test your typing speed",
-          tags: "utility,typing",
-        },
-        {
-          project: "productive-pet",
-          title: "Productive Pet",
-          category: "utilities",
-          desc: "Virtual productivity pet",
-          tags: "utility,pet",
-        },
-        {
-          project: "color-palette",
-          title: "Color Palette",
-          category: "utilities",
-          desc: "Generate color palettes",
-          tags: "utility,design",
-        },
-        {
-          project: "calculator",
-          title: "Scientific Graphing Calculator",
-          category: "math",
-          desc: "A scientific graphing calculator",
-          tags: "math,calculator",
-        },
-        {
-          project: "progress-tracker",
-          title: "Progress Tracker",
-          category: "utilities",
-          desc: "Track your learning progress",
-          tags: "utility,tracker",
-        },
-        {
-          project: "caesar-cipher",
-          title: "Caesar Cipher",
-          category: "utilities",
-          desc: "Encrypt and decrypt messages with a shift cipher",
-          tags: "utility,cipher,encryption,decryption",
-        },
-        {
-          project: "unit-converter",
-          title: "Unit Converter",
-          category: "utilities",
-          desc: "Converts values between different units",
-          tags: "utility,tool",
-        },
-        {
-          project: "tsp-visualizer",
-          title: "TSP Visualizer",
-          category: "utilities",
-          desc: "Visualize the Traveling Salesperson Problem",
-          tags: "utility,algorithm,visualizer,tsp",
-        },
-      ];
+      // UTILITIES (10+)
+      {
+        project: "pathfinding-visualizer",
+        title: "Pathfinding Visualizer",
+        category: "utilities",
+        desc: "Interactive visualizer for Dijkstra and A* algorithms",
+        tags: "utility,algorithm,visualizer,pathfinding"
+      },
+      {
+        project: "budget-tracker",
+        title: "Budget Tracker",
+        category: "utilities",
+        desc: "Track income and expenses, view categories, and persist data locally",
+        tags: "utility,finance,tracker,money"
+      },
+      {
+        project: "morse-code",
+        title: "Morse Code",
+        category: "utilities",
+        desc: "Convert text to Morse code",
+        tags: "utility,converter",
+      },
+      {
+        project: "number-converter",
+        title: "Number Converter",
+        category: "utilities",
+        desc: "Convert between number systems",
+        tags: "utility,converter",
+      },
+      {
+        project: "password-forge",
+        title: "Password Forge",
+        category: "utilities",
+        desc: "Generate strong passwords",
+        tags: "utility,security",
+      },
+      {
+        project: "typing-speed-tester",
+        title: "Typing Speed Tester",
+        category: "utilities",
+        desc: "Test your typing speed",
+        tags: "utility,typing",
+      },
+      {
+        project: "productive-pet",
+        title: "Productive Pet",
+        category: "utilities",
+        desc: "Virtual productivity pet",
+        tags: "utility,pet",
+      },
+      {
+        project: "color-palette",
+        title: "Color Palette",
+        category: "utilities",
+        desc: "Generate color palettes",
+        tags: "utility,design",
+      },
+      {
+        project: "calculator",
+        title: "Scientific Graphing Calculator",
+        category: "math",
+        desc: "A scientific graphing calculator",
+        tags: "math,calculator",
+      },
+      {
+        project: "progress-tracker",
+        title: "Progress Tracker",
+        category: "utilities",
+        desc: "Track your learning progress",
+        tags: "utility,tracker",
+      },
+      {
+        project: "caesar-cipher",
+        title: "Caesar Cipher",
+        category: "utilities",
+        desc: "Encrypt and decrypt messages with a shift cipher",
+        tags: "utility,cipher,encryption,decryption",
+      },
+      {
+        project: "unit-converter",
+        title: "Unit Converter",
+        category: "utilities",
+        desc: "Converts values between different units",
+        tags: "utility,tool",
+      },
+      {
+        project: "tsp-visualizer",
+        title: "TSP Visualizer",
+        category: "utilities",
+        desc: "Visualize the Traveling Salesperson Problem",
+        tags: "utility,algorithm,visualizer,tsp",
+      },
+    ];
 
-      projectsGrid.innerHTML = "";
+    projectsGrid.innerHTML = "";
 
-      // Get favorites from localStorage
-      let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+    // Get favorites from localStorage
+    let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
 
-      // Function to save favorites
-      function saveFavorites() {
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-      }
+    // Function to save favorites
+    function saveFavorites() {
+      localStorage.setItem("favorites", JSON.stringify(favorites));
+    }
 
-      projectsData.forEach((proj) => {
-        const card = document.createElement("div");
-        card.className = "project-card";
-        card.setAttribute("data-category", proj.category);
-        card.setAttribute("data-project", proj.project);
-        card.setAttribute("data-tags", proj.tags);
+    projectsData.forEach((proj) => {
+      const card = document.createElement("div");
+      card.className = "project-card";
+      card.setAttribute("data-category", proj.category);
+      card.setAttribute("data-project", proj.project);
+      card.setAttribute("data-tags", proj.tags);
 
-        const isFavorite = favorites.includes(proj.project);
-        const starClass = isFavorite ? "fas fa-star" : "far fa-star";
+      const isFavorite = favorites.includes(proj.project);
+      const starClass = isFavorite ? "fas fa-star" : "far fa-star";
 
-        card.innerHTML = `
-    ${proj.difficulty ? `
-    <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
-        ${proj.difficulty}
-    </div>
-    ` : ''}
+      card.innerHTML = `
+        ${proj.difficulty ? `
+        <div class="difficulty-badge ${proj.difficulty.toLowerCase()}">
+            ${proj.difficulty}
+        </div>
+        ` : ''}
 
-    <img class="card-banner"
-         src="assets/banners/${proj.project}.webp?v=2"
-         alt="${proj.title}"
-         loading="lazy">
+        <img class="card-banner"
+             src="assets/banners/${proj.project}.webp?v=2"
+             alt="${proj.title}"
+             loading="lazy">
 
-  <div class="card-actions">
-
-    <button class="btn-play" data-project="${proj.project}">Try It</button>
-
-  </div>
+        <div class="card-actions">
+          <button class="btn-play" data-project="${proj.project}">Try It</button>
+        </div>
 
         <button class="btn-favorite"
                 data-project="${proj.project}">
             <i class="${starClass}"></i>
         </button>
-    </div>
 
-    <h3>${proj.title}</h3>
+        <h3>${proj.title}</h3>
+        <p>${proj.desc}</p>
+      `;
 
-    <p>${proj.desc}</p>
-`;
+      projectsGrid.appendChild(card);
+    });
 
-        projectsGrid.appendChild(card);
+    // Update counts
+    const total = projectsData.length;
+    const games = projectsData.filter((p) => p.category === "games").length;
+    const math = projectsData.filter((p) => p.category === "math").length;
+    const utils = projectsData.filter((p) => p.category === "utilities").length;
+
+    const projectBadge = document.getElementById("projectCountBadge");
+    if (projectBadge) projectBadge.textContent = total + " projects";
+    
+    // Update hero stats
+    document.getElementById("heroProjectCount").textContent = total;
+    document.getElementById("heroGameCount").textContent = games;
+    document.getElementById("heroMathCount").textContent = math;
+    document.getElementById("heroUtilityCount").textContent = utils;
+    
+    // Update favorites count
+    function updateFavoritesCount() {
+      const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+      document.getElementById("heroFavoriteCount").textContent = favs.length;
+      document.getElementById("favoritesCountBadge").textContent = favs.length;
+    }
+    updateFavoritesCount();
+    window.updateFavoritesCountBadge = updateFavoritesCount;
+
+    // ============================================
+    // FIX: Recently Viewed Counter
+    // ============================================
+    const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+    const heroCounter = document.getElementById("heroViewedCount");
+    if (heroCounter) {
+      heroCounter.textContent = viewed.length;
+    }
+
+    function updateRecentlyViewedCounter() {
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      const heroCounter = document.getElementById("heroViewedCount");
+      if (heroCounter) {
+        heroCounter.textContent = viewed.length;
+      }
+      // Update the grid
+      renderRecentlyViewedGrid();
+      return viewed.length;
+    }
+    window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
+
+    // ============================================
+    // FIX: Project Modal Loading - THE ACTUAL FIX
+    // ============================================
+    function openProjectModal(projectName) {
+      const modal = document.getElementById('projectModal');
+      const modalBody = document.getElementById('modalBody');
+      
+      if (!modal || !modalBody) {
+        console.error('Modal elements not found');
+        return;
+      }
+
+      // Show loading state
+      modalBody.innerHTML = `
+        <div style="text-align:center;padding:60px 20px;">
+          <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
+          <h3 style="color:#e2e8f0;">Loading ${projectName.replace(/-/g, ' ')}...</h3>
+          <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        </div>
+      `;
+      modal.style.display = 'flex';
+
+      // Add to recently viewed
+      let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+      recentlyViewed = recentlyViewed.filter(name => name !== projectName);
+      recentlyViewed.unshift(projectName);
+      if (recentlyViewed.length > 10) recentlyViewed.pop();
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+      
+      // Update counter
+      setTimeout(updateRecentlyViewedCounter, 100);
+
+      // Try to load the project
+      setTimeout(() => {
+        try {
+          // Method 1: Use getProjectHTML from project.js
+          let htmlContent = null;
+          if (typeof getProjectHTML === 'function') {
+            htmlContent = getProjectHTML(projectName);
+          }
+
+          // Method 2: Try render functions
+          if (!htmlContent || htmlContent.includes('error-state')) {
+            const renderFn = 'render' + projectName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+            if (typeof window[renderFn] === 'function') {
+              htmlContent = window[renderFn]();
+            }
+          }
+
+          // Method 3: Try init functions that return HTML
+          if (!htmlContent || htmlContent.includes('error-state')) {
+            const getFn = 'get' + projectName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('') + 'HTML';
+            if (typeof window[getFn] === 'function') {
+              htmlContent = window[getFn]();
+            }
+          }
+
+          if (htmlContent && !htmlContent.includes('error-state')) {
+            modalBody.innerHTML = htmlContent;
+            
+            // Initialize the project
+            setTimeout(() => {
+              if (typeof initializeProject === 'function') {
+                initializeProject(projectName);
+              }
+              // Also try direct init
+              const initFn = 'init' + projectName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
+              if (typeof window[initFn] === 'function') {
+                window[initFn]();
+              }
+            }, 100);
+            
+            console.log(`✅ Loaded project: ${projectName}`);
+          } else {
+            // Show coming soon
+            modalBody.innerHTML = `
+              <div style="text-align:center;padding:60px 20px;">
+                <div style="font-size:4rem;margin-bottom:1rem;">🚀</div>
+                <h2 style="color:#e2e8f0;margin-bottom:0.5rem;">${projectName.replace(/-/g, ' ').toUpperCase()}</h2>
+                <p style="color:#94a3b8;margin-bottom:1.5rem;">This project is coming soon!</p>
+                <button onclick="document.getElementById('projectModal').style.display='none'" 
+                        style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
+                  Close
+                </button>
+              </div>
+            `;
+          }
+        } catch (error) {
+          console.error(`Error loading ${projectName}:`, error);
+          modalBody.innerHTML = `
+            <div style="text-align:center;padding:60px 20px;color:#ef4444;">
+              <div style="font-size:3rem;">⚠️</div>
+              <h3>Error Loading Project</h3>
+              <p style="color:#94a3b8;">${error.message}</p>
+              <button onclick="document.getElementById('projectModal').style.display='none'" 
+                      style="margin-top:20px;background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;">
+                Close
+              </button>
+            </div>
+          `;
+        }
+      }, 300);
+    }
+
+    // Make openProjectSafe use our new function
+    window.openProjectSafe = openProjectModal;
+
+    // ============================================
+    // Wire up buttons
+    // ============================================
+    setTimeout(() => {
+      // Play buttons
+      document.querySelectorAll(".btn-play").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const projectName = btn.getAttribute("data-project");
+          if (projectName && window.openProjectSafe) {
+            window.openProjectSafe(projectName, btn);
+          }
+        });
       });
 
-      // Update counts
-      const total = projectsData.length;
-      function animateCounter(id,value){
-        const element=document.getElementById(id);
-        if(!element){
-          return;
-        }
-        let start=0;
-        const timer=setInterval(()=>{
-        start++;
-        element.textContent=start;
-        if(start>=value){
-          clearInterval(timer);
-        }
-      },25);
-        }
+      // Favorite buttons
+      document.querySelectorAll(".btn-favorite").forEach((btn) => {
+        btn.addEventListener("click", function(e) {
+          e.stopPropagation();
+          const projectName = this.getAttribute("data-project");
+          if (!projectName) return;
+          
+          const icon = this.querySelector("i");
+          let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+          const index = favs.indexOf(projectName);
 
-      const games = projectsData.filter((p) => p.category === "games").length;
-      const math = projectsData.filter((p) => p.category === "math").length;
-      const utils = projectsData.filter(
-        (p) => p.category === "utilities"
-      ).length;
+          if (index === -1) {
+            favs.push(projectName);
+            icon.className = "fas fa-star";
+          } else {
+            favs.splice(index, 1);
+            icon.className = "far fa-star";
+          }
 
-      const projectBadge = document.getElementById("projectCountBadge");
-      if (projectBadge) projectBadge.textContent = total + " projects";
-      animateCounter("statsTotal",total);
-animateCounter("statsGames",games);
-animateCounter("statsMath",math);
-animateCounter("statsUtilities",utils);
-// === FIX: Recently Viewed Counter ===
-const viewed = JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-const heroCounter = document.getElementById("heroViewedCount");
-if (heroCounter) {
-  heroCounter.textContent = viewed.length;
-}
-
-// Function to update counter when projects are viewed
-function updateRecentlyViewedCounter() {
-  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-  const heroCounter = document.getElementById("heroViewedCount");
-  if (heroCounter) {
-    heroCounter.textContent = viewed.length;
-  }
-  // Also update the grid if the function exists
-  if (window.renderRecentlyViewedGrid) {
-    window.renderRecentlyViewedGrid();
-  }
-  return viewed.length;
-}
-window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
-
-// Watch for changes to localStorage
-const originalSetItem = localStorage.setItem;
-localStorage.setItem = function(key, value) {
-  originalSetItem.apply(this, arguments);
-  if (key === "recentlyViewed") {
-    setTimeout(updateRecentlyViewedCounter, 50);
-  }
-};
-// === END FIX ===
-      console.log(
-        `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
-      );
-
-      // Wire up buttons
-      setTimeout(() => {
-        // Play buttons
-        document.querySelectorAll(".btn-play").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const projectName = btn.getAttribute("data-project");
-    if (projectName && window.openProjectSafe) {
-      window.openProjectSafe(projectName, btn);
-      // Update counter after opening project
-      setTimeout(() => {
-        if (window.updateRecentlyViewedCounter) {
-          window.updateRecentlyViewedCounter();
-        }
-      }, 200);
-    }
-  });
-});
-
-        // Favorite buttons
-        document.querySelectorAll(".btn-favorite").forEach((btn) => {
-  btn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    const projectName = this.getAttribute("data-project");
-    if (!projectName) {
-      console.error("No project name found for favorite button");
-      return;
-    }
-    
-    const icon = this.querySelector("i");
-    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const index = favs.indexOf(projectName);
-
-    if (index === -1) {
-      favs.push(projectName);
-      icon.className = "fas fa-star";
-      console.log(`⭐ Added ${projectName} to favorites`);
-    } else {
-      favs.splice(index, 1);
-      icon.className = "far fa-star";
-      console.log(`☆ Removed ${projectName} from favorites`);
-    }
-
-    localStorage.setItem("favorites", JSON.stringify(favs));
-    
-    // Update badge
-    if (typeof updateFavoritesCountBadge === "function") {
-      updateFavoritesCountBadge();
-    }
-  });
-});
-
-        // Card clicks
-        document.querySelectorAll(".project-card").forEach((card) => {
-          card.addEventListener("click", (e) => {
-            if (
-              e.target.closest(".btn-play") ||
-              e.target.closest(".btn-favorite")
-            )
-              return;
-            const projectName = card.getAttribute("data-project");
-            if (projectName && window.openProjectSafe) {
-              window.openProjectSafe(projectName, card);
-            }
-          });
+          localStorage.setItem("favorites", JSON.stringify(favs));
+          if (typeof updateFavoritesCount === "function") {
+            updateFavoritesCount();
+          }
         });
-      }, 100);
-    })();
-  </script>
+      });
+
+      // Card clicks
+      document.querySelectorAll(".project-card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-play") || e.target.closest(".btn-favorite")) return;
+          const projectName = card.getAttribute("data-project");
+          if (projectName && window.openProjectSafe) {
+            window.openProjectSafe(projectName, card);
+          }
+        });
+      });
+      
+      console.log('✅ Project loader initialized with modal fix');
+    }, 100);
+
+    // ============================================
+    // Render Recently Viewed Grid
+    // ============================================
+    function renderRecentlyViewedGrid() {
+      const grid = document.getElementById("recentlyViewedGrid");
+      if (!grid) return;
+      
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      
+      if (viewed.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:40px;color:#94a3b8;">
+            <p>No recently viewed projects yet.</p>
+            <p style="font-size:0.9rem;">Start exploring projects to see them here!</p>
+          </div>
+        `;
+        return;
+      }
+      
+      // Show only first 6 recently viewed
+      const recentProjects = viewed.slice(0, 6);
+      grid.innerHTML = '';
+      
+      recentProjects.forEach(projectName => {
+        const project = projectsData.find(p => p.project === projectName);
+        if (!project) return;
+        
+        const card = document.createElement("div");
+        card.className = "project-card";
+        card.setAttribute("data-project", project.project);
+        card.innerHTML = `
+          <img class="card-banner"
+               src="assets/banners/${project.project}.webp?v=2"
+               alt="${project.title}"
+               loading="lazy">
+          <div class="card-actions">
+            <button class="btn-play" data-project="${project.project}">Try It</button>
+          </div>
+          <h3>${project.title}</h3>
+          <p>${project.desc}</p>
+        `;
+        grid.appendChild(card);
+      });
+      
+      // Re-bind click events to recently viewed cards
+      grid.querySelectorAll(".project-card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest(".btn-play")) return;
+          const projectName = card.getAttribute("data-project");
+          if (projectName && window.openProjectSafe) {
+            window.openProjectSafe(projectName, card);
+          }
+        });
+        
+        card.querySelector(".btn-play")?.addEventListener("click", (e) => {
+          e.stopPropagation();
+          const projectName = card.getAttribute("data-project");
+          if (projectName && window.openProjectSafe) {
+            window.openProjectSafe(projectName, card);
+          }
+        });
+      });
+    }
+    
+    // Make it globally available
+    window.renderRecentlyViewedGrid = renderRecentlyViewedGrid;
+    
+    // Initial render
+    setTimeout(renderRecentlyViewedGrid, 200);
+    
+    console.log('✅ All systems ready!');
+  })();
+</script>
 
   <!-- THEME TOGGLE FIX - FINAL -->
   <script>
@@ -1323,7 +1574,143 @@ window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
       console.log('✅ Focus error fixed');
     }, 100);
   </script>
-
+<!-- FIX: Project Modal Loading - Ensure project.js functions are available -->
+<script>
+(function() {
+  console.log('🔧 Applying modal fix...');
+  
+  function ensureProjectFunctions() {
+    if (typeof getProjectHTML === 'function' && typeof initializeProject === 'function') {
+      console.log('✅ Project functions available');
+      return true;
+    }
+    return false;
+  }
+  
+  function fixOpenProject() {
+    if (!ensureProjectFunctions()) {
+      console.log('⏳ Waiting for project functions...');
+      setTimeout(fixOpenProject, 100);
+      return;
+    }
+    
+    // Store original if exists
+    const originalOpen = window.openProjectSafe;
+    
+    // Create new openProjectSafe
+    window.openProjectSafe = function(projectName, trigger) {
+      console.log(`📂 Opening: ${projectName}`);
+      
+      const modal = document.getElementById('projectModal');
+      const modalBody = document.getElementById('modalBody');
+      
+      if (!modal || !modalBody) {
+        console.error('❌ Modal elements not found');
+        if (originalOpen) originalOpen(projectName, trigger);
+        return;
+      }
+      
+      // Show loading
+      modalBody.innerHTML = `
+        <div style="text-align:center;padding:60px 20px;color:#e2e8f0;">
+          <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
+          <h3>Loading ${projectName.replace(/-/g, ' ')}...</h3>
+          <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+        </div>
+      `;
+      modal.style.display = 'flex';
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Add to recently viewed
+      let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+      recentlyViewed = recentlyViewed.filter(name => name !== projectName);
+      recentlyViewed.unshift(projectName);
+      if (recentlyViewed.length > 10) recentlyViewed.pop();
+      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
+      
+      // Update counter
+      setTimeout(() => {
+        if (window.updateRecentlyViewedCounter) {
+          window.updateRecentlyViewedCounter();
+        }
+        if (window.updateRecentlyViewed) {
+          window.updateRecentlyViewed();
+        }
+      }, 100);
+      
+      // Load project using project.js functions
+      setTimeout(() => {
+        try {
+          console.log(`🔄 Calling getProjectHTML for: ${projectName}`);
+          
+          // Get HTML from project.js
+          let htmlContent = getProjectHTML(projectName);
+          
+          if (htmlContent && !htmlContent.includes('error-state')) {
+            modalBody.innerHTML = htmlContent;
+            console.log(`✅ HTML loaded for: ${projectName}`);
+            
+            // Initialize the project
+            setTimeout(() => {
+              console.log(`🔄 Initializing: ${projectName}`);
+              if (typeof initializeProject === 'function') {
+                initializeProject(projectName);
+              }
+              
+              // Try to find and setup info button
+              const infoBtn = modalBody.querySelector('.inline-info-btn');
+              if (infoBtn && typeof getProjectInstructions === 'function') {
+                const projectNameForInfo = modalBody.closest('.project-content')?.getAttribute('data-project') || projectName;
+                const info = getProjectInstructions(projectNameForInfo);
+                if (info && typeof showInfoModal === 'function') {
+                  infoBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showInfoModal(info.title, info.steps);
+                  });
+                }
+              }
+            }, 100);
+            
+          } else {
+            throw new Error('Project content not available');
+          }
+        } catch (error) {
+          console.error(`❌ Error loading ${projectName}:`, error);
+          modalBody.innerHTML = `
+            <div style="text-align:center;padding:60px 20px;">
+              <div style="font-size:4rem;margin-bottom:1rem;">🚀</div>
+              <h2 style="color:#e2e8f0;margin-bottom:0.5rem;">${projectName.replace(/-/g, ' ').toUpperCase()}</h2>
+              <p style="color:#94a3b8;margin-bottom:1.5rem;">This project is coming soon!</p>
+              <button onclick="document.getElementById('projectModal').style.display='none';document.body.style.overflow='';" 
+                      style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
+                Close
+              </button>
+            </div>
+          `;
+        }
+      }, 300);
+    };
+    
+    console.log('✅ openProjectSafe fixed successfully!');
+  }
+  
+  // Start fix
+  fixOpenProject();
+  
+  // Add spin animation if missing
+  if (!document.getElementById('spinStyle')) {
+    const style = document.createElement('style');
+    style.id = 'spinStyle';
+    style.textContent = `
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+})();
+</script>
   <!-- Info Modal Popup -->
   <div id="infoModalOverlay" class="info-modal-overlay">
     <div class="info-modal-content">
