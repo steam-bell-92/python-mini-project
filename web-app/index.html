@@ -38,9 +38,9 @@
 
 <body class="sidebar-active">
   <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
-    aria-expanded="true">
-    <i class="fas fa-bars"></i>
-  </button>
+        aria-expanded="true">
+        <i class="fas fa-bars"></i>
+      </button>
   <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
     <i class="fas fa-moon" aria-hidden="true"></i>
   </button>
@@ -60,9 +60,14 @@
         <i class="fas fa-search" aria-hidden="true"></i>
         <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"
           role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false" />
-        <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Clear search" hidden>
-          <i class="fas fa-times"></i>
-        </button>
+          <button
+            id="clearSearchBtn"
+            class="clear-search-btn"
+            type="button"
+            aria-label="Clear search"
+            hidden>
+            <i class="fas fa-times"></i>
+          </button>
         <div class="search-dropdown" id="searchDropdown" aria-live="polite">
           <div class="dropdown-content" id="searchDropdownContent">
             <div class="search-loader" id="searchLoader" style="display: none">
@@ -71,8 +76,7 @@
             <div class="recent-searches-section" id="dropdownRecentSearchesSection">
               <div class="dropdown-section-title">
                 <span>Recent</span>
-                <button id="clearRecentDropdownBtn" class="recent-clear-all-btn"
-                  aria-label="Clear recent searches">Clear
+                <button id="clearRecentDropdownBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
                   All</button>
               </div>
               <div class="dropdown-list" id="dropdownRecentSearchesList"></div>
@@ -102,19 +106,17 @@
     </div>
 
     <div class="recent-searches-section" id="sidebarRecentSearchesSection">
-      <div class="dropdown-section-title recent-searches-header"
-        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
-          <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
-          Search History
-        </span>
-        <button id="clearRecentSidebarBtn" class="recent-clear-all-btn" aria-label="Clear recent searches"
-          style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-          <i class="fas fa-trash-alt"></i> Clear History
-        </button>
-      </div>
-      <div class="recent-searches-chips" id="sidebarRecentSearchesList" role="list"></div>
-    </div>
+  <div class="dropdown-section-title recent-searches-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+    <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
+      <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
+      Search History
+    </span>
+    <button id="clearRecentSidebarBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+      <i class="fas fa-trash-alt"></i> Clear History
+    </button>
+  </div>
+  <div class="recent-searches-chips" id="sidebarRecentSearchesList" role="list"></div>
+</div>
 
     <div class="sidebar-menu-wrapper">
       <div class="sidebar-menu-title">Categories</div>
@@ -167,30 +169,10 @@
           <button aria-label="Mute sound" class="sound-toggle" id="sidebarSoundToggle" type="button">
             <i class="fas fa-volume-up" aria-hidden="true"></i>
           </button>
-          <button aria-label="Switch theme" class="theme-toggle" id="sidebarThemeToggle" type="button">
-            <i class="fas fa-moon" aria-hidden="true"></i>
+          <button aria-label="Switch to light mode" class="theme-toggle" id="sidebarThemeToggle" type="button">
+            <i class="fas fa-sun" aria-hidden="true"></i>
           </button>
-          <div class="theme-selector">
-            <span class="theme-selector-label">Appearance</span>
-            <button id="themeModePicker" class="theme-picker" type="button" aria-haspopup="listbox"
-              aria-expanded="false">
-              <span class="theme-picker-value">Auto (System)</span>
-              <i class="fas fa-chevron-down theme-picker-chevron" aria-hidden="true"></i>
-            </button>
-            <ul id="themeModeMenu" class="theme-picker-menu" role="listbox" aria-label="Theme mode options">
-              <li role="option" class="theme-picker-option" data-value="auto" aria-selected="true">
-                Auto (System)
-              </li>
-              <li role="option" class="theme-picker-option" data-value="light" aria-selected="false">
-                Light
-              </li>
-              <li role="option" class="theme-picker-option" data-value="dark" aria-selected="false">
-                Dark
-              </li>
-            </ul>
-          </div>
         </div>
-
         <button aria-label="Toggle Sidebar" class="collapse-sidebar-btn" id="sidebarCollapseBtn" type="button">
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -347,18 +329,18 @@
         </div>
       </div>
     </section>
-
-    <!-- Recently Viewed Section -->
-    <section class="projects-section" id="recentlyViewedSection">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-heading">
-            Recently Viewed
-          </h2>
-        </div>
-        <div class="projects-grid" id="recentlyViewedGrid"></div>
-      </div>
-    </section>
+    
+<!-- Recently Viewed Section -->
+<section class="projects-section" id="recentlyViewedSection">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-heading">
+        Recently Viewed
+      </h2>
+    </div>
+    <div class="projects-grid" id="recentlyViewedGrid"></div>
+  </div>
+</section>
 
     </section>
 
@@ -505,11 +487,14 @@
             <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
               rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
             <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)">
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z" />
-              </svg>
-            </a>
+              <svg xmlns="http://www.w3.org/2000/svg"
+       width="15"
+       height="15"
+       viewBox="0 0 24 24"
+       fill="currentColor">
+    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
+  </svg>
+</a>
             <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
                 class="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
@@ -519,41 +504,36 @@
         <div class="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg
-                  width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
             </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg
-                  width="20" height="20" data-lucide="sigma"></svg>Math</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a>
             </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg
-                  width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg
-                  width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg
-                  width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
+            <li><a href="#main-content"
+                onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
           </ul>
         </div>
         <div class="footer-links">
           <h3>Resources</h3>
           <ul>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i class="fas fa-book"
-                  aria-hidden="true"></i> Documentation</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i
+                  class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
             <li><a
                 href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
                   class="fas fa-code-branch" aria-hidden="true"></i>
                 Contribute</a></li>
             <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i class="fas fa-bug"
                   aria-hidden="true"></i> Report a Bug</a></li>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i class="fas fa-question-circle"
-                  aria-hidden="true"></i> FAQ</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i
+                  class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
           </ul>
         </div>
         <div class="footer-newsletter">
           <h3>Stay Updated</h3>
           <p>Get notified about new projects and features!</p>
           <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-            <input class="footer-input" type="email" placeholder="Enter your email" required
-              aria-label="Email for newsletter">
+            <input class="footer-input" type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
             <button type="submit" aria-label="Subscribe">
               <i class="fas fa-paper-plane"></i>
             </button>
@@ -750,418 +730,6 @@
     });
   </script>
 
-  <!-- PROJECT LOADER - WITH FAVORITE BUTTONS -->
-  <script>
-    (function () {
-      const projectsGrid = document.getElementById("projectsGrid");
-      if (!projectsGrid) return;
-      // ALL projects from your js/projects/ folder
-      const projectsData = [
-        // GAMES (20+)
-        {
-          project: "number-sliding-puzzle",
-          title: "Number Sliding Puzzle",
-          category: "games",
-          difficulty: "Intermediate",
-          desc: "Arrange tiles in order by sliding them into empty space",
-          tags: "game,puzzle,sliding,numbers",
-        },
-        {
-          project: "2048-game",
-          title: "2048 Game",
-          category: "games",
-          desc: "Combine tiles and reach 2048!",
-          tags: "game,puzzle,2048",
-        },
-        {
-          project: "rock-paper-scissor",
-          title: "Rock Paper Scissor",
-          category: "games",
-          desc: "Classic hand game against AI",
-          tags: "game,rock,paper",
-        },
-        {
-          project: "dice-rolling",
-          title: "Dice Rolling",
-          category: "games",
-          desc: "Roll virtual dice",
-          tags: "game,dice",
-        },
-        {
-          project: "coin-flip",
-          title: "Coin Flip",
-          category: "games",
-          desc: "Flip a coin for decisions",
-          tags: "game,coin",
-        },
-        {
-          project: "number-guessing",
-          title: "Number Guessing",
-          category: "games",
-          desc: "Guess the secret number",
-          tags: "game,numbers",
-        },
-        {
-          project: "hangman",
-          title: "Hangman",
-          category: "games",
-          desc: "Classic word guessing game",
-          tags: "game,words",
-        },
-        {
-          project: "word-scramble",
-          title: "Word Scramble",
-          category: "games",
-          desc: "Unscramble letters to find words",
-          tags: "game,words",
-        },
-        {
-          project: "tic-tac-toe",
-          title: "Tic Tac Toe",
-          category: "games",
-          desc: "Classic X vs O game",
-          tags: "game,strategy",
-        },
-        {
-          project: "snake-game",
-          title: "Snake Game",
-          category: "games",
-          desc: "Classic snake eating game",
-          tags: "game,arcade",
-        },
-        {
-          project: "flappy-game",
-          title: "Flappy Game",
-          category: "games",
-          desc: "Flappy bird style game",
-          tags: "game,arcade",
-        },
-        {
-          project: "simon-says",
-          title: "Simon Says",
-          category: "games",
-          desc: "Memory pattern game",
-          tags: "game,memory",
-        },
-        {
-          project: "whack-a-mole",
-          title: "Whack a Mole",
-          category: "games",
-          desc: "Hit the moles as they pop up",
-          tags: "game,arcade",
-        },
-        {
-          project: "dots-boxes",
-          title: "Dots and Boxes",
-          category: "games",
-          desc: "Connect dots to complete boxes",
-          tags: "game,strategy",
-        },
-        {
-          project: "emoji-memory-game",
-          title: "Emoji Memory",
-          category: "games",
-          desc: "Match pairs of emojis",
-          tags: "game,memory",
-        },
-        {
-          project: "spot-the-difference",
-          title: "Spot the Difference",
-          category: "games",
-          desc: "Find differences between images",
-          tags: "game,puzzle",
-        },
-        {
-          project: "minesweeper",
-          title: "Minesweeper",
-          category: "games",
-          desc: "Clear the minefield without detonating any mines!",
-          tags: "game,puzzle,logic,minesweeper",
-        },
-        {
-          project: "flames",
-          title: "FLAMES Game",
-          category: "games",
-          desc: "Friendship relationship calculator",
-          tags: "game,relationship",
-        },
-        {
-          project: "sudoku-game",
-          title: "Sudoku Solver & Game",
-          category: "games",
-          desc: "Interactive Sudoku with difficulty levels and visual backtracking solver",
-          tags: "game,puzzle,backtracking,solver",
-        },
-        {
-          project: "queens-logic-puzzle",
-          title: "Queens Logic Puzzle",
-          category: "games",
-          desc: "Place queens following row, column, region, and adjacency rules!",
-          tags: "game,puzzle,logic,queens,strategy",
-        },
-        {
-          project: "pattern-recall-game",
-          title: "Pattern Recall Game",
-          category: "games",
-          desc: "Watch and recreate the pattern within 10 seconds!",
-          tags: "game,memory,pattern,recall,puzzle",
-        },
-        {
-          project: "chess",
-          title: "Chess Game",
-          category: "games",
-          desc: "Play a standard game of Chess locally or against a basic AI!",
-          tags: "chess, strategy, board game, 2 player, ai, minimax",
-        },
-        {
-          project: "war-card-game",
-          title: "War Card Game",
-          category: "games",
-          desc: "A classic two-player card game based on comparing rank values",
-          tags: "game,cards,multiplayer,war",
-        },
-
-        // MATH (15+)
-        {
-          project: "binary-search",
-          title: "Binary Search",
-          category: "math",
-          desc: "Visualize binary search algorithm",
-          tags: "math,algorithm",
-        },
-        {
-          project: "sorting-visualizer",
-          title: "Sorting Visualizer",
-          category: "math",
-          desc: "Visualize multi-algorithm sorting (Bubble, Selection, Insertion, Quick)",
-          tags: "math,algorithm,sorting",
-        },
-        {
-          project: "quick-sort",
-          title: "Quick Sort",
-          category: "math",
-          desc: "Visualize quick sort algorithm with pivot partitioning",
-          tags: "math,algorithm",
-        },
-        {
-          project: "merge-sort",
-          title: "Merge Sort",
-          category: "math",
-          desc: "Visualize merge sort algorithm with divide-and-conquer approach",
-          tags: "math,algorithm",
-        },
-        {
-          project: "fibonacci",
-          title: "Fibonacci",
-          category: "math",
-          desc: "Generate Fibonacci sequence",
-          tags: "math,numbers",
-        },
-        {
-          project: "pascal-triangle",
-          title: "Pascal Triangle",
-          category: "math",
-          desc: "Generate Pascal's triangle",
-          tags: "math,numbers",
-        },
-        {
-          project: "armstrong",
-          title: "Armstrong Number",
-          category: "math",
-          desc: "Check Armstrong numbers",
-          tags: "math,numbers",
-        },
-        {
-          project: "collatz",
-          title: "Collatz Conjecture",
-          category: "math",
-          desc: "3n+1 sequence analyzer",
-          tags: "math,numbers",
-        },
-        {
-          project: "prime-analyzer",
-          title: "Prime Analyzer",
-          category: "math",
-          desc: "Prime number checker",
-          tags: "math,numbers",
-        },
-        {
-          project: "projectile-motion",
-          title: "Projectile Motion",
-          category: "math",
-          desc: "Physics projectile calculator",
-          tags: "math,physics",
-        },
-        {
-          project: "progression-recognizer",
-          title: "Progression Recognizer",
-          category: "math",
-          desc: "Recognize sequences",
-          tags: "math,sequences",
-        },
-        {
-          project: "matrix-calculator",
-          title: "Matrix Calculator",
-          category: "math",
-          desc: "Add, subtract, multiply, transpose, determinant, rank, inverse",
-          tags: "math,matrix,algebra,calculator",
-        },
-        {
-          project: "reverse-hangman",
-          title: "Reverse Hangman",
-          category: "games",
-          desc: "Computer tries to guess your secret word using AI logic",
-          tags: "game,hangman,ai,word,guessing",
-        },
-        {
-          project: "coordinate-polar-transform",
-          title: "Coordinate Transform",
-          category: "math",
-          desc: "Convert between coordinate systems",
-          tags: "math,coordinates",
-        },
-        {
-          project: "complete-calculus-engine",
-          title: "Complete Calculus Engine",
-          category: "math",
-          desc: "Calculate derivatives",
-          tags: "math,calculus",
-        },
-        {
-          project: "tower-of-hanoi",
-          title: "Tower of Hanoi",
-          category: "utilities",
-          desc: "Solve Tower of Hanoi puzzle",
-          tags: "utility,puzzle",
-        },
-        {
-          project: "math-quiz",
-          title: "Math Quiz",
-          category: "math",
-          desc: "Test your math skills",
-          tags: "math,quiz",
-        },
-        {
-          project: "fourier-series",
-          title: "Fourier Series Visualizer",
-          category: "math",
-          desc: "Explore waveform approximation using harmonics",
-          tags: "math,fourier,wave,harmonics",
-        },
-
-        // UTILITIES (10+)
-        {
-          project: "pathfinding-visualizer",
-          title: "Pathfinding Visualizer",
-          category: "utilities",
-          desc: "Interactive visualizer for Dijkstra and A* algorithms",
-          tags: "utility,algorithm,visualizer,pathfinding"
-        },
-        {
-          project: "budget-tracker",
-          title: "Budget Tracker",
-          category: "utilities",
-          desc: "Track income and expenses, view categories, and persist data locally",
-          tags: "utility,finance,tracker,money"
-        },
-        {
-          project: "morse-code",
-          title: "Morse Code",
-          category: "utilities",
-          desc: "Convert text to Morse code",
-          tags: "utility,converter",
-        },
-        {
-          project: "number-converter",
-          title: "Number Converter",
-          category: "utilities",
-          desc: "Convert between number systems",
-          tags: "utility,converter",
-        },
-        {
-          project: "password-forge",
-          title: "Password Forge",
-          category: "utilities",
-          desc: "Generate strong passwords",
-          tags: "utility,security",
-        },
-        {
-          project: "typing-speed-tester",
-          title: "Typing Speed Tester",
-          category: "utilities",
-          desc: "Test your typing speed",
-          tags: "utility,typing",
-        },
-        {
-          project: "productive-pet",
-          title: "Productive Pet",
-          category: "utilities",
-          desc: "Virtual productivity pet",
-          tags: "utility,pet",
-        },
-        {
-          project: "color-palette",
-          title: "Color Palette",
-          category: "utilities",
-          desc: "Generate color palettes",
-          tags: "utility,design",
-        },
-        {
-          project: "calculator",
-          title: "Scientific Graphing Calculator",
-          category: "math",
-          desc: "A scientific graphing calculator",
-          tags: "math,calculator",
-        },
-        {
-          project: "progress-tracker",
-          title: "Progress Tracker",
-          category: "utilities",
-          desc: "Track your learning progress",
-          tags: "utility,tracker",
-        },
-        {
-          project: "caesar-cipher",
-          title: "Caesar Cipher",
-          category: "utilities",
-          desc: "Encrypt and decrypt messages with a shift cipher",
-          tags: "utility,cipher,encryption,decryption",
-        },
-        {
-          project: "unit-converter",
-          title: "Unit Converter",
-          category: "utilities",
-          desc: "Converts values between different units",
-          tags: "utility,tool",
-        },
-        {
-          project: "tsp-visualizer",
-          title: "TSP Visualizer",
-          category: "utilities",
-          desc: "Visualize the Traveling Salesperson Problem",
-          tags: "utility,algorithm,visualizer,tsp",
-        },
-      ];
-
-      projectsGrid.innerHTML = "";
-
-      // Get favorites from localStorage
-      let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-      // Function to save favorites
-      function saveFavorites() {
-        localStorage.setItem("favorites", JSON.stringify(favorites));
-      }
-
-      projectsData.forEach((proj) => {
-        const card = document.createElement("div");
-        card.className = "project-card";
-        card.setAttribute("data-category", proj.category);
-        card.setAttribute("data-project", proj.project);
-        card.setAttribute("data-tags", proj.tags);
-
-        const isFavorite = favorites.includes(proj.project);
-        const starClass = isFavorite ? "fas fa-star" : "far fa-star";
   <!-- PROJECT LOADER - WITH FAVORITE BUTTONS & FIXED MODAL -->
 <script>
   (function () {
@@ -1610,36 +1178,6 @@
     const math = projectsData.filter((p) => p.category === "math").length;
     const utils = projectsData.filter((p) => p.category === "utilities").length;
 
-      // Update counts
-      const total = projectsData.length;
-      function animateCounter(id, value) {
-        const element = document.getElementById(id);
-        if (!element) {
-          return;
-        }
-        let start = 0;
-        const timer = setInterval(() => {
-          start++;
-          element.textContent = start;
-          if (start >= value) {
-            clearInterval(timer);
-          }
-        }, 25);
-      }
-
-      const games = projectsData.filter((p) => p.category === "games").length;
-      const math = projectsData.filter((p) => p.category === "math").length;
-      const utils = projectsData.filter(
-        (p) => p.category === "utilities"
-      ).length;
-
-      const projectBadge = document.getElementById("projectCountBadge");
-      if (projectBadge) projectBadge.textContent = total + " projects";
-      animateCounter("statsTotal", total);
-      animateCounter("statsGames", games);
-      animateCounter("statsMath", math);
-      animateCounter("statsUtilities", utils);
-      // === FIX: Recently Viewed Counter ===
     const projectBadge = document.getElementById("projectCountBadge");
     if (projectBadge) projectBadge.textContent = total + " projects";
     
@@ -1673,104 +1211,6 @@
       if (heroCounter) {
         heroCounter.textContent = viewed.length;
       }
-
-      // Function to update counter when projects are viewed
-      function updateRecentlyViewedCounter() {
-        const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-        const heroCounter = document.getElementById("heroViewedCount");
-        if (heroCounter) {
-          heroCounter.textContent = viewed.length;
-        }
-        // Also update the grid if the function exists
-        if (window.renderRecentlyViewedGrid) {
-          window.renderRecentlyViewedGrid();
-        }
-        return viewed.length;
-      }
-      window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
-
-      // Watch for changes to localStorage
-      const originalSetItem = localStorage.setItem;
-      localStorage.setItem = function (key, value) {
-        originalSetItem.apply(this, arguments);
-        if (key === "recentlyViewed") {
-          setTimeout(updateRecentlyViewedCounter, 50);
-        }
-      };
-      // === END FIX ===
-      console.log(
-        `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
-      );
-
-      // Wire up buttons
-      setTimeout(() => {
-        // Play buttons
-        document.querySelectorAll(".btn-play").forEach((btn) => {
-          btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const projectName = btn.getAttribute("data-project");
-            if (projectName && window.openProjectSafe) {
-              window.openProjectSafe(projectName, btn);
-              // Update counter after opening project
-              setTimeout(() => {
-                if (window.updateRecentlyViewedCounter) {
-                  window.updateRecentlyViewedCounter();
-                }
-              }, 200);
-            }
-          });
-        });
-
-        // Favorite buttons
-        document.querySelectorAll(".btn-favorite").forEach((btn) => {
-          btn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            const projectName = this.getAttribute("data-project");
-            if (!projectName) {
-              console.error("No project name found for favorite button");
-              return;
-            }
-
-            const icon = this.querySelector("i");
-            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-            const index = favs.indexOf(projectName);
-
-            if (index === -1) {
-              favs.push(projectName);
-              icon.className = "fas fa-star";
-              console.log(`⭐ Added ${projectName} to favorites`);
-            } else {
-              favs.splice(index, 1);
-              icon.className = "far fa-star";
-              console.log(`☆ Removed ${projectName} from favorites`);
-            }
-
-            localStorage.setItem("favorites", JSON.stringify(favs));
-
-            // Update badge
-            if (typeof updateFavoritesCountBadge === "function") {
-              updateFavoritesCountBadge();
-            }
-          });
-        });
-
-        // Card clicks
-        document.querySelectorAll(".project-card").forEach((card) => {
-          card.addEventListener("click", (e) => {
-            if (
-              e.target.closest(".btn-play") ||
-              e.target.closest(".btn-favorite")
-            )
-              return;
-            const projectName = card.getAttribute("data-project");
-            if (projectName && window.openProjectSafe) {
-              window.openProjectSafe(projectName, card);
-            }
-          });
-        });
-      }, 100);
-    })();
-  </script>
       // Update the grid
       renderRecentlyViewedGrid();
       return viewed.length;
@@ -2013,47 +1453,71 @@
   })();
 </script>
 
-  //THEME TOGGLE
+  <!-- THEME TOGGLE FIX - FINAL -->
   <script>
     (function () {
       const html = document.documentElement;
       const themeColorMeta = document.getElementById("themeColorMeta");
-      const themeMode = localStorage.getItem("themeMode") || "auto";
-      let theme = localStorage.getItem("theme");
 
-      function getSystemTheme() {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-
-      if (themeMode === "auto") {
-        theme = getSystemTheme();
-      } else if (themeMode === "light" || themeMode === "dark") {
-        theme = themeMode;
-      } else {
-        theme = theme === "light" || theme === "dark" ? theme : "dark";
-      }
-
-      html.setAttribute("data-theme", theme);
-      if (themeColorMeta) {
-        themeColorMeta.setAttribute(
-          "content",
-          theme === "light" ? "#f4f6f9" : "#0c0f1a"
-        );
-      }
-
+      // Get all theme toggle buttons
       const themeToggles = document.querySelectorAll(".theme-toggle");
-      themeToggles.forEach((toggle) => {
-        const icon = toggle.querySelector("i");
-        if (icon) {
-          if (theme === "dark") {
-            icon.className = "fas fa-moon";
-            toggle.setAttribute("aria-label", "Switch to light mode");
-          } else {
-            icon.className = "fas fa-sun";
-            toggle.setAttribute("aria-label", "Switch to dark mode");
+
+      // Update all toggle icons and aria labels based on current theme
+      function updateAllToggles(theme) {
+        themeToggles.forEach((toggle) => {
+          const icon = toggle.querySelector("i");
+          if (icon) {
+            if (theme === "dark") {
+              icon.className = "fas fa-moon";
+              toggle.setAttribute("aria-label", "Switch to light mode");
+            } else {
+              icon.className = "fas fa-sun";
+              toggle.setAttribute("aria-label", "Switch to dark mode");
+            }
           }
+        });
+      }
+
+      // Apply theme to the page
+      function applyTheme(theme) {
+        html.setAttribute("data-theme", theme);
+        localStorage.setItem("theme", theme);
+
+        // Update theme-color meta tag
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute(
+            "content",
+            theme === "light" ? "#f4f6f9" : "#0c0f1a"
+          );
         }
+
+        // Update all toggle icons
+        updateAllToggles(theme);
+
+        console.log("Theme set to:", theme);
+      }
+
+      // Load saved theme or default to dark
+      const savedTheme = localStorage.getItem("theme");
+      const initialTheme =
+        savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
+      applyTheme(initialTheme);
+
+      // Add click listeners to all theme toggles
+      themeToggles.forEach((toggle) => {
+        toggle.addEventListener("click", function (e) {
+          e.preventDefault();
+          const current = html.getAttribute("data-theme");
+          const next = current === "light" ? "dark" : "light";
+          applyTheme(next);
+        });
       });
+
+      console.log(
+        "✅ Theme toggle ready. Found",
+        themeToggles.length,
+        "toggle buttons"
+      );
     })();
   </script>
 
@@ -2066,34 +1530,34 @@
       };
       console.log('✅ toPascalCase function added');
     }
+    // Complete recently viewed update
+function refreshRecentlyViewed() {
+  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+  const grid = document.getElementById("recentlyViewedGrid");
+  
+  // Update counter
+  const heroCounter = document.getElementById("heroViewedCount");
+  if (heroCounter) {
+    heroCounter.textContent = viewed.length;
+  }
+  
+  // Update grid (if you want to refresh it too)
+  if (grid && window.renderRecentlyViewedGrid) {
+    window.renderRecentlyViewedGrid();
+  }
+}
+// Function to update recently viewed counter
+function updateRecentlyViewedCounter() {
+  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+  const heroCounter = document.getElementById("heroViewedCount");
+  if (heroCounter) {
+    heroCounter.textContent = viewed.length;
+  }
+  return viewed.length;
+}
 
-    function refreshRecentlyViewed() {
-      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-      const grid = document.getElementById("recentlyViewedGrid");
-
-      // Update counter
-      const heroCounter = document.getElementById("heroViewedCount");
-      if (heroCounter) {
-        heroCounter.textContent = viewed.length;
-      }
-
-      // Update grid (if you want to refresh it too)
-      if (grid && window.renderRecentlyViewedGrid) {
-        window.renderRecentlyViewedGrid();
-      }
-    }
-    // Function to update recently viewed counter
-    function updateRecentlyViewedCounter() {
-      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-      const heroCounter = document.getElementById("heroViewedCount");
-      if (heroCounter) {
-        heroCounter.textContent = viewed.length;
-      }
-      return viewed.length;
-    }
-
-    // Make it globally accessible
-    window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
+// Make it globally accessible
+window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
     // FIX 2: Fix modal focus error
     setTimeout(function () {
       const modal = document.getElementById('projectModal');

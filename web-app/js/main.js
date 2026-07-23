@@ -6,9 +6,7 @@ import { updateProjectVisibility } from "./modules/utils.js";
 import CopyButton from "./modules/copyButton.js";
 
 const html = document.documentElement;
-const themeToggles = document.querySelectorAll('.theme-toggle');
-const themeModePicker = document.getElementById('themeModePicker');
-const themeModeMenu = document.getElementById('themeModeMenu');
+const themeToggle = document.getElementById('themeToggle');
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
 function prefersReducedMotion() {
@@ -42,135 +40,40 @@ function syncThemeColor(theme) {
 }
 
 function updateThemeToggleAria(isLightTheme) {
-  themeToggles.forEach(function (toggle) {
-    toggle.setAttribute(
-      'aria-label',
-      isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'
-    );
-  });
-}
-
-function setThemePickerLabel(mode) {
-  if (!themeModePicker) return;
-  var label = themeModePicker.querySelector('.theme-picker-value');
-  if (!label) return;
-  var labelText =
-    mode === 'auto'
-      ? 'Auto (System)'
-      : mode === 'light'
-        ? 'Light'
-        : 'Dark';
-  label.textContent = labelText;
-  themeModePicker.setAttribute('aria-label', 'Appearance mode: ' + labelText);
-  themeModePicker.setAttribute(
-    'aria-expanded',
-    themeModeMenu && themeModeMenu.classList.contains('active') ? 'true' : 'false'
+  if (!themeToggle) return;
+  themeToggle.setAttribute(
+    'aria-label',
+    isLightTheme ? 'Switch to dark mode' : 'Switch to light mode'
   );
-  if (!themeModeMenu) return;
-  themeModeMenu.querySelectorAll('.theme-picker-option').forEach(function (option) {
-    const optionMode = option.getAttribute('data-value');
-    const isSelected = optionMode === mode;
-    option.setAttribute('aria-selected', isSelected ? 'true' : 'false');
-  });
 }
 
-function closeThemeMenu() {
-  if (!themeModeMenu || !themeModePicker) return;
-  themeModeMenu.classList.remove('active');
-  themeModePicker.setAttribute('aria-expanded', 'false');
-}
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
 
-function openThemeMenu() {
-  if (!themeModeMenu || !themeModePicker) return;
-  themeModeMenu.classList.add('active');
-  themeModePicker.setAttribute('aria-expanded', 'true');
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    syncThemeColor(newTheme);
 
-  const selectedOption = themeModeMenu.querySelector('.theme-picker-option[aria-selected="true"]');
-  if (selectedOption) {
-    selectedOption.focus();
-  }
-}
-
-function getSystemTheme() {
-  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-}
-
-function applyThemeMode(mode) {
-  var theme = mode === "auto" ? getSystemTheme() : mode;
-  html.setAttribute("data-theme", theme);
-  localStorage.setItem("theme", theme);
-  localStorage.setItem("themeMode", mode);
-  syncThemeColor(theme);
-
-  themeToggles.forEach(function (toggle) {
-    toggle.innerHTML =
-      theme === 'light'
+    themeToggle.innerHTML =
+      newTheme === 'light'
         ? '<i class="fas fa-sun" aria-hidden="true"></i>'
         : '<i class="fas fa-moon" aria-hidden="true"></i>';
-  });
-
-  updateThemeToggleAria(theme === 'light');
-  setThemePickerLabel(mode);
-
-  const event = new CustomEvent("themeChanged", { detail: { theme: theme, mode: mode } });
-  document.dispatchEvent(event);
-}
-
-themeToggles.forEach(function (toggle) {
-  toggle.addEventListener('click', (e) => {
-    e.preventDefault();
-    var currentTheme = html.getAttribute('data-theme');
-    var nextMode = currentTheme === 'light' ? 'dark' : 'light';
-    applyThemeMode(nextMode);
-  });
-});
-
-if (themeModePicker) {
-  themeModePicker.addEventListener('click', function (e) {
-    e.stopPropagation();
-    if (themeModeMenu && themeModeMenu.classList.contains('active')) {
-      closeThemeMenu();
-    } else {
-      openThemeMenu();
-    }
+    updateThemeToggleAria(newTheme === 'light');
   });
 }
 
-if (themeModeMenu) {
-  themeModeMenu.addEventListener('click', function (event) {
-    var target = event.target.closest('.theme-picker-option');
-    if (!target) return;
-    var selectedMode = target.getAttribute('data-value');
-    applyThemeMode(selectedMode);
-    closeThemeMenu();
-  });
+const savedTheme = localStorage.getItem('theme') || 'dark';
+html.setAttribute('data-theme', savedTheme);
+syncThemeColor(savedTheme);
+if (themeToggle) {
+  themeToggle.innerHTML =
+    savedTheme === 'light'
+      ? '<i class="fas fa-sun" aria-hidden="true"></i>'
+      : '<i class="fas fa-moon" aria-hidden="true"></i>';
+  updateThemeToggleAria(savedTheme === 'light');
 }
-
-document.addEventListener('click', function (event) {
-  if (
-    themeModeMenu &&
-    themeModePicker &&
-    !themeModePicker.contains(event.target) &&
-    !themeModeMenu.contains(event.target)
-  ) {
-    closeThemeMenu();
-  }
-});
-
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    closeThemeMenu();
-  }
-});
-
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
-  if (localStorage.getItem("themeMode") === "auto" || !localStorage.getItem("themeMode")) {
-    applyThemeMode("auto");
-  }
-});
-
-const savedMode = localStorage.getItem("themeMode") || "auto";
-applyThemeMode(savedMode);
 function escapeHtml(str) {
   var d = document.createElement("div");
   d.textContent = str;
@@ -256,7 +159,7 @@ function showInfoModal(title, steps) {
     // Remove old listeners by cloning
     const newClose = closeBtn.cloneNode(true);
     closeBtn.parentNode.replaceChild(newClose, closeBtn);
-    newClose.addEventListener("click", function (e) {
+    newClose.addEventListener("click", function(e) {
       e.preventDefault();
       e.stopPropagation();
       closeModal();
@@ -266,7 +169,7 @@ function showInfoModal(title, steps) {
   if (gotItBtn) {
     const newGotIt = gotItBtn.cloneNode(true);
     gotItBtn.parentNode.replaceChild(newGotIt, gotItBtn);
-    newGotIt.addEventListener("click", function (e) {
+    newGotIt.addEventListener("click", function(e) {
       e.preventDefault();
       e.stopPropagation();
       closeModal();
@@ -685,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
     currentCategory = category;
     syncSidebarTabs(category);
     syncStickyTabs(category);
-
+    
     // Sync stats cards highlight
     var statsCards = document.querySelectorAll(".stats-card");
     statsCards.forEach(function (card) {
@@ -930,7 +833,7 @@ heroNavButtons.forEach(function (button) {
   statsCards.forEach(function (card) {
     card.addEventListener("click", function () {
       var category = card.getAttribute("data-filter");
-
+      
       // Update active highlight class on stats cards
       statsCards.forEach(function (c) {
         c.classList.toggle("active", c === card);
@@ -1004,9 +907,9 @@ heroNavButtons.forEach(function (button) {
   if (stickyTabs.length) syncStickyTabs("all");
 
   /* ── Sidebar Active Scroll Observer ───────────────────────── */
-  if (!pageCategory && projectsSection) {
+if (!pageCategory && projectsSection) {
     console.log('Setting up sidebar observer');
-
+ 
     const checkAndToggleSidebar = () => {
       // FIX #1364: Never show sidebar if Playground is active
       if (playgroundActive) {
@@ -1025,8 +928,6 @@ heroNavButtons.forEach(function (button) {
       // Show sidebar when projects section is in view AND we're scrolled past hero
       const heroSection = document.querySelector('.hero-section');
       const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-      const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
-
       // FIX ISSUE #1704: Hide the fixed sidebar when the footer enters the viewport
       const footer = document.querySelector(".footer");
       const isFooterVisible = footer
@@ -1051,568 +952,568 @@ heroNavButtons.forEach(function (button) {
         }
       }
     };
-
+ 
     window.addEventListener('scroll', checkAndToggleSidebar);
     checkAndToggleSidebar();
+}
+
+ /* ═══════════════════════════════════════════════════════════════
+   SEARCH - FIXED & IMPROVED
+   ═══════════════════════════════════════════════════════════════ */
+
+// Get search elements
+var searchInput = document.querySelector(".sidebar-dock #searchInput");
+var searchDropdown = document.getElementById("searchDropdown");
+var searchLoader = document.getElementById("searchLoader");
+// Select all list containers and sections for dropdown and sidebar variants (including fallbacks)
+var recentSearchesLists = document.querySelectorAll("#recentSearchesList, #dropdownRecentSearchesList, #sidebarRecentSearchesList");
+var recentSearchesSections = document.querySelectorAll("#recentSearchesSection, #dropdownRecentSearchesSection, #sidebarRecentSearchesSection");
+var dropdownRecentSearchesSection = document.getElementById("dropdownRecentSearchesSection") || document.getElementById("recentSearchesSection");
+var resultsList = document.getElementById("resultsList");
+var resultsSection = document.getElementById("resultsSection");
+var tipsSection = document.getElementById("tipsSection");
+var noResultsMessage = document.getElementById("noResultsMessage");
+
+// Get the top navigation search input (to remove later)
+var navSearchInput = document.getElementById("navSearchInput");
+
+// ============================================================
+// HIDE THE TOP NAVIGATION SEARCH BAR (as requested)
+// ============================================================
+if (navSearchInput) {
+  // Hide the entire parent container
+  var navSearchContainer = navSearchInput.closest('.nav-search-container');
+  if (navSearchContainer) {
+    navSearchContainer.style.display = 'none';
+  } else {
+    // If no container, just hide the input
+    navSearchInput.style.display = 'none';
   }
+}
 
-  /* ═══════════════════════════════════════════════════════════════
-    SEARCH - FIXED & IMPROVED
-    ═══════════════════════════════════════════════════════════════ */
+// ============================================================
+// IMPROVED SEARCH FUNCTION
+// ============================================================
 
-  // Get search elements
-  var searchInput = document.querySelector(".sidebar-dock #searchInput");
-  var searchDropdown = document.getElementById("searchDropdown");
-  var searchLoader = document.getElementById("searchLoader");
-  // Select all list containers and sections for dropdown and sidebar variants (including fallbacks)
-  var recentSearchesLists = document.querySelectorAll("#recentSearchesList, #dropdownRecentSearchesList, #sidebarRecentSearchesList");
-  var recentSearchesSections = document.querySelectorAll("#recentSearchesSection, #dropdownRecentSearchesSection, #sidebarRecentSearchesSection");
-  var dropdownRecentSearchesSection = document.getElementById("dropdownRecentSearchesSection") || document.getElementById("recentSearchesSection");
-  var resultsList = document.getElementById("resultsList");
-  var resultsSection = document.getElementById("resultsSection");
-  var tipsSection = document.getElementById("tipsSection");
-  var noResultsMessage = document.getElementById("noResultsMessage");
+function getMatchingProjects(query) {
+  if (!query || query.trim() === '') return [];
+  
+  var q = query.toLowerCase().trim();
+  var matches = [];
+  var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  
+  projectCards.forEach(function (card) {
+    var title = (card.querySelector("h3") || {}).textContent || "";
+    var desc = (card.querySelector("p") || {}).textContent || "";
+    var tags = (card.getAttribute("data-tags") || "").toLowerCase();
+    var category = card.getAttribute("data-category") || "";
+    var projectName = card.getAttribute("data-project") || "";
+    var isFav = favorites.includes(projectName);
+    
+    // Check if current category filter applies
+    var catMatch = currentCategory === "all" || 
+                   (currentCategory === "favorites" && isFav) ||
+                   (currentCategory !== "favorites" && category === currentCategory);
+    
+    // Search in title, description, tags
+    var searchMatch = title.toLowerCase().includes(q) ||
+                     desc.toLowerCase().includes(q) ||
+                     tags.includes(q);
+    
+    if (catMatch && searchMatch) {
+      matches.push({
+        card: card,
+        title: title,
+        desc: desc,
+        tags: tags,
+        category: category,
+        projectName: projectName,
+        isFav: isFav
+      });
+    }
+  });
+  
+  return matches;
+}
 
-  // Get the top navigation search input (to remove later)
-  var navSearchInput = document.getElementById("navSearchInput");
+// Improved highlight function
+function highlightText(container, text, query) {
+  var safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  var parts = text.split(new RegExp("(" + safe + ")", "gi"));
+  parts.forEach(function (part) {
+    if (part && part.toLowerCase() === query.toLowerCase()) {
+      var mark = document.createElement("mark");
+      mark.style.background = "var(--accent-soft, #e8f0fe)";
+      mark.style.color = "var(--accent, #1a73e8)";
+      mark.style.fontWeight = "600";
+      mark.style.borderRadius = "2px";
+      mark.style.padding = "0 2px";
+      mark.textContent = part;
+      container.appendChild(mark);
+    } else if (part) {
+      container.appendChild(document.createTextNode(part));
+    }
+  });
+}
 
-  // ============================================================
-  // HIDE THE TOP NAVIGATION SEARCH BAR (as requested)
-  // ============================================================
-  if (navSearchInput) {
-    // Hide the entire parent container
-    var navSearchContainer = navSearchInput.closest('.nav-search-container');
-    if (navSearchContainer) {
-      navSearchContainer.style.display = 'none';
+function closeDropdown() {
+  if (searchDropdown) {
+    searchDropdown.classList.remove("active");
+    searchDropdown.style.display = 'none';
+  }
+}
+
+function openDropdown() {
+  if (searchDropdown) {
+    searchDropdown.classList.add("active");
+    searchDropdown.style.display = 'block';
+  }
+}
+
+// Render recent searches
+function renderRecentSearches() {
+  if (noResultsMessage) noResultsMessage.style.display = "none";
+  if (recentSearchesSections.length === 0) return;
+
+  recentSearchesLists.forEach(function (listContainer) {
+    if (!listContainer) return;
+    listContainer.innerHTML = "";
+
+    if (recentSearches.length === 0) {
+      var emptyEl = document.createElement("p");
+      emptyEl.className = "recent-searches-empty";
+      emptyEl.textContent = "No recent searches yet. Start exploring projects!";
+      listContainer.appendChild(emptyEl);
     } else {
-      // If no container, just hide the input
-      navSearchInput.style.display = 'none';
-    }
-  }
+      recentSearches.slice(0, 5).forEach(function (search) {
+        var chip = document.createElement("div");
+        chip.className = "recent-search-chip";
+        chip.setAttribute("role", "listitem");
 
-  // ============================================================
-  // IMPROVED SEARCH FUNCTION
-  // ============================================================
+        var labelBtn = document.createElement("button");
+        labelBtn.type = "button";
+        labelBtn.className = "recent-search-chip-label";
+        labelBtn.setAttribute("aria-label", "Search for " + search);
+        var labelSpan = document.createElement("span");
+        labelSpan.textContent = search;
+        labelBtn.appendChild(labelSpan);
 
-  function getMatchingProjects(query) {
-    if (!query || query.trim() === '') return [];
+        var removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "recent-search-chip-remove";
+        removeBtn.setAttribute("aria-label", "Remove search");
+        removeBtn.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
 
-    var q = query.toLowerCase().trim();
-    var matches = [];
-    var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+        chip.append(labelBtn, removeBtn);
 
-    projectCards.forEach(function (card) {
-      var title = (card.querySelector("h3") || {}).textContent || "";
-      var desc = (card.querySelector("p") || {}).textContent || "";
-      var tags = (card.getAttribute("data-tags") || "").toLowerCase();
-      var category = card.getAttribute("data-category") || "";
-      var projectName = card.getAttribute("data-project") || "";
-      var isFav = favorites.includes(projectName);
-
-      // Check if current category filter applies
-      var catMatch = currentCategory === "all" ||
-        (currentCategory === "favorites" && isFav) ||
-        (currentCategory !== "favorites" && category === currentCategory);
-
-      // Search in title, description, tags
-      var searchMatch = title.toLowerCase().includes(q) ||
-        desc.toLowerCase().includes(q) ||
-        tags.includes(q);
-
-      if (catMatch && searchMatch) {
-        matches.push({
-          card: card,
-          title: title,
-          desc: desc,
-          tags: tags,
-          category: category,
-          projectName: projectName,
-          isFav: isFav
-        });
-      }
-    });
-
-    return matches;
-  }
-
-  // Improved highlight function
-  function highlightText(container, text, query) {
-    var safe = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    var parts = text.split(new RegExp("(" + safe + ")", "gi"));
-    parts.forEach(function (part) {
-      if (part && part.toLowerCase() === query.toLowerCase()) {
-        var mark = document.createElement("mark");
-        mark.style.background = "var(--accent-soft, #e8f0fe)";
-        mark.style.color = "var(--accent, #1a73e8)";
-        mark.style.fontWeight = "600";
-        mark.style.borderRadius = "2px";
-        mark.style.padding = "0 2px";
-        mark.textContent = part;
-        container.appendChild(mark);
-      } else if (part) {
-        container.appendChild(document.createTextNode(part));
-      }
-    });
-  }
-
-  function closeDropdown() {
-    if (searchDropdown) {
-      searchDropdown.classList.remove("active");
-      searchDropdown.style.display = 'none';
-    }
-  }
-
-  function openDropdown() {
-    if (searchDropdown) {
-      searchDropdown.classList.add("active");
-      searchDropdown.style.display = 'block';
-    }
-  }
-
-  // Render recent searches
-  function renderRecentSearches() {
-    if (noResultsMessage) noResultsMessage.style.display = "none";
-    if (recentSearchesSections.length === 0) return;
-
-    recentSearchesLists.forEach(function (listContainer) {
-      if (!listContainer) return;
-      listContainer.innerHTML = "";
-
-      if (recentSearches.length === 0) {
-        var emptyEl = document.createElement("p");
-        emptyEl.className = "recent-searches-empty";
-        emptyEl.textContent = "No recent searches yet. Start exploring projects!";
-        listContainer.appendChild(emptyEl);
-      } else {
-        recentSearches.slice(0, 5).forEach(function (search) {
-          var chip = document.createElement("div");
-          chip.className = "recent-search-chip";
-          chip.setAttribute("role", "listitem");
-
-          var labelBtn = document.createElement("button");
-          labelBtn.type = "button";
-          labelBtn.className = "recent-search-chip-label";
-          labelBtn.setAttribute("aria-label", "Search for " + search);
-          var labelSpan = document.createElement("span");
-          labelSpan.textContent = search;
-          labelBtn.appendChild(labelSpan);
-
-          var removeBtn = document.createElement("button");
-          removeBtn.type = "button";
-          removeBtn.className = "recent-search-chip-remove";
-          removeBtn.setAttribute("aria-label", "Remove search");
-          removeBtn.innerHTML = '<i class="fas fa-times" aria-hidden="true"></i>';
-
-          chip.append(labelBtn, removeBtn);
-
-          labelBtn.addEventListener("click", function () {
-            if (searchInput) {
-              searchInput.value = search;
-              currentSearchQuery = search;
-              performSearch(true);
-              closeDropdown();
-            }
-          });
-
-          removeBtn.addEventListener("click", function (e) {
-            e.stopPropagation();
-            recentSearches = recentSearches.filter(function (s) {
-              return s !== search;
-            });
-            localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-            renderRecentSearches();
-          });
-
-          listContainer.appendChild(chip);
-        });
-      }
-    });
-
-    // Clear recent buttons
-    var clearRecentBtns = document.querySelectorAll("#clearRecentBtn, #clearRecentDropdownBtn, #clearRecentSidebarBtn");
-    clearRecentBtns.forEach(function (btn) {
-      if (!btn) return;
-      btn.style.display = recentSearches.length ? "inline-flex" : "none";
-      btn.onclick = function (e) {
-        e.stopPropagation();
-        if (!recentSearches || recentSearches.length === 0) return;
-        showConfirm(
-          "Clear all recent searches? This cannot be undone.",
-          function () {
-            recentSearches = [];
-            localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-            renderRecentSearches();
+        labelBtn.addEventListener("click", function () {
+          if (searchInput) {
+            searchInput.value = search;
+            currentSearchQuery = search;
+            performSearch(true);
             closeDropdown();
-          },
-          function () { }
-        );
-      };
-    });
+          }
+        });
 
-    recentSearchesSections.forEach(function (section) {
-      if (!section) return;
-      section.style.display = "block";
-    });
+        removeBtn.addEventListener("click", function (e) {
+          e.stopPropagation();
+          recentSearches = recentSearches.filter(function (s) {
+            return s !== search;
+          });
+          localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+          renderRecentSearches();
+        });
+
+        listContainer.appendChild(chip);
+      });
+    }
+  });
+
+  // Clear recent buttons
+  var clearRecentBtns = document.querySelectorAll("#clearRecentBtn, #clearRecentDropdownBtn, #clearRecentSidebarBtn");
+  clearRecentBtns.forEach(function (btn) {
+    if (!btn) return;
+    btn.style.display = recentSearches.length ? "inline-flex" : "none";
+    btn.onclick = function (e) {
+      e.stopPropagation();
+      if (!recentSearches || recentSearches.length === 0) return;
+      showConfirm(
+        "Clear all recent searches? This cannot be undone.",
+        function () {
+          recentSearches = [];
+          localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+          renderRecentSearches();
+          closeDropdown();
+        },
+        function () {}
+      );
+    };
+  });
+
+  recentSearchesSections.forEach(function (section) {
+    if (!section) return;
+    section.style.display = "block";
+  });
+  if (resultsSection) resultsSection.style.display = "none";
+  if (tipsSection) tipsSection.style.display = "block";
+}
+
+// Render search suggestions
+function renderSuggestions(query) {
+  if (searchLoader) searchLoader.style.display = "none";
+  
+  if (!query || query.trim() === '') {
+    renderRecentSearches();
+    return;
+  }
+
+  var matches = getMatchingProjects(query);
+
+  if (matches.length === 0) {
     if (resultsSection) resultsSection.style.display = "none";
-    if (tipsSection) tipsSection.style.display = "block";
-  }
-
-  // Render search suggestions
-  function renderSuggestions(query) {
-    if (searchLoader) searchLoader.style.display = "none";
-
-    if (!query || query.trim() === '') {
-      renderRecentSearches();
-      return;
-    }
-
-    var matches = getMatchingProjects(query);
-
-    if (matches.length === 0) {
-      if (resultsSection) resultsSection.style.display = "none";
-      if (dropdownRecentSearchesSection) dropdownRecentSearchesSection.style.display = "none";
-      if (tipsSection) tipsSection.style.display = "block";
-      if (noResultsMessage) {
-        noResultsMessage.style.display = "block";
-        noResultsMessage.textContent = 'No projects found for "' + query + '"';
-      }
-      return;
-    }
-
-    if (noResultsMessage) noResultsMessage.style.display = "none";
-
-    if (resultsList) {
-      resultsList.innerHTML = "";
-      matches.slice(0, 8).forEach(function (project, index) {
-        var item = document.createElement("div");
-        item.className = "dropdown-item" + (index === selectedSuggestionIndex ? " selected" : "");
-
-        // Icon
-        var iconBox = document.createElement("div");
-        iconBox.className = "dropdown-item-icon";
-        var banner = project.card.querySelector(".card-banner");
-        if (banner) {
-          var img = document.createElement("img");
-          img.src = banner.src || "assets/banners/default.webp";
-          img.alt = project.title + " project preview";
-          img.loading = "lazy";
-          iconBox.appendChild(img);
-        }
-
-        // Title with highlight
-        var titleBox = document.createElement("div");
-        titleBox.className = "dropdown-item-text";
-        highlightText(titleBox, project.title, query);
-
-        // Description (optional)
-        if (project.desc) {
-          var descSpan = document.createElement("span");
-          descSpan.className = "dropdown-item-desc";
-          descSpan.textContent = " — " + project.desc.substring(0, 60);
-          if (project.desc.length > 60) descSpan.textContent += "...";
-          titleBox.appendChild(descSpan);
-        }
-
-        // Category tag
-        var tag = document.createElement("span");
-        tag.className = "dropdown-item-tag";
-        tag.textContent = project.category || "project";
-
-        item.append(iconBox, titleBox, tag);
-
-        item.addEventListener("click", function () {
-          selectSuggestion(project.title);
-        });
-
-        item.addEventListener("mouseenter", function () {
-          selectedSuggestionIndex = index;
-          updateSuggestionHighlight();
-        });
-
-        resultsList.appendChild(item);
-      });
-    }
-
-    if (resultsSection) resultsSection.style.display = "block";
     if (dropdownRecentSearchesSection) dropdownRecentSearchesSection.style.display = "none";
-    if (tipsSection) tipsSection.style.display = "none";
-    selectedSuggestionIndex = -1;
+    if (tipsSection) tipsSection.style.display = "block";
+    if (noResultsMessage) {
+      noResultsMessage.style.display = "block";
+      noResultsMessage.textContent = 'No projects found for "' + query + '"';
+    }
+    return;
   }
 
-  function updateSuggestionHighlight() {
-    if (!resultsList) return;
-    var items = resultsList.querySelectorAll(".dropdown-item");
-    items.forEach(function (item, i) {
-      item.classList.toggle("selected", i === selectedSuggestionIndex);
+  if (noResultsMessage) noResultsMessage.style.display = "none";
+
+  if (resultsList) {
+    resultsList.innerHTML = "";
+    matches.slice(0, 8).forEach(function (project, index) {
+      var item = document.createElement("div");
+      item.className = "dropdown-item" + (index === selectedSuggestionIndex ? " selected" : "");
+
+      // Icon
+      var iconBox = document.createElement("div");
+      iconBox.className = "dropdown-item-icon";
+      var banner = project.card.querySelector(".card-banner");
+      if (banner) {
+        var img = document.createElement("img");
+        img.src = banner.src || "assets/banners/default.webp";
+        img.alt = project.title + " project preview";
+        img.loading = "lazy";
+        iconBox.appendChild(img);
+      }
+
+      // Title with highlight
+      var titleBox = document.createElement("div");
+      titleBox.className = "dropdown-item-text";
+      highlightText(titleBox, project.title, query);
+      
+      // Description (optional)
+      if (project.desc) {
+        var descSpan = document.createElement("span");
+        descSpan.className = "dropdown-item-desc";
+        descSpan.textContent = " — " + project.desc.substring(0, 60);
+        if (project.desc.length > 60) descSpan.textContent += "...";
+        titleBox.appendChild(descSpan);
+      }
+
+      // Category tag
+      var tag = document.createElement("span");
+      tag.className = "dropdown-item-tag";
+      tag.textContent = project.category || "project";
+
+      item.append(iconBox, titleBox, tag);
+      
+      item.addEventListener("click", function () {
+        selectSuggestion(project.title);
+      });
+      
+      item.addEventListener("mouseenter", function () {
+        selectedSuggestionIndex = index;
+        updateSuggestionHighlight();
+      });
+      
+      resultsList.appendChild(item);
     });
   }
 
-  function selectSuggestion(title) {
-    if (!searchInput) return;
-    searchInput.value = title;
-    currentSearchQuery = title;
-    performSearch(true);
-    closeDropdown();
-    if (projectsSection) {
-      projectsSection.scrollIntoView({
-        behavior: prefersReducedMotion() ? "auto" : "smooth",
-        block: "start",
-      });
-    }
-  }
+  if (resultsSection) resultsSection.style.display = "block";
+  if (dropdownRecentSearchesSection) dropdownRecentSearchesSection.style.display = "none";
+  if (tipsSection) tipsSection.style.display = "none";
+  selectedSuggestionIndex = -1;
+}
 
-  // ============================================================
-  // MAIN SEARCH EXECUTION - FIXED
-  // ============================================================
+function updateSuggestionHighlight() {
+  if (!resultsList) return;
+  var items = resultsList.querySelectorAll(".dropdown-item");
+  items.forEach(function (item, i) {
+    item.classList.toggle("selected", i === selectedSuggestionIndex);
+  });
+}
 
-  function performSearch(commit) {
-    var query = currentSearchQuery ? currentSearchQuery.trim().toLowerCase() : '';
-
-    // If no query, reset to show all projects
-    if (!query) {
-      applyCategoryFilter(currentCategory);
-      if (emptyStateHint) {
-        emptyStateHint.textContent = "Try adjusting your search or category filter.";
-      }
-      // Update project count
-      var visibleCount = projectCards.filter(function (c) {
-        return c.style.display !== "none";
-      }).length;
-      if (projectCountBadge) {
-        projectCountBadge.textContent = String(visibleCount) + " projects";
-      }
-      return;
-    }
-
-    // If searching, set category to "all" to search everything
-    if (currentCategory !== "all") {
-      currentCategory = "all";
-      syncSidebarTabs("all");
-      syncStickyTabs("all");
-    }
-
-    // Save to recent searches
-    if (commit) {
-      recentSearches = recentSearches.filter(function (s) {
-        return s.toLowerCase() !== query;
-      });
-      recentSearches.unshift(query);
-      recentSearches = recentSearches.slice(0, 10);
-      localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-    }
-
-    var visibleCount = 0;
-    var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-
-    projectCards.forEach(function (card) {
-      var category = card.getAttribute("data-category") || "";
-      var title = (card.querySelector("h3") || {}).textContent || "";
-      var desc = (card.querySelector("p") || {}).textContent || "";
-      var tags = (card.getAttribute("data-tags") || "").toLowerCase();
-      var projectName = card.getAttribute("data-project") || "";
-      var isFav = favorites.includes(projectName);
-
-      // Match: search in title, description, or tags
-      var searchMatch = title.toLowerCase().includes(query) ||
-        desc.toLowerCase().includes(query) ||
-        tags.includes(query);
-
-      // Category match (always true since we set to "all" above)
-      var catMatch = true;
-
-      if (catMatch && searchMatch) {
-        card.style.display = "";
-        visibleCount++;
-      } else {
-        card.style.display = "none";
-      }
+function selectSuggestion(title) {
+  if (!searchInput) return;
+  searchInput.value = title;
+  currentSearchQuery = title;
+  performSearch(true);
+  closeDropdown();
+  if (projectsSection) {
+    projectsSection.scrollIntoView({
+      behavior: prefersReducedMotion() ? "auto" : "smooth",
+      block: "start",
     });
+  }
+}
 
-    // Show/hide empty state
-    if (emptyState) {
-      emptyState.style.display = visibleCount === 0 ? "block" : "none";
-      if (visibleCount === 0 && emptyStateHint) {
-        emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
-      }
+// ============================================================
+// MAIN SEARCH EXECUTION - FIXED
+// ============================================================
+
+function performSearch(commit) {
+  var query = currentSearchQuery ? currentSearchQuery.trim().toLowerCase() : '';
+  
+  // If no query, reset to show all projects
+  if (!query) {
+    applyCategoryFilter(currentCategory);
+    if (emptyStateHint) {
+      emptyStateHint.textContent = "Try adjusting your search or category filter.";
     }
-
+    // Update project count
+    var visibleCount = projectCards.filter(function(c) { 
+      return c.style.display !== "none"; 
+    }).length;
     if (projectCountBadge) {
       projectCountBadge.textContent = String(visibleCount) + " projects";
     }
+    return;
   }
 
-  // ============================================================
-  // WIRE SEARCH INPUTS
-  // ============================================================
+  // If searching, set category to "all" to search everything
+  if (currentCategory !== "all") {
+    currentCategory = "all";
+    syncSidebarTabs("all");
+    syncStickyTabs("all");
+  }
 
-  var searchInputs = [searchInput].filter(Boolean); // Only sidebar search now
+  // Save to recent searches
+  if (commit) {
+    recentSearches = recentSearches.filter(function (s) {
+      return s.toLowerCase() !== query;
+    });
+    recentSearches.unshift(query);
+    recentSearches = recentSearches.slice(0, 10);
+    localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
+  }
 
-  if (searchInputs.length) {
-    var debouncedSearch = debounce(function (query) {
-      renderSuggestions(query);
-    }, 200);
+  var visibleCount = 0;
+  var favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  
+  projectCards.forEach(function (card) {
+    var category = card.getAttribute("data-category") || "";
+    var title = (card.querySelector("h3") || {}).textContent || "";
+    var desc = (card.querySelector("p") || {}).textContent || "";
+    var tags = (card.getAttribute("data-tags") || "").toLowerCase();
+    var projectName = card.getAttribute("data-project") || "";
+    var isFav = favorites.includes(projectName);
 
-    searchInputs.forEach(function (input) {
-      // Input event - real-time search
-      input.addEventListener("input", function (e) {
-        var rawValue = e.target.value;
-        var query = rawValue.trim();
-        currentSearchQuery = query;
+    // Match: search in title, description, or tags
+    var searchMatch = title.toLowerCase().includes(query) ||
+                     desc.toLowerCase().includes(query) ||
+                     tags.includes(query);
 
-        if (clearSearchBtn) {
-          clearSearchBtn.hidden = query === "";
+    // Category match (always true since we set to "all" above)
+    var catMatch = true;
+
+    if (catMatch && searchMatch) {
+      card.style.display = "";
+      visibleCount++;
+    } else {
+      card.style.display = "none";
+    }
+  });
+
+  // Show/hide empty state
+  if (emptyState) {
+    emptyState.style.display = visibleCount === 0 ? "block" : "none";
+    if (visibleCount === 0 && emptyStateHint) {
+      emptyStateHint.textContent = 'No projects match "' + query + '". Try a different keyword.';
+    }
+  }
+  
+  if (projectCountBadge) {
+    projectCountBadge.textContent = String(visibleCount) + " projects";
+  }
+}
+
+// ============================================================
+// WIRE SEARCH INPUTS
+// ============================================================
+
+var searchInputs = [searchInput].filter(Boolean); // Only sidebar search now
+
+if (searchInputs.length) {
+  var debouncedSearch = debounce(function (query) {
+    renderSuggestions(query);
+  }, 200);
+
+  searchInputs.forEach(function (input) {
+    // Input event - real-time search
+    input.addEventListener("input", function (e) {
+      var rawValue = e.target.value;
+      var query = rawValue.trim();
+      currentSearchQuery = query;
+
+      if (clearSearchBtn) {
+        clearSearchBtn.hidden = query === "";
+      }
+      
+      // Show loader
+      if (searchLoader) {
+        searchLoader.style.display = query ? "block" : "none";
+      }
+      
+      // Update suggestions
+      debouncedSearch(query);
+      
+      // Perform search (without saving to recent)
+      performSearch(false);
+    });
+
+    // Focus event - show dropdown
+    input.addEventListener("focus", function () {
+      if (searchDropdown) {
+        openDropdown();
+      }
+      if (!currentSearchQuery || currentSearchQuery.trim() === '') {
+        renderRecentSearches();
+      } else {
+        renderSuggestions(currentSearchQuery);
+      }
+    });
+
+    // Blur event - close dropdown after delay
+    input.addEventListener("blur", function () {
+      setTimeout(function() {
+        if (searchDropdown && !searchDropdown.matches(':hover')) {
+          closeDropdown();
         }
+      }, 200);
+    });
 
-        // Show loader
-        if (searchLoader) {
-          searchLoader.style.display = query ? "block" : "none";
-        }
-
-        // Update suggestions
-        debouncedSearch(query);
-
-        // Perform search (without saving to recent)
-        performSearch(false);
-      });
-
-      // Focus event - show dropdown
-      input.addEventListener("focus", function () {
-        if (searchDropdown) {
-          openDropdown();
-        }
-        if (!currentSearchQuery || currentSearchQuery.trim() === '') {
-          renderRecentSearches();
-        } else {
-          renderSuggestions(currentSearchQuery);
-        }
-      });
-
-      // Blur event - close dropdown after delay
-      input.addEventListener("blur", function () {
-        setTimeout(function () {
-          if (searchDropdown && !searchDropdown.matches(':hover')) {
-            closeDropdown();
-          }
-        }, 200);
-      });
-
-      // Keyboard navigation
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
+    // Keyboard navigation
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") {
           input.value = "";
           currentSearchQuery = "";
 
           if (clearSearchBtn) {
-            clearSearchBtn.hidden = true;
+              clearSearchBtn.hidden = true;
           }
 
           performSearch(false);
           closeDropdown();
           input.blur();
-        }
-
-        if (e.key === "Enter") {
-          e.preventDefault();
-          var query = currentSearchQuery ? currentSearchQuery.trim() : '';
-          if (query) {
-            performSearch(true);
-            closeDropdown();
-            // Scroll to results
-            if (projectsSection) {
-              projectsSection.scrollIntoView({
-                behavior: prefersReducedMotion() ? "auto" : "smooth",
-                block: "start"
-              });
-            }
+      }
+      
+      if (e.key === "Enter") {
+        e.preventDefault();
+        var query = currentSearchQuery ? currentSearchQuery.trim() : '';
+        if (query) {
+          performSearch(true);
+          closeDropdown();
+          // Scroll to results
+          if (projectsSection) {
+            projectsSection.scrollIntoView({
+              behavior: prefersReducedMotion() ? "auto" : "smooth",
+              block: "start"
+            });
           }
         }
-
-        // Arrow keys for navigation
-        if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-          e.preventDefault();
-          var items = resultsList ? resultsList.querySelectorAll(".dropdown-item") : [];
-          if (items.length === 0) return;
-
-          var currentIndex = selectedSuggestionIndex;
-          if (e.key === "ArrowDown") {
-            selectedSuggestionIndex = Math.min(currentIndex + 1, items.length - 1);
-          } else {
-            selectedSuggestionIndex = Math.max(currentIndex - 1, -1);
-          }
-          updateSuggestionHighlight();
-
-          // Scroll into view
-          if (selectedSuggestionIndex >= 0 && items[selectedSuggestionIndex]) {
-            items[selectedSuggestionIndex].scrollIntoView({ block: 'nearest' });
-          }
+      }
+      
+      // Arrow keys for navigation
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        e.preventDefault();
+        var items = resultsList ? resultsList.querySelectorAll(".dropdown-item") : [];
+        if (items.length === 0) return;
+        
+        var currentIndex = selectedSuggestionIndex;
+        if (e.key === "ArrowDown") {
+          selectedSuggestionIndex = Math.min(currentIndex + 1, items.length - 1);
+        } else {
+          selectedSuggestionIndex = Math.max(currentIndex - 1, -1);
         }
-      });
+        updateSuggestionHighlight();
+        
+        // Scroll into view
+        if (selectedSuggestionIndex >= 0 && items[selectedSuggestionIndex]) {
+          items[selectedSuggestionIndex].scrollIntoView({ block: 'nearest' });
+        }
+      }
     });
+  });
 
-    if (clearSearchBtn) {
+  if (clearSearchBtn) {
       clearSearchBtn.addEventListener("click", function () {
 
-        searchInputs.forEach(function (input) {
-          input.value = "";
-        });
+          searchInputs.forEach(function (input) {
+              input.value = "";
+          });
 
-        currentSearchQuery = "";
+          currentSearchQuery = "";
 
-        performSearch(false);
+          performSearch(false);
 
-        closeDropdown();
+          closeDropdown();
 
-        clearSearchBtn.hidden = true;
+          clearSearchBtn.hidden = true;
 
-        if (searchInput) {
-          searchInput.focus();
-        }
+          if (searchInput) {
+              searchInput.focus();
+          }
       });
-    }
   }
+}
 
-  // Close dropdown when clicking outside
-  document.addEventListener("click", function (e) {
-    if (searchDropdown && searchInput &&
-      !searchDropdown.contains(e.target) &&
+// Close dropdown when clicking outside
+document.addEventListener("click", function (e) {
+  if (searchDropdown && searchInput && 
+      !searchDropdown.contains(e.target) && 
       e.target !== searchInput) {
-      closeDropdown();
-    }
-  });
+    closeDropdown();
+  }
+});
 
-  // Keyboard shortcuts
-  document.addEventListener("keydown", function (e) {
-    // Ctrl+K or Cmd+K to focus search
-    if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-      e.preventDefault();
-      if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-      }
-      return;
+// Keyboard shortcuts
+document.addEventListener("keydown", function (e) {
+  // Ctrl+K or Cmd+K to focus search
+  if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+    e.preventDefault();
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
     }
-
-    // "/" to focus search (if not in input)
-    if (e.key === "/" && !isTypingInField(e.target)) {
-      e.preventDefault();
-      if (searchInput) {
-        searchInput.focus();
-        searchInput.select();
-      }
-    }
-  });
-
-  // Helper function to check if typing in field
-  function isTypingInField(target) {
-    if (!target) return false;
-    var tag = target.tagName ? target.tagName.toLowerCase() : "";
-    return tag === "input" || tag === "textarea" || tag === "select" || target.isContentEditable;
+    return;
   }
 
-  // Initial render
-  renderRecentSearches();
+  // "/" to focus search (if not in input)
+  if (e.key === "/" && !isTypingInField(e.target)) {
+    e.preventDefault();
+    if (searchInput) {
+      searchInput.focus();
+      searchInput.select();
+    }
+  }
+});
 
-  console.log("🔍 Search functionality initialized successfully!");
+// Helper function to check if typing in field
+function isTypingInField(target) {
+  if (!target) return false;
+  var tag = target.tagName ? target.tagName.toLowerCase() : "";
+  return tag === "input" || tag === "textarea" || tag === "select" || target.isContentEditable;
+}
+
+// Initial render
+renderRecentSearches();
+
+console.log("🔍 Search functionality initialized successfully!");
 
   /* ═══════════════════════════════════════════════════════════════
       MODAL
@@ -1704,52 +1605,52 @@ heroNavButtons.forEach(function (button) {
       if (projectContent) {
         // First, check if there's already an info button (to avoid duplicates)
         if (projectContent.querySelector(".inline-info-btn")) {
-          // Info button already exists, skip injection
-          console.log('ℹ️ Info button already exists for', name);
-        } else {
-          var firstHeading = projectContent.querySelector("h2, h3, .pet-title");
+        // Info button already exists, skip injection
+        console.log('ℹ️ Info button already exists for', name);
+      } else {
+        var firstHeading = projectContent.querySelector("h2, h3, .pet-title");
+    
+        // Special case for Tic Tac Toe - look for the heading inside project-content
+        if (!firstHeading) {
+          firstHeading = projectContent.querySelector('[style*="display: flex"] h2');
+        }
+    
+        if (!firstHeading) {
+          // Look for any element that might be a title
+          firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
+        }
+    
+        if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
+          var infoBtn = document.createElement("button");
+          infoBtn.className = "inline-info-btn";
+          infoBtn.innerHTML = "ⓘ";
+          infoBtn.setAttribute("aria-label", "How to use this project");
+          infoBtn.style.marginLeft = "12px";
+          infoBtn.style.background = "none";
+          infoBtn.style.border = "none";
+          infoBtn.style.fontSize = "1.3rem";
+          infoBtn.style.cursor = "pointer";
+          infoBtn.style.color = "var(--accent)";
+          infoBtn.style.verticalAlign = "middle";
 
-          // Special case for Tic Tac Toe - look for the heading inside project-content
-          if (!firstHeading) {
-            firstHeading = projectContent.querySelector('[style*="display: flex"] h2');
-          }
-
-          if (!firstHeading) {
-            // Look for any element that might be a title
-            firstHeading = projectContent.querySelector('[class*="title"], [class*="header"] h2');
-          }
-
-          if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
-            var infoBtn = document.createElement("button");
-            infoBtn.className = "inline-info-btn";
-            infoBtn.innerHTML = "ⓘ";
-            infoBtn.setAttribute("aria-label", "How to use this project");
-            infoBtn.style.marginLeft = "12px";
-            infoBtn.style.background = "none";
-            infoBtn.style.border = "none";
-            infoBtn.style.fontSize = "1.3rem";
-            infoBtn.style.cursor = "pointer";
-            infoBtn.style.color = "var(--accent)";
-            infoBtn.style.verticalAlign = "middle";
-
-            infoBtn.addEventListener("click", function (e) {
-              e.stopPropagation();
-              if (typeof getProjectInstructions === "function") {
-                var info = getProjectInstructions(name);
-                if (info && typeof showInfoModal === "function") {
-                  showInfoModal(info.title, info.steps);
-                }
+          infoBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            if (typeof getProjectInstructions === "function") {
+              var info = getProjectInstructions(name);
+              if (info && typeof showInfoModal === "function") {
+                showInfoModal(info.title, info.steps);
               }
-            });
-
-            if (firstHeading.style.display !== "inline-block") {
-              firstHeading.style.display = "inline-block";
             }
-            firstHeading.appendChild(infoBtn);
+          });
+
+          if (firstHeading.style.display !== "inline-block") {
+            firstHeading.style.display = "inline-block";
           }
+          firstHeading.appendChild(infoBtn);
         }
       }
-    });
+    }
+  });
 
     // Setup focus trap
     if (removeTrap) removeTrap();
@@ -1788,7 +1689,7 @@ heroNavButtons.forEach(function (button) {
       removeTrap();
       removeTrap = null;
     }
-
+    
     renderRecentSearches();
     // Clear content
     if (modalBody) {
@@ -1822,23 +1723,23 @@ heroNavButtons.forEach(function (button) {
   window.closeProjectSafe = closeProjectSafe;
   window.setMainInert = setMainInert;
 
-  function updateFavoritesCountBadge() {
-    const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const count = favorites.length;
-
-    // Update sidebar badge
-    const badge = document.getElementById("favoritesCountBadge");
-    if (badge) {
-      badge.textContent = "(" + count + ")";
-    }
-
-    // Update stats dashboard
-    const heroFavoriteCount = document.getElementById("heroFavoriteCount");
-    if (heroFavoriteCount) {
-      heroFavoriteCount.textContent = count;
-    }
+ function updateFavoritesCountBadge() {
+  const favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
+  const count = favorites.length;
+  
+  // Update sidebar badge
+  const badge = document.getElementById("favoritesCountBadge");
+  if (badge) {
+    badge.textContent = "(" + count + ")";
   }
-  updateFavoritesCountBadge();
+  
+  // Update stats dashboard
+  const heroFavoriteCount = document.getElementById("heroFavoriteCount");
+  if (heroFavoriteCount) {
+    heroFavoriteCount.textContent = count;
+  }
+}
+updateFavoritesCountBadge();
 
   /* ═══════════════════════════════════════════════════════════════
        WIRE PROJECT CARDS
@@ -1846,21 +1747,21 @@ heroNavButtons.forEach(function (button) {
   function wireProjectCard(card) {
     var name = card.getAttribute("data-project");
     const difficulty =
-      card.getAttribute("data-difficulty");
+card.getAttribute("data-difficulty");
 
-    if (difficulty) {
+if(difficulty){
 
-      const badge = document.createElement("span");
+const badge=document.createElement("span");
 
-      badge.className =
-        "difficulty-badge " +
-        difficulty.toLowerCase();
+badge.className=
+"difficulty-badge "+
+difficulty.toLowerCase();
 
-      badge.textContent = difficulty;
+badge.textContent=difficulty;
 
-      card.appendChild(badge);
+card.appendChild(badge);
 
-    }
+}
 
     /* ── Favorite Button ──────────────────────────────────── */
     // Remove any existing favorite button first to avoid duplicates
@@ -1884,7 +1785,7 @@ heroNavButtons.forEach(function (button) {
       e.stopPropagation();
       var favs = JSON.parse(localStorage.getItem("favorites") || "[]");
       var idx = favs.indexOf(name);
-
+      
       if (idx === -1) {
         // Add to favorites
         favs.push(name);
@@ -1903,9 +1804,9 @@ heroNavButtons.forEach(function (button) {
           card.style.display = "none";
         }
       }
-
+      
       localStorage.setItem("favorites", JSON.stringify(favs));
-
+      
       // Update badge and counts
       if (typeof updateSidebarCategoryCounts === 'function') {
         updateSidebarCategoryCounts();
@@ -1989,10 +1890,10 @@ heroNavButtons.forEach(function (button) {
     if (!grid || !section) return;
     var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
     const historyBadge =
-      document.getElementById("historyCountBadge");
+document.getElementById("historyCountBadge");
 
-    if (historyBadge) {
-      historyBadge.textContent = `(${recent.length})`;
+    if(historyBadge){
+      historyBadge.textContent=`(${recent.length})`;
     }
     const heroViewedCount = document.getElementById("heroViewedCount");
     if (heroViewedCount) {
@@ -2167,27 +2068,27 @@ heroNavButtons.forEach(function (button) {
   window.updateRecentlyViewed();
 
   const clearBtn =
-    document.getElementById("clearHistoryBtn");
+document.getElementById("clearHistoryBtn");
 
-  if (clearBtn) {
+if(clearBtn){
 
-    clearBtn.addEventListener("click", () => {
+clearBtn.addEventListener("click",()=>{
 
-      showConfirm(
-        "Clear recently viewed projects?",
-        () => {
+showConfirm(
+"Clear recently viewed projects?",
+()=>{
 
-          localStorage.removeItem("recentProjects");
+localStorage.removeItem("recentProjects");
 
-          window.updateRecentlyViewed();
+window.updateRecentlyViewed();
 
-          showToast("History Cleared");
+showToast("History Cleared");
 
-        }
+}
 
-      );
+);
 
-    });
+});
 
-  }
+}
 });
