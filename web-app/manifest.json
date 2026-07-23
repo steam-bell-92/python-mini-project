@@ -1,0 +1,18 @@
+{
+  "name": "Python Mini Projects",
+  "short_name": "PythonProjects",
+  "description": "Play beginner-friendly Python mini projects in your browser offline.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0c0f1a",
+  "theme_color": "#0c0f1a",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
