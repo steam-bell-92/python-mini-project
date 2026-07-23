@@ -1471,6 +1471,106 @@ window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
     }, 100);
   </script>
 
+<!-- FIX: Surprise Me Button - Enhanced Random Project Loading -->
+<script>
+(function() {
+  console.log('🎲 Enhancing Surprise Me button...');
+  
+  // Store reference to original function
+  const originalOpenProject = window.openProjectSafe;
+  
+  // Enhanced random project selector
+  function getRandomProject() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const visibleProjects = Array.from(projectCards).filter(card => 
+      card.style.display !== 'none'
+    );
+    
+    // If no visible projects, use all projects
+    const pool = visibleProjects.length > 0 ? visibleProjects : projectCards;
+    
+    if (pool.length === 0) {
+      console.warn('⚠️ No projects available');
+      return null;
+    }
+    
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const selectedCard = pool[randomIndex];
+    const projectName = selectedCard.getAttribute('data-project');
+    
+    console.log(`🎲 Random project selected: ${projectName}`);
+    return { name: projectName, element: selectedCard };
+  }
+  
+  // Override Surprise Me functionality
+  function handleSurpriseMe(buttonElement) {
+    const project = getRandomProject();
+    
+    if (!project) {
+      // Show user-friendly message if no projects
+      const toast = document.createElement('div');
+      toast.className = 'share-toast';
+      toast.textContent = 'No projects available. Try again!';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('share-toast--visible');
+        setTimeout(() => {
+          toast.classList.remove('share-toast--visible');
+          setTimeout(() => toast.remove(), 300);
+        }, 2000);
+      }, 100);
+      return;
+    }
+    
+    // Use the existing openProjectSafe function
+    if (typeof originalOpenProject === 'function') {
+      originalOpenProject(project.name, buttonElement || project.element);
+    } else {
+      console.error('❌ openProjectSafe not found');
+    }
+  }
+  
+  // Find all Surprise Me buttons
+  const surpriseButtons = document.querySelectorAll('#randomProjectBtn, #randomProjectBtnSidebar');
+  
+  surpriseButtons.forEach(button => {
+    // Remove existing listeners by cloning
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    
+    // Add enhanced click handler
+    newButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Add visual feedback
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 200);
+      
+      handleSurpriseMe(this);
+    });
+    
+    console.log(`✅ Surprise Me button enhanced: ${newButton.id || 'unnamed'}`);
+  });
+  
+  // Also handle stats card click for Surprise
+  const statsCards = document.querySelectorAll('.stats-card');
+  statsCards.forEach(card => {
+    if (card.getAttribute('data-filter') === 'surprise') {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleSurpriseMe(this);
+      });
+    }
+  });
+  
+  console.log('✅ Surprise Me feature enhanced successfully!');
+})();
+</script>
+
   <!-- Info Modal Popup -->
   <div id="infoModalOverlay" class="info-modal-overlay">
     <div class="info-modal-content">
