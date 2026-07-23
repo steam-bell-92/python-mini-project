@@ -617,113 +617,7 @@
   <script defer src="js/projects/number-sliding-puzzle.js"></script>
   <script defer src="js/projects/budget-tracker.js"></script>
   <script defer src="js/projects/minesweeper.js"></script>
-  <!-- FIX: Project Modal Loading - DIRECT OVERRIDE -->
-<script>
-(function() {
-  console.log('🔧 Applying DIRECT project modal fix...');
   
-  // Wait for project.js to be fully loaded
-  function waitForProjectJS() {
-    if (typeof getProjectHTML === 'function' && typeof initializeProject === 'function') {
-      console.log('✅ project.js loaded, applying fix...');
-      applyFix();
-    } else {
-      console.log('⏳ Waiting for project.js...');
-      setTimeout(waitForProjectJS, 200);
-    }
-  }
-  
-  function applyFix() {
-    // Store original if exists
-    const originalOpen = window.openProjectSafe;
-    
-    // Override openProjectSafe
-    window.openProjectSafe = function(projectName, element) {
-      console.log(`📂 Opening project: ${projectName}`);
-      
-      const modal = document.getElementById('projectModal');
-      const modalBody = document.getElementById('modalBody');
-      
-      if (!modal || !modalBody) {
-        console.error('❌ Modal elements not found');
-        return;
-      }
-      
-      // Show loading
-      modalBody.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;">
-          <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
-          <h3 style="color:#e2e8f0;">Loading ${projectName.replace(/-/g, ' ')}...</h3>
-          <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-        </div>
-      `;
-      modal.style.display = 'flex';
-      
-      // Add to recently viewed
-      let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-      recentlyViewed = recentlyViewed.filter(name => name !== projectName);
-      recentlyViewed.unshift(projectName);
-      if (recentlyViewed.length > 10) recentlyViewed.pop();
-      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
-      
-      // Update counter
-      setTimeout(() => {
-        if (window.updateRecentlyViewedCounter) {
-          window.updateRecentlyViewedCounter();
-        }
-      }, 100);
-      
-      // Load the project - USE THE CORRECT FUNCTIONS FROM project.js
-      setTimeout(() => {
-        try {
-          console.log(`🔄 Calling getProjectHTML for: ${projectName}`);
-          
-          // Get HTML from project.js
-          let htmlContent = getProjectHTML(projectName);
-          
-          if (htmlContent && !htmlContent.includes('error-state')) {
-            modalBody.innerHTML = htmlContent;
-            console.log(`✅ HTML loaded for: ${projectName}`);
-            
-            // Initialize the project using project.js
-            setTimeout(() => {
-              console.log(`🔄 Initializing: ${projectName}`);
-              initializeProject(projectName);
-            }, 100);
-          } else {
-            // Fallback: Try to find render function
-            const renderFn = 'render' + projectName.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join('');
-            if (typeof window[renderFn] === 'function') {
-              modalBody.innerHTML = window[renderFn]();
-              console.log(`✅ Used fallback render function: ${renderFn}`);
-            } else {
-              throw new Error(`No render function found for ${projectName}`);
-            }
-          }
-        } catch (error) {
-          console.error(`❌ Error loading ${projectName}:`, error);
-          modalBody.innerHTML = `
-            <div style="text-align:center;padding:60px 20px;">
-              <div style="font-size:3rem;margin-bottom:20px;">🚀</div>
-              <h2 style="color:#e2e8f0;">${projectName.replace(/-/g, ' ').toUpperCase()}</h2>
-              <p style="color:#94a3b8;margin:10px 0 20px;">This project is coming soon!</p>
-              <button onclick="document.getElementById('projectModal').style.display='none'" 
-                      style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
-                Close
-              </button>
-            </div>
-          `;
-        }
-      }, 300);
-    };
-    
-    console.log('✅ openProjectSafe overridden successfully!');
-  }
-  
-  // Start waiting for project.js
-  waitForProjectJS();
-})();
-</script>
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       if (typeof lucide !== 'undefined') lucide.createIcons();
@@ -1576,143 +1470,107 @@ window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
       console.log('✅ Focus error fixed');
     }, 100);
   </script>
-<!-- FIX: Project Modal Loading - Ensure project.js functions are available -->
+
+<!-- FIX: Surprise Me Button - Enhanced Random Project Loading -->
 <script>
 (function() {
-  console.log('🔧 Applying modal fix...');
+  console.log('🎲 Enhancing Surprise Me button...');
   
-  function ensureProjectFunctions() {
-    if (typeof getProjectHTML === 'function' && typeof initializeProject === 'function') {
-      console.log('✅ Project functions available');
-      return true;
+  // Store reference to original function
+  const originalOpenProject = window.openProjectSafe;
+  
+  // Enhanced random project selector
+  function getRandomProject() {
+    const projectCards = document.querySelectorAll('.project-card');
+    const visibleProjects = Array.from(projectCards).filter(card => 
+      card.style.display !== 'none'
+    );
+    
+    // If no visible projects, use all projects
+    const pool = visibleProjects.length > 0 ? visibleProjects : projectCards;
+    
+    if (pool.length === 0) {
+      console.warn('⚠️ No projects available');
+      return null;
     }
-    return false;
+    
+    const randomIndex = Math.floor(Math.random() * pool.length);
+    const selectedCard = pool[randomIndex];
+    const projectName = selectedCard.getAttribute('data-project');
+    
+    console.log(`🎲 Random project selected: ${projectName}`);
+    return { name: projectName, element: selectedCard };
   }
   
-  function fixOpenProject() {
-    if (!ensureProjectFunctions()) {
-      console.log('⏳ Waiting for project functions...');
-      setTimeout(fixOpenProject, 100);
+  // Override Surprise Me functionality
+  function handleSurpriseMe(buttonElement) {
+    const project = getRandomProject();
+    
+    if (!project) {
+      // Show user-friendly message if no projects
+      const toast = document.createElement('div');
+      toast.className = 'share-toast';
+      toast.textContent = 'No projects available. Try again!';
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.classList.add('share-toast--visible');
+        setTimeout(() => {
+          toast.classList.remove('share-toast--visible');
+          setTimeout(() => toast.remove(), 300);
+        }, 2000);
+      }, 100);
       return;
     }
     
-    // Store original if exists
-    const originalOpen = window.openProjectSafe;
-    
-    // Create new openProjectSafe
-    window.openProjectSafe = function(projectName, trigger) {
-      console.log(`📂 Opening: ${projectName}`);
-      
-      const modal = document.getElementById('projectModal');
-      const modalBody = document.getElementById('modalBody');
-      
-      if (!modal || !modalBody) {
-        console.error('❌ Modal elements not found');
-        if (originalOpen) originalOpen(projectName, trigger);
-        return;
-      }
-      
-      // Show loading
-      modalBody.innerHTML = `
-        <div style="text-align:center;padding:60px 20px;color:#e2e8f0;">
-          <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
-          <h3>Loading ${projectName.replace(/-/g, ' ')}...</h3>
-          <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
-        </div>
-      `;
-      modal.style.display = 'flex';
-      modal.classList.add('active');
-      document.body.style.overflow = 'hidden';
-      
-      // Add to recently viewed
-      let recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-      recentlyViewed = recentlyViewed.filter(name => name !== projectName);
-      recentlyViewed.unshift(projectName);
-      if (recentlyViewed.length > 10) recentlyViewed.pop();
-      localStorage.setItem('recentlyViewed', JSON.stringify(recentlyViewed));
-      
-      // Update counter
-      setTimeout(() => {
-        if (window.updateRecentlyViewedCounter) {
-          window.updateRecentlyViewedCounter();
-        }
-        if (window.updateRecentlyViewed) {
-          window.updateRecentlyViewed();
-        }
-      }, 100);
-      
-      // Load project using project.js functions
-      setTimeout(() => {
-        try {
-          console.log(`🔄 Calling getProjectHTML for: ${projectName}`);
-          
-          // Get HTML from project.js
-          let htmlContent = getProjectHTML(projectName);
-          
-          if (htmlContent && !htmlContent.includes('error-state')) {
-            modalBody.innerHTML = htmlContent;
-            console.log(`✅ HTML loaded for: ${projectName}`);
-            
-            // Initialize the project
-            setTimeout(() => {
-              console.log(`🔄 Initializing: ${projectName}`);
-              if (typeof initializeProject === 'function') {
-                initializeProject(projectName);
-              }
-              
-              // Try to find and setup info button
-              const infoBtn = modalBody.querySelector('.inline-info-btn');
-              if (infoBtn && typeof getProjectInstructions === 'function') {
-                const projectNameForInfo = modalBody.closest('.project-content')?.getAttribute('data-project') || projectName;
-                const info = getProjectInstructions(projectNameForInfo);
-                if (info && typeof showInfoModal === 'function') {
-                  infoBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    showInfoModal(info.title, info.steps);
-                  });
-                }
-              }
-            }, 100);
-            
-          } else {
-            throw new Error('Project content not available');
-          }
-        } catch (error) {
-          console.error(`❌ Error loading ${projectName}:`, error);
-          modalBody.innerHTML = `
-            <div style="text-align:center;padding:60px 20px;">
-              <div style="font-size:4rem;margin-bottom:1rem;">🚀</div>
-              <h2 style="color:#e2e8f0;margin-bottom:0.5rem;">${projectName.replace(/-/g, ' ').toUpperCase()}</h2>
-              <p style="color:#94a3b8;margin-bottom:1.5rem;">This project is coming soon!</p>
-              <button onclick="document.getElementById('projectModal').style.display='none';document.body.style.overflow='';" 
-                      style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
-                Close
-              </button>
-            </div>
-          `;
-        }
-      }, 300);
-    };
-    
-    console.log('✅ openProjectSafe fixed successfully!');
+    // Use the existing openProjectSafe function
+    if (typeof originalOpenProject === 'function') {
+      originalOpenProject(project.name, buttonElement || project.element);
+    } else {
+      console.error('❌ openProjectSafe not found');
+    }
   }
   
-  // Start fix
-  fixOpenProject();
+  // Find all Surprise Me buttons
+  const surpriseButtons = document.querySelectorAll('#randomProjectBtn, #randomProjectBtnSidebar');
   
-  // Add spin animation if missing
-  if (!document.getElementById('spinStyle')) {
-    const style = document.createElement('style');
-    style.id = 'spinStyle';
-    style.textContent = `
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-    `;
-    document.head.appendChild(style);
-  }
+  surpriseButtons.forEach(button => {
+    // Remove existing listeners by cloning
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    
+    // Add enhanced click handler
+    newButton.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Add visual feedback
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = '';
+      }, 200);
+      
+      handleSurpriseMe(this);
+    });
+    
+    console.log(`✅ Surprise Me button enhanced: ${newButton.id || 'unnamed'}`);
+  });
+  
+  // Also handle stats card click for Surprise
+  const statsCards = document.querySelectorAll('.stats-card');
+  statsCards.forEach(card => {
+    if (card.getAttribute('data-filter') === 'surprise') {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        handleSurpriseMe(this);
+      });
+    }
+  });
+  
+  console.log('✅ Surprise Me feature enhanced successfully!');
 })();
 </script>
+
   <!-- Info Modal Popup -->
   <div id="infoModalOverlay" class="info-modal-overlay">
     <div class="info-modal-content">
