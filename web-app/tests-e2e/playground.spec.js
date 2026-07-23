@@ -29,4 +29,28 @@ test.describe('Python Playground', () => {
     const consoleOutput = page.locator('#consoleOutput');
     await expect(consoleOutput).toContainText('Hello, World!');
   });
+
+  test('should trigger run code via Ctrl+Enter and clear console via Ctrl+Shift+L', async ({ page }) => {
+    await page.goto('/');
+
+    const playgroundTab = page.locator('button[data-sticky-category="playground"]');
+    await expect(playgroundTab).toBeVisible();
+    await playgroundTab.click();
+
+    const statusText = page.locator('#statusText');
+    await expect(statusText).toHaveText(/Pyodide Ready/, { timeout: 30000 });
+
+    const consoleOutput = page.locator('#consoleOutput');
+
+    // Focus editor and press Control+Enter
+    const editor = page.locator('.cm-content');
+    await editor.focus();
+    await page.keyboard.press('Control+Enter');
+
+    await expect(consoleOutput).toContainText('Hello, World!');
+
+    // Press Control+Shift+L to clear console
+    await page.keyboard.press('Control+Shift+L');
+    await expect(consoleOutput).toContainText('Console output will appear here');
+  });
 });

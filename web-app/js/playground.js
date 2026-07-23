@@ -129,6 +129,7 @@
   var statusDot = $id("statusDot");
   var statusText = $id("statusText");
   var clearConsoleBtn = $id("clearConsole");
+  var copyConsoleBtn = $id("copyConsole");
   var clearEditorBtn = $id("clearEditor");
   var loadExampleBtn = $id("loadExample");
   var draftSelector = $id("draftSelector");
@@ -479,12 +480,29 @@
         ...CM.completionKeymap,
         /* Search */
         ...CM.searchKeymap,
-        /* Ctrl/Cmd + Enter → Run Code */
+        /* Ctrl/Cmd + Enter or Ctrl/Cmd + Shift + Enter → Run Code */
         {
           key: "Ctrl-Enter",
           mac: "Cmd-Enter",
           run: function () {
             runCode();
+            return true;
+          },
+        },
+        {
+          key: "Ctrl-Shift-Enter",
+          mac: "Cmd-Shift-Enter",
+          run: function () {
+            runCode();
+            return true;
+          },
+        },
+        /* Ctrl/Cmd + Shift + L → Clear Console */
+        {
+          key: "Ctrl-Shift-l",
+          mac: "Cmd-Shift-l",
+          run: function () {
+            resetConsole();
             return true;
           },
         },
@@ -903,24 +921,156 @@
     });
   }
 
-  // Keyboard shortcut for copy: Ctrl+Shift+C in editor
-  if (cmView) {
-    document.addEventListener("keydown", function (event) {
-      if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.code === "KeyC") {
-        // Check if focus is in the editor
-        if (
-          editorMount &&
-          (editorMount.contains(document.activeElement) ||
-            document.activeElement === editorMount)
-        ) {
-          event.preventDefault();
-          if (copyEditorCodeBtn) {
-            copyEditorCodeBtn.click();
-          }
-        }
+  /* ──────────────────────────────────────────────────────────────
+     Copy Console Button — Issue #1715
+     Copy console output to clipboard with visual feedback
+     ────────────────────────────────────────────────────────────── */
+  if (copyConsoleBtn) {
+    copyConsoleBtn.addEventListener("click", function (event) {
+      event.preventDefault();
+
+      var hasPlaceholder = consoleEl.querySelector(".pg-placeholder");
+      var textToCopy = "";
+      if (!hasPlaceholder) {
+        textToCopy = consoleEl.innerText || consoleEl.textContent || "";
       }
+      textToCopy = textToCopy.trim();
+
+      if (!textToCopy) {
+        copyConsoleBtn.textContent = "Nothing to copy";
+        copyConsoleBtn.classList.add("copy-error");
+        copyConsoleBtn.setAttribute("aria-label", "Console is empty, nothing to copy");
+        setTimeout(function () {
+          copyConsoleBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+          copyConsoleBtn.classList.remove("copy-error");
+          copyConsoleBtn.setAttribute(
+            "aria-label",
+            "Copy console output to clipboard"
+          );
+        }, 1500);
+        return;
+      }
+
+      function fallbackCopy(text) {
+        return new Promise(function (resolve, reject) {
+          var textarea = document.createElement("textarea");
+          textarea.value = text;
+          textarea.style.position = "fixed";
+          textarea.style.left = "-9999px";
+          textarea.style.opacity = "0";
+          textarea.setAttribute("aria-hidden", "true");
+          textarea.setAttribute("tabindex", "-1");
+
+          document.body.appendChild(textarea);
+
+          try {
+            textarea.select();
+            var success = document.execCommand("copy");
+            if (success) {
+              resolve();
+            } else {
+              reject(new Error("execCommand copy failed"));
+            }
+          } catch (error) {
+            reject(error);
+          } finally {
+            document.body.removeChild(textarea);
+          }
+        });
+      }
+
+      var copyPromise =
+        navigator.clipboard && navigator.clipboard.writeText
+          ? navigator.clipboard.writeText(textToCopy)
+          : fallbackCopy(textToCopy);
+
+      copyPromise
+        .then(function () {
+          copyConsoleBtn.innerHTML =
+            '<i aria-hidden="true" class="fas fa-check"></i> Copied!';
+          copyConsoleBtn.classList.add("copy-success");
+          copyConsoleBtn.setAttribute("aria-label", "Console output copied to clipboard");
+
+          setTimeout(function () {
+            copyConsoleBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyConsoleBtn.classList.remove("copy-success");
+            copyConsoleBtn.setAttribute(
+              "aria-label",
+              "Copy console output to clipboard"
+            );
+          }, 2000);
+        })
+        .catch(function (error) {
+          console.error("Copy failed:", error);
+          copyConsoleBtn.textContent = "Copy failed";
+          copyConsoleBtn.classList.add("copy-error");
+          copyConsoleBtn.setAttribute("aria-label", "Copy failed, try again");
+
+          setTimeout(function () {
+            copyConsoleBtn.innerHTML =
+              '<i aria-hidden="true" class="fas fa-copy"></i> Copy';
+            copyConsoleBtn.classList.remove("copy-error");
+            copyConsoleBtn.setAttribute(
+              "aria-label",
+              "Copy console output to clipboard"
+            );
+          }, 2000);
+        });
     });
   }
+
+  /* ──────────────────────────────────────────────────────────────
+     Keyboard Shortcuts — Issue #1716 & Issue #1215
+     - Ctrl/Cmd + Enter: Run Python Code
+     - Ctrl/Cmd + Shift + L: Clear Output Console
+     - Ctrl/Cmd + Shift + C: Copy Code (when focused in editor)
+     ────────────────────────────────────────────────────────────── */
+  document.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) return;
+
+    // Only process if playground section is active/visible
+    if (!playgroundSection || playgroundSection.style.display === "none") return;
+
+    var isMod = event.ctrlKey || event.metaKey;
+    if (!isMod) return;
+
+    // Ctrl/Cmd + Shift + C: Copy editor code
+    if (
+      event.shiftKey &&
+      (event.key === "c" || event.key === "C" || event.code === "KeyC")
+    ) {
+      if (
+        editorMount &&
+        (editorMount.contains(document.activeElement) ||
+          document.activeElement === editorMount)
+      ) {
+        event.preventDefault();
+        if (copyEditorCodeBtn) {
+          copyEditorCodeBtn.click();
+        }
+      }
+      return;
+    }
+
+    // Ctrl/Cmd + Enter: Run Code
+    if (event.key === "Enter" || event.code === "Enter") {
+      event.preventDefault();
+      runCode();
+      return;
+    }
+
+    // Ctrl/Cmd + Shift + L: Clear Output Console
+    if (
+      event.shiftKey &&
+      (event.key === "l" || event.key === "L" || event.code === "KeyL")
+    ) {
+      event.preventDefault();
+      resetConsole();
+      return;
+    }
+  });
   if (saveDraftBtn) {
     saveDraftBtn.addEventListener("click", function () {
       var draftName = prompt("Enter a name for this draft:");

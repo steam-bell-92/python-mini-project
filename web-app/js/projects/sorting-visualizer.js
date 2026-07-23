@@ -12,6 +12,8 @@ function getSortingVisualizerHTML() {
                             <option value="selection">Selection Sort</option>
                             <option value="insertion">Insertion Sort</option>
                             <option value="quick">Quick Sort</option>
+                            <option value="merge">Merge Sort</option>
+                            <option value="heap">Heap Sort</option>
                         </select>
                     </div>
                     
@@ -289,7 +291,9 @@ function initSortingVisualizer() {
         bubble: { time: "O(N²)", space: "O(1)" },
         selection: { time: "O(N²)", space: "O(1)" },
         insertion: { time: "O(N²)", space: "O(1)" },
-        quick: { time: "O(N log N) avg / O(N²) worst", space: "O(log N)" }
+        quick: { time: "O(N log N) avg / O(N²) worst", space: "O(log N)" },
+        merge: { time: "O(N log N)", space: "O(N)" },
+        heap: { time: "O(N log N)", space: "O(1)" }
     };
 
     // Update complexities when algorithm changes
@@ -507,6 +511,121 @@ function initSortingVisualizer() {
         renderBars(arr, [], [], Array.from({length: arr.length}, (_, idx) => idx));
     }
 
+    async function mergeSortVisual(arr) {
+        const sortedIndices = [];
+
+        async function mergeHelper(left, right) {
+            if (left >= right) {
+                if (!sortedIndices.includes(left)) sortedIndices.push(left);
+                return;
+            }
+            if (cancelSorting) return;
+
+            const mid = Math.floor((left + right) / 2);
+            await mergeHelper(left, mid);
+            await mergeHelper(mid + 1, right);
+            if (cancelSorting) return;
+
+            const leftArr = arr.slice(left, mid + 1);
+            const rightArr = arr.slice(mid + 1, right + 1);
+            let i = 0, j = 0, k = left;
+            const range = Array.from({ length: right - left + 1 }, (_, idx) => left + idx);
+
+            while (i < leftArr.length && j < rightArr.length) {
+                if (cancelSorting) return;
+                comparisons++;
+                renderBars(arr, range, [], sortedIndices);
+                await sleep(delay());
+
+                const shouldPickLeft = isAscending ? leftArr[i] <= rightArr[j] : leftArr[i] >= rightArr[j];
+                arr[k] = shouldPickLeft ? leftArr[i++] : rightArr[j++];
+                swaps++;
+                renderBars(arr, [], [k], sortedIndices);
+                await sleep(delay());
+                k++;
+            }
+            while (i < leftArr.length) {
+                arr[k] = leftArr[i++];
+                swaps++;
+                renderBars(arr, [], [k], sortedIndices);
+                await sleep(delay());
+                k++;
+            }
+            while (j < rightArr.length) {
+                arr[k] = rightArr[j++];
+                swaps++;
+                renderBars(arr, [], [k], sortedIndices);
+                await sleep(delay());
+                k++;
+            }
+
+            for (let idx = left; idx <= right; idx++) {
+                if (!sortedIndices.includes(idx)) sortedIndices.push(idx);
+            }
+            renderBars(arr, [], [], sortedIndices);
+            await sleep(delay());
+        }
+
+        await mergeHelper(0, arr.length - 1);
+        renderBars(arr, [], [], Array.from({ length: arr.length }, (_, idx) => idx));
+    }
+
+    async function heapSortVisual(arr) {
+        const n = arr.length;
+        const sortedIndices = [];
+
+        async function siftDown(root, end) {
+            while (true) {
+                if (cancelSorting) return;
+                let child = 2 * root + 1;
+                if (child > end) break;
+
+                comparisons++;
+                renderBars(arr, [root, child], [], sortedIndices);
+                await sleep(delay());
+
+                if (child + 1 <= end) {
+                    comparisons++;
+                    renderBars(arr, [root, child, child + 1], [], sortedIndices);
+                    await sleep(delay());
+                    const rightIsNext = isAscending ? arr[child + 1] > arr[child] : arr[child + 1] < arr[child];
+                    if (rightIsNext) child++;
+                }
+
+                const shouldSwap = isAscending ? arr[root] < arr[child] : arr[root] > arr[child];
+                if (shouldSwap) {
+                    swaps++;
+                    renderBars(arr, [], [root, child], sortedIndices);
+                    await sleep(delay());
+                    [arr[root], arr[child]] = [arr[child], arr[root]];
+                    root = child;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        for (let start = Math.floor(n / 2) - 1; start >= 0; start--) {
+            if (cancelSorting) return;
+            await siftDown(start, n - 1);
+        }
+
+        for (let end = n - 1; end > 0; end--) {
+            if (cancelSorting) return;
+            swaps++;
+            renderBars(arr, [], [0, end], sortedIndices);
+            await sleep(delay());
+            [arr[0], arr[end]] = [arr[end], arr[0]];
+            sortedIndices.push(end);
+            renderBars(arr, [], [], sortedIndices);
+            await sleep(delay());
+            await siftDown(0, end - 1);
+        }
+
+        if (!sortedIndices.includes(0)) sortedIndices.push(0);
+        renderBars(arr, [], [], sortedIndices);
+    }
+
     randomSort.addEventListener('click', () => {
         if (isSorting) return;
         generateRandomArray();
@@ -563,6 +682,10 @@ function initSortingVisualizer() {
             await insertionSort(workingArr);
         } else if (algo === 'quick') {
             await quickSortVisual(workingArr);
+        } else if (algo === 'merge') {
+            await mergeSortVisual(workingArr);
+        } else if (algo === 'heap') {
+            await heapSortVisual(workingArr);
         }
 
         if (cancelSorting) {
