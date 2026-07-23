@@ -200,3 +200,107 @@ def test_invalid_json(tmp_path):
 
     assert any("invalid json" in e.lower() for e in validator.errors)
 
+
+def test_missing_registry_file(tmp_path):
+    registry = tmp_path / "missing_registry.json"
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "registry file not found" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_keywords_must_be_list(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": "demo",
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "keywords must be a list" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_empty_keywords_generates_warning(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": [],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert validator.errors == []
+
+    assert any(
+        "has no keywords" in warning.lower()
+        for warning in validator.warnings
+    )
+
+
+def test_json_report(tmp_path, capsys):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": ["demo"],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    validator.report(json_output=True)
+
+    captured = capsys.readouterr()
+
+    output = json.loads(captured.out)
+
+    assert output["projects"] == 1
+    assert output["errors"] == 0
+    assert output["warnings"] == 0
+    assert output["status"] == "passed"
