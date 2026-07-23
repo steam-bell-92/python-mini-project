@@ -37,9 +37,9 @@
 
 <body class="sidebar-active">
   <button type="button" class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle sidebar"
-        aria-expanded="true">
-        <i class="fas fa-bars"></i>
-      </button>
+    aria-expanded="true">
+    <i class="fas fa-bars"></i>
+  </button>
   <button aria-label="Switch theme" class="theme-toggle fixed-theme-toggle" id="fixed-theme-toggle" type="button">
     <i class="fas fa-moon" aria-hidden="true"></i>
   </button>
@@ -59,14 +59,9 @@
         <i class="fas fa-search" aria-hidden="true"></i>
         <input aria-label="Search projects" id="searchInput" placeholder="Search projects or tags..." type="text"
           role="combobox" aria-autocomplete="list" aria-controls="resultsList" aria-expanded="false" />
-          <button
-            id="clearSearchBtn"
-            class="clear-search-btn"
-            type="button"
-            aria-label="Clear search"
-            hidden>
-            <i class="fas fa-times"></i>
-          </button>
+        <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="Clear search" hidden>
+          <i class="fas fa-times"></i>
+        </button>
         <div class="search-dropdown" id="searchDropdown" aria-live="polite">
           <div class="dropdown-content" id="searchDropdownContent">
             <div class="search-loader" id="searchLoader" style="display: none">
@@ -75,7 +70,8 @@
             <div class="recent-searches-section" id="dropdownRecentSearchesSection">
               <div class="dropdown-section-title">
                 <span>Recent</span>
-                <button id="clearRecentDropdownBtn" class="recent-clear-all-btn" aria-label="Clear recent searches">Clear
+                <button id="clearRecentDropdownBtn" class="recent-clear-all-btn"
+                  aria-label="Clear recent searches">Clear
                   All</button>
               </div>
               <div class="dropdown-list" id="dropdownRecentSearchesList"></div>
@@ -105,17 +101,19 @@
     </div>
 
     <div class="recent-searches-section" id="sidebarRecentSearchesSection">
-  <div class="dropdown-section-title recent-searches-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-    <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
-      <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
-      Search History
-    </span>
-    <button id="clearRecentSidebarBtn" class="recent-clear-all-btn" aria-label="Clear recent searches" style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
-      <i class="fas fa-trash-alt"></i> Clear History
-    </button>
-  </div>
-  <div class="recent-searches-chips" id="sidebarRecentSearchesList" role="list"></div>
-</div>
+      <div class="dropdown-section-title recent-searches-header"
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span class="recent-searches-heading" style="color: #e2e8f0; font-weight: 500;">
+          <i class="fas fa-history" aria-hidden="true" style="margin-right: 6px; color: #a78bfa;"></i>
+          Search History
+        </span>
+        <button id="clearRecentSidebarBtn" class="recent-clear-all-btn" aria-label="Clear recent searches"
+          style="background: none; border: none; color: #ef4444; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+          <i class="fas fa-trash-alt"></i> Clear History
+        </button>
+      </div>
+      <div class="recent-searches-chips" id="sidebarRecentSearchesList" role="list"></div>
+    </div>
 
     <div class="sidebar-menu-wrapper">
       <div class="sidebar-menu-title">Categories</div>
@@ -168,10 +166,30 @@
           <button aria-label="Mute sound" class="sound-toggle" id="sidebarSoundToggle" type="button">
             <i class="fas fa-volume-up" aria-hidden="true"></i>
           </button>
-          <button aria-label="Switch to light mode" class="theme-toggle" id="sidebarThemeToggle" type="button">
-            <i class="fas fa-sun" aria-hidden="true"></i>
+          <button aria-label="Switch theme" class="theme-toggle" id="sidebarThemeToggle" type="button">
+            <i class="fas fa-moon" aria-hidden="true"></i>
           </button>
+          <div class="theme-selector">
+            <span class="theme-selector-label">Appearance</span>
+            <button id="themeModePicker" class="theme-picker" type="button" aria-haspopup="listbox"
+              aria-expanded="false">
+              <span class="theme-picker-value">Auto (System)</span>
+              <i class="fas fa-chevron-down theme-picker-chevron" aria-hidden="true"></i>
+            </button>
+            <ul id="themeModeMenu" class="theme-picker-menu" role="listbox" aria-label="Theme mode options">
+              <li role="option" class="theme-picker-option" data-value="auto" aria-selected="true">
+                Auto (System)
+              </li>
+              <li role="option" class="theme-picker-option" data-value="light" aria-selected="false">
+                Light
+              </li>
+              <li role="option" class="theme-picker-option" data-value="dark" aria-selected="false">
+                Dark
+              </li>
+            </ul>
+          </div>
         </div>
+
         <button aria-label="Toggle Sidebar" class="collapse-sidebar-btn" id="sidebarCollapseBtn" type="button">
           <i class="fas fa-chevron-left"></i>
         </button>
@@ -295,18 +313,18 @@
         </div>
       </div>
     </section>
-    
-<!-- Recently Viewed Section -->
-<section class="projects-section" id="recentlyViewedSection">
-  <div class="container">
-    <div class="section-header">
-      <h2 class="section-heading">
-        Recently Viewed
-      </h2>
-    </div>
-    <div class="projects-grid" id="recentlyViewedGrid"></div>
-  </div>
-</section>
+
+    <!-- Recently Viewed Section -->
+    <section class="projects-section" id="recentlyViewedSection">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-heading">
+            Recently Viewed
+          </h2>
+        </div>
+        <div class="projects-grid" id="recentlyViewedGrid"></div>
+      </div>
+    </section>
 
     </section>
 
@@ -445,14 +463,11 @@
             <a href="https://github.com/steam-bell-92/python-mini-project" target="_blank" class="github"
               rel="noopener noreferrer" aria-label="GitHub"><i class="fab fa-github"></i></a>
             <a href="https://x.com/AnujKulkarni040" class="twitter" aria-label="X (formerly Twitter)">
-              <svg xmlns="http://www.w3.org/2000/svg"
-       width="15"
-       height="15"
-       viewBox="0 0 24 24"
-       fill="currentColor">
-    <path d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z"/>
-  </svg>
-</a>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.8-7.584-6.64 7.584H.473l8.6-9.83L0 1.153h7.594l5.243 6.932L18.901 1.153z" />
+              </svg>
+            </a>
             <a href="https://www.linkedin.com/in/anujCkulkarni" class="linkedin" aria-label="LinkedIn"><i
                 class="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/obscura.nuj" class="instagram" aria-label="Instagram"><i
@@ -462,36 +477,41 @@
         <div class="footer-links">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'games\']').click()"><svg
+                  width="20" height="20" data-lucide="gamepad-2"></svg>Games</a>
             </li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg width="20" height="20" data-lucide="sigma"></svg>Math</a>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'math\']').click()"><svg
+                  width="20" height="20" data-lucide="sigma"></svg>Math</a>
             </li>
-            <li><a href="#main-content"
-                onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
-            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'utilities\']').click()"><svg
+                  width="20" height="20" data-lucide="wrench"></svg>Utilities</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'favorites\']').click()"><svg
+                  width="20" height="20" data-lucide="star"></svg>Favorites</a></li>
+            <li><a href="#main-content" onclick="document.querySelector('[data-category=\'playground\']').click()"><svg
+                  width="20" height="20" data-lucide="terminal"></svg>Playground</a></li>
           </ul>
         </div>
         <div class="footer-links">
           <h3>Resources</h3>
           <ul>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i
-                  class="fas fa-book" aria-hidden="true"></i> Documentation</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i class="fas fa-book"
+                  aria-hidden="true"></i> Documentation</a></li>
             <li><a
                 href="https://github.com/steam-bell-92/python-mini-project/blob/a54ac8251fd79a6b7f4e43b54720c7f45225ac7e/CONTRIBUTING.md"><i
                   class="fas fa-code-branch" aria-hidden="true"></i>
                 Contribute</a></li>
             <li><a href="https://github.com/steam-bell-92/python-mini-project/issues/new"><i class="fas fa-bug"
                   aria-hidden="true"></i> Report a Bug</a></li>
-            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i
-                  class="fas fa-question-circle" aria-hidden="true"></i> FAQ</a></li>
+            <li><a href="https://github.com/steam-bell-92/python-mini-project#readme"><i class="fas fa-question-circle"
+                  aria-hidden="true"></i> FAQ</a></li>
           </ul>
         </div>
         <div class="footer-newsletter">
           <h3>Stay Updated</h3>
           <p>Get notified about new projects and features!</p>
           <form class="newsletter-form" onsubmit="event.preventDefault(); alert('Thanks for subscribing!');">
-            <input class="footer-input" type="email" placeholder="Enter your email" required aria-label="Email for newsletter">
+            <input class="footer-input" type="email" placeholder="Enter your email" required
+              aria-label="Email for newsletter">
             <button type="submit" aria-label="Subscribe">
               <i class="fas fa-paper-plane"></i>
             </button>
@@ -590,13 +610,13 @@
       const projectsData = [
         // GAMES (20+)
         {
-  project: "number-sliding-puzzle",
-  title: "Number Sliding Puzzle",
-  category: "games",
-  difficulty: "Intermediate",
-  desc: "Arrange tiles in order by sliding them into empty space",
-  tags: "game,puzzle,sliding,numbers",
-},
+          project: "number-sliding-puzzle",
+          title: "Number Sliding Puzzle",
+          category: "games",
+          difficulty: "Intermediate",
+          desc: "Arrange tiles in order by sliding them into empty space",
+          tags: "game,puzzle,sliding,numbers",
+        },
         {
           project: "2048-game",
           title: "2048 Game",
@@ -1028,20 +1048,20 @@
 
       // Update counts
       const total = projectsData.length;
-      function animateCounter(id,value){
-        const element=document.getElementById(id);
-        if(!element){
+      function animateCounter(id, value) {
+        const element = document.getElementById(id);
+        if (!element) {
           return;
         }
-        let start=0;
-        const timer=setInterval(()=>{
-        start++;
-        element.textContent=start;
-        if(start>=value){
-          clearInterval(timer);
-        }
-      },25);
-        }
+        let start = 0;
+        const timer = setInterval(() => {
+          start++;
+          element.textContent = start;
+          if (start >= value) {
+            clearInterval(timer);
+          }
+        }, 25);
+      }
 
       const games = projectsData.filter((p) => p.category === "games").length;
       const math = projectsData.filter((p) => p.category === "math").length;
@@ -1051,41 +1071,41 @@
 
       const projectBadge = document.getElementById("projectCountBadge");
       if (projectBadge) projectBadge.textContent = total + " projects";
-      animateCounter("statsTotal",total);
-animateCounter("statsGames",games);
-animateCounter("statsMath",math);
-animateCounter("statsUtilities",utils);
-// === FIX: Recently Viewed Counter ===
-const viewed = JSON.parse(localStorage.getItem("recentlyViewed")||"[]");
-const heroCounter = document.getElementById("heroViewedCount");
-if (heroCounter) {
-  heroCounter.textContent = viewed.length;
-}
+      animateCounter("statsTotal", total);
+      animateCounter("statsGames", games);
+      animateCounter("statsMath", math);
+      animateCounter("statsUtilities", utils);
+      // === FIX: Recently Viewed Counter ===
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      const heroCounter = document.getElementById("heroViewedCount");
+      if (heroCounter) {
+        heroCounter.textContent = viewed.length;
+      }
 
-// Function to update counter when projects are viewed
-function updateRecentlyViewedCounter() {
-  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-  const heroCounter = document.getElementById("heroViewedCount");
-  if (heroCounter) {
-    heroCounter.textContent = viewed.length;
-  }
-  // Also update the grid if the function exists
-  if (window.renderRecentlyViewedGrid) {
-    window.renderRecentlyViewedGrid();
-  }
-  return viewed.length;
-}
-window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
+      // Function to update counter when projects are viewed
+      function updateRecentlyViewedCounter() {
+        const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+        const heroCounter = document.getElementById("heroViewedCount");
+        if (heroCounter) {
+          heroCounter.textContent = viewed.length;
+        }
+        // Also update the grid if the function exists
+        if (window.renderRecentlyViewedGrid) {
+          window.renderRecentlyViewedGrid();
+        }
+        return viewed.length;
+      }
+      window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
 
-// Watch for changes to localStorage
-const originalSetItem = localStorage.setItem;
-localStorage.setItem = function(key, value) {
-  originalSetItem.apply(this, arguments);
-  if (key === "recentlyViewed") {
-    setTimeout(updateRecentlyViewedCounter, 50);
-  }
-};
-// === END FIX ===
+      // Watch for changes to localStorage
+      const originalSetItem = localStorage.setItem;
+      localStorage.setItem = function (key, value) {
+        originalSetItem.apply(this, arguments);
+        if (key === "recentlyViewed") {
+          setTimeout(updateRecentlyViewedCounter, 50);
+        }
+      };
+      // === END FIX ===
       console.log(
         `✅ Loaded ${total} projects: ${games} games, ${math} math, ${utils} utilities`
       );
@@ -1094,53 +1114,53 @@ localStorage.setItem = function(key, value) {
       setTimeout(() => {
         // Play buttons
         document.querySelectorAll(".btn-play").forEach((btn) => {
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const projectName = btn.getAttribute("data-project");
-    if (projectName && window.openProjectSafe) {
-      window.openProjectSafe(projectName, btn);
-      // Update counter after opening project
-      setTimeout(() => {
-        if (window.updateRecentlyViewedCounter) {
-          window.updateRecentlyViewedCounter();
-        }
-      }, 200);
-    }
-  });
-});
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const projectName = btn.getAttribute("data-project");
+            if (projectName && window.openProjectSafe) {
+              window.openProjectSafe(projectName, btn);
+              // Update counter after opening project
+              setTimeout(() => {
+                if (window.updateRecentlyViewedCounter) {
+                  window.updateRecentlyViewedCounter();
+                }
+              }, 200);
+            }
+          });
+        });
 
         // Favorite buttons
         document.querySelectorAll(".btn-favorite").forEach((btn) => {
-  btn.addEventListener("click", function(e) {
-    e.stopPropagation();
-    const projectName = this.getAttribute("data-project");
-    if (!projectName) {
-      console.error("No project name found for favorite button");
-      return;
-    }
-    
-    const icon = this.querySelector("i");
-    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
-    const index = favs.indexOf(projectName);
+          btn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            const projectName = this.getAttribute("data-project");
+            if (!projectName) {
+              console.error("No project name found for favorite button");
+              return;
+            }
 
-    if (index === -1) {
-      favs.push(projectName);
-      icon.className = "fas fa-star";
-      console.log(`⭐ Added ${projectName} to favorites`);
-    } else {
-      favs.splice(index, 1);
-      icon.className = "far fa-star";
-      console.log(`☆ Removed ${projectName} from favorites`);
-    }
+            const icon = this.querySelector("i");
+            let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+            const index = favs.indexOf(projectName);
 
-    localStorage.setItem("favorites", JSON.stringify(favs));
-    
-    // Update badge
-    if (typeof updateFavoritesCountBadge === "function") {
-      updateFavoritesCountBadge();
-    }
-  });
-});
+            if (index === -1) {
+              favs.push(projectName);
+              icon.className = "fas fa-star";
+              console.log(`⭐ Added ${projectName} to favorites`);
+            } else {
+              favs.splice(index, 1);
+              icon.className = "far fa-star";
+              console.log(`☆ Removed ${projectName} from favorites`);
+            }
+
+            localStorage.setItem("favorites", JSON.stringify(favs));
+
+            // Update badge
+            if (typeof updateFavoritesCountBadge === "function") {
+              updateFavoritesCountBadge();
+            }
+          });
+        });
 
         // Card clicks
         document.querySelectorAll(".project-card").forEach((card) => {
@@ -1160,71 +1180,47 @@ localStorage.setItem = function(key, value) {
     })();
   </script>
 
-  <!-- THEME TOGGLE FIX - FINAL -->
+  //THEME TOGGLE
   <script>
     (function () {
       const html = document.documentElement;
       const themeColorMeta = document.getElementById("themeColorMeta");
+      const themeMode = localStorage.getItem("themeMode") || "auto";
+      let theme = localStorage.getItem("theme");
 
-      // Get all theme toggle buttons
+      function getSystemTheme() {
+        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+
+      if (themeMode === "auto") {
+        theme = getSystemTheme();
+      } else if (themeMode === "light" || themeMode === "dark") {
+        theme = themeMode;
+      } else {
+        theme = theme === "light" || theme === "dark" ? theme : "dark";
+      }
+
+      html.setAttribute("data-theme", theme);
+      if (themeColorMeta) {
+        themeColorMeta.setAttribute(
+          "content",
+          theme === "light" ? "#f4f6f9" : "#0c0f1a"
+        );
+      }
+
       const themeToggles = document.querySelectorAll(".theme-toggle");
-
-      // Update all toggle icons and aria labels based on current theme
-      function updateAllToggles(theme) {
-        themeToggles.forEach((toggle) => {
-          const icon = toggle.querySelector("i");
-          if (icon) {
-            if (theme === "dark") {
-              icon.className = "fas fa-moon";
-              toggle.setAttribute("aria-label", "Switch to light mode");
-            } else {
-              icon.className = "fas fa-sun";
-              toggle.setAttribute("aria-label", "Switch to dark mode");
-            }
-          }
-        });
-      }
-
-      // Apply theme to the page
-      function applyTheme(theme) {
-        html.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-
-        // Update theme-color meta tag
-        if (themeColorMeta) {
-          themeColorMeta.setAttribute(
-            "content",
-            theme === "light" ? "#f4f6f9" : "#0c0f1a"
-          );
-        }
-
-        // Update all toggle icons
-        updateAllToggles(theme);
-
-        console.log("Theme set to:", theme);
-      }
-
-      // Load saved theme or default to dark
-      const savedTheme = localStorage.getItem("theme");
-      const initialTheme =
-        savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
-      applyTheme(initialTheme);
-
-      // Add click listeners to all theme toggles
       themeToggles.forEach((toggle) => {
-        toggle.addEventListener("click", function (e) {
-          e.preventDefault();
-          const current = html.getAttribute("data-theme");
-          const next = current === "light" ? "dark" : "light";
-          applyTheme(next);
-        });
+        const icon = toggle.querySelector("i");
+        if (icon) {
+          if (theme === "dark") {
+            icon.className = "fas fa-moon";
+            toggle.setAttribute("aria-label", "Switch to light mode");
+          } else {
+            icon.className = "fas fa-sun";
+            toggle.setAttribute("aria-label", "Switch to dark mode");
+          }
+        }
       });
-
-      console.log(
-        "✅ Theme toggle ready. Found",
-        themeToggles.length,
-        "toggle buttons"
-      );
     })();
   </script>
 
@@ -1237,34 +1233,34 @@ localStorage.setItem = function(key, value) {
       };
       console.log('✅ toPascalCase function added');
     }
-    // Complete recently viewed update
-function refreshRecentlyViewed() {
-  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-  const grid = document.getElementById("recentlyViewedGrid");
-  
-  // Update counter
-  const heroCounter = document.getElementById("heroViewedCount");
-  if (heroCounter) {
-    heroCounter.textContent = viewed.length;
-  }
-  
-  // Update grid (if you want to refresh it too)
-  if (grid && window.renderRecentlyViewedGrid) {
-    window.renderRecentlyViewedGrid();
-  }
-}
-// Function to update recently viewed counter
-function updateRecentlyViewedCounter() {
-  const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-  const heroCounter = document.getElementById("heroViewedCount");
-  if (heroCounter) {
-    heroCounter.textContent = viewed.length;
-  }
-  return viewed.length;
-}
 
-// Make it globally accessible
-window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
+    function refreshRecentlyViewed() {
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      const grid = document.getElementById("recentlyViewedGrid");
+
+      // Update counter
+      const heroCounter = document.getElementById("heroViewedCount");
+      if (heroCounter) {
+        heroCounter.textContent = viewed.length;
+      }
+
+      // Update grid (if you want to refresh it too)
+      if (grid && window.renderRecentlyViewedGrid) {
+        window.renderRecentlyViewedGrid();
+      }
+    }
+    // Function to update recently viewed counter
+    function updateRecentlyViewedCounter() {
+      const viewed = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      const heroCounter = document.getElementById("heroViewedCount");
+      if (heroCounter) {
+        heroCounter.textContent = viewed.length;
+      }
+      return viewed.length;
+    }
+
+    // Make it globally accessible
+    window.updateRecentlyViewedCounter = updateRecentlyViewedCounter;
     // FIX 2: Fix modal focus error
     setTimeout(function () {
       const modal = document.getElementById('projectModal');
