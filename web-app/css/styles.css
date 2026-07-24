@@ -4508,8 +4508,22 @@ button:focus-visible,
     transform: translateX(-50%);
   }
 
+  
   .footer-links a {
     justify-content: center;
+  }
+
+  .footer h2{
+    font-size: 1.0rem;
+  }
+
+  .footer p,
+  .footer a{
+    font-size: 0.7rem;
+  }
+
+  .footer h3{
+    font-size: 0.9rem;
   }
 }
 
