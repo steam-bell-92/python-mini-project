@@ -1,4 +1,4 @@
-const CACHE_NAME = 'python-mini-projects-v1';
+const CACHE_NAME = 'python-mini-projects-v2';
 
 const PRECACHE_ASSETS = [
   './',
