@@ -691,6 +691,22 @@
     "path": "games/Pygame-Chess/main.py"
   },
   {
+    "name": "High-Performance Multithreaded Web Scraper",
+    "emoji": "🕷️",
+    "category": "utilities",
+    "difficulty": "advanced",
+    "description": "Scrape web pages concurrently with rate limiting and JSON/CSV export.",
+    "keywords": [
+      "scraper",
+      "multithreaded",
+      "web",
+      "crawler",
+      "http",
+      "utility"
+    ],
+    "path": "utilities/multithreaded_scraper/main.py"
+  },
+  {
     "name": "2048 Game",
     "emoji": "🔢",
     "category": "games",
