@@ -890,5 +890,23 @@
       "algorithm"
     ],
     "path": "utilities/N-Queens/N-Queens.py"
+  },
+  {
+    "name": "Mathematical Expression Parser",
+    "emoji": "🧮",
+    "category": "math",
+    "difficulty": "advanced",
+    "description": "Parse, tokenize, and evaluate mathematical expressions from scratch.",
+    "keywords": [
+      "math",
+      "parser",
+      "evaluator",
+      "ast",
+      "tokenizer",
+      "calculator"
+    ],
+    "path": "expression_parser/main.py"
   }
 ]
+
+
