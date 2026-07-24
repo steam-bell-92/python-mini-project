@@ -2216,7 +2216,8 @@ body.sidebar-collapsed .playground-section {
 
 .footer-content {
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+  grid-template-columns: 1.5fr 1fr 1.2fr;
+  justify-content: center;
   gap: 40px;
   margin-bottom: 40px;
 }
@@ -2239,6 +2240,20 @@ body.sidebar-collapsed .playground-section {
 .footer-social-icons {
   display: flex;
   gap: 10px;
+}
+
+.footer-link-section{
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.footer-links{
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
 }
 
 .footer-links h3 {
@@ -2698,6 +2713,36 @@ body.sidebar-collapsed .playground-section {
   margin-bottom: 1.5rem;
   position: relative;
   padding-bottom: 0.5rem;
+}
+
+.newsletter-form{
+  margin-top: 10px;
+}
+
+.footer-input{
+  outline: none;
+  padding: 5px;
+  border-radius:5px;
+    color: var(--text);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    font-weight: 500;
+    min-width: 0;
+    letter-spacing: 0.3px;
+      background: rgba(255, 255, 255, 0.174);
+    border-color: rgba(2, 2, 2, 0.12);
+}
+
+.footer-newsletter button{
+      padding: 5px 1rem;
+    font-size: 1rem;
+    letter-spacing: 0.01em;
+    box-shadow: 0 12px 0 rgba(0, 0, 0, 0.06), 0 16px 32px rgba(34, 197, 94, 0.3);
+    background: linear-gradient(135deg, #22c55e, #14b8a6);
+    color: #ffffff;
+    border-radius: 999px;
+    font-family: "Fredoka", "Segoe UI", sans-serif;
+    transition: transform 0.22s ease, box-shadow 0.22s ease, background 0.22s ease, color 0.22s ease;
 }
 
 
@@ -4270,8 +4315,16 @@ button:focus-visible,
   }
 
   .footer-content {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
     gap: 24px;
+  }
+
+  .footer-social-icons{
+    justify-content: center;
   }
 }
 
@@ -4433,9 +4486,16 @@ button:focus-visible,
 
 @media (max-width: 576px) {
   .footer-content {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
     gap: 2rem;
+  }
+
+  .footer-link-section{
+    gap:50px
   }
 
   .footer-social-icons {
@@ -4448,8 +4508,22 @@ button:focus-visible,
     transform: translateX(-50%);
   }
 
+  
   .footer-links a {
     justify-content: center;
+  }
+
+  .footer h2{
+    font-size: 1.0rem;
+  }
+
+  .footer p,
+  .footer a{
+    font-size: 0.7rem;
+  }
+
+  .footer h3{
+    font-size: 0.9rem;
   }
 }
 
