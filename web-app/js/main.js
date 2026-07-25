@@ -1616,7 +1616,7 @@ heroNavButtons.forEach(function (button) {
           <div style="text-align:center;padding:60px 20px;">
             <div style="font-size:3rem;margin-bottom:20px;">⚠️</div>
             <h3 style="color:#e2e8f0;">Error Loading Project</h3>
-            <p style="color:#94a3b8;">${error.message || 'Unknown error'}</p>
+            <p style="color:#94a3b8;">${escapeHtml(error.message || 'Unknown error')}</p>
             <button onclick="closeProjectSafe()" 
                     style="margin-top:20px;background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;">
               Close
