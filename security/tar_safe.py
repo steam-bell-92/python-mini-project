@@ -149,16 +149,6 @@ class SafeTarExtractor:
             raise UnsafeTarError(
                 f"Blocked file type for {member.name}: {member.type}"
             )
-        
-        if target_path.exists() and not overwrite:
-            raise UnsafeTarError(
-                f"File already exists and overwrite=False: {target_path}"
-            )
-        
-        if member.type in self.blocked_types:
-            raise UnsafeTarError(
-                f"Blocked file type for {member.name}: {member.type}"
-            )
     
     def _get_safe_path(self, member: tarfile.TarInfo, extract_path: Path) -> Path:
         """Get safe path for extraction."""
