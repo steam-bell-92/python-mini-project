@@ -200,3 +200,87 @@ def test_invalid_json(tmp_path):
 
     assert any("invalid json" in e.lower() for e in validator.errors)
 
+
+def test_missing_registry_file(tmp_path):
+    non_existent = tmp_path / "does_not_exist.json"
+    validator = RegistryValidator(non_existent)
+    validator.validate()
+
+    assert any("not found" in e.lower() for e in validator.errors)
+
+
+def test_keywords_must_be_list(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [{
+            "name": "Demo",
+            "emoji": "X",
+            "category": "utilities",
+            "difficulty": "beginner",
+            "description": "Demo",
+            "keywords": "not-a-list",
+            "path": "demo.py",
+        }],
+    )
+
+    validator = RegistryValidator(registry)
+    validator.validate()
+
+    assert any("keywords must be a list" in e.lower() for e in validator.errors)
+
+
+def test_empty_keywords_generates_warning(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [{
+            "name": "Demo",
+            "emoji": "X",
+            "category": "utilities",
+            "difficulty": "beginner",
+            "description": "Demo",
+            "keywords": [],
+            "path": "demo.py",
+        }],
+    )
+
+    validator = RegistryValidator(registry)
+    validator.validate()
+
+    assert any("no keywords" in e.lower() for e in validator.warnings)
+
+
+def test_json_report_output(tmp_path, capsys):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [{
+            "name": "Demo",
+            "emoji": "X",
+            "category": "utilities",
+            "difficulty": "beginner",
+            "description": "Demo",
+            "keywords": ["demo"],
+            "path": "demo.py",
+        }],
+    )
+
+    validator = RegistryValidator(registry)
+    validator.validate()
+    validator.report(json_output=True)
+
+    import json as json_mod
+    captured = capsys.readouterr()
+    data = json_mod.loads(captured.out)
+
+    assert "projects" in data
+    assert "errors" in data
+    assert "warnings" in data
+    assert "status" in data
+    assert data["projects"] == 1
+    assert data["errors"] == 0
+
