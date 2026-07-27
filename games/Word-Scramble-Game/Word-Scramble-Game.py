@@ -4,9 +4,9 @@ import os
 import threading
 
 # ─────────────────────────────────────────────
-#  WORD BANK  –  words split by difficulty tier
-#  Easy   : 3–5 letters   (common, everyday)
-#  Medium : 5–7 letters   (moderate vocab)
+#  WORD BANK  -  words split by difficulty tier
+#  Easy   : 3-5 letters   (common, everyday)
+#  Medium : 5-7 letters   (moderate vocab)
 #  Hard   : 7+ letters    (advanced / complex)
 # ─────────────────────────────────────────────
 WORD_BANK = {
@@ -48,7 +48,7 @@ WORD_BANK = {
 DIFFICULTY_LEVELS = {
     "easy": {
         "label":       "🟢 Easy",
-        "description": "3–5 letter words · 50 s timer · 4 attempts · Beginner hints",
+        "description": "3-5 letter words · 50 s timer · 4 attempts · Beginner hints",
         "tier":        "easy",
         "timer":       50,
         "max_attempts": 4,
@@ -57,7 +57,7 @@ DIFFICULTY_LEVELS = {
     },
     "medium": {
         "label":       "🟡 Medium",
-        "description": "5–7 letter words · 35 s timer · 3 attempts · Category hint",
+        "description": "5-7 letter words · 35 s timer · 3 attempts · Category hint",
         "tier":        "medium",
         "timer":       35,
         "max_attempts": 3,
@@ -186,11 +186,11 @@ def show_welcome():
     print("      • Type 'hint'  → reveal a clue  (costs half points)")
     print("      • Type 'skip'  → skip with no penalty")
     print("      • Type 'quit'  → end the game\n")
-    input("  Press Enter to continue… ")
+    input("  Press Enter to continue... ")
 
 
 # ─────────────────────────────────────────────
-#  SINGLE ROUND  –  returns (scored_points, lost_life, quit_flag)
+#  SINGLE ROUND  -  returns (scored_points, lost_life, quit_flag)
 # ─────────────────────────────────────────────
 def play_round(
     word: str,
@@ -274,8 +274,8 @@ def play_round(
             clear()
             header(round_num, score + earned, lives, difficulty)
             note = []
-            if hint_used:    note.append("hint used: −½ pts")
-            if speed_bonus:  note.append("speed bonus: +½ pts")
+            if hint_used:    note.append("hint used: -1⁄2 pts")
+            if speed_bonus:  note.append("speed bonus: +1⁄2 pts")
             note_str = f"  ({', '.join(note)})" if note else ""
             print(f"\n  🎉 Correct!  +{earned} points{note_str}\n")
             time.sleep(1.8)
@@ -343,24 +343,23 @@ def main():
 
         while lives > 0 and still_playing:
             valid_words = []
-            
+
             for category, words in WORD_BANK.items():
                 available_words = [
                     w for w in words[tier]
                     if w not in used_words
                 ]
-                
+
                 if available_words:
-                    valid_words.append((category, available_words)
-                           
+                    valid_words.append((category, available_words))
             if not valid_words:
                     used_words.clear()
-                    
+
                     for category, words in WORD_BANK.items():
                         available_words = words[tier]
                         if available_words:
                             valid_words.append((category, available_words))
-                            
+
             category, words = random.choice(valid_words)
             word = random.choice(words)
 
