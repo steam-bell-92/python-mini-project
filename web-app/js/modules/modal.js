@@ -151,6 +151,16 @@ export function openProjectSafe(name, trigger) {
         );
       }
 
+      if (!firstHeading) {
+        firstHeading = document.createElement('h2');
+        firstHeading.textContent = name
+          .split('-')
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(' ');
+        firstHeading.style.display = 'inline-block';
+        projectContent.insertBefore(firstHeading, projectContent.firstChild);
+      }
+
       if (firstHeading && !projectContent.querySelector(".inline-info-btn")) {
         const infoBtn = document.createElement("button");
         infoBtn.className = "inline-info-btn";
