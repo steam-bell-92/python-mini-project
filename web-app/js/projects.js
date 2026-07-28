@@ -44,12 +44,11 @@ function getProjectHTML(projectName) {
 
 
 function toPascalCase(str) {
-  if (str === "2048-game") return "2048Game";
   if (str === "nqueens") return "NQueens";
 
   return str
     .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => /^\d/.test(word) ? word : word.charAt(0).toUpperCase() + word.slice(1))
     .join("");
 }
 
