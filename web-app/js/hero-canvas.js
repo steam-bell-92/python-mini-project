@@ -164,7 +164,6 @@
     mutations.forEach(function (m) {
       if (m.attributeName === 'data-theme') {
         if (mesh1 && typeof mesh1.onThemeChange === 'function') mesh1.onThemeChange();
-        if (mesh2 && typeof mesh2.onThemeChange === 'function') mesh2.onThemeChange();
       }
     });
   });
@@ -173,7 +172,6 @@
   /* ── Cleanup on page unload ──────────────────────────────── */
   window.addEventListener('beforeunload', function () {
     if (mesh1 && typeof mesh1.destroy === 'function') mesh1.destroy();
-    if (mesh2 && typeof mesh2.destroy === 'function') mesh2.destroy();
     themeObserver.disconnect();
   });
 
