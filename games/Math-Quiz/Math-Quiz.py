@@ -555,7 +555,7 @@ class MathQuizGUI:
 
         for btn, option in zip(self.option_buttons, options):
             btn.config_text(str(option))
-            btn.command = lambda opt=option: self.check_answer(opt)
+            btn.command = lambda opt=option, correct=self.correct_answer: self.check_answer(opt, correct)
             btn.itemconfig(btn.rect, fill="#0f172a")
             btn.itemconfig(btn.text_item, fill="white")
             btn.bg_color = "#0f172a"
@@ -564,7 +564,7 @@ class MathQuizGUI:
         self.feedback_label.config(text="")
         self.question_start_time = time.time()
 
-    def check_answer(self, selected):
+    def check_answer(self, selected, correct=None):
         if self.game_paused:
             return
         time_taken = time.time() - self.question_start_time
@@ -572,7 +572,9 @@ class MathQuizGUI:
         for btn in self.option_buttons:
             btn.command = None
 
-        if selected == self.correct_answer:
+        if correct is None:
+            correct = self.correct_answer
+        if selected == correct:
             play_sound('correct')
             self.correct_count += 1
             self.score += 10
