@@ -1,21 +1,18 @@
-import pickle
+import json
 from pathlib import Path
 
-WORDS_FILE = Path(__file__).with_name("words.bat")
+WORDS_FILE = Path(__file__).with_name("words.json")
 
 def DataAdding(word):
-    file = open(WORDS_FILE, 'rb')
-    words = pickle.load(file)
-    a = words[word[0].lower()]
-    a.append(word)
-    b = word[0].lower()
-    words[b] = a
-    file.close()
-    
-    file = open(WORDS_FILE, 'wb')
-    pickle.dump(words, file)
-    file.close()
+    with open(WORDS_FILE, 'r', encoding='utf-8') as file:
+        words = json.load(file)
+    first_letter = word[0].lower()
+    if first_letter not in words:
+        words[first_letter] = []
+    if word not in words[first_letter]:
+        words[first_letter].append(word)
+    with open(WORDS_FILE, 'w', encoding='utf-8') as file:
+        json.dump(words, file, ensure_ascii=False, indent=2)
 
-file = open(WORDS_FILE, 'rb')
-words = pickle.load(file)
-file.close()
+with open(WORDS_FILE, 'r', encoding='utf-8') as file:
+    words = json.load(file)
