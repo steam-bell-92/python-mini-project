@@ -127,13 +127,13 @@ export function openProjectSafe(name, trigger) {
     setupModalInfoButton(name);
 
     // Update recent projects list in localStorage
-    var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+    var recent = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
     // Remove if already present and prepend current project
     recent = recent.filter(function (p) { return p !== name; });
     recent.unshift(name);
     // Keep only the latest 10 entries
     recent = recent.slice(0, 10);
-    localStorage.setItem("recentProjects", JSON.stringify(recent));
+    localStorage.setItem("recentlyViewed", JSON.stringify(recent));
     // Refresh the Recently Viewed section UI
     if (typeof window.updateRecentlyViewed === "function") {
       window.updateRecentlyViewed();

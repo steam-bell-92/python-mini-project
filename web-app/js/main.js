@@ -1731,11 +1731,11 @@ const checkAndToggleSidebar = () => {
 
     // Update recently viewed
     if (name) {
-      var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+      var recent = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
       recent = recent.filter(function (r) { return r !== name; });
       recent.unshift(name);
       recent = recent.slice(0, 4);
-      localStorage.setItem("recentProjects", JSON.stringify(recent));
+      localStorage.setItem("recentlyViewed", JSON.stringify(recent));
       if (typeof window.updateRecentlyViewed === "function") window.updateRecentlyViewed();
     }
   }
@@ -1958,7 +1958,7 @@ const checkAndToggleSidebar = () => {
     var grid = document.getElementById("recentlyViewedGrid");
     var section = document.getElementById("recentlyViewedSection");
     if (!grid || !section) return;
-    var recent = JSON.parse(localStorage.getItem("recentProjects") || "[]");
+    var recent = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
     const historyBadge =
       document.getElementById("historyCountBadge");
 
@@ -1969,7 +1969,7 @@ const checkAndToggleSidebar = () => {
     if (heroViewedCount) {
       heroViewedCount.textContent = String(recent.length);
     }
-    console.log("[DEBUG] recentProjects array:", recent);
+    console.log("[DEBUG] recentlyViewed array:", recent);
     if (recent.length === 0) {
       section.style.display = "none";
       return;
@@ -2110,7 +2110,7 @@ const checkAndToggleSidebar = () => {
         "Clear recently viewed projects?",
         () => {
 
-          localStorage.removeItem("recentProjects");
+          localStorage.removeItem("recentlyViewed");
 
           window.updateRecentlyViewed();
 
