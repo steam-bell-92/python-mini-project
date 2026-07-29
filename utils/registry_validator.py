@@ -281,7 +281,6 @@ if __name__ == "__main__":
 
     validator.report(json_output=args.json)
 
-    if args.strict and validator.warnings:
+    if validator.errors or (args.strict and validator.warnings):
         sys.exit(1)
-
-    sys.exit(1 if validator.errors else 0)
+    sys.exit(0)
