@@ -26,7 +26,7 @@ def is_solvable(numbers):
     # Find blank tile row from the bottom (1=bottom, 2=middle, 3=top)
     blank_idx = numbers.index(0)
     blank_row_from_top = blank_idx // 3  # 0=top, 1=middle, 2=bottom
-    blank_row_from_bottom = 3 - blank_row_from_top
+    blank_row_from_bottom = blank_row_from_top + 1  # 1=bottom, 2=middle, 3=top
 
     # Solvable if (inversions + blank_row_from_bottom) is odd
     return (inversions + blank_row_from_bottom) % 2 == 1
