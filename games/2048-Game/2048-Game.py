@@ -288,17 +288,18 @@ class Game2048:
         return any(2048 in row for row in self.board)
 
     def handle_keypress(self, event):
-        key = event.keysym.lower() if len(event.keysym) == 1 else event.keysym
+        key = event.keysym
         move_map = {
-            "Left": self.move_left,  "a": self.move_left,
-            "Right": self.move_right, "d": self.move_right,
-            "Up": self.move_up,      "w": self.move_up,
-            "Down": self.move_down,  "s": self.move_down,
+            "Left": self.move_left,  "a": self.move_left,  "A": self.move_left,
+            "Right": self.move_right, "d": self.move_right, "D": self.move_right,
+            "Up": self.move_up,      "w": self.move_up,   "W": self.move_up,
+            "Down": self.move_down,  "s": self.move_down,  "S": self.move_down,
         }
-        if key not in move_map:
+        action = move_map.get(key)
+        if action is None:
             return
 
-        moved = move_map[key]()
+        moved = action()
 
         if moved:
             self.add_new_tile()
