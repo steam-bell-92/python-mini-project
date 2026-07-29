@@ -33,6 +33,9 @@ def main():
         print("S - Siblings 🏠")
         print("=" * 50)
 
+
+        # Reset index at the start of each round to ensure correct elimination pattern
+        index = 0
         # Get first name
         while True:
             name1 = input("\nEnter first name: ").strip().lower().replace(" ", "")
