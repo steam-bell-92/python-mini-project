@@ -49,8 +49,6 @@ class Board:
         return self.board.is_checkmate()
     def stalemate(self):
         return self.board.is_stalemate()
-    def stalemate(self):
-        return self.board.is_stalemate()
 
     def game_over(self):
         return self.board.is_game_over()
