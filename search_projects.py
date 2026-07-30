@@ -39,6 +39,7 @@ DIFFICULTY_BADGE = {
 CATEGORY_BADGE = {
     "games":     "🎮 Games",
     "math":      "🔢 Math",
+    "security":  "🛡️ Security",
     "utilities": "🔧 Utilities",
 }
 
@@ -142,14 +143,14 @@ def main():
 
         elif choice == "2":
             divider()
-            print("  Categories: games  |  math  |  utilities")
+            print("  Categories: games  |  math  |  security  |  utilities")
             cat = input("  📂  Enter category: ").strip()
-            if cat in ("games", "math", "utilities"):
+            if cat in ("games", "math", "security", "utilities"):
                 results = filter_by_category(cat)
                 display_results(results, show_path=True)
                 launch_project(results)
             else:
-                print("  ⚠️  Unknown category. Use: games, math, or utilities.")
+                print("  ⚠️  Unknown category. Use: games, math, security, or utilities.")
 
         elif choice == "3":
             divider()
