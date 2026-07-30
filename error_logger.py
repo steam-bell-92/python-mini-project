@@ -33,7 +33,7 @@ def log_exception(
         "traceback": "".join(traceback.format_exception(type(exception), exception, exception.__traceback__)),
     }
 
-    if additional_data:
+    if additional_data is not None:
         payload["additional_data"] = additional_data
 
     with path.open("a", encoding="utf-8") as handle:
