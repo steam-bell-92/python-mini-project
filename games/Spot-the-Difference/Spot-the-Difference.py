@@ -52,7 +52,7 @@ def print_puzzle(puzzle):
     for row_number, (left, right) in enumerate(zip(puzzle["left"], puzzle["right"]), start=1):
         print(f"{row_number}. {left}      {right}")
 
-    print("   " + "".join(str((index % 10) or 0) for index in range(1, len(puzzle["left"][0]) + 1)))
+    print("   " + "".join(str((((index - 1) % 10) + 1)) for index in range(1, len(puzzle["left"][0]) + 1)))
 
 
 def read_guess():
