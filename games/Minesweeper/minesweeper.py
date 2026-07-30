@@ -186,9 +186,14 @@ def play_game():
             game.dig(r, c)
         elif cmd[0] == 'f':
             game.flag(r, c)
-            
+
         if not game.game_over:
-            game.victory = game.check_victory()
+            if game.check_victory():
+                game.victory = True
+                print("\n" + "="*40 + "\n")
+                print_victory_banner()
+                game.print_board(show_all=True)
+                return
 
     print("\n" + "="*40 + "\n")
     if game.game_over:
