@@ -4,7 +4,8 @@ import random
 def main():
     global choice, dice_emoji, num1, num2
     print("🎲 Dice Rolling Game! 🎲")
-    print("Roll two dice and see what you get!\n")
+    print("Roll two dice and see what you get!
+")
 
     dice_emoji = {
         1: '⚀',
@@ -15,8 +16,8 @@ def main():
         6: '⚅'
     }
 
-
     while True:
+        print("\n" + "=" * 40)
         choice = input("🎲 Roll the dice? (y/n): ").lower()
 
         if choice == "y":
@@ -25,14 +26,14 @@ def main():
             print(f"\n🎲 Rolling...")
             print(f"Dice 1: {num1} {dice_emoji[num1]}")
             print(f"Dice 2: {num2} {dice_emoji[num2]}")
-            print(f"📊 Total: {num1 + num2}\n")
+            print(f"📊 Total: {num1 + num2}")
 
         elif choice == "n":
             print("\n👋 Thanks for playing! See you next time!\n")
             break
 
         else:
-            print("❌ Invalid input!! Please enter 'y' or 'n'.\n")
+            print("❌ Invalid input!! Please enter 'y' or 'n'.")
 
 if __name__ == '__main__':
     main()
