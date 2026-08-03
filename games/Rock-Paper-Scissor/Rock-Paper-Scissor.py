@@ -190,17 +190,6 @@ def main():
         play_again_input = input("Do you want to play again? (yes/no): ").lower()
         if play_again_input != "yes":
             print("\nThanks for playing! Final results:")
-            print("\n--- Game Statistics ---")
-            print(f"Rounds Played  : {rounds_played}")
-            print(f"Your Score     : {user_score}")
-            print(f"Computer Score : {computer_score}")
-            if player_history:
-                freq = {"rock": 0, "paper": 0, "scissors": 0}
-                for move in player_history:
-                    freq[move] += 1
-                fav = max(freq, key=freq.get)
-                pct = round(freq[fav] / len(player_history) * 100)
-                print(f"Your Favourite : {fav} ({pct}% of plays)")
 
             name = input("Enter your name to save the results (optional): ")
             if not name:
