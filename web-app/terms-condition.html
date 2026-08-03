@@ -3,185 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://pyodide-cdn2.iodide.io; base-uri 'self'; form-action 'self'">
+    <meta http-equiv="Content-Security-terms"
+    content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.jsdelivr.net;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+    font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:;
+    img-src 'self' data:;
+    connect-src 'self' https://pyodide-cdn2.iodide.io;
+    base-uri 'self';
+    form-action 'self';
+    ">
     <title>Terms of Service - Python Mini Projects</title>
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerterms="no-referrer" />
+
+
     <style>
-        /* Base Layout & Exact Homepage Match Theme Colors */
-        body {
-            background-color: #0b0a0a; /* Exact homepage dark background color */
-            color: #d1d5db;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        :root {
+            --bg-main: radial-gradient(circle at top left,
+            rgba(242, 166, 90, 0.12),
+            transparent 28%),
+            radial-gradient(circle at top right,
+            rgba(159, 221, 181, 0.1),
+            transparent 24%),
+            linear-gradient(180deg, #161211 0%, #0f0c0b 100%) ;
+            --bg-card: #1e1a18;
+            --bg-header: rgba(28, 28, 28, .65);
+            --text-primary: #ffffff;
+            --text-muted: #8fa0b7;
+            --accent-green: #4ade80; 
+            --accent-dim: rgba(34, 197, 94, .12);
+            --border: rgba(255, 255, 255, 0.06);
+            --code-bg: #0d1b2a;
+        }
+
+        html[data-theme="light"] {
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-header: #ffffff;
+            --text-primary: #0f172a;
+            --text-muted: #475569;
+            --accent-green: #4ade80;
+            --accent-dim: rgba(22, 163, 74, .1);
+            --border: #e2e8f0;
+            --code-bg: #f1f5f9;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
             margin: 0;
-            padding: 0;
+            padding: 0
+        }
+
+        body {
+            background: var(--bg-main);
+            color: var(--text-primary);
+            font-family: 'Segoe UI', Roboto, sans-serif;
             line-height: 1.7;
+            transition: background .3s, color .3s
         }
 
-        .tos-container {
-            max-width: 850px;
-            margin: 40px auto;
-            padding: 0 20px;
+        [data-theme="light"] body {
+            background:
+                radial-gradient(circle at top left,
+                rgba(255, 219, 174, 0.44),
+                transparent 30%),
+                radial-gradient(circle at top right,
+                rgba(192, 245, 224, 0.46),
+                transparent 24%),
+                linear-gradient(180deg, #fffdf8 0%, #f8f5ee 45%, #f5efe5 100%);
+            }
+
+
+        /* Header */
+        .terms-header {
+            background: var(--bg-header);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background .3s, border-color .3s
         }
 
-        /* Top Action Bar containing the Navigation Button */
-        .action-bar {
-            margin-bottom: 24px;
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 700
+        }
+
+        .logo-py {
+            color: var(--text-muted)
+        }
+
+        .logo-mini {
+            color: var(--text-primary)
+        }
+
+        .logo-parens {
+            color: var(--accent-green)
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        .btn-back,
+        .btn-theme {
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: .9rem;
+            transition: all .2s ease;
+            text-decoration: none;
+            border: 1px solid var(--border)
         }
 
         .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background-color: #121111; /* Matches dark button background */
-            color: #00f2fe; /* Highlighting arcade cyan/mint hue from the navbar button */
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 20px; /* Rounded pill shape matching your top nav buttons */
-            font-size: 0.95rem;
-            font-weight: 600;
-            border: 1px solid #221f1f;
-            transition: all 0.2s ease-in-out;
+            padding: 0 1.1rem;
+            background: transparent;
+            color: var(--text-muted);
+            gap: .45rem
         }
 
         .btn-back:hover {
-            background-color: #00f2fe;
-            color: #0b0a0a;
-            border-color: #00f2fe;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
-            transform: translateX(-2px);
+            color: var(--accent-green);
+            border-color: var(--accent-green);
+            transform: translateY(-1px)
         }
 
-        /* Card Container matching the homepage grid items layout */
-        .tos-card {
-            background: #121111; /* Matches the exact grid project card background */
-            border: 1px solid #1c1a1a; /* Subtle separator borders */
-            border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        .btn-theme {
+            width: 42px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            /* border: grey; */
+            font-size: 1rem
         }
 
-        .tos-header {
-            background: linear-gradient(135deg, #181616 0%, #0b0a0a 100%);
-            padding: 45px 40px;
-            border-bottom: 1px solid #1c1a1a;
+        .btn-theme i.fa-moon {
+        color: #8b5cf6;
+        /* Cosmic Purple */
+        filter: drop-shadow(0 0 8px rgba(139, 92, 246, 0.55));
+        }
+
+        .btn-theme i.fa-sun {
+        color: #f59e0b;
+        /* Golden Sun */
+        filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.55));
+        }
+
+        .btn-theme:hover {
+            transform: translateY(-2px) scale(1.07)
+        }
+
+        /* Hero */
+        .terms-hero {
             text-align: center;
+            padding: 4rem 1rem 2.5rem;
+            position: relative
         }
 
-        .tos-header h1 {
-            color: #ffffff;
-            font-size: 2.5rem;
-            margin: 0 0 10px 0;
+        .terms-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none
+        }
+
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
             font-weight: 700;
-            letter-spacing: -0.025em;
+            letter-spacing: -.5px;
+            margin-bottom: .75rem
         }
 
-        .tos-header p {
-            color: #00f2fe; /* Neon accent highlight color */
-            margin: 0;
-            font-size: 0.95rem;
-            font-weight: 500;
+        /* Main */
+        .terms-main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 1rem 1.25rem 5rem
         }
 
-        /* Main Policy Typography Layout */
-        .tos-body {
-            padding: 40px;
+        /* Cards */
+        .terms-card {
+            background-color: var(--bg-card);
+            width: 100%;
+            padding: 3.5rem;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: border-color .2s, box-shadow .2s
         }
 
-        .tos-section-title {
-            color: #f59e0b; /* Golden Orange Accent matching repository icons */
-            font-size: 1.4rem;
-            margin-top: 35px;
-            margin-bottom: 15px;
-            font-weight: 600;
-            border-bottom: 1px solid #1c1a1a;
-            padding-bottom: 8px;
+        .terms-card h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.75rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
         }
 
-        .tos-body p {
-            color: #9ca3af;
-            margin-bottom: 20px;
+        .terms-card:hover {
+            border-color: rgba(34, 197, 94, .3);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, .07)
         }
 
-        .tos-list {
-            padding-left: 20px;
-            margin-bottom: 20px;
-            color: #9ca3af;
+        .terms-card h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent-green);
+            padding-left: 12px;
         }
 
-        .tos-list li {
-            margin-bottom: 10px;
+        .terms-card p, .terms-card ul {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Responsive Breakpoints */
-        @media (max-width: 768px) {
-            .tos-container {
-                margin: 20px auto;
+        .terms-card ul { padding-left: 1.5rem; }
+        .terms-card li { margin-bottom: 0.5rem; }
+        .terms-card strong { color: var(--text-primary); }
+
+        /* Footer */
+        .terms-footer {
+            background: var(--bg-header);
+            border-top: 1px solid var(--border);
+            text-align: center;
+            padding: 1.75rem 1rem;
+            font-size: .875rem;
+            color: var(--text-muted);
+            transition: background .3s, border-color .3s
+        }
+
+        .terms-footer a {
+            color: var(--accent-green);
+            text-decoration: none;
+            transition: opacity .2s
+        }
+
+        .terms-footer a:hover {
+            opacity: .75
+        }
+
+        @media(max-width:600px) {
+            .header-inner {
+                padding: 0 1rem;
+                height: 68px
             }
-            .tos-header {
-                padding: 30px 20px;
+
+            .logo-wrap {
+                font-size: 1.3rem
             }
-            .tos-header h1 {
-                font-size: 2rem;
-            }
-            .tos-body {
-                padding: 25px 20px;
+
+            .btn-back span {
+                display: none
             }
         }
     </style>
 </head>
+
 <body>
 
-    <div class="tos-container">
-        
-        <div class="action-bar">
-            <a href="./index.html" class="btn-back">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                Back to Home
+    <header class="terms-header">
+        <div class="header-inner">
+            <a href="index.html" class="logo-wrap">
+                <span class="logo-py">py</span>
+                <span class="logo-mini">.mini</span>
+                <span class="logo-parens">()</span>
             </a>
-        </div>
-
-        <article class="tos-card">
-            
-            <header class="tos-header">
-                <h1>Terms of Service</h1>
-                <p>Last Updated: May 22, 2026</p>
-            </header>
-
-            <div class="tos-body">
-                <p>Welcome to <strong>Python Mini Projects</strong>. By accessing our platform, compiling scripts, interacting with the playground, or playing the built-in mini-games, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Service. If you do not agree to these terms, please refrain from using the platform.</p>
-
-                <h2 class="tos-section-title">1. Agreement to Terms</h2>
-                <p>These terms constitute a binding legal agreement between you and Python Mini Projects regarding your usage of the website. We reserve the correct authority to modify, tweak, or update these rules at any chosen point. Continued interaction with the interface following layout changes constitutes full acknowledgment of the fresh updates.</p>
-
-                <h2 class="tos-section-title">2. Open Source License & Code Contributions</h2>
-                <p>The core objective of this space is open-source sharing and learning. Most materials, scripts, and layout elements remain explicitly open-source under standard repository rules (such as the MIT License or GNU General Public License as detailed in the GitHub repository core directory).</p>
-                <ul class="tos-list">
-                    <li>You are permitted to download, clone, study, and configure script variations for individual training or evaluation platforms.</li>
-                    <li>When submitting components via pull requests under programs like GSSoC, you warrant that all submitted code is original or properly attributed to its legitimate upstream open-source frameworks.</li>
-                </ul>
-
-                <h2 class="tos-section-title">3. User Conduct & Fair Use Rules</h2>
-                <p>To preserve a secure and reliable experience for the coding community, you agree not to engage in malicious platform behaviors, including but not limited to:</p>
-                <ul class="tos-list">
-                    <li>Disrupting, hammering, or compromising host server systems through automation scripts or distributed denial-of-service (DDoS) pathways.</li>
-                    <li>Using integrated web execution playgrounds to run cryptocurrency miner routines, scraper structures, or security exploit checks.</li>
-                    <li>Submitting misleading, toxic, or intentionally broken script payloads during the repository contribution steps.</li>
-                </ul>
-
-                <h2 class="tos-section-title">4. Intellectual Property Rights</h2>
-                <p>The collective presentation style, arcade UI assets, graphic banners, and brand branding are owned by Python Mini Projects community contributors. Unauthorized framing or mirror replication of this platform’s explicit interface aesthetics without explicit design permissions is prohibited.</p>
-
-                <h2 class="tos-section-title">5. Disclaimer of Warranties</h2>
-                <p>The digital code resources, features, and arcade functions embedded across this application framework are configured on an <em>"As-Is"</em> and <em>"As-Available"</em> operational baseline. Contributors make no explicit promises or operational guarantees regarding system uptime, processing correctness, or cross-browser script stability.</p>
-
-                <h2 class="tos-section-title">6. Termination of Usage</h2>
-                <p>We retain the absolute authority to block access windows or ignore repository requests from individuals violating active fair play standards, missing licensing guidelines, or causing software instabilities for other user accounts.</p>
-
-                <h2 class="tos-section-title">7. Contact Information</h2>
-                <p>If you discover broken pathways, licensing questions, or security bugs, please open a formal tracking issue ticket directly on our official community GitHub repository.</p>
+            <div class="header-controls">
+                <a href="index.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Home</span>
+                </a>
+                <button type="button" class="btn-theme" id="themeToggle" aria-label="Toggle theme">
+                    <i class="fas fa-sun" id="themeIcon"></i>
+                </button>
             </div>
+        </div>
+    </header>
 
-        </article>
+    <div class="terms-hero">
+        <h1 class="hero-title"><i class="fas fa-scale-balanced"></i> Terms of Service</h1>
+        <p class="last-updated">Last Updated: May 22, 2026</p>                
     </div>
+    
+    <main class="terms-main">
+        <div class="terms-card">
+                <p>Welcome to <strong>Python Mini Projects</strong>. By accessing or using Python Mini Projects, including its interactive playground, coding tools, and built-in mini-games, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service. If you do not agree, please do not use the platform.</p>
+            <hr class="divider">
+            <section>
+                    <h2>1. Agreement to Terms</h2>
+                    <p>These Terms of Service constitute a legally binding agreement between you and Python Mini Projects regarding your use of the website. We reserve the right to modify, update, or replace these Terms at any time. Any changes will become effective immediately upon publication on this page. Your continued use of the platform after such changes constitutes your acceptance of the revised Terms.</p>
+                </section>
+
+                <section>
+                    <h2>2. Open Source License & Code Contributions</h2>
+                    <p>The core objective of this platform is open-source learning and collaboration. The source code for Python Mini Projects is made available under the MIT License, as specified in the project's GitHub repository.</p>
+                    <ul>
+                        <li>You are permitted to download, clone, study, and configure script variations for individual training or evaluation platforms.</li>
+                        <li>When submitting components via pull requests under programs like GSSoC, you warrant that all submitted code is original or properly attributed to its legitimate upstream open-source frameworks.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>3. User Conduct & Fair Use Rules</h2>
+                    <p>To preserve a secure and reliable experience for the coding community, you agree not to engage in malicious platform behaviors, including but not limited to:</p>
+                    <ul>
+                        <li>Disrupting, hammering, or compromising host server systems through automation scripts or distributed denial-of-service (DDoS) pathways.</li>
+                        <li>Using integrated web execution playgrounds to run cryptocurrency miner routines, scraper structures, or security exploit checks.</li>
+                        <li>Submitting misleading, toxic, or intentionally broken script payloads during the repository contribution steps.</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>4. Intellectual Property Rights</h2>
+                    <p>The collective presentation style, arcade UI assets, graphic banners, and brand branding are owned by Python Mini Projects community contributors. Unauthorized framing or mirror replication of this platform’s explicit interface aesthetics without explicit design permissions is prohibited.</p>
+                </section>
+
+                <section>
+                    <h2>5. Disclaimer of Warranties</h2>
+                    <p>The digital code resources, features, and arcade functions embedded across this application framework are configured on an "As-Is" and "As-Available" operational baseline. Contributors make no explicit promises or operational guarantees regarding system uptime, processing correctness, or cross-browser script stability.</p>
+                </section>
+
+                <section>
+                    <h2>6. Termination of Usage</h2>
+                    <p>We retain the absolute authority to block access windows or ignore repository requests from individuals violating active fair play standards, missing licensing guidelines, or causing software instabilities for other user accounts.</p>
+                </section>
+
+                <section>
+                    <h2>7. Contact Information</h2>
+                    <p>If you discover broken pathways, licensing questions, or security bugs, please open a formal tracking issue ticket directly on our official community GitHub repository.</p>
+                </section>
+        </div>
+    </main>
+
+    <footer class="terms-footer">
+        <p>Made with ❤️ for Python learners everywhere &nbsp;|&nbsp;
+            <a href="terms-condition.html">
+                <i class="fas fa-scale-balanced"></i> Terms of Service
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        const html = document.documentElement;
+        const themeBtn = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+
+        function applyTheme(t) {
+            if (t === 'light') {
+                html.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-moon';
+                themeBtn.setAttribute('aria-label', 'Switch to dark mode');
+            } else {
+                html.removeAttribute('data-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeBtn.setAttribute('aria-label', 'Switch to light mode');
+            }
+            localStorage.setItem('theme', t);
+        }
+
+        applyTheme(localStorage.getItem('theme') || 'dark');
+        themeBtn.addEventListener('click', () => {
+            applyTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+        });
+
+    </script>
 
 </body>
+
 </html>
+
