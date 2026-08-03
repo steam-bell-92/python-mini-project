@@ -16,12 +16,12 @@ def get_affected_boxes(direction, row, col, size):
     if direction == 'h':
         if row > 0:
             affected.append((row - 1, col))
-        if row < size:
+        if row <= size:
             affected.append((row, col))
     else:
         if col > 0:
             affected.append((row, col - 1))
-        if col < size:
+        if col <= size:
             affected.append((row, col))
     return affected
 
