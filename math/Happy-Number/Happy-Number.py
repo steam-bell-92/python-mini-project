@@ -1,6 +1,5 @@
 import sys
 import os
-import tkinter as tk
 
 # Add project root to sys.path
 if "__file__" in globals():
@@ -41,6 +40,12 @@ def run_visualizer(
     calculations: list[str]
 ) -> None:
     # ---------------- TKINTER VISUALIZER ---------------- #
+    try:
+        import tkinter as tk
+    except ImportError:
+        # Tkinter not available (e.g. headless CI environments)
+        print("Visualizer unavailable: Tkinter is not installed.")
+        return
     try:
         root = tk.Tk()
         root.title("Happy Number Visualizer")
