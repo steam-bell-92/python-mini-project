@@ -1,7 +1,16 @@
-import random, time, enchant
+import random, time
 import data
 
+try:
+    import enchant
+    ENCHANT_AVAILABLE = True
+except ImportError:
+    ENCHANT_AVAILABLE = False
+
 def WordCheck(word):
+    if not ENCHANT_AVAILABLE:
+        # Fallback: accept any purely alphabetic word
+        return word.isalpha()
     d = enchant.Dict('en_US')
     if d.check(word):
         return True
@@ -21,6 +30,8 @@ def botTurn(letter, used_words):
 
 def Main():
     # Welcome message and instructions
+    if not ENCHANT_AVAILABLE:
+        print("Warning: pyenchant not found. Running in fallback validation mode.")
     print("🎮 Welcome to Word Building! 🎮")
     print('''🪙 bot(computer) will start with a word, you will give a word that starts with the last letter of bot's word, 
 and bot will have to give a word that starts with the last letter of your word. 
