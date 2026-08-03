@@ -464,13 +464,13 @@ function initCoinFlip() {
     }
 
     predictHeadsBtn.addEventListener('click', () => {
-        if (!flipBtn.disabled || selectedPrediction === null) {
+        if (!flipBtn.disabled && selectedPrediction === null) {
             selectPrediction('heads');
         }
     });
 
     predictTailsBtn.addEventListener('click', () => {
-        if (!flipBtn.disabled || selectedPrediction === null) {
+        if (!flipBtn.disabled && selectedPrediction === null) {
             selectPrediction('tails');
         }
     });
