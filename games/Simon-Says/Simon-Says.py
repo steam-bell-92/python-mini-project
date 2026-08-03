@@ -66,6 +66,9 @@ def main():
 
             print("\n")
 
+            # Hide the sequence before prompting so player must memorize it
+            print("  " + " ".join(["*"] * len(sequence)) + "\n")
+
             # Get player input
             player_input = input("🎯 Enter the sequence (space-separated): ").strip().upper().split()
 
