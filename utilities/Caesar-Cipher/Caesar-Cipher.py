@@ -96,7 +96,7 @@ def playfair_cipher(message: str, keyword: str, mode: str) -> str:
     result = ""
     shift = 1 if mode.upper() in ["E", "ENCRYPT"] else -1
     
-    for i in range(0, len(processed_msg) - 1, 2):
+    for i in range(0, len(processed_msg), 2):
         char1, char2 = processed_msg[i], processed_msg[i+1]
         r1, c1 = find_position(matrix, char1)
         r2, c2 = find_position(matrix, char2)
