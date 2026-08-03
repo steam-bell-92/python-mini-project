@@ -63,7 +63,8 @@ def read_guess():
         raise ValueError("Please enter two numbers, for example: 2 6")
 
     row, column = (int(part) for part in parts)
-    return row, column
+    # Convert 1-indexed user input to 0-indexed array access
+    return row - 1, column - 1
 
 
 def play_round(puzzle):
