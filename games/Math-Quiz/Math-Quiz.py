@@ -512,21 +512,9 @@ class MathQuizGUI:
         if hasattr(self, "pause_window") and self.pause_window.winfo_exists():
             self.pause_window.destroy()
             
-        # Safely restore context bindings matching current layouts
+        # Safely restore context bindings using stored option values
         for btn in self.option_buttons:
-            option_text = btn.itemcget(btn.text_item, "text")
-            if option_text in ["Yes", "No"]:
-                btn.command = lambda opt=option_text: self.check_answer(opt)
-            elif '.' in option_text:
-                try:
-                    btn.command = lambda opt=float(option_text): self.check_answer(opt)
-                except ValueError:
-                    btn.command = lambda opt=option_text: self.check_answer(opt)
-            else:
-                try:
-                    btn.command = lambda opt=int(option_text): self.check_answer(opt)
-                except ValueError:
-                    btn.command = lambda opt=option_text: self.check_answer(opt)
+            btn.command = lambda opt=btn.option_value: self.check_answer(opt)
             
     def return_to_menu(self):
         self.game_paused = False
@@ -555,6 +543,7 @@ class MathQuizGUI:
 
         for btn, option in zip(self.option_buttons, options):
             btn.config_text(str(option))
+            btn.option_value = option
             btn.command = lambda opt=option: self.check_answer(opt)
             btn.itemconfig(btn.rect, fill="#0f172a")
             btn.itemconfig(btn.text_item, fill="white")
