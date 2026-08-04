@@ -15,6 +15,23 @@ const mimeTypes = {
   ".xml": "application/xml; charset=utf-8",
 };
 
+// Blocklist of paths that should never be served by the static server
+const BLOCKED_PATTERNS = [
+  /^\.git\//,
+  /^\.git$/,
+  /\.env(\.local)?$/,
+  /^\.DS_Store$/,
+  /^package-lock\.json$/,
+  /^pyproject\.toml$/,
+  /^requirements\.txt$/,
+  /^\.editorconfig$/,
+];
+
+function isBlocked(filePath) {
+  const relative = path.relative(root, filePath);
+  return BLOCKED_PATTERNS.some((pattern) => pattern.test(relative));
+}
+
 function sendFile(res, filePath) {
   fs.readFile(filePath, (error, data) => {
     if (error) {
@@ -37,6 +54,12 @@ const server = http.createServer((req, res) => {
   let filePath = path.join(root, normalizedPath);
 
   if (!filePath.startsWith(root)) {
+    res.writeHead(403);
+    res.end("Forbidden");
+    return;
+  }
+
+  if (isBlocked(filePath)) {
     res.writeHead(403);
     res.end("Forbidden");
     return;
