@@ -48,9 +48,11 @@ def main():
 
             if card1['value'] > card2['value']:
                 score1 += 1
+                cards1.extend([card1, card2])
                 print(f"🏆 Round Winner: {name1}")
             elif card2['value'] > card1['value']:
                 score2 += 1
+                cards2.extend([card1, card2])
                 print(f"🏆 Round Winner: {name2}")
             else:
                 print("🤝 It's a Tie!")
