@@ -141,16 +141,38 @@ class RegistryValidator:
             else:
                 seen.add(path)
 
+    def validate_path_safety(self, path):
+        """Check if a registry path is safe (no traversal, no injection)."""
+        if not path:
+            return False, "Path is empty"
+        if "\0" in path:
+            return False, "Path contains null byte"
+        if path.startswith("/") or (len(path) > 1 and path[1] == ":"):
+            return False, "Path is absolute"
+        # Normalize and check for traversal
+        normalized = str(Path(path).as_posix())
+        if ".." in path or normalized.startswith("../"):
+            return False, "Path contains traversal sequences"
+        return True, None
+
     def validate_project_paths(self):
-        """Ensure project files exist."""
+        """Ensure project files exist and paths are safe."""
 
         root = self.registry_path.parent
 
         for project in self.projects:
 
             path = project.get("path")
+            name = project.get("name", "<unknown>")
 
             if not path:
+                continue
+
+            safe, reason = self.validate_path_safety(path)
+            if not safe:
+                self.errors.append(
+                    f"{name}: path '{path}' is unsafe ({reason})"
+                )
                 continue
 
             project_file = root / path
