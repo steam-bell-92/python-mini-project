@@ -36,6 +36,7 @@ export function initTheme() {
     }
     if (heroThemeToggle) {
       heroThemeToggle.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i>`;
+      updateThemeToggleAria(heroThemeToggle, theme === "light");
     }
   };
 
