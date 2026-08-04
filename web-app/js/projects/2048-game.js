@@ -212,7 +212,7 @@ function init2048Game() {
 
     let board = [];
     let score = 0;
-    let bestScore = localStorage.getItem("best2048") || 0;
+    let bestScore = parseInt(localStorage.getItem("best2048")) || 0;
     bestDisplay.textContent = bestScore;
 
     function createBoard() {
