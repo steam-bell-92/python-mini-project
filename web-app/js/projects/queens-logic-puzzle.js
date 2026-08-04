@@ -8,9 +8,11 @@
 // ── 1. GAME STATE MANAGEMENT ───────────────────────────────
 
 class QueensGame {
+  static MAX_BOARD_SIZE = 13;
+
   constructor(boardSize = 6) {
-    this.boardSize = boardSize;
-    this.board = Array(boardSize).fill(null).map(() => Array(boardSize).fill(0));
+    this.boardSize = Math.min(Math.max(1, boardSize), QueensGame.MAX_BOARD_SIZE);
+    this.board = Array(this.boardSize).fill(null).map(() => Array(this.boardSize).fill(0));
     this.regions = this.initializeRegions();
     this.moveHistory = [];
     this.startTime = Date.now();
