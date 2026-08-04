@@ -2,6 +2,12 @@ import os
 import random
 import sys
 
+# Reconfigure stdout to handle emoji characters on Windows (cp1252) gracefully
+try:
+    sys.stdout.reconfigure(errors='replace')
+except Exception:
+    pass
+
 # Standardized path resolution to point to project root securely
 if "__file__" in globals():
     project_root = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
