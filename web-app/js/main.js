@@ -171,10 +171,6 @@ function showInfoModal(title, steps) {
   var closeBtn = document.getElementById("infoModalClose");
   var gotItBtn = document.getElementById("infoModalGotIt");
 
-  // ✅ Declare BEFORE closeModal so they're available inside it
-  var closeBtn = document.getElementById("infoModalClose");
-  var gotItBtn = document.getElementById("infoModalGotIt");
-
   if (!overlay || !titleEl || !listEl) return;
 
   titleEl.textContent = title;
