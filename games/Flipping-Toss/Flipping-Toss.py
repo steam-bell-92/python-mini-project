@@ -10,6 +10,7 @@ def main():
     heads_count = 0
     tails_count = 0
     correct_predictions = 0
+    accuracy = 0.0
 
     while True:
         choice = input("Toss a coin? (y/n): ").lower().strip()
