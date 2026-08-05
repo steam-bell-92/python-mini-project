@@ -147,5 +147,9 @@ class Tokenizer:
                 elif tok.type == TokenType.RPAREN and next_tok.type in (TokenType.LPAREN, TokenType.NUMBER, TokenType.IDENTIFIER):
                     processed_tokens.append(Token(TokenType.MULTIPLY, '*', next_tok.position))
 
+                # IDENTIFIER followed by LPAREN (e.g. x(y) -> x*(y))
+                elif tok.type == TokenType.IDENTIFIER and next_tok.type == TokenType.LPAREN:
+                    processed_tokens.append(Token(TokenType.MULTIPLY, '*', next_tok.position))
+
         processed_tokens.append(Token(TokenType.EOF, "", self.length))
         return processed_tokens
