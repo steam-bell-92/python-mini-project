@@ -128,7 +128,7 @@ def main():
             connect_line.set_data([x, 3], [y, wave_data[0]])
             drawing_point.set_data([x], [y])
             
-            time_val += 0.03
+            time_val = (time_val + 0.03) % (2 * math.pi)
             
             # Matplotlib requires returning an iterable of updated artists
             return [wave_line, connect_line, drawing_point] + circles + radii_lines
