@@ -1,43 +1,6 @@
 // Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
-function getProjectHTML(projectName) {
-  const projects = {
-    "rock-paper-scissor": getRockPaperScissorHTML(),
-    "dice-rolling": getDiceRollingHTML(),
-    "coin-flip": getCoinFlipHTML(),
-    "number-guessing": getNumberGuessingHTML(),
-    hangman: getHangmanHTML(),
-    flames: getFlamesHTML(),
-    fibonacci: getFibonacciHTML(),
-    "progression-recognizer": getProgressionRecognizerHTML(),
-    "pascal-triangle": getPascalTriangleHTML(),
-    armstrong: getArmstrongHTML(),
-    calculator: getCalculatorHTML(),
-    collatz: getCollatzHTML(),
-    "prime-analyzer": getPrimeAnalyzerHTML(),
-    "projectile-motion": getProjectileMotionHTML(),
-    "coordinate-polar-transform": getCoordinatePolarTransformHTML(),
-    "complete-calculus-engine": getCompleteCalculusEngineHTML(),
-    "morse-code": getMorseCodeHTML(),
-    "tower-of-hanoi": getTowerOfHanoiHTML(),
-    nqueens: getNQueensHTML(),
-    "matrix-calculator": () => getMatrixCalculatorHTML(),
-    "sudoku-game": getSudokuGameHTML(),
-    "unit-converter": getUnitConverterHTML(),
-    "resume-analyzer": getResumeAnalyzerHTML(),
-    "reverse-hangman": () => getReverseHangmanHTML(),
-    "budget-tracker": getBudgetTrackerHTML(),
-    "snake-game": getSnakeGameHTML(),
-    "sorting-visualizer": getSortingVisualizerHTML(),
-    "quick-sort": getQuickSortHTML(),
-    "fourier-series": getFourierSeriesHTML(),
-    "merge-sort": getMergeSortHTML(),
-    "pathfinding-visualizer": getPathfindingVisualizerHTML(),
-    "tsp-visualizer": getTspVisualizerHTML(),
-    'minesweeper': getMinesweeperHTML()
-  };
-
   return projects[projectName] || "<h2>Project Coming Soon!</h2>";
 }
 
