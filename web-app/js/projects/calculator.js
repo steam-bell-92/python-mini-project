@@ -418,8 +418,23 @@ function initCalculator() {
             throw new Error("Invalid characters in expression");
         }
 
+        // Block dangerous keyword access as an additional layer.
+        // These cannot appear in valid math expressions and would indicate
+        // an attempt to escape the sandbox via property access.
+        const DANGEROUS_PATTERNS = [
+            'constructor', 'prototype', '__proto__', '__defineGetter__',
+            '__defineSetter__', 'eval', 'window', 'document', 'globalThis',
+            'frames', 'external', 'crypto', 'navigator', 'location',
+        ];
+        const lowerExpr = sanitized.toLowerCase();
+        for (const pattern of DANGEROUS_PATTERNS) {
+            if (lowerExpr.includes(pattern)) {
+                throw new Error("Invalid characters in expression");
+            }
+        }
+
         const args = isGraphing ? 'x' : '';
-        return new Function(args, 'return ' + sanitized);
+        return new Function(args, '"use strict"; return ' + sanitized);
     }
 
     // --- Standard Calculator Logic ---
