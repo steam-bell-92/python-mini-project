@@ -219,16 +219,48 @@ class RegistryValidator:
         for project in self.projects:
 
             keywords = project.get("keywords")
+            name = project.get("name", "<unknown>")
 
             if not isinstance(keywords, list):
                 self.errors.append(
-                    f"{project['name']} keywords must be a list."
+                    f"{name} keywords must be a list."
                 )
                 continue
 
             if len(keywords) == 0:
                 self.warnings.append(
-                    f"{project['name']} has no keywords."
+                    f"{name} has no keywords."
+                )
+                continue
+
+            seen = set()
+            duplicates = set()
+
+            for keyword in keywords:
+
+                if not isinstance(keyword, str):
+                    self.errors.append(
+                        f"{name} contains a non-string keyword."
+                    )
+                    continue
+
+                normalized = keyword.strip().lower()
+
+                if not normalized:
+                    self.errors.append(
+                        f"{name} contains an empty keyword."
+                    )
+                    continue
+
+                if normalized in seen:
+                    duplicates.add(keyword)
+
+                seen.add(normalized)
+
+            if duplicates:
+                self.errors.append(
+                    f"{name} contains duplicate keywords: "
+                    f"{', '.join(sorted(duplicates))}"
                 )
 
     def get_scan_directories(self):

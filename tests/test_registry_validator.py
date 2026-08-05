@@ -446,3 +446,151 @@ def test_invalid_path_normalization(tmp_path, path, expected):
         "Demo" in error and expected in error.lower()
         for error in validator.errors
     )
+
+
+def test_duplicate_keywords(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": [
+                    "python",
+                    "game",
+                    "python",
+                ],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "duplicate keywords" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_duplicate_keywords_case_insensitive(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": [
+                    "Python",
+                    "python",
+                    "PYTHON",
+                ],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "duplicate keywords" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_empty_string_keyword(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": ["", "python"],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "empty keyword" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_whitespace_keyword(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": ["   ", "python"],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "empty keyword" in error.lower()
+        for error in validator.errors
+    )
+
+
+def test_non_string_keyword(tmp_path):
+    (tmp_path / "demo.py").write_text("print('hello')")
+
+    registry = write_registry(
+        tmp_path,
+        [
+            {
+                "name": "Demo",
+                "emoji": "🔥",
+                "category": "utilities",
+                "difficulty": "beginner",
+                "description": "Demo project",
+                "keywords": ["python", 123],
+                "path": "demo.py",
+            }
+        ],
+    )
+
+    validator = RegistryValidator(registry)
+
+    validator.validate()
+
+    assert any(
+        "non-string keyword" in error.lower()
+        for error in validator.errors
+    )
