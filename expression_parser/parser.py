@@ -55,6 +55,8 @@ class Parser:
         self.pos = 0
 
     def _current_token(self) -> Token:
+        if not self.tokens:
+            raise ParseError("Empty expression", 0)
         if self.pos < len(self.tokens):
             return self.tokens[self.pos]
         return self.tokens[-1]
