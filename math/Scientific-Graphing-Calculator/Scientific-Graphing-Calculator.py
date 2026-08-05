@@ -2,20 +2,53 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Explicit allowlist of safe numpy functions for eval sandbox.
+# Never expose np.__dict__ directly -- it contains thousands of objects
+# including internals that can be chained to escape the sandbox.
+_ALLOWED_NUMPY_FUNCS = {
+    "array": np.array,
+    "linspace": np.linspace,
+    "arange": np.arange,
+    "sin": np.sin,
+    "cos": np.cos,
+    "tan": np.tan,
+    "arcsin": np.arcsin,
+    "arccos": np.arccos,
+    "arctan": np.arctan,
+    "abs": np.abs,
+    "sqrt": np.sqrt,
+    "log": np.log,
+    "log10": np.log10,
+    "log2": np.log2,
+    "exp": np.exp,
+    "power": np.power,
+    "pi": np.pi,
+    "e": np.e,
+    "degrees": np.degrees,
+    "radians": np.radians,
+    "sign": np.sign,
+    "ceil": np.ceil,
+    "floor": np.floor,
+    "round": np.round,
+    "sinh": np.sinh,
+    "cosh": np.cosh,
+    "tanh": np.tanh,
+}
+
 def evaluate_expression(expr, x_val=None):
     """
     Safely evaluate a mathematical expression.
     If x_val is provided, uses numpy functions to support array operations for graphing.
     """
-    # Allowed names for safe evaluation
+    # Allowed names for safe evaluation -- math namespace + explicit numpy allowlist
     allowed_names = {k: v for k, v in math.__dict__.items() if not k.startswith("__")}
     allowed_names["abs"] = abs
     allowed_names["round"] = round
-    
+
     if x_val is not None:
         allowed_names["x"] = x_val
-        # Overwrite with numpy functions to handle arrays gracefully (e.g. sin(x) -> np.sin(x))
-        allowed_names.update({k: v for k, v in np.__dict__.items() if not k.startswith("__")})
+        # Use explicit allowlist instead of full np.__dict__
+        allowed_names.update(_ALLOWED_NUMPY_FUNCS)
 
     try:
         # __builtins__ must be an empty dict to prevent accessing dangerous built-in functions
