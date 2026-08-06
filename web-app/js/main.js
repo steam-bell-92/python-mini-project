@@ -2015,32 +2015,6 @@ setTimeout(function() {
     }, 2500);
   }
 
-  /* ── URL params auto-open ──────────────────────────────────── */
-  (function () {
-    var params = new URLSearchParams(window.location.search);
-    var projectParam = params.get("project");
-    if (projectParam) {
-      var match = projectCards.find(function (c) {
-        return c.getAttribute("data-project") === projectParam;
-      });
-      if (match) {
-        setTimeout(function () {
-          openProjectSafe(projectParam, match);
-          match.scrollIntoView({ behavior: "smooth", block: "center" });
-        }, 300);
-      }
-    }
-    var catParam = params.get("category");
-    var valid = ["all", "games", "math", "utilities", "playground", "favorites"];
-    if (catParam && valid.includes(catParam)) {
-      var tab = document.querySelector('[data-category="' + catParam + '"]');
-      if (tab)
-        setTimeout(function () {
-          tab.click();
-        }, 100);
-    }
-  })();
-
   /* ── Reveal on Scroll (general) ────────────────────────────── */
   var revealItems = document.querySelectorAll(".reveal-on-scroll");
   if (revealItems.length && !prefersReducedMotion()) {
