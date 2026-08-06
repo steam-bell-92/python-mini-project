@@ -1616,7 +1616,7 @@ function openProjectSafe(name, trigger) {
     modalBody.innerHTML = `
       <div style="text-align:center;padding:60px 20px;">
         <div style="font-size:3rem;margin-bottom:20px;">⏳</div>
-        <h3 style="color:#e2e8f0;">Loading ${name.replace(/-/g, ' ')}...</h3>
+        <h3 style="color:#e2e8f0;">Loading ${escapeHtml(name.replace(/-/g, ' '))}...</h3>
         <div style="margin:20px auto;width:40px;height:40px;border:4px solid #1e293b;border-top-color:#a78bfa;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
       </div>
     `;
@@ -1721,7 +1721,7 @@ setTimeout(function() {
       modalBody.innerHTML = `
         <div style="text-align:center;padding:60px 20px;">
           <div style="font-size:4rem;margin-bottom:1rem;">🚀</div>
-          <h2 style="color:#e2e8f0;margin-bottom:0.5rem;">${name.replace(/-/g, ' ').toUpperCase()}</h2>
+          <h2 style="color:#e2e8f0;margin-bottom:0.5rem;">${escapeHtml(name.replace(/-/g, ' ').toUpperCase())}</h2>
           <p style="color:#94a3b8;margin-bottom:1.5rem;">Coming soon!</p>
           <button onclick="document.getElementById('projectModal').style.display='none';document.body.style.overflow='';" 
                   style="background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;font-size:1rem;">
@@ -1736,7 +1736,7 @@ setTimeout(function() {
       <div style="text-align:center;padding:60px 20px;">
         <div style="font-size:3rem;margin-bottom:20px;">⚠️</div>
         <h3 style="color:#e2e8f0;">Error Loading Project</h3>
-        <p style="color:#94a3b8;">${error.message || 'Unknown error'}</p>
+        <p style="color:#94a3b8;">${escapeHtml(error.message || 'Unknown error')}</p>
         <button onclick="document.getElementById('projectModal').style.display='none';document.body.style.overflow='';" 
                 style="margin-top:20px;background:#a78bfa;color:white;border:none;padding:12px 32px;border-radius:50px;cursor:pointer;">
           Close
