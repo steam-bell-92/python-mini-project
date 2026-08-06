@@ -190,39 +190,6 @@
       <div aria-hidden="true" class="hero-orb hero-orb-three"></div>
 
       <div class="hero-shell">
-        <div class="hero-category-nav">
-
-          <button class="hero-nav-btn active" data-category="all">
-            <i class="fas fa-layer-group"></i>
-            <span>All Projects</span>
-          </button>
-
-          <button class="hero-nav-btn" data-category="games">
-            <i class="fas fa-gamepad"></i>
-            <span>Games</span>
-          </button>
-
-          <button class="hero-nav-btn" data-category="math">
-            <i class="fas fa-calculator"></i>
-            <span>Maths</span>
-          </button>
-
-          <button class="hero-nav-btn" data-category="utilities">
-            <i class="fas fa-wrench"></i>
-            <span>Utilities</span>
-          </button>
-
-          <button class="hero-nav-btn" data-category="favorites">
-            <i class="far fa-star"></i>
-            <span>Favorites</span>
-          </button>
-
-          <button class="hero-nav-btn" data-category="playground">
-            <i class="fas fa-code"></i>
-            <span>Playground</span>
-          </button>
-
-        </div>
         <div class="hero-logo-header">
           <div class="hero-logo-text">
             <span class="hero-logo-py">py</span><span class="hero-logo-mini">.mini</span><span
@@ -1263,34 +1230,29 @@
     })();
   </script>
 
-  <!-- THEME TOGGLE -->
-  <script>
-    (function () {
-      const html = document.documentElement;
-      const themeColorMeta = document.getElementById("themeColorMeta");
-      const themeMode = localStorage.getItem("themeMode") || "auto";
-      let theme = localStorage.getItem("theme");
+  <!-- THEME TOGGLE - FIXED -->
+<script>
+  (function () {
+    const html = document.documentElement;
+    const themeColorMeta = document.getElementById("themeColorMeta");
+    
+    // Get saved theme or default to dark
+    let savedTheme = localStorage.getItem("theme");
+    if (!savedTheme || (savedTheme !== "light" && savedTheme !== "dark")) {
+      savedTheme = "dark";
+    }
+    
+    // Apply theme
+    html.setAttribute("data-theme", savedTheme);
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute(
+        "content",
+        savedTheme === "light" ? "#f4f6f9" : "#0c0f1a"
+      );
+    }
 
-      function getSystemTheme() {
-        return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-
-      if (themeMode === "auto") {
-        theme = getSystemTheme();
-      } else if (themeMode === "light" || themeMode === "dark") {
-        theme = themeMode;
-      } else {
-        theme = theme === "light" || theme === "dark" ? theme : "dark";
-      }
-
-      html.setAttribute("data-theme", theme);
-      if (themeColorMeta) {
-        themeColorMeta.setAttribute(
-          "content",
-          theme === "light" ? "#f4f6f9" : "#0c0f1a"
-        );
-      }
-
+    // Update all theme toggle icons
+    function updateThemeIcons(theme) {
       const themeToggles = document.querySelectorAll(".theme-toggle");
       themeToggles.forEach((toggle) => {
         const icon = toggle.querySelector("i");
@@ -1304,9 +1266,36 @@
           }
         }
       });
-    })();
-  </script>
+    }
 
+    // Initial icon update
+    updateThemeIcons(savedTheme);
+
+    // Theme toggle click handlers
+    const themeToggles = document.querySelectorAll(".theme-toggle");
+    themeToggles.forEach((toggle) => {
+      toggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        const currentTheme = html.getAttribute("data-theme");
+        const newTheme = currentTheme === "light" ? "dark" : "light";
+        
+        html.setAttribute("data-theme", newTheme);
+        localStorage.setItem("theme", newTheme);
+        
+        if (themeColorMeta) {
+          themeColorMeta.setAttribute(
+            "content",
+            newTheme === "light" ? "#f4f6f9" : "#0c0f1a"
+          );
+        }
+        
+        updateThemeIcons(newTheme);
+      });
+    });
+
+    console.log("✅ Theme toggle fixed. Current theme:", savedTheme);
+  })();
+</script>
 
   <script>
     // FIX 1: Add missing toPascalCase function
