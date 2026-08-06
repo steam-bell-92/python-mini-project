@@ -1,6 +1,12 @@
 // Project Registry
 // Each project's HTML and logic lives in its own file under js/projects/
 
+function escapeHtml(str) {
+  const d = document.createElement("div");
+  d.textContent = String(str ?? "");
+  return d.innerHTML;
+}
+
 function getProjectHTML(projectName) {
   const projects = {
     "rock-paper-scissor": getRockPaperScissorHTML(),
@@ -87,7 +93,7 @@ function getProjectHTML(projectName) {
           SYSTEM ERROR: PROJECT OFFLINE
         </h3>
         <p style="color: var(--text-secondary, #a0aec0); margin-bottom: 1.5rem;">
-          We couldn't initialize the interactive environment for <strong>${projectName}</strong>.
+          We couldn't initialize the interactive environment for <strong>${escapeHtml(projectName)}</strong>.
         </p>
         <button onclick="window.location.reload()" 
           style="background: var(--primary-color, #4CAF50); color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer;">
