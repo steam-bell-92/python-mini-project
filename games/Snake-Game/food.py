@@ -1,6 +1,5 @@
 import turtle
 import random
-from constants import COLLISION_DISTANCE
 from snake import Snake
 
 class Food:

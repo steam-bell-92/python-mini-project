@@ -5,7 +5,7 @@ Implements a Recursive Descent parser.
 
 from dataclasses import dataclass
 from typing import List, Union
-from expression_parser.tokenizer import Token, TokenType, TokenizerError, Tokenizer
+from expression_parser.tokenizer import Token, TokenType
 
 
 class ParseError(Exception):

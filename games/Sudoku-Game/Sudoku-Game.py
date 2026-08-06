@@ -22,7 +22,7 @@ if "__file__" in globals():
 else:
     sys.path.append(os.path.abspath(os.getcwd()))
 
-from utils.validation import get_choice, get_int
+from utils.validation import get_choice
 from utils.banners import print_victory_banner
 
 # Enable ANSI escape sequences on Windows

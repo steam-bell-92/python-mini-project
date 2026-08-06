@@ -1,5 +1,4 @@
 
-import sys
 from typing import List, Generator
 MAX_STEPS = 100000
 MAX_VALUE = 10**18

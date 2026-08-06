@@ -1,7 +1,3 @@
-import random
-import time
-import os
-
 def main():
     global char, choice, count, final, flames, index, mapping, matched_chars, name1, name1_list, name2, name2_list, original_name1, original_name2, result, score, share_text, total_len, valid_game
 

@@ -4,7 +4,6 @@ CLI Entry point for High-Performance Multithreaded Web Scraper.
 
 import sys
 import argparse
-from typing import List
 from utilities.multithreaded_scraper import MultithreadedScraper, DataExporter
 
 

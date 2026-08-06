@@ -4,7 +4,7 @@ Evaluates math expressions with variable and function support.
 """
 
 import math
-from typing import Dict, Any, Union
+from typing import Dict, Union
 from expression_parser.parser import ASTNode, NumberNode, VariableNode, UnaryOpNode, BinaryOpNode, FunctionCallNode
 
 

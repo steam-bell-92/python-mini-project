@@ -4,7 +4,6 @@ Database initialization and connection management for SQLite Password Manager.
 
 import sqlite3
 import os
-from typing import Optional
 
 
 class DatabaseManager:

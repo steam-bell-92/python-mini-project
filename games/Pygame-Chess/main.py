@@ -1,5 +1,4 @@
 import pygame
-import chess
 from loader import Loader
 from input_handler import InputHandler
 from renderer import Renderer

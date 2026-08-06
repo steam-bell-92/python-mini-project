@@ -1,6 +1,5 @@
 import turtle
-import time
-from constants import MOVE_DISTANCE, BOUNDARY, BODY_COLLISION_DISTANCE
+from constants import MOVE_DISTANCE, BOUNDARY
 
 class Snake:
     def __init__(self):

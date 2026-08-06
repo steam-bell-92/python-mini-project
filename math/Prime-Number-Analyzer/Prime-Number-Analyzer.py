@@ -7,7 +7,7 @@ if "__file__" in globals():
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 else:
     sys.path.append(os.path.abspath(os.getcwd()))
-from utils.validation import get_int, get_choice, get_yes_no
+from utils.validation import get_int, get_choice
 
 def is_prime(num: int) -> bool:
     """Check if a number is prime."""

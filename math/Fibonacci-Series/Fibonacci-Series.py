@@ -1,7 +1,6 @@
 import sys
 import os
 import turtle
-import math
 
 # Add project root to sys.path
 if "__file__" in globals():

@@ -1,5 +1,4 @@
 import os
-import sys
 
 # Color codes
 GREEN = '\033[92m'

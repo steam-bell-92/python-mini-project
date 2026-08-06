@@ -3,7 +3,6 @@ High-Performance Multithreaded Web Scraper Engine using ThreadPoolExecutor.
 """
 
 import time
-import queue
 import urllib.request
 import urllib.error
 import random
@@ -11,7 +10,6 @@ from typing import List, Dict, Set, Any, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from utilities.multithreaded_scraper.parser import HTMLParser
-from utilities.multithreaded_scraper.exporter import DataExporter
 
 
 USER_AGENTS = [

@@ -8,7 +8,7 @@ import tarfile
 import os
 import tempfile
 from pathlib import Path
-from typing import Optional, Union, List
+from typing import Union, List
 
 from .exceptions import UnsafeTarError, SecurityWarning
 import warnings

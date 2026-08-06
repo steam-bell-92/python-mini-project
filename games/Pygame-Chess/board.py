@@ -1,4 +1,3 @@
-import pygame
 import chess
 class Board:
     def __init__(self):
