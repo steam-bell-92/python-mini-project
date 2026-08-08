@@ -35,7 +35,8 @@ function getProjectHTML(projectName) {
     "merge-sort": getMergeSortHTML(),
     "pathfinding-visualizer": getPathfindingVisualizerHTML(),
     "tsp-visualizer": getTspVisualizerHTML(),
-    'minesweeper': getMinesweeperHTML()
+    'minesweeper': getMinesweeperHTML(),
+    "number-base-playground": getNumberBasePlaygroundHTML()
   };
 
   return projects[projectName] || "<h2>Project Coming Soon!</h2>";
@@ -54,6 +55,11 @@ function toPascalCase(str) {
 function initializeProject(projectName) {
   if (projectName === "number-sliding-puzzle") {
     initNumberSlidingPuzzle();
+    return;
+  }
+  
+  if (projectName === "number-base-playground") {
+    initNumberBasePlayground();
     return;
   }
 
@@ -387,6 +393,17 @@ const projectInstructions = {
       "Enter the number of disks",
       "Click Solve to watch the animation",
       "No larger disk on top of smaller disk",
+    ],
+  },
+  "number-base-playground": {
+    title: "🔢 How to Use Number Base Playground",
+    steps: [
+      "Base Converter: Enter a number and select its base to see all conversions",
+      "Bitwise Ops: Perform AND, OR, XOR, NOT operations on binary numbers",
+      "Binary Calc: Add, subtract, multiply, divide binary numbers",
+      "ASCII Tools: Convert between characters, ASCII codes, and binary",
+      "Visualizer: See binary representation in 8-bit, 16-bit, or 32-bit format",
+      "View step-by-step conversions and detailed number information",
     ],
   },
   "coordinate-polar-transform": {
