@@ -42,6 +42,7 @@
 
 - [Repo Introduction](#-repo-introduction)
 - [Repo Structure](#-repo-structure)
+- [Getting Started](#-getting-started)
 - [What's Inside](#-whats-inside)
 - [Contributors](#contributors)
 - [License](#-license)
