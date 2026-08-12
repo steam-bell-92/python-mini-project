@@ -5,6 +5,15 @@
 import { updateProjectVisibility } from "./modules/utils.js";
 import CopyButton from "./modules/copyButton.js";
 
+
+// ============================================
+// GLOBAL VARIABLES
+// ============================================
+
+// Make playgroundActive accessible globally
+window.playgroundActive = false;
+var playgroundActive = false;
+
 // Add spin animation
 if (!document.getElementById('spinStyle')) {
   const style = document.createElement('style');
@@ -754,23 +763,27 @@ if (themeModePicker && themeModeMenu) {
   }
 
   function showPlaygroundSection() {
-    playgroundActive = true;
-    syncStickyTabs("playground");
-    var statsCards = document.querySelectorAll(".stats-card");
-    statsCards.forEach(function (card) {
-      card.classList.remove("active");
-    });
-    if (projectsSection) projectsSection.style.display = "none";
-    if (playgroundSection) {
-      playgroundSection.style.display = "";
-      if (
-        window.playgroundAPI &&
-        typeof window.playgroundAPI.activate === "function"
-      ) {
-        window.playgroundAPI.activate();
-      }
+  playgroundActive = true;
+  syncStickyTabs("playground");
+  
+  var statsCards = document.querySelectorAll(".stats-card");
+  statsCards.forEach(function (card) {
+    card.classList.remove("active");
+  });
+  
+  if (projectsSection) projectsSection.style.display = "none";
+  if (playgroundSection) {
+    playgroundSection.style.display = "";
+    
+    // ✅ FIX: Keep sidebar visible but collapsed
+    document.body.classList.add("sidebar-active");
+    document.body.classList.add("sidebar-collapsed");
+    
+    if (window.playgroundAPI && typeof window.playgroundAPI.activate === "function") {
+      window.playgroundAPI.activate();
     }
   }
+}
 
   /* ── Sidebar Tabs ─────────────────────────────────────────── */
   sidebarTabs.forEach(function (st) {
@@ -1007,48 +1020,15 @@ heroNavButtons.forEach(function (button) {
   }
   if (stickyTabs.length) syncStickyTabs("all");
 
-  /* ── Sidebar Active Scroll Observer ───────────────────────── */
-if (!pageCategory && projectsSection) {
-    console.log('Setting up sidebar observer');
- 
-    const checkAndToggleSidebar = () => {
-      // FIX #1364: Never show sidebar if Playground is active
-      if (playgroundActive) {
-        document.body.classList.remove("sidebar-active");
-        const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
-        if (fixedThemeToggle) {
-          fixedThemeToggle.style.display = "block";
-        }
-        return;
-      }
-
-      if (window.innerWidth <= 768) {
-        return;
-      }
-      const rect = projectsSection.getBoundingClientRect();
-      // Show sidebar when projects section is in view AND we're scrolled past hero
-      const heroSection = document.querySelector('.hero-section');
-      const heroBottom = heroSection ? heroSection.getBoundingClientRect().bottom : 0;
-      const showSidebar = rect.top < window.innerHeight && window.scrollY > heroBottom - 100;
- 
-      document.body.classList.toggle("sidebar-active", showSidebar);
-      console.log('Sidebar active:', showSidebar, 'scrollY:', window.scrollY, 'playgroundActive:', playgroundActive);
-
-      // Hide fixed-theme-toggle if sidebar is active
-      const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
-      if (fixedThemeToggle) {
-        if (showSidebar) {
-          fixedThemeToggle.style.display = "none";
-        }
-        else {
-          fixedThemeToggle.style.display = "block";
-        }
-      }
-    };
- 
-    window.addEventListener('scroll', checkAndToggleSidebar);
-    checkAndToggleSidebar();
-}
+  /* ── Sidebar Active - Always Visible ───────────────────────── */
+  // Sidebar is always visible on desktop
+  if (window.innerWidth > 768) {
+    document.body.classList.add("sidebar-active");
+    const fixedThemeToggle = document.getElementById("fixed-theme-toggle");
+    if (fixedThemeToggle) {
+      fixedThemeToggle.style.display = "none";
+    }
+  }
 
   /* ═══════════════════════════════════════════════════════════════
      SEARCH - FIXED & IMPROVED

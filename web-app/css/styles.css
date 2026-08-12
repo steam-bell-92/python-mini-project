@@ -5403,3 +5403,44 @@ button:focus-visible,
   max-width: 100% !important;
   overflow-x: hidden !important;
 }
+
+/* ============================================
+   FORCE SIDEBAR VISIBLE - OVERRIDE ALL
+   ============================================ */
+
+/* Force sidebar to always be visible on desktop */
+@media (min-width: 769px) {
+  .sidebar-dock {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    display: flex !important;
+    visibility: visible !important;
+  }
+  
+  body:not(.sidebar-active) .sidebar-dock {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+  
+  /* Hide the fixed theme toggle when sidebar is visible */
+  .fixed-theme-toggle {
+    display: none !important;
+  }
+}
+
+/* On mobile, keep hamburger behavior */
+@media (max-width: 768px) {
+  .sidebar-dock {
+    transform: translateX(-120%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+  
+  body.sidebar-active .sidebar-dock {
+    transform: translateX(0) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
