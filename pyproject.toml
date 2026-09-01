@@ -13,7 +13,7 @@ pillow = "12.3.0"
 requests = "2.34.2"
 markdown2 = "2.5.5"
 reportlab = "4.5.1"
-nltk = "3.10.0"
+nltk = "3.10.3"
 
 
 [tool.poetry.group.dev.dependencies]
