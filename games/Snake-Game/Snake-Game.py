@@ -18,7 +18,7 @@ def main():
             eat_sound = pygame.mixer.Sound("sounds/eat.wav")
             gameover_sound = pygame.mixer.Sound("sounds/gameover.wav")
             pygame_installed = True
-        except (pygame.error, FileNotFoundError, OSError) as e:
+        except (pygame.error, FileNotFoundError, OSError):
             # Fallback to alternate mp3 file naming schemes
             try:
                 eat_sound = pygame.mixer.Sound("sounds/Apple_Eating.mp3")

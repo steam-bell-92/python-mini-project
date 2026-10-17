@@ -13,7 +13,6 @@ from pathlib import Path
 
 from security import (
     validate_url,
-    safe_extract,
     InvalidURLError,
     UnsafeTarError,
     URLSanitizer,
@@ -412,14 +411,14 @@ class TestSafeTarExtractor:
         """Test that empty tar gives warning."""
         tar_file = tmp_path / "empty.tar"
         
-        with tarfile.open(tar_file, 'w') as tar:
+        with tarfile.open(tar_file, 'w'):
             pass
         
         extract_dir = tmp_path / "extracted"
         extractor = SafeTarExtractor()
         
         import warnings
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=True):
             warnings.simplefilter("always")
             extracted = extractor.extract(tar_file, extract_dir)
             assert len(extracted) == 0

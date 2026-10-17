@@ -54,7 +54,6 @@ def determinant_matrix(m: list[list[float]]) -> float:
     else:
         mat = [row[:] for row in m]
         det_value = 1.0
-        is_singular = False
         for i in range(n):
             pivot_row = i
             while pivot_row < n and abs(mat[pivot_row][i]) < 1e-9:

@@ -74,7 +74,7 @@ def main():
             matched_chars = total_len - count
             score = 30 + round((matched_chars / total_len) * 70) if total_len > 0 else 0
 
-            print(f"\nAfter removing common letters:")
+            print("\nAfter removing common letters:")
             print(f"Remaining letters: {count}")
 
             flames = ['F', 'L', 'A', 'M', 'E', 'S']

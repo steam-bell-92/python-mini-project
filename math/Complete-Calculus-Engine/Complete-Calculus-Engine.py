@@ -67,7 +67,7 @@ def poly_to_string(terms, is_integral=False):
         return "C" if is_integral else "0"
         
     parts = []
-    for i, term in enumerate(terms):
+    for term in terms:
         c = term['coeff']
         p = term['power']
         is_ln = term['is_ln']

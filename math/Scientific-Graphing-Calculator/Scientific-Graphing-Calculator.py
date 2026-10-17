@@ -85,7 +85,7 @@ def evaluate_expression(expr, x_val=None):
         tree = ast.parse(expr.strip(), mode="eval")
         return _eval_node(tree, _build_namespace(x_val))
     except Exception as e:
-        raise ValueError(f"Invalid expression: {e}")
+        raise ValueError(f"Invalid expression: {e}") from e
 
 
 def main():

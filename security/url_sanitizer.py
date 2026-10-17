@@ -79,7 +79,7 @@ class URLSanitizer:
         try:
             parsed = urlparse(url)
         except Exception as e:
-            raise InvalidURLError(f"Failed to parse URL: {str(e)}")
+            raise InvalidURLError(f"Failed to parse URL: {str(e)}") from e
         
         # Check for blocked schemes
         if parsed.scheme.lower() in self.BLOCKED_SCHEMES:
@@ -122,7 +122,7 @@ class URLSanitizer:
         try:
             addrinfo = socket.getaddrinfo(host, None)
         except socket.gaierror:
-            raise InvalidURLError(f"Failed to resolve hostname: {host}")
+            raise InvalidURLError(f"Failed to resolve hostname: {host}") from None
 
         seen = set()
         for _, _, _, _, sockaddr in addrinfo:

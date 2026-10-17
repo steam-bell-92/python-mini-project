@@ -110,7 +110,7 @@ def main():
             (line, point)
         )
 
-        ani = FuncAnimation(fig, update_ani, frames=len(x), interval=16, repeat=False)
+        ani = FuncAnimation(fig, update_ani, frames=len(x), interval=16, repeat=False)  # noqa: F841 - matplotlib needs a live reference or the animation is garbage-collected
         plt.show()
 
 

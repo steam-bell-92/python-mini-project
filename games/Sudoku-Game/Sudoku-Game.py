@@ -281,7 +281,7 @@ def play_game():
                     if current_board[r][c] == 0:
                         empty_cells.append((r, c))
             if not empty_cells:
-                print(f"🎉 Board is already complete!")
+                print("🎉 Board is already complete!")
                 input("Press Enter to continue...")
                 continue
             
@@ -350,7 +350,7 @@ def play_game():
             val = int(parts[2])
 
             if not (0 <= r < 9 and 0 <= c < 9):
-                print(f"⚠️ Coordinates must be between 1 and 9.")
+                print("⚠️ Coordinates must be between 1 and 9.")
                 time.sleep(1.5)
                 continue
 
@@ -360,7 +360,7 @@ def play_game():
                 continue
 
             if not (0 <= val <= 9):
-                print(f"⚠️ Value must be between 0 (to clear) and 9.")
+                print("⚠️ Value must be between 0 (to clear) and 9.")
                 time.sleep(1.5)
                 continue
 

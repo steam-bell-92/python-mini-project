@@ -491,7 +491,7 @@ def generate_banner(name, category, filename):
             (5, 2, 5)   # Region 5 (Light Blue)
         ]
         
-        for region_id, c, r in queen_positions:
+        for _region_id, c, r in queen_positions:
             x = grid_x + c * cell_w + cell_w // 2
             y = grid_y + r * cell_h + cell_h // 2
             # Draw glowing queen crown emoji

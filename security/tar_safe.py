@@ -97,10 +97,10 @@ class SafeTarExtractor:
                             self._preserve_metadata(member, target_path)
                             
                     except Exception as e:
-                        raise UnsafeTarError(f"Failed to extract {member.name}: {str(e)}")
+                        raise UnsafeTarError(f"Failed to extract {member.name}: {str(e)}") from e
                         
         except tarfile.TarError as e:
-            raise UnsafeTarError(f"Invalid tar file: {str(e)}")
+            raise UnsafeTarError(f"Invalid tar file: {str(e)}") from e
         
         return extracted_files
     
@@ -114,7 +114,7 @@ class SafeTarExtractor:
                     stacklevel=2
                 )
         except (tarfile.TarError, EOFError) as e:
-            raise UnsafeTarError(f"Invalid tar header: {str(e)}")
+            raise UnsafeTarError(f"Invalid tar header: {str(e)}") from e
     
     def _validate_member(
         self,
@@ -138,7 +138,7 @@ class SafeTarExtractor:
         except (ValueError, OSError, RuntimeError):
             raise UnsafeTarError(
                 f"Path traversal detected: {member.name} -> {target_path}"
-            )
+            ) from None
         
         if target_path.exists() and not overwrite:
             raise UnsafeTarError(

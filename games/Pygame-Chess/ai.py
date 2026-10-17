@@ -11,7 +11,7 @@ class AiEngine:
         self.sf.set_fen_position(fen)
         computerMove = self.sf.get_best_move()
 
-        if self.board.board.turn == False:
+        if not self.board.board.turn:
             self.board.make_move(
                 computerMove[:2],
                 computerMove[2:]

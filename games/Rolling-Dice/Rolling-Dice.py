@@ -22,7 +22,7 @@ def main():
         if choice == "y":
             num1 = random.randint(1, 6)
             num2 = random.randint(1, 6)
-            print(f"\n🎲 Rolling...")
+            print("\n🎲 Rolling...")
             print(f"Dice 1: {num1} {dice_emoji[num1]}")
             print(f"Dice 2: {num2} {dice_emoji[num2]}")
             print(f"📊 Total: {num1 + num2}\n")

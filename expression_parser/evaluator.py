@@ -83,7 +83,7 @@ class Evaluator:
                         raise EvaluationError("Complex numbers result not supported in real domain")
                     return res
                 except OverflowError:
-                    raise EvaluationError("Numerical overflow in exponentiation")
+                    raise EvaluationError("Numerical overflow in exponentiation") from None
 
             raise EvaluationError(f"Unsupported binary operator: '{node.operator}'")
 
@@ -99,9 +99,9 @@ class Evaluator:
                 result = func(*args)
                 return result
             except TypeError as e:
-                raise EvaluationError(f"Invalid arguments for function '{node.name}': {e}")
+                raise EvaluationError(f"Invalid arguments for function '{node.name}': {e}") from e
             except ValueError as e:
-                raise EvaluationError(f"Mathematical domain error in function '{node.name}': {e}")
+                raise EvaluationError(f"Mathematical domain error in function '{node.name}': {e}") from e
 
         raise EvaluationError(f"Unknown AST node type: {type(node).__name__}")
 

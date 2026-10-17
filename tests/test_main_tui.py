@@ -6,7 +6,6 @@ can run in CI where only ``pytest`` is installed.
 
 import os
 import sys
-import tempfile
 
 # Ensure the project root is on sys.path so ``import main`` works.
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))

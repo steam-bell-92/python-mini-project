@@ -1,13 +1,11 @@
 import os
 import sys
 import tempfile
-import pytest
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from security.password_manager import (
-    PasswordVault, DatabaseManager,
-    encrypt_password, decrypt_password, derive_key,
+    PasswordVault, encrypt_password, decrypt_password, derive_key,
     generate_salt, evaluate_password_strength
 )
 

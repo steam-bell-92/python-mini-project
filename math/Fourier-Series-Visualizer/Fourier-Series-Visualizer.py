@@ -133,7 +133,7 @@ def main():
             # Matplotlib requires returning an iterable of updated artists
             return [wave_line, connect_line, drawing_point] + circles + radii_lines
 
-        ani = FuncAnimation(fig, update, frames=400, interval=20, blit=True)
+        ani = FuncAnimation(fig, update, frames=400, interval=20, blit=True)  # noqa: F841 - matplotlib needs a live reference or the animation is garbage-collected
         plt.show()
 
 if __name__ == "__main__":
