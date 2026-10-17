@@ -10,11 +10,11 @@ pygame = "2.6.1"
 numpy = "1.26.4"
 matplotlib = "3.8.3"
 pillow = "12.3.0"
-requests = "2.34.2"
+aiohttp = "3.14.3"
 markdown2 = "2.5.5"
 reportlab = "4.5.1"
-nltk = "3.10.0"
-
+pyenchant = "3.3.0"
+textual = ">=0.50.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = ">=8.0.0"
@@ -22,3 +22,20 @@ pytest = ">=8.0.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+target-version = "py310"
+
+[tool.ruff.lint]
+# Correctness-focused rules only. Pure style rules (E701/E702/E731/E741, import
+# sorting, formatting) are intentionally not enforced yet: enabling them would
+# need a repo-wide reformat that conflicts with every open contributor PR.
+select = ["E9", "F", "B", "E711", "E712", "E713", "E714", "E721", "E722"]
+# B905 (zip strict=) is a per-call-site decision, not a defect.
+ignore = ["B905"]
+
+[tool.ruff.lint.per-file-ignores]
+# These animation callbacks are created and consumed within the same loop
+# iteration (plt.show() blocks), so the late-binding closure warning is benign.
+"math/Fourier-Series-Visualizer/*.py" = ["B023"]
+"math/Projectile-Motion-Game/*.py" = ["B023"]

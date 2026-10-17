@@ -1,28 +1,91 @@
+import ast
 import math
+import operator
+
 import numpy as np
 import matplotlib.pyplot as plt
+
+_BINARY_OPS = {
+    ast.Add: operator.add,
+    ast.Sub: operator.sub,
+    ast.Mult: operator.mul,
+    ast.Div: operator.truediv,
+    ast.FloorDiv: operator.floordiv,
+    ast.Mod: operator.mod,
+    ast.Pow: operator.pow,
+}
+_UNARY_OPS = {ast.UAdd: operator.pos, ast.USub: operator.neg}
+
+# Guards against expressions such as 9**9**9 that would hang the program.
+_MAX_INT_EXPONENT = 10_000
+
+
+def _build_namespace(x_val=None):
+    """Return the names an expression may use (math functions/constants, and x)."""
+    names = {k: v for k, v in vars(math).items() if not k.startswith("_")}
+    names["abs"] = abs
+    names["round"] = round
+    if x_val is not None:
+        names["x"] = x_val
+        # Prefer numpy's elementwise versions so sin(x) works on arrays.
+        # Only ufuncs and the constants pi/e are exposed: they are pure math
+        # and cannot touch the filesystem (unlike e.g. numpy.save).
+        for key, value in vars(np).items():
+            if isinstance(value, np.ufunc):
+                names[key] = value
+        names["pi"] = np.pi
+        names["e"] = np.e
+    return names
+
+
+def _eval_node(node, names):
+    if isinstance(node, ast.Expression):
+        return _eval_node(node.body, names)
+    if isinstance(node, ast.Constant):
+        if isinstance(node.value, (int, float)) and not isinstance(node.value, bool):
+            return node.value
+        raise ValueError("only numeric literals are allowed")
+    if isinstance(node, ast.Name):
+        if node.id in names:
+            return names[node.id]
+        raise ValueError(f"unknown name '{node.id}'")
+    if isinstance(node, ast.UnaryOp) and type(node.op) in _UNARY_OPS:
+        return _UNARY_OPS[type(node.op)](_eval_node(node.operand, names))
+    if isinstance(node, ast.BinOp) and type(node.op) in _BINARY_OPS:
+        left = _eval_node(node.left, names)
+        right = _eval_node(node.right, names)
+        if (
+            isinstance(node.op, ast.Pow)
+            and isinstance(right, int)
+            and abs(right) > _MAX_INT_EXPONENT
+        ):
+            raise ValueError("exponent too large")
+        return _BINARY_OPS[type(node.op)](left, right)
+    if isinstance(node, ast.Call):
+        if not isinstance(node.func, ast.Name) or node.keywords:
+            raise ValueError("only simple function calls are allowed")
+        func = names.get(node.func.id)
+        if not callable(func):
+            raise ValueError(f"unknown function '{node.func.id}'")
+        return func(*[_eval_node(arg, names) for arg in node.args])
+    raise ValueError(f"unsupported syntax: {type(node).__name__}")
+
 
 def evaluate_expression(expr, x_val=None):
     """
     Safely evaluate a mathematical expression.
-    If x_val is provided, uses numpy functions to support array operations for graphing.
-    """
-    # Allowed names for safe evaluation
-    allowed_names = {k: v for k, v in math.__dict__.items() if not k.startswith("__")}
-    allowed_names["abs"] = abs
-    allowed_names["round"] = round
-    
-    if x_val is not None:
-        allowed_names["x"] = x_val
-        # Overwrite with numpy functions to handle arrays gracefully (e.g. sin(x) -> np.sin(x))
-        allowed_names.update({k: v for k, v in np.__dict__.items() if not k.startswith("__")})
 
+    The expression is parsed with ``ast`` and only numeric literals, arithmetic
+    operators, the names in ``math`` (plus ``abs``/``round``) and, when
+    ``x_val`` is given, ``x`` and numpy's elementwise math functions are
+    permitted. Attribute access, subscripts, comprehensions and every other
+    construct are rejected, so no arbitrary code can run.
+    """
     try:
-        # __builtins__ must be an empty dict to prevent accessing dangerous built-in functions
-        result = eval(expr, {"__builtins__": {}}, allowed_names)
-        return result
+        tree = ast.parse(expr.strip(), mode="eval")
+        return _eval_node(tree, _build_namespace(x_val))
     except Exception as e:
-        raise ValueError(f"Invalid expression: {e}")
+        raise ValueError(f"Invalid expression: {e}") from e
 
 
 def main():

@@ -205,7 +205,7 @@ def main() -> None:
             rsa_op = input("🎯 Choose: Generate Keys (G), Encrypt (E), Decrypt (D): ").upper()
             if rsa_op in ["G", "GENERATE"]:
                 pub, priv = generate_rsa_keys()
-                print(f"\n✨ Keys Generated!")
+                print("\n✨ Keys Generated!")
                 print(f"👉 Public Key (e, n): {pub}")
                 print(f"👉 Private Key (d, n): {priv}")
                 print("Keep your private key secret!")
@@ -219,7 +219,7 @@ def main() -> None:
                     e = int(input("🔑 Enter Public Key 'e': "))
                     n = int(input("🔑 Enter Public Key 'n': "))
                     cipher = rsa_encrypt(message, (e, n))
-                    print(f"\n✨ Encrypted Message (array of numbers):")
+                    print("\n✨ Encrypted Message (array of numbers):")
                     print(f"👉 {cipher}")
                 except ValueError:
                     print("❌ Error: Key components must be integers.")
@@ -233,7 +233,7 @@ def main() -> None:
                     d = int(input("🔑 Enter Private Key 'd': "))
                     n = int(input("🔑 Enter Private Key 'n': "))
                     message = rsa_decrypt(cipher, (d, n))
-                    print(f"\n✨ Decrypted Message:")
+                    print("\n✨ Decrypted Message:")
                     print(f"👉 {message}")
                 except ValueError:
                     print("❌ Error: Invalid input format. Numbers expected.")

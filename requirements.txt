@@ -3,20 +3,18 @@ pygame==2.6.1
 # Math dependencies
 numpy==1.26.4
 matplotlib==3.8.3
-pillow==12.3.0
+pillow==12.3.0  # not imported directly; also installed as a matplotlib dependency
 
 # Test dependencies
 pytest>=8.0.0
 
-requests==2.34.2
 aiohttp==3.14.3
 
 # Markdown-to-PDF dependencies
 markdown2==2.5.5
 reportlab==4.5.1
 
-# NLP dependencies
-nltk==3.10.0
+# Word-Building game (also needs the system 'enchant' library)
 pyenchant==3.3.0
 
 # TUI dependencies

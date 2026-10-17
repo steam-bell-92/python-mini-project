@@ -681,7 +681,7 @@ class MathQuizGUI:
 
 def main():
     root = tk.Tk()
-    app = MathQuizGUI(root)
+    app = MathQuizGUI(root)  # noqa: F841 - keep a reference for the Tk event loop
     root.mainloop()
 
 if __name__ == "__main__":

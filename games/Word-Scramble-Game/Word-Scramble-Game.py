@@ -224,7 +224,7 @@ def play_round(
 
         clear()
         header(round_num, score, lives, difficulty)
-        print(f"  🔀  Unscramble this word:\n")
+        print("  🔀  Unscramble this word:\n")
         print(f"      ✨  {fancy(sc)}  ✨\n")
         print(f"  Letters: {len(word)}   |   Attempts left: {max_attempts - attempts}   |   {timer.bar()}")
 
@@ -391,7 +391,7 @@ def main():
                 print(f"║  Difficulty: {difficulty.capitalize():<31}║")
                 print("╚══════════════════════════════════════════════╝\n")
 
-                print(f"  🔀  Unscramble this word:\n")
+                print("  🔀  Unscramble this word:\n")
                 print(f"      ✨  {fancy_scrambled}  ✨\n")
                 print(
                     f"  Letters: {len(word)}   |   Attempts left this round: {max_attempts - attempts}")

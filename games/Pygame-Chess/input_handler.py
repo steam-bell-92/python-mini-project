@@ -16,7 +16,7 @@ class InputHandler:
         # First click
         if self.selected is None:
 
-            if self.board.get_piece_in_square(square) and self.board.get_piece_in_square(square).color==True:
+            if self.board.get_piece_in_square(square) and self.board.get_piece_in_square(square).color:
 
                 self.selected = square
                 self.valid_moves = self.board.get_valid_moves(square)
@@ -25,7 +25,7 @@ class InputHandler:
         else:
 
             # User clicked a legal destination
-            if square in self.valid_moves and self.board.board.turn==True:
+            if square in self.valid_moves and self.board.board.turn:
 
                 move = self.board.make_move(self.selected, square)
 
@@ -34,7 +34,7 @@ class InputHandler:
                     self.valid_moves = []
 
             # User clicked another piece
-            elif self.board.get_piece_in_square(square) and self.board.get_piece_in_square(square).color==True:
+            elif self.board.get_piece_in_square(square) and self.board.get_piece_in_square(square).color:
 
                 self.selected = square
                 self.valid_moves = self.board.get_valid_moves(square)

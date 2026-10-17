@@ -41,7 +41,7 @@ def main() -> None:
             
         print(f"\n📊 Number: {num}")
         print(f"📐 Number of digits: {num_digits}")
-        print(f"\n🔍 Calculation:")
+        print("\n🔍 Calculation:")
         
         calculation_parts = [f"{char}^{num_digits}" for char in num_str]
         print(f"   {' + '.join(calculation_parts)}")

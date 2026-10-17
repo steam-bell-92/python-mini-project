@@ -29,7 +29,7 @@ def main():
     clock = pygame.time.Clock()
 
     # ── Fonts ─────────────────────────────────────────────────
-    from typing import Optional, Tuple, List, Any
+    from typing import Optional, Tuple, List
 
     def sf(size: int, bold: bool = False) -> pygame.font.Font:
         """Create a sans-serif font."""

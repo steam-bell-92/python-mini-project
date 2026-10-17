@@ -374,7 +374,7 @@ class Game2048:
 
 def main():
     root = tk.Tk()
-    game = Game2048(root)
+    game = Game2048(root)  # noqa: F841 - keep a reference for the Tk event loop
     root.mainloop()
 
 

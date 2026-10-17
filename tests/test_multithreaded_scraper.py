@@ -81,3 +81,17 @@ def test_scraper_mock_fetch(monkeypatch):
     results = scraper.run()
     assert len(results) == 1
     assert results[0]["title"] == "Test Page Title"
+
+
+@pytest.mark.parametrize("url", ["file:///etc/hostname", "ftp://example.com/x", "data:text/html,hi"])
+def test_scraper_rejects_non_http_schemes(monkeypatch, url):
+    """Regression: file:// seeds were passed straight to urllib.request.urlopen."""
+    import urllib.request
+
+    def _fail(*args, **kwargs):
+        raise AssertionError("urlopen must not be called for non-http(s) URLs")
+
+    monkeypatch.setattr(urllib.request, "urlopen", _fail)
+    scraper = MultithreadedScraper([url], delay=0)
+    assert scraper._fetch_url(url) is None
+    assert scraper.failed_urls and "scheme" in scraper.failed_urls[0]["error"]

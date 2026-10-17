@@ -58,7 +58,7 @@ def main():
 
             # Display sequence with delays
             print("\n🔄 Watch the sequence:\n")
-            for i, emoji in enumerate(sequence):
+            for emoji in sequence:
                 print(f"   {emoji} ", end="", flush=True)
                 time.sleep(display_speed)
                 print("\b\b\b", end="", flush=True)
@@ -93,7 +93,7 @@ def main():
         print(f"📊 Sequence Length Reached: {len(sequence)}")
 
         if round_number == 1:
-            print(f"💡 Try again to beat the first round!\n")
+            print("💡 Try again to beat the first round!\n")
         else:
             print(f"🏆 Great job! You made it to round {round_number - 1}!\n")
 

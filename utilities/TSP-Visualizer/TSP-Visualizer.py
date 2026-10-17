@@ -36,7 +36,9 @@ def draw_text(win, text, x, y, color=WHITE):
     text_surface = font.render(text, True, color)
     win.blit(text_surface, (x, y))
 
-def draw_nodes(win, nodes, order=[], current_edge=None, best_dist=0):
+def draw_nodes(win, nodes, order=None, current_edge=None, best_dist=0):
+    if order is None:
+        order = []
     win.fill(BLACK)
     
     # Draw instructions

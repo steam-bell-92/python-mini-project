@@ -3,6 +3,7 @@ Unit tests for security module.
 """
 
 import pytest
+import socket
 import tarfile
 import tempfile
 import os
@@ -12,7 +13,6 @@ from pathlib import Path
 
 from security import (
     validate_url,
-    safe_extract,
     InvalidURLError,
     UnsafeTarError,
     URLSanitizer,
@@ -22,7 +22,19 @@ from security import (
 
 class TestURLSanitizer:
     """Tests for URL validation."""
-    
+
+    @pytest.fixture(autouse=True)
+    def _fake_dns(self, monkeypatch):
+        """Resolve hostnames from a fixed table so tests never touch real DNS."""
+        table = {"example.com": "93.184.216.34", "localhost": "127.0.0.1"}
+
+        def fake_getaddrinfo(host, port, *args, **kwargs):
+            if host in table:
+                return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", (table[host], 0))]
+            raise socket.gaierror(socket.EAI_NONAME, "Name or service not known")
+
+        monkeypatch.setattr(socket, "getaddrinfo", fake_getaddrinfo)
+
     def test_valid_urls(self):
         """Test valid URLs."""
         valid_urls = [
@@ -399,14 +411,14 @@ class TestSafeTarExtractor:
         """Test that empty tar gives warning."""
         tar_file = tmp_path / "empty.tar"
         
-        with tarfile.open(tar_file, 'w') as tar:
+        with tarfile.open(tar_file, 'w'):
             pass
         
         extract_dir = tmp_path / "extracted"
         extractor = SafeTarExtractor()
         
         import warnings
-        with warnings.catch_warnings(record=True) as w:
+        with warnings.catch_warnings(record=True):
             warnings.simplefilter("always")
             extracted = extractor.extract(tar_file, extract_dir)
             assert len(extracted) == 0
