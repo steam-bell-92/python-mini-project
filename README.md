@@ -40,6 +40,9 @@
 
 - [Repo Introduction](#-repo-introduction)
 - [Repo Structure](#-repo-structure)
+- [Getting Started](#-getting-started)
+- [Development](#-development)
+- [Security](#-security)
 - [What's Inside](#-whats-inside)
 - [Contributors](#-contributors)
 - [License](#-license)
@@ -66,13 +69,60 @@ python-mini-project/
 │   ├── Text-to-Morse/
 │   ├── Typing-Speed-Tester/
 │   └── ...
+├── security/            # security helpers and the password manager
+├── expression_parser/
+├── tests/               # pytest suite
 ├── web-app/
 │   ├── css/
 │   ├── js/
 │   └── assets/
+├── main.py              # interactive launcher (Textual TUI)
+├── search_projects.py   # search/filter projects from the terminal
+├── projects_registry.json
 ├── README.md
 └── requirements.txt
 ```
+
+## 🚀 Getting Started
+
+**Prerequisites:** Python 3.10–3.12. The Word-Building game also needs the system
+[Enchant](https://abiword.github.io/enchant/) library (used by `pyenchant`).
+
+```bash
+git clone https://github.com/steam-bell-92/python-mini-project.git
+cd python-mini-project
+python -m venv .venv
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+Run a project in one of three ways:
+
+```bash
+python main.py                                  # interactive launcher menu
+python search_projects.py                       # search by keyword, category or difficulty
+python games/Snake-Game/Snake-Game.py           # run any project directly
+```
+
+Every project is listed with its path in [`projects_registry.json`](projects_registry.json).
+Some projects (pygame, tkinter, turtle, matplotlib) open a window and need a desktop environment.
+
+## 🛠 Development
+
+```bash
+pytest tests/             # run the test suite
+ruff check .              # lint (configured in pyproject.toml)
+pip-audit -r requirements.txt   # check dependencies for known vulnerabilities
+```
+
+On a headless machine set `SDL_VIDEODRIVER=dummy SDL_AUDIODRIVER=dummy MPLBACKEND=Agg`
+before running the tests. These checks also run in GitHub Actions on every pull request.
+See [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.
+
+## 🔒 Security
+
+Please do not post exploit details in a public issue. Report suspected
+vulnerabilities privately to the repository maintainer through their GitHub profile.
 
 ## 🧩 What’s Inside
 
