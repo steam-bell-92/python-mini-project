@@ -5,6 +5,7 @@ High-Performance Multithreaded Web Scraper Engine using ThreadPoolExecutor.
 import time
 import urllib.request
 import urllib.error
+import urllib.parse
 import random
 from typing import List, Dict, Set, Any, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -40,6 +41,13 @@ class MultithreadedScraper:
 
     def _fetch_url(self, url: str) -> Optional[str]:
         """Fetch content from a single URL with custom headers and error handling."""
+        # urlopen also understands file:// and ftp://; only crawl web URLs.
+        if urllib.parse.urlparse(url).scheme not in ("http", "https"):
+            self.failed_urls.append(
+                {"url": url, "error": "unsupported URL scheme (only http/https are allowed)"}
+            )
+            return None
+
         headers = {"User-Agent": random.choice(USER_AGENTS)}
         req = urllib.request.Request(url, headers=headers)
 
