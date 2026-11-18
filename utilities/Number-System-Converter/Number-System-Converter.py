@@ -1,4 +1,5 @@
 def main():
+    """Run the interactive number-system converter in the terminal."""
     print("🔢 Number System Converter 🔢")
     print("Convert between Decimal, Binary, Octal, and Hexadecimal formats interactively!\n")
 
